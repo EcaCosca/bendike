@@ -2,6 +2,7 @@ import { AppBar, Box, Button, Chip, Container, Toolbar, Typography } from '@mui/
 import type { ReactNode } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/use-auth';
+import { WhatsAppFab } from './site/WhatsAppFab';
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
@@ -47,6 +48,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <Container maxWidth="md" sx={{ py: 4 }}>
         {children}
       </Container>
+      <WhatsAppFab />
     </Box>
   );
 }

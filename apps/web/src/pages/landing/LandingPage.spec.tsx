@@ -3,7 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import * as authApi from '../../auth/auth-api';
 import * as useAuthModule from '../../auth/use-auth';
-import { SOCIAL_LINKS } from '../../components/site/site-content';
+import { SOCIAL_LINKS, WHATSAPP_LABEL, WHATSAPP_NUMBER } from '../../components/site/site-content';
 import { ABOUT_TEASER, AUDIENCES, HERO, SERVICES } from './landing-content';
 import { LandingPage } from './LandingPage';
 
@@ -85,6 +85,14 @@ describe('LandingPage', () => {
         expect(anchor).toHaveAttribute('target', '_blank');
         expect(anchor).toHaveAttribute('rel', 'noopener noreferrer');
       }
+    });
+
+    test('floats a WhatsApp button that opens a chat with Eca in a new tab', () => {
+      const button = screen.getByRole('link', { name: WHATSAPP_LABEL });
+
+      expect(button.getAttribute('href')).toMatch(new RegExp(`^https://wa\\.me/${WHATSAPP_NUMBER}\\?text=`));
+      expect(button).toHaveAttribute('target', '_blank');
+      expect(button).toHaveAttribute('rel', 'noopener noreferrer');
     });
 
     test('renders without calling the API', () => {

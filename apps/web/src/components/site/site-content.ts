@@ -11,3 +11,8 @@ export const SOCIAL_LINKS = [
 ] as const;
 
 export const FOOTER_TAGLINE = 'Rigging loft and software, Argentina.';
+
+export const WHATSAPP_NUMBER = '5493413955408';
+export const WHATSAPP_LABEL = 'Chat with Eca on WhatsApp';
+export const WHATSAPP_GREETING = 'Hola Eca, te escribo desde bendike.';
+export const WHATSAPP_HREF = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_GREETING)}`;

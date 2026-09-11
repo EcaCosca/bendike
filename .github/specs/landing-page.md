@@ -66,6 +66,8 @@ so that I can **follow the loft and contact him**.
 - The landing page shall render a link to Eca's Instagram and a link to his LinkedIn, each opening in a new tab
   with `rel="noopener noreferrer"`.
 - The social links shall appear in the about teaser and in the footer.
+- Every public page and the signed-in app shell shall show a floating WhatsApp button in the bottom-right corner
+  that opens `https://wa.me/5493413955408` in a new tab with a short greeting prefilled.
 
 ### Story 4: Get in
 
@@ -101,6 +103,7 @@ so that I can **enter the app from anywhere on the page**.
 
 - `apps/web/src/components/site/site-content.ts` — site name, navigation links, social handles (shared with the About page)
 - `apps/web/src/components/site/SiteNav.tsx`, `SiteFooter.tsx`, `SocialLinks.tsx`, `SitePage.tsx` — shared public-site chrome
+- `apps/web/src/components/site/WhatsAppFab.tsx` — floating WhatsApp button, also mounted in `components/AppShell.tsx`
 - `apps/web/src/pages/landing/landing-content.ts` — every landing string (hero, services, audiences, about teaser)
 - `apps/web/src/pages/landing/HeroSection.tsx` — headline, promise, calls to action
 - `apps/web/src/pages/landing/ServicesSection.tsx` — four service cards
