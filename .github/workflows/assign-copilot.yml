@@ -1,0 +1,52 @@
+---
+name: Auto-Assign Copilot on Spec Issues
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  assign-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign and Instruct Copilot
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const issue = context.payload.issue;
+
+            const hasCopilotLabel = issue.labels.some((label) => label.name === 'copilot-ready');
+            if (!hasCopilotLabel) {
+              console.log("Issue does not have 'copilot-ready' label. Skipping.");
+              return;
+            }
+
+            const body = issue.body || '';
+            const pattern = /### Extra Instructions\s+([\s\S]*?)(?=\n###|$)/;
+            const match = body.match(pattern);
+
+            let comment = '@copilot';
+            if (match && match[1].trim().length > 0) {
+              let instructions = match[1].trim();
+              const MAX_LENGTH = 2000;
+              if (instructions.length > MAX_LENGTH) {
+                instructions = instructions.slice(0, MAX_LENGTH) + '\n\n[Instructions truncated]';
+              }
+              comment = `@copilot ${instructions}`;
+            } else {
+              comment =
+                '@copilot Please work on this issue according to the specification provided. ' +
+                '**MANDATORY:** create a spec file in `.github/specs/` (EARS format, per ' +
+                '`.github/instructions/spec.instructions.md`) with a Role Access table before writing any ' +
+                'implementation code. Run `npm run validate` before opening the PR.';
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: comment,
+            });

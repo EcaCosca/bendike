@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: bendike-postgres
+    environment:
+      POSTGRES_USER: bendike
+      POSTGRES_PASSWORD: bendike
+      POSTGRES_DB: bendike
+    ports:
+      - '5432:5432'
+    volumes:
+      - bendike-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U bendike -d bendike']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  bendike-postgres-data:

@@ -1,0 +1,69 @@
+---
+name: Feature To Spec
+description: Describe a feature; a spec is written in .github/specs/ before any code.
+title: '[Spec]: '
+labels: ['copilot-ready', 'enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature specification
+        Fill in the details below. The structure is parsed by the coding agent, and a human can follow it too.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context & Goal
+      description: What is the goal? Who is it for (visitor, user, rigger, dropzone, admin)? Which part of the codebase?
+      placeholder: |
+        Riggers need a profile page so users can see their experience before requesting them...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: How will we verify this is done? One observable behaviour per line.
+      placeholder: |
+        A rigger can edit their own profile.
+        A user can open any rigger's profile but not edit it.
+        An admin can edit any profile.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: roles
+    attributes:
+      label: Roles involved
+      description: Which roles can see or use the feature? Pick every one that applies.
+      multiple: true
+      options:
+        - Visitor (not signed in)
+        - User
+        - Rigger
+        - Dropzone
+        - Admin
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra-instructions
+    attributes:
+      label: Extra Instructions
+      description: Guidance for the coding agent. Posted as a comment when the issue is opened.
+      value: |
+        **MANDATORY: You MUST create a spec file in `.github/specs/` before writing any implementation code.** This step cannot be skipped, deferred, or merged into another step. If you cannot create the spec file, stop and ask on the issue.
+
+        0. **Branch name.** Humans use `<type>/<issue-number>-<short-kebab-description>` (e.g. `feat/12-rigger-profile`). The GitHub Copilot coding agent pushes to a `copilot/...` branch it cannot rename; that is fine.
+        1. Read `.github/instructions/spec.instructions.md` and use it as the required guide for the specification.
+        2. Read `.github/copilot-instructions.md` and the other files in `.github/instructions/` before starting work.
+        3. **REQUIRED:** Write the spec as a new markdown file in `.github/specs/` named `<short-feature-slug>.md`. Requirements MUST be in EARS format. Include a "Role Access" table naming what each of the five personas (visitor plus the four roles) can do.
+        4. Add a data flow diagram and a sequence diagram inside the spec as ```mermaid code blocks. No images, no ASCII art.
+        5. Break the feature into tasks with Objective, Context, Affected files, Requirements, Verification and Done-when.
+        6. As you complete each task, tick its checkboxes with `[x]` in the spec, in the same PR that delivers the work.
+        7. If you need to make assumptions, ask on the issue before proceeding.
+        8. Every role-gated behaviour ships with a test for an allowed role and a forbidden role in the same PR.
+        9. Run `npm run validate` before opening the PR. Do not add explanatory comments to code; put the "why" in the PR description.
+    validations:
+      required: false

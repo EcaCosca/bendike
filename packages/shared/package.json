@@ -1,0 +1,17 @@
+{
+  "name": "@bendike/shared",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Roles and API contracts shared by the Bendike web app and API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "jest",
+    "test:unit:cov": "jest --coverage"
+  }
+}
