@@ -4,7 +4,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/use-auth';
 import { AppShell } from '../components/AppShell';
 
-const PASSWORD_MIN_LENGTH = 12;
+const PASSWORD_MIN_LENGTH = 8;
 
 export function RegisterPage() {
   const { register } = useAuth();

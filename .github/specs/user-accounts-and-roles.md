@@ -35,7 +35,8 @@ so that I can **sign in to Bendike as a user**.
 
 - When a visitor submits a valid registration, the API shall create the account with role `user` and return a bearer token.
 - If the email is already registered, then the API shall reject the registration with 409 and create nothing.
-- If the password is shorter than 12 characters, then the API shall reject the registration with 400.
+- If the password is shorter than 8 characters, then the API shall reject the registration with 400 (lowered from
+  12 on 2026-09-11 at Eca's request so dropzone accounts can use the passwords he issues).
 - The API shall store emails trimmed and lowercased so lookups are case-insensitive.
 - The API shall never return a password hash in any response.
 
