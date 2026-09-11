@@ -22,6 +22,8 @@ One file per feature. No production code changes without a spec here.
 | [notifications-inbox.md](./notifications-inbox.md)                                 | Specified 2026-09-11; automated reminders deferred to a gear-tracking spec |
 | [user-profile-and-email-verification.md](./user-profile-and-email-verification.md) | Specified 2026-09-11; email provider to choose                             |
 | [gear-tracking.md](./gear-tracking.md)                                             | Specified 2026-09-11; repack cycle default to confirm                      |
+| [rigger-profile-and-license.md](./rigger-profile-and-license.md)                   | Specified 2026-09-11; photo storage to choose                              |
+| [google-sign-in.md](./google-sign-in.md)                                           | Specified 2026-09-11; needs a Google Cloud client id                       |
 
 ## Spec File Structure
 
