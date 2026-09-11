@@ -2,45 +2,44 @@
 
 Named by role, never by individual. Every spec references at least one of these and states the impact on each.
 
-> The "Goals", "Pain Points" and "Context" lines for User, Rigger and Dropzone are placeholders until the product
-> briefing for Bendike lands (see `.github/specs/landing-page.md`, Open Questions). Working assumption: Bendike is
-> about skydiving, where a rigger maintains parachute equipment and a dropzone is the place people jump. Update
-> this file first, then the specs.
+Bendike is a skydiving company: a rigging loft in Argentina owned by Enrique "Eca" Coscarelli, and the software he
+builds so skydivers, riggers and dropzones stay on top of reserve repacks, AAD service and manufacturer service
+bulletins. Safety is the main priority. (Briefing of 2026-09-11.)
 
 ## Visitor
 
 **Role**: Someone who is not signed in.
-**Goals**: Understand what Bendike is in under a minute; decide whether to create an account.
+**Goals**: Understand what Bendike is and who Eca is in under a minute; decide whether to create an account.
 **Pain Points**: Landing pages that assume you already know the product.
-**Context**: Arrives from a link or search, probably on a phone.
+**Context**: Arrives from Instagram, LinkedIn or word of mouth at a dropzone, probably on a phone.
 
 ## User
 
-**Role**: A signed-in account with the `user` role. Every new account starts here.
-**Goals**: TBD from briefing. Working assumption: a skydiver who needs a rigger or a dropzone.
-**Pain Points**: TBD from briefing.
-**Context**: TBD from briefing.
+**Role**: A skydiver. Every new account starts here.
+**Goals**: Know when the reserve repack is due, when the AAD needs service or a battery, and whether a service
+bulletin applies to their gear. Find and book a rigger they trust.
+**Pain Points**: Dates written on a packing data card that nobody looks at; bulletins that never reach them;
+finding out at the dropzone that the rig is out of date.
+**Context**: Jumps at weekends; owns or rents a rig; checks their phone between loads.
 
 ## Rigger
 
-**Role**: A signed-in account with the `rigger` role, promoted by an admin.
-**Goals**: TBD from briefing. Working assumption: offer rigging services (inspections, repacks, repairs) and take
-on requests from users and dropzones.
-**Pain Points**: TBD from briefing.
-**Context**: TBD from briefing.
+**Role**: A certified parachute rigger, promoted by an admin.
+**Goals**: Offer repacks, inspections and repairs; log every pack job; keep customers current so nobody jumps
+out-of-date gear.
+**Pain Points**: Paper logbooks, chasing customers about due dates, bulletins arriving by forum post.
+**Context**: Works from a loft or travels to dropzones; Eca himself is the first rigger.
 
 ## Dropzone
 
-**Role**: A signed-in account with the `dropzone` role, promoted by an admin. Represents an organisation (the venue
-or its operator), not a person.
-**Goals**: TBD from briefing. Working assumption: be findable by users, list what the dropzone offers, and work with
-riggers.
-**Pain Points**: TBD from briefing.
-**Context**: TBD from briefing. Open question: one login per dropzone, or several staff logins?
+**Role**: An organisation account for a dropzone (the venue or its operator), promoted by an admin. Not a person.
+**Goals**: See the status of the gear jumping at the DZ and work with the riggers who keep it safe.
+**Pain Points**: Manual gear checks at manifest; no view of which rigs on the load are current.
+**Context**: One login per dropzone for now; staff logins are an open question.
 
 ## Admin
 
 **Role**: A signed-in account with the `admin` role.
 **Goals**: Keep the community safe; decide who is a rigger or a dropzone; manage accounts without a database console.
 **Pain Points**: Having to run SQL to promote someone; accidentally locking themselves out.
-**Context**: One or two people at first. The first admin is created from environment variables.
+**Context**: Eca at first. The first admin is created from environment variables.

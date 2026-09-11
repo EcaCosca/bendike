@@ -91,8 +91,12 @@ apps/web/src/
   App.tsx                 Routes; RequireAuth and RequireRole wrap the protected ones
   api/http.ts             fetch wrapper that prefixes /api/v1 and turns API errors into ApiError
   auth/                   auth-api.ts (calls), auth-context.tsx (session), RequireAuth, RequireRole
-  components/             AppShell (top bar + container)
-  pages/                  LandingPage, LoginPage, RegisterPage, DashboardPage, AdminUsersPage
+  components/             AppShell (signed-in top bar + container)
+  components/site/        Public-site chrome: SiteNav, SiteFooter, SocialLinks, SitePage; site-content.ts holds
+                          the site name, nav links and social handles
+  pages/                  LoginPage, RegisterPage, DashboardPage, AdminUsersPage
+  pages/landing/          Landing page: landing-content.ts holds every string, one file per section
+  pages/about/            About page: about-content.ts holds every string
   theme/                  MUI theme
 
 packages/shared/src/

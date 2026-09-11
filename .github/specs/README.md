@@ -12,10 +12,11 @@ One file per feature. No production code changes without a spec here.
 
 ## Specs
 
-| Spec                                                       | Status                                             |
-| ---------------------------------------------------------- | -------------------------------------------------- |
-| [user-accounts-and-roles.md](./user-accounts-and-roles.md) | Implemented in the initial scaffold                |
-| [landing-page.md](./landing-page.md)                       | Draft: placeholder copy, awaiting product briefing |
+| Spec                                                       | Status                                                                   |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [user-accounts-and-roles.md](./user-accounts-and-roles.md) | Implemented in the initial scaffold                                      |
+| [landing-page.md](./landing-page.md)                       | Implemented from the 2026-09-11 briefing; photo and Spanish version open |
+| [about-page.md](./about-page.md)                           | Implemented from the 2026-09-11 briefing; photo and copy review open     |
 
 ## Spec File Structure
 

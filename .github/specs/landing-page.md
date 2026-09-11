@@ -1,47 +1,85 @@
 # Feature: Landing page
 
-> Issue: none yet · Branch: `feat/landing-page-copy` (when picked up) · Status: **DRAFT, awaiting the product briefing**
+> Issue: none yet · Branch: `feat/landing-page-copy` · Briefing: dictated by Enrique Coscarelli on 2026-09-11
 
 ## Problem Statement
 
-A visitor who arrives at Bendike has no idea what it is, who it is for, or why they should create an account.
-The current page at `/` is a scaffold placeholder: it shows the name, a generic tagline and one sentence per role.
-The real copy, structure and imagery depend on a briefing from the product owner that has not happened yet.
+A visitor who arrives at Bendike has no idea what it is, who is behind it, or why they should create an account.
+Bendike is a new company: a rigging loft in Argentina owned by Enrique "Eca" Coscarelli, plus the software he
+builds so skydivers, riggers and dropzones stay on top of reserve repacks, AAD service and manufacturer service
+bulletins. The landing page has to say that clearly, put Eca forward as the person behind it, make safety the
+headline, link to his Instagram and LinkedIn, and lead into the sign-in flow.
 
 ## Personas
 
-| Persona | Impact   | Notes                                                       |
-| ------- | -------- | ----------------------------------------------------------- |
-| Visitor | Positive | Primary audience; must understand Bendike in under a minute |
-| User    | Neutral  | Signed-in users skip straight to `/app`                     |
-| Rigger  | Positive | Should see why becoming a rigger is worth it                |
-| Admin   | Neutral  | Same page, no admin-specific content                        |
+| Persona  | Impact   | Notes                                                                      |
+| -------- | -------- | -------------------------------------------------------------------------- |
+| Visitor  | Positive | Primary audience; must understand Bendike and who Eca is in under a minute |
+| User     | Positive | A skydiver sees why tracking repacks, AADs and bulletins matters to them   |
+| Rigger   | Positive | Sees a loft and a platform that lets them offer services and log pack jobs |
+| Dropzone | Positive | Sees how gear status across their DZ becomes visible                       |
+| Admin    | Neutral  | Same page, no admin-specific content                                       |
 
 ## Value Assessment
 
-- **Primary value**: Market — the landing page is how new users and riggers find out Bendike exists.
-- **Secondary value**: Customer — clear expectations up front reduce sign-ups that churn immediately.
+- **Primary value**: Market — the landing page is how skydivers, riggers and dropzones find out Bendike exists and
+  who Eca is.
+- **Secondary value**: Customer — a safety-first message sets expectations for what the software will nag you about.
 
 ## User Stories
 
 ### Story 1: Understand Bendike
 
 As a **Visitor**,
-I want **to read what Bendike is and what each role does**,
-so that I can **decide whether to create an account and which role I want to grow into**.
+I want **to read what Bendike does and who it is for**,
+so that I can **decide whether to create an account**.
 
 #### Acceptance Criteria
 
 - While a visitor is not signed in, the web app shall show the landing page at `/`.
-- The landing page shall render an H1 with the product name and one H2 per role (`user`, `rigger`, `dropzone`, `admin`).
-- The landing page shall offer a "Create an account" call to action linking to `/register` and a "Log in" link to `/login`.
-- When a signed-in person opens `/`, the web app shall still show the landing page with the top bar in its signed-in state.
+- The landing page shall render exactly one H1 stating the safety-first promise.
+- The landing page shall render a services section naming rigging services, repack and AAD tracking, service
+  bulletin alerts, and software.
+- The landing page shall render an audiences section with one heading each for skydivers, riggers and dropzones.
 - The landing page shall render without calling the API.
 
-#### Notes
+### Story 2: Meet Eca
 
-Everything below the H1 is placeholder copy until the briefing lands. The tests assert structure (headings, links),
-not wording, so the copy can change without touching them.
+As a **Visitor**,
+I want **to know who is behind Bendike**,
+so that I can **trust the loft and the software with my gear**.
+
+#### Acceptance Criteria
+
+- The landing page shall render an about teaser naming Enrique "Eca" Coscarelli, stating that he is from
+  Argentina, owns a rigging loft there, and is also a programmer, with a link to the full About page at `/about`.
+- The about teaser shall state that safety is the main priority.
+
+### Story 3: Reach Eca
+
+As a **Visitor**,
+I want **links to Eca's Instagram and LinkedIn**,
+so that I can **follow the loft and contact him**.
+
+#### Acceptance Criteria
+
+- The landing page shall render a link to Eca's Instagram and a link to his LinkedIn, each opening in a new tab
+  with `rel="noopener noreferrer"`.
+- The social links shall appear in the about teaser and in the footer.
+
+### Story 4: Get in
+
+As a **Visitor**,
+I want **a navigation bar with Log in and Sign up**,
+so that I can **enter the app from anywhere on the page**.
+
+#### Acceptance Criteria
+
+- While a visitor is not signed in, the navigation shall show a "Log in" link to `/login` and a "Sign up" link to
+  `/register`.
+- While signed in, the navigation shall replace those with an "Open app" link to `/app`.
+- The navigation shall link to the Home and About pages (see `about-page.md`); the hero keeps an in-page anchor to
+  the services section.
 
 ---
 
@@ -51,23 +89,32 @@ not wording, so the copy can change without touching them.
 
 ### Role Access
 
-| Role     | Access                       |
-| -------- | ---------------------------- |
-| Visitor  | Full page, anonymous top bar |
-| User     | Full page, signed-in top bar |
-| Rigger   | Full page, signed-in top bar |
-| Dropzone | Full page, signed-in top bar |
-| Admin    | Full page, signed-in top bar |
+| Role     | Access                                         |
+| -------- | ---------------------------------------------- |
+| Visitor  | Full page, navigation shows Log in and Sign up |
+| User     | Full page, navigation shows Open app           |
+| Rigger   | Full page, navigation shows Open app           |
+| Dropzone | Full page, navigation shows Open app           |
+| Admin    | Full page, navigation shows Open app           |
 
 ### Components Affected
 
-- `apps/web/src/pages/LandingPage.tsx` — copy, sections, imagery
-- `apps/web/src/pages/LandingPage.spec.tsx` — structure assertions
-- `apps/web/src/theme/theme.ts` — palette if the briefing brings brand colours
+- `apps/web/src/components/site/site-content.ts` — site name, navigation links, social handles (shared with the About page)
+- `apps/web/src/components/site/SiteNav.tsx`, `SiteFooter.tsx`, `SocialLinks.tsx`, `SitePage.tsx` — shared public-site chrome
+- `apps/web/src/pages/landing/landing-content.ts` — every landing string (hero, services, audiences, about teaser)
+- `apps/web/src/pages/landing/HeroSection.tsx` — headline, promise, calls to action
+- `apps/web/src/pages/landing/ServicesSection.tsx` — four service cards
+- `apps/web/src/pages/landing/AudiencesSection.tsx` — skydivers, riggers, dropzones
+- `apps/web/src/pages/landing/AboutSection.tsx` — Eca teaser, Argentina, safety, social links, link to `/about`
+- `apps/web/src/pages/landing/LandingPage.tsx` — composition
+- `apps/web/src/pages/landing/LandingPage.spec.tsx` — structure assertions
+- `apps/web/src/theme/theme.ts` — brand palette and typography
+- `apps/web/index.html` — title, description, web font
 
 ### Dependencies
 
-- None. Static page, no API calls.
+- Google Fonts (Inter) loaded from `index.html`; the page still renders with the system fallback if it is blocked.
+- `@mui/icons-material` for section and social icons (already a dependency).
 
 ### Data Model Changes
 
@@ -77,27 +124,35 @@ None.
 
 ```mermaid
 flowchart TD
-  visit["Visitor opens /"] --> landing[LandingPage]
-  landing -->|Create an account| register["/register"]
-  landing -->|Log in| login["/login"]
-  register --> app["/app dashboard"]
-  login --> app
+  visit["Visitor opens /"] --> nav[LandingNav]
+  nav -->|Log in| login["/login"]
+  nav -->|Sign up| register["/register"]
+  nav -->|Open app, when signed in| app["/app"]
+  visit --> hero[Hero: safety-first promise]
+  hero --> services[Services]
+  services --> audiences[Skydivers / Riggers / Dropzones]
+  audiences --> about["About Eca + Instagram + LinkedIn"]
+  about --> footer[Footer]
 ```
 
 ### Open Questions
 
-To be answered in the product briefing (dictated by the product owner):
+Resolved by the 2026-09-11 briefing:
 
-- [ ] What is Bendike, in one sentence a stranger understands?
-- [ ] Is Bendike about skydiving? "Rigger" plus "dropzone" reads that way; confirm before the copy says so.
-- [ ] What does a **rigger** actually do here (parachute inspection, repacks, repairs, reserve packing)?
-- [ ] What is a **dropzone** account: the venue, its operator, or a staff login? Who registers it and who vets it?
-- [ ] Who is the **user**: a skydiver, a student, someone who owns gear? What do they come to Bendike to get?
-- [ ] What happens between a user and a rigger (a request, a booking, a match, a review)?
-- [ ] Tone: playful, technical, safety-first, community?
-- [ ] Brand assets: name styling, colours, logo, photography or illustration?
-- [ ] Is there a geographic or community scope (a city, a club, a federation)?
-- [ ] Any legal or safety disclaimer that belongs above the fold?
+- [x] What is Bendike? A rigging loft in Argentina and the software that keeps skydivers current on repacks, AADs
+      and service bulletins. Safety is the main priority.
+- [x] Is Bendike about skydiving? Yes.
+- [x] Who is behind it? Enrique "Eca" Coscarelli, from Argentina, rigger and programmer.
+- [x] LinkedIn: `https://www.linkedin.com/in/enrique-coscarelli/`.
+- [x] Instagram: `@ecacoscarelli`.
+- [x] Dedicated About page: yes, see `about-page.md`.
+
+Still open:
+
+- [ ] A photo of Eca or the loft for the about teaser (an initials avatar stands in today).
+- [ ] Logo and brand colours. The page uses a navy and safety-orange palette chosen by the scaffold.
+- [ ] Spanish version of the page.
+- [ ] What a dropzone account can do beyond signing in (belongs to a later spec).
 
 ---
 
@@ -105,18 +160,7 @@ To be answered in the product briefing (dictated by the product owner):
 
 ### Task 1: Placeholder structure
 
-**Objective**: Ship a landing page with the final structure and placeholder copy so routing and tests exist.
-
-**Context**: Lets the rest of the app link to `/` today; copy is swapped in Task 2.
-
-**Affected files**:
-
-- `apps/web/src/pages/LandingPage.tsx`
-- `apps/web/src/pages/LandingPage.spec.tsx`
-
-**Requirements**:
-
-- Story 1: headings, calls to action, no API calls
+**Objective**: Ship a landing page with headings, calls to action and tests so routing exists.
 
 **Verification**:
 
@@ -125,43 +169,73 @@ To be answered in the product briefing (dictated by the product owner):
 **Done when**:
 
 - [x] All verification steps pass
-- [x] Code follows patterns in `.github/copilot-instructions.md`
 
 ---
 
-### Task 2: Real copy and sections
+### Task 2: Real copy, sections and brand
 
 **Depends on**: Task 1 and the product briefing
 
-**Objective**: Replace placeholder text with the briefed copy and add the sections the briefing calls for.
+**Objective**: Replace the placeholder with the briefed content in a content module, sectioned layout and brand
+theme.
+
+**Context**: The briefing resolved what Bendike is and who Eca is. Copy lives in one module so wording can change
+without touching layout or tests.
 
 **Affected files**:
 
-- `apps/web/src/pages/LandingPage.tsx`
-- `apps/web/src/pages/LandingPage.spec.tsx` (only if new sections add structure worth asserting)
+- `apps/web/src/pages/landing/*`
+- `apps/web/src/theme/theme.ts`
+- `apps/web/index.html`
+- `apps/web/src/App.tsx`
 
 **Requirements**:
 
-- Story 1 with the Open Questions resolved
+- Stories 1 to 4
 
 **Verification**:
 
-- [ ] `npm run test:unit -w @bendike/web -- LandingPage` passes
-- [ ] The page reads correctly at 400px and 1280px widths
+- [x] `npm run test:unit -w @bendike/web -- LandingPage` passes
+- [x] `npm run validate` passes
+- [x] The page reads correctly at 400px and 1280px widths (manual, dev server)
+
+**Done when**:
+
+- [x] All verification steps pass
+- [x] Every resolved Open Question above is reflected in the copy
+
+---
+
+### Task 3: Imagery and brand
+
+**Depends on**: Task 2
+
+**Objective**: Add a real photo and apply the final logo and colours.
+
+**Affected files**:
+
+- `apps/web/src/pages/landing/AboutSection.tsx`
+- `apps/web/src/theme/theme.ts`
+
+**Verification**:
+
+- [ ] Eca has reviewed the copy and the look
+- [ ] `npm run validate` passes
 
 **Done when**:
 
 - [ ] All verification steps pass
-- [ ] Every Open Question above is either answered in the copy or moved to Out of Scope
+- [ ] The remaining Open Questions are answered or moved to Out of Scope
 
 ---
 
 ## Out of Scope
 
-- SEO metadata, analytics, cookie banners
+- SEO beyond title and description, analytics, cookie banners
 - A CMS for the copy
+- Contact form or email capture (no email address was provided)
 
 ## Future Considerations
 
-- A scroll-driven or animated version once the story is known (see the `scrollcraft` skill)
-- Localisation if the audience is not English-first
+- Spanish localisation, since the loft is in Argentina
+- A scroll-driven version once there is photography of the loft (see the `scrollcraft` skill)
