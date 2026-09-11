@@ -12,11 +12,14 @@ One file per feature. No production code changes without a spec here.
 
 ## Specs
 
-| Spec                                                       | Status                                                                   |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------ |
-| [user-accounts-and-roles.md](./user-accounts-and-roles.md) | Implemented in the initial scaffold                                      |
-| [landing-page.md](./landing-page.md)                       | Implemented from the 2026-09-11 briefing; photo and Spanish version open |
-| [about-page.md](./about-page.md)                           | Implemented from the 2026-09-11 briefing; photo and copy review open     |
+| Spec                                                             | Status                                                                     |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [user-accounts-and-roles.md](./user-accounts-and-roles.md)       | Implemented in the initial scaffold                                        |
+| [landing-page.md](./landing-page.md)                             | Implemented from the 2026-09-11 briefing; photo and Spanish version open   |
+| [about-page.md](./about-page.md)                                 | Implemented from the 2026-09-11 briefing; photo and copy review open       |
+| [product-catalog.md](./product-catalog.md)                       | Specified 2026-09-11; awaiting prices and content-reuse confirmation       |
+| [cart-and-whatsapp-checkout.md](./cart-and-whatsapp-checkout.md) | Specified 2026-09-11; depends on product-catalog                           |
+| [notifications-inbox.md](./notifications-inbox.md)               | Specified 2026-09-11; automated reminders deferred to a gear-tracking spec |
 
 ## Spec File Structure
 
