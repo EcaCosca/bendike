@@ -3,6 +3,7 @@ import { CHAPTERS, LOGBOOK, LOGBOOK_TITLE } from './about-story-content';
 import { useChapterProgress, type ChapterId } from './use-chapter-progress';
 
 const TITLE_LABEL = 'Title page';
+const LIGHT_GROUNDS: ReadonlySet<ChapterId> = new Set(['title', 'preparation', 'airAndCode', 'sons']);
 
 function chapterLabel(chapter: ChapterId): string {
   if (chapter === 'title') {
@@ -30,6 +31,7 @@ export function LogbookFolio({ root }: { root: RefObject<HTMLElement | null> }) 
     <aside
       className={`as-log${open ? ' as-log--open' : ''}`}
       aria-label={LOGBOOK_TITLE}
+      data-ground={LIGHT_GROUNDS.has(current) ? 'light' : 'dark'}
       data-sc-verify-state={`${current}:${stamped.length}`}
     >
       <button

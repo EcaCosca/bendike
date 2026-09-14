@@ -123,17 +123,58 @@ function encode(ffmpeg, input, output, { filter, gop, crf }) {
   );
 }
 
+function placeholderClip(ffmpeg, poster, output, size, gop) {
+  execFileSync(
+    ffmpeg,
+    [
+      '-y',
+      '-hide_banner',
+      '-loglevel',
+      'error',
+      '-loop',
+      '1',
+      '-i',
+      poster,
+      '-t',
+      '5',
+      '-an',
+      '-vf',
+      `zoompan=z='1+0.18*on/150':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=${size}:fps=30,format=yuv420p`,
+      '-c:v',
+      'libx264',
+      '-profile:v',
+      'high',
+      '-preset',
+      'slow',
+      '-crf',
+      '20',
+      '-g',
+      String(gop),
+      '-keyint_min',
+      String(gop),
+      '-sc_threshold',
+      '0',
+      '-movflags',
+      '+faststart',
+      output,
+    ],
+    { stdio: 'inherit' },
+  );
+}
+
 async function prepareFlight() {
   const raw = findRaw('flight', ['mp4', 'mov', 'MOV', 'MP4', 'm4v']);
   const posterDesktop = path.join(OUT, 'flight-poster.webp');
   const posterMobile = path.join(OUT, 'flight-poster-m.webp');
+  const ffmpeg = pickFfmpeg();
   if (!raw) {
     await placeholder(1920, 1080, NAVY, posterDesktop);
     await placeholder(720, 1280, NAVY, posterMobile);
-    report.placeholder.push('flight (no clip; poster only)');
+    placeholderClip(ffmpeg, posterDesktop, path.join(OUT, 'flight.mp4'), '1920x1080', 8);
+    placeholderClip(ffmpeg, posterMobile, path.join(OUT, 'flight-m.mp4'), '720x1280', 4);
+    report.placeholder.push('flight (placeholder push-in clip rendered from the placeholder poster)');
     return;
   }
-  const ffmpeg = pickFfmpeg();
   const grade = GRADE
     ? 'colorlevels=rimin=0.06:gimin=0.06:bimin=0.06:rimax=0.9:gimax=0.9:bimax=0.9,eq=saturation=1.06,'
     : '';

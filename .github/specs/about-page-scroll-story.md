@@ -223,7 +223,9 @@ sequenceDiagram
 
 **Verification**:
 
-- [x] Running with an empty raw folder yields placeholders for every slot and the kids photo from Downloads
+- [x] Running with an empty raw folder yields placeholders for every slot, a placeholder push-in clip rendered from
+      the placeholder poster (so the scrub path is exercised even before footage exists), and the kids photo from
+      Downloads
 - [ ] Running with the real clip yields `flight.mp4` under ~6 MB and a matching poster
 
 **Done when**:

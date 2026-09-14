@@ -422,11 +422,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.as-title .as-log,
-.as-prep .as-log {
-  color: var(--as-ink-dark);
-}
-
 @media (max-width: 1180px) {
   .as-log {
     top: auto;
@@ -502,5 +497,23 @@
   .as-log__entry {
     transform: none;
     transition-duration: 160ms;
+  }
+}
+
+.as-log[data-ground='light'] {
+  color: var(--as-ink-dark);
+}
+
+.as-log[data-ground='dark'] {
+  color: var(--as-paper);
+}
+
+@media (min-width: 1181px) {
+  .as-main .sc-wrap {
+    padding-left: calc(var(--sc-gutter) + 17rem);
+  }
+
+  .as-air .sc-copy--lead {
+    left: calc(var(--sc-gutter) + 17rem);
   }
 }
