@@ -22,3 +22,8 @@ Thumbs.db
 .idea
 .vscode/
 *.tmp
+
+# Scrollcraft raw assets and lab output
+design/about/raw/*
+!design/about/raw/README.md
+design/scrollcraft/lab

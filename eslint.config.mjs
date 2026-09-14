@@ -9,7 +9,20 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-  globalIgnores(['**/dist', '**/coverage', '**/node_modules']),
+  globalIgnores([
+    '**/dist',
+    '**/coverage',
+    '**/node_modules',
+    'apps/web/public/**',
+    'apps/web/src/pages/about/scrollcraft/*.js',
+    'design/scrollcraft/**',
+  ]),
+  {
+    files: ['apps/web/scripts/**/*.mjs'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
   {
     files: ['**/*.{js,mjs,cjs,ts,tsx}'],
     extends: [js.configs.recommended, eslintPluginPrettierRecommended],

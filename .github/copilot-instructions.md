@@ -98,7 +98,8 @@ apps/web/src/
                           never edit by hand
   pages/                  LoginPage, RegisterPage, DashboardPage, AdminUsersPage
   pages/landing/          Landing page: landing-content.ts holds every string, one file per section
-  pages/about/            About page: about-content.ts holds every string
+  pages/about/story/      About page as a scroll story (scrollcraft): chapters.tsx, LogbookFolio, content module
+  pages/about/scrollcraft/ Vendored scrollcraft engine, never edited (checksum against the skill copy)
   theme/                  MUI theme
 
 packages/shared/src/
@@ -107,6 +108,8 @@ packages/shared/src/
 
 .github/specs/            One spec per feature (spec-driven development)
 design/logos/             Eca's original logo files (source of truth for public/brand/)
+design/about/             ASSETS.md manifest + raw/ drop folder (ignored) for the About story
+design/scrollcraft/       Scrollcraft workspace: builds/about/BRIEF.md, FINGERPRINTS.md, lab/ (ignored)
 docs/adr/                 Architecture decision records
 docs/personas.md          Persona definitions referenced by specs
 ```

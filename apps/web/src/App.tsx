@@ -2,7 +2,7 @@ import { Role } from '@bendike/shared';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { RequireAuth } from './auth/RequireAuth';
 import { RequireRole } from './auth/RequireRole';
-import { AboutPage } from './pages/about/AboutPage';
+import { AboutStoryPage } from './pages/about/story/AboutStoryPage';
 import { AdminUsersPage } from './pages/AdminUsersPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { LandingPage } from './pages/landing/LandingPage';
@@ -13,7 +13,7 @@ export function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/about" element={<AboutPage />} />
+      <Route path="/about" element={<AboutStoryPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route element={<RequireAuth />}>

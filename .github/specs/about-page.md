@@ -1,5 +1,7 @@
 # Feature: About page
 
+> **Superseded on 2026-09-14** by [about-page-scroll-story.md](./about-page-scroll-story.md). Kept for the record of the v1 layout.
+
 > Issue: none yet · Branch: `feat/landing-page-copy` · Requested by Enrique Coscarelli on 2026-09-11, same briefing as the landing page
 
 ## Problem Statement

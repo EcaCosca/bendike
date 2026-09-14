@@ -16,7 +16,8 @@ One file per feature. No production code changes without a spec here.
 | ---------------------------------------------------------- | ------------------------------------------------------------------------ |
 | [user-accounts-and-roles.md](./user-accounts-and-roles.md) | Implemented in the initial scaffold                                      |
 | [landing-page.md](./landing-page.md)                       | Implemented from the 2026-09-11 briefing; photo and Spanish version open |
-| [about-page.md](./about-page.md)                           | Implemented from the 2026-09-11 briefing; photo and copy review open     |
+| [about-page.md](./about-page.md)                           | Superseded 2026-09-14 by about-page-scroll-story.md                      |
+| [about-page-scroll-story.md](./about-page-scroll-story.md) | Built 2026-09-14; awaiting Eca's raw assets for the verification pass    |
 
 ## Spec File Structure
 
