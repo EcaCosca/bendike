@@ -92,8 +92,10 @@ apps/web/src/
   api/http.ts             fetch wrapper that prefixes /api/v1 and turns API errors into ApiError
   auth/                   auth-api.ts (calls), auth-context.tsx (session), RequireAuth, RequireRole
   components/             AppShell (signed-in top bar + container)
-  components/site/        Public-site chrome: SiteNav, SiteFooter, SocialLinks, SitePage; site-content.ts holds
-                          the site name, nav links and social handles
+  components/site/        Public-site chrome: SiteNav, SiteFooter, SocialLinks, SitePage, BrandMark, WhatsAppFab;
+                          site-content.ts holds the site name, nav links, social handles and WhatsApp number
+  public/brand/           Generated logo cuts and favicons (gold #E0A406 / white); regenerate from design/logos/,
+                          never edit by hand
   pages/                  LoginPage, RegisterPage, DashboardPage, AdminUsersPage
   pages/landing/          Landing page: landing-content.ts holds every string, one file per section
   pages/about/            About page: about-content.ts holds every string
@@ -104,6 +106,7 @@ packages/shared/src/
   contracts.ts            Request/response interfaces shared by API DTOs and web calls
 
 .github/specs/            One spec per feature (spec-driven development)
+design/logos/             Eca's original logo files (source of truth for public/brand/)
 docs/adr/                 Architecture decision records
 docs/personas.md          Persona definitions referenced by specs
 ```

@@ -153,7 +153,10 @@ Resolved by the 2026-09-11 briefing:
 Still open:
 
 - [ ] A photo of Eca or the loft for the about teaser (an initials avatar stands in today).
-- [ ] Logo and brand colours. The page uses a navy and safety-orange palette chosen by the scaffold.
+- [x] Logo and brand colours: Eca's winged sun-with-eye mark (2026-09-14), gold `#E0A406` on navy `#0B2545`.
+      Originals in `design/logos/`, web cuts generated into `apps/web/public/brand/` (gold and white, three sizes,
+      favicons). Typeface: Futura (Ableton-style) where installed or licensed, Jost from Google Fonts as the free
+      fallback until a Futura PT licence is bought.
 - [ ] Spanish version of the page.
 - [ ] What a dropzone account can do beyond signing in (belongs to a later spec).
 

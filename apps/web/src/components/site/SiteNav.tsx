@@ -1,6 +1,7 @@
 import { AppBar, Box, Button, Container, Stack, Toolbar, Typography } from '@mui/material';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../auth/use-auth';
+import { BrandMark } from './BrandMark';
 import { NAV_LINKS, SITE_NAME } from './site-content';
 
 export function SiteNav() {
@@ -21,14 +22,19 @@ export function SiteNav() {
     >
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ gap: 2, minHeight: 72 }}>
-          <Typography
-            variant="h6"
+          <Stack
+            direction="row"
+            spacing={1.5}
+            alignItems="center"
             component={RouterLink}
             to="/"
-            sx={{ color: 'primary.main', textDecoration: 'none', fontWeight: 800, letterSpacing: '0.12em' }}
+            sx={{ color: 'primary.main', textDecoration: 'none' }}
           >
-            {SITE_NAME}
-          </Typography>
+            <BrandMark height={36} />
+            <Typography variant="h6" component="span" sx={{ fontWeight: 700, letterSpacing: '0.14em' }}>
+              {SITE_NAME}
+            </Typography>
+          </Stack>
           <Box component="nav" aria-label="Site" sx={{ display: 'flex', gap: 1, ml: { xs: 1, md: 4 } }}>
             {NAV_LINKS.map((link) => (
               <Button

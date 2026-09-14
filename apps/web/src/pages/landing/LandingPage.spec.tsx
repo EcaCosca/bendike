@@ -87,6 +87,15 @@ describe('LandingPage', () => {
       }
     });
 
+    test('shows the Bendike mark in the navigation, the hero and the footer', () => {
+      const marks = screen.getAllByRole('img', { name: 'BENDIKE' });
+
+      expect(marks.length).toBeGreaterThanOrEqual(3);
+      for (const mark of marks) {
+        expect(mark.getAttribute('src')).toMatch(/^\/brand\/mark-(gold|white)-\d+\.png$/);
+      }
+    });
+
     test('floats a WhatsApp button that opens a chat with Eca in a new tab', () => {
       const button = screen.getByRole('link', { name: WHATSAPP_LABEL });
 

@@ -1,4 +1,5 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
+import { BrandMark } from './BrandMark';
 import { FOOTER_TAGLINE, SITE_NAME } from './site-content';
 import { SocialLinks } from './SocialLinks';
 
@@ -14,14 +15,17 @@ export function SiteFooter() {
           alignItems={{ xs: 'flex-start', sm: 'center' }}
           justifyContent="space-between"
         >
-          <Box>
-            <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: '0.12em', color: 'primary.main' }}>
-              {SITE_NAME}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {FOOTER_TAGLINE}
-            </Typography>
-          </Box>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <BrandMark height={44} />
+            <Box>
+              <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: '0.14em', color: 'primary.main' }}>
+                {SITE_NAME}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {FOOTER_TAGLINE}
+              </Typography>
+            </Box>
+          </Stack>
           <SocialLinks />
         </Stack>
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 4 }}>
