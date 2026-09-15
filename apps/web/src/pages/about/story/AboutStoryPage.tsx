@@ -1,4 +1,6 @@
 import { useRef } from 'react';
+import { SiteNav } from '../../../components/site/SiteNav';
+import { WhatsAppFab } from '../../../components/site/WhatsAppFab';
 import './about-story.css';
 import {
   AirAndCodeChapter,
@@ -18,6 +20,7 @@ export function AboutStoryPage() {
   return (
     <div className="as-root">
       <div className="sc-grain" aria-hidden="true" />
+      <SiteNav />
       <main ref={rootRef} className="as-main">
         <TitlePage />
         <FlightChapter />
@@ -27,6 +30,7 @@ export function AboutStoryPage() {
         <SonsChapter />
         <Colophon />
       </main>
+      <WhatsAppFab />
     </div>
   );
 }

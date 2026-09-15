@@ -344,7 +344,7 @@
 .as-air__readout {
   inset-inline: auto;
   right: var(--sc-gutter);
-  top: clamp(2rem, 8vh, 5rem);
+  top: calc(72px + clamp(1.5rem, 6vh, 4rem));
   max-width: none;
 }
 
@@ -420,11 +420,20 @@
   .as-air__readout {
     right: var(--sc-gutter);
     left: var(--sc-gutter);
-    top: clamp(1rem, 4vh, 3rem);
+    top: calc(72px + 1rem);
   }
 
   .as-readout {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--sc-3);
   }
+}
+
+.as-figures__since {
+  display: block;
+  font-size: var(--sc-t-xs);
+  letter-spacing: var(--sc-track-wide);
+  text-transform: uppercase;
+  color: var(--sc-ink-soft);
+  margin-bottom: var(--sc-1);
 }

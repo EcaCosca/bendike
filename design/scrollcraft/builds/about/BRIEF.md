@@ -28,8 +28,8 @@ Interviewed 2026-09-14 in chat. Answers are Eca's words, verbatim, dictated. Q2 
 | 0 | Title page | Attention | Brutalist type at scale on a solid gold block: his name, four words, one place. No media. The quiet before the drop. |
 | 1 | Air | Locked in | The one clip on the page: wingsuit flight scrubbed by the hand, the real FlySight instruments moving with it. Sparse copy. The largest span. |
 | 2 | Preparation | Flashback | "Luck is where opportunity meets preparation." Eight photographs cutting in one after another; the accident-chain paragraph. |
-| 3 | The loft | Trust | Deep navy ground, dense spread, the rigger's hands and Eca's own words on being a reliable source of information, with the real dates 2015 to 2025. |
-| 4 | Air and code | Respect | "Everything measured in jump tickets." The obsession, the engineer, the crossover; 350, 14, 100 counting in. |
+| 3 | The loft | Trust | "Welcome to my loft." Deep navy ground, dense spread, Eca's own words on being a reliable source of information, with the real dates 2015 to 2025. |
+| 4 | Air and code | Respect | "We have all been there." The obsession, the engineer, the crossover; three since-dates (2015 pilot and skydiver, 2017 ratings, 2025 rigger) in place of counters. |
 | 5 | Ben and Ike | Tenderness | One portrait of the boys, wiped in slowly, and the father's own words. The quietest screen on the page. |
 | 6 | Colophon | Resolve | Navy plate. "Safety as a habit." The CTA as a line of running text, the licences and the career in two small columns. |
 
@@ -78,8 +78,10 @@ hard-cut colour blocks, big type). Why the others lost:
 - Rhythmic cutlist: bans pin and dwell, so the wingsuit peak could not settle, and it is a pulse page for a story
   that has to end calm.
 
-The grammar's bans hold: one scrub only (Air), no spotlight, no magnet, no drift (grounds are painted per
-chapter and hard-cut), no full-bleed hero, no pinned crossfade type act, no centred hero copy. Media sits in its
+The grammar's bans hold with one deliberate exception: Eca asked to keep the site navigation bar (2026-09-14), so
+the MUI SiteNav with Home, About and Log in sits above the story and the WhatsApp button floats as on every page.
+Otherwise: one scrub only (Air), no spotlight, no magnet, no drift (grounds are painted per chapter and hard-cut),
+no full-bleed hero, no pinned crossfade type act, no centred hero copy. Media sits in its
 own column with a caption everywhere except the single clip chapter.
 
 ## Score
@@ -90,18 +92,18 @@ own column with a caption everywhere except the single clip chapter.
 | 1 | Air | `scrub` (the one clip), span 3.6, dwell 0.42 | The peak; the hand flies the suit |
 | 2 | Preparation | `flow` with eight sequential `reveal` windows | A montage is hard cuts; reveal is a change of state per photo |
 | 3 | The loft | `flow` + `in`, media column with `parallax` | Dense editorial spread; depth in the column, not on the type |
-| 4 | Air and code | `flow` + `count` on real figures | 350, 14, 100 are true; numbers landing read as competence |
+| 4 | Air and code | `flow` + `in`, milestone strip | Eca dropped the bootcamp counters (2026-09-14); since-dates read as competence without animation |
 | 5 | Ben and Ike | `flow` with one `reveal="iris"` on the portrait | The one iris on the page, for the one photo that matters most |
 | 6 | Colophon | `flow` + `in`, hold | The plate resolves and stays; nothing fades |
 
-Device families: flow, scrub, reveal, parallax, count (five). No family twice in a row as the primary device.
+Device families: flow, scrub, reveal, parallax (four). No family twice in a row as the primary device.
 One scrub. Total length about 11.5 viewport-heights across 7 chapters, outside the 6-7 acts at 13.6-13.8vh band.
 
 ## Fingerprint gate
 
 Registry `design/scrollcraft/FINGERPRINTS.md` is empty; nothing to clear. Row to append after shipping:
-chaptered editorial · no chrome, folio marks inside chapters · title page (type on gold, no media) · flow, scrub, reveal-montage,
-parallax-column, count, iris, colophon at ~11.5vh · colophon plate with running-text CTA, licences and career in small type ·
+chaptered editorial · site nav kept at Eca's request, folio marks inside chapters · title page (type on gold, no media) · flow, scrub, reveal-montage,
+parallax-column, milestone strip, iris, colophon at ~11.5vh · colophon plate with running-text CTA, licences and career in small type ·
 "FlySight altimeter and speed readout riding the scrubbed flight".
 
 ## World

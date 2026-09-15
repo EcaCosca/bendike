@@ -1,19 +1,30 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import * as authApi from '../../../auth/auth-api';
-import { SOCIAL_LINKS } from '../../../components/site/site-content';
+import * as useAuthModule from '../../../auth/use-auth';
+import { SOCIAL_LINKS, WHATSAPP_LABEL } from '../../../components/site/site-content';
 import { ABOUT_ASSETS, CAREER, CHAPTERS, CTA_LABEL, TITLE } from './about-story-content';
 import { AboutStoryPage } from './AboutStoryPage';
 
 jest.mock('../scrollcraft/scrollcraft.js', () => ({}));
 jest.mock('../../../auth/auth-api');
+jest.mock('../../../auth/use-auth');
 
 const mockedApi = jest.mocked(authApi);
+const mockedUseAuth = jest.mocked(useAuthModule.useAuth);
 
 describe('AboutStoryPage', () => {
   let fetchMock: jest.Mock;
 
   beforeEach(() => {
+    mockedUseAuth.mockReturnValue({
+      user: null,
+      token: null,
+      loading: false,
+      login: jest.fn(),
+      register: jest.fn(),
+      logout: jest.fn(),
+    });
     fetchMock = jest.fn().mockResolvedValue({ ok: false, headers: new Headers() });
     Object.defineProperty(globalThis, 'fetch', { value: fetchMock, writable: true, configurable: true });
     render(
@@ -79,12 +90,11 @@ describe('AboutStoryPage', () => {
     expect(document.querySelector('.as-sons__portrait')).toHaveAttribute('data-sc-reveal', 'iris');
   });
 
-  test('counts only real figures', () => {
-    const counters = Array.from(document.querySelectorAll('[data-sc-count]')).map((el) =>
-      el.getAttribute('data-sc-count'),
-    );
-
-    expect(counters).toEqual(['0 350', '0 14', '0 100']);
+  test('shows the flying milestones instead of animated counters', () => {
+    expect(document.querySelectorAll('[data-sc-count]')).toHaveLength(0);
+    for (const milestone of CHAPTERS.airAndCode.milestones) {
+      expect(screen.getByText(milestone.text)).toBeInTheDocument();
+    }
   });
 
   test('lists every licence in the loft and again with the career in the colophon', () => {
@@ -96,9 +106,22 @@ describe('AboutStoryPage', () => {
     }
   });
 
+  test('keeps the site navigation and the WhatsApp button like every public page', () => {
+    const banner = screen.getByRole('banner');
+
+    expect(within(banner).getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
+    expect(within(banner).getByRole('link', { name: 'About' })).toHaveAttribute('aria-current', 'page');
+    expect(within(banner).getByRole('link', { name: 'Log in' })).toHaveAttribute('href', '/login');
+    const whatsapp = screen.getAllByRole('link', { name: WHATSAPP_LABEL });
+    expect(whatsapp.length).toBeGreaterThanOrEqual(2);
+    for (const link of whatsapp) {
+      expect(link).toHaveAttribute('target', '_blank');
+    }
+  });
+
   test('resolves on the colophon with the CTA as running text and every link out', () => {
     expect(screen.getByRole('link', { name: CTA_LABEL })).toHaveAttribute('href', '/register');
-    expect(screen.getByRole('link', { name: 'Log in' })).toHaveAttribute('href', '/login');
+    expect(screen.getAllByRole('link', { name: 'Log in' }).length).toBeGreaterThanOrEqual(2);
     for (const link of SOCIAL_LINKS) {
       expect(screen.getByRole('link', { name: link.label })).toHaveAttribute('href', link.href);
     }

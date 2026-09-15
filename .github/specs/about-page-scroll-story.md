@@ -51,11 +51,12 @@ so that I can **read it like a printed feature rather than watch a film**.
 #### Acceptance Criteria
 
 - The page shall render, in order: title page (type on a gold block), Air (clip), Preparation (eight photographs
-  revealing one after another), The loft (dense spread, media column with parallax), Air and code (real figures
-  counting in), Ben and Ike (one portrait, iris reveal, the father's words), Colophon (navy plate with the licences and the career in small type).
-- No two adjacent chapters shall use the same primary device; the page shall use at least four device families.
+  revealing one after another), The loft (dense spread, media column with parallax), Air and code (three since-dates), Ben and Ike (one portrait, iris reveal, the father's words), Colophon (navy plate with the licences and the career in small type).
+- No two adjacent chapters shall use the same primary device; the page shall use at least four device families
+  (flow, scrub, reveal, parallax).
 - Grounds shall be painted per chapter with hard cuts, never interpolated.
-- Every number that animates shall be true and sourced from Eca's LinkedIn profile: 350, 14, 100.
+- No animated counters; the Air and code chapter shows three since-dates (2015, 2017, 2025) that match the
+  licences listed in the loft.
 - Every licence and certification shown shall be one Eca holds, with its year.
 
 ### Story 3: Read the instruments
@@ -72,7 +73,8 @@ so that I can **feel the numbers behind the picture, not just the picture**.
 - If the track file is missing or malformed, then the readout shall not render at all; no invented figures.
 - The readout shall publish its rounded altitude and speed through `data-sc-verify-state` so the harness can see
   it change.
-- There shall be no fixed side panel on the page (Eca's feedback of 2026-09-14).
+- There shall be no fixed side panel on the page (Eca's feedback of 2026-09-14). The site navigation bar and the
+  WhatsApp button stay, as on every public page (Eca's request of the same day).
 
 ### Story 4: Resolve
 
@@ -139,7 +141,7 @@ flowchart TD
   T[Title page: gold block, type only] --> A[Air: the one clip, span 3.6, peak]
   A --> P[Preparation: 8 reveals in sequence]
   P --> L[The loft: parallax media column, credentials]
-  L --> C[Air and code: 350, 14, 100 count in]
+  L --> C[Air and code: since 2015, 2017, 2025]
   C --> S[Ben and Ike: iris reveal, the father line]
   S --> K[Colophon: running-text CTA, licences and career, holds]
   R((FlySight readout)) -. rides the playhead .- A
@@ -208,7 +210,7 @@ sequenceDiagram
 **Verification**:
 
 - [x] `npm run test:unit -w @bendike/web -- AboutStoryPage` passes
-- [x] Exactly one `[data-sc-scrub]`; counters are `350`, `14`, `100`; readout absent without a track
+- [x] Exactly one `[data-sc-scrub]`; no `[data-sc-count]`; readout absent without a track
 
 **Done when**:
 

@@ -161,19 +161,13 @@ export function AirAndCodeChapter() {
             </p>
           ))}
           <dl className="as-figures">
-            {chapter.figures.map((figure, index) => (
-              <div key={figure.label} className="as-figures__item">
+            {chapter.milestones.map((milestone) => (
+              <div key={milestone.text} className="as-figures__item">
                 <dt>
-                  <span
-                    className="sc-nums as-figures__value"
-                    data-sc-count={`0 ${figure.value}`}
-                    data-sc-count-at={`${(0.22 + index * 0.06).toFixed(2)} ${(0.62 + index * 0.06).toFixed(2)}`}
-                  >
-                    0
-                  </span>
-                  <span className="as-figures__suffix">{figure.suffix}</span>
+                  <span className="as-figures__since">Since</span>
+                  <span className="sc-nums as-figures__value">{milestone.since}</span>
                 </dt>
-                <dd>{figure.label}</dd>
+                <dd>{milestone.text}</dd>
               </div>
             ))}
           </dl>
