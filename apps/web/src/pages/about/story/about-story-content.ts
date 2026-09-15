@@ -46,7 +46,7 @@ export const CHAPTERS = {
     title: 'Preparation',
     heading: 'Luck is where opportunity meets preparation.',
     paragraphs: [
-      'Every flight that looks effortless was packed, inspected and briefed on the ground. That is the part nobody films, and it is where the sport is actually won.',
+      'There is truth in that saying, but I am more scared of the contrary: being unprepared and out of luck. The planning, the drills, the pack jobs, the courses, drill after drill, and then the final execution. Done well it looks effortless, like the videos we all gaze at. In reality there is an enormous amount of effort behind it, and almost all of it goes unnoticed.',
       'Every major accident I have read about is an addition. A detail someone overlooked. A step someone skipped because they had pulled it off before, or thought they could. None of them alone is fatal. Together they leave no margin for error. Safety is the habit of not adding to that sum.',
     ],
     labels: [
