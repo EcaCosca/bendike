@@ -18,6 +18,15 @@ generated files in `apps/web/public/about/` are committed.
 | `flight.mp4` (or `.mov`)         | The wingsuit flight. 8 to 20 seconds, one continuous shot, no cuts, no camera reversal, nothing entering or leaving frame. Terrain visible and getting closer is the whole point. Landscape 16:9 or wider. Any fps; the script lands it at 30. |
 | `flight-portrait.mp4` (optional) | Same flight shot or cropped portrait 9:16 for phones. If missing, the script centre-crops `flight.mp4`, which loses the sides.                                                                                                                 |
 
+## The FlySight track for that flight (optional, but this is the signature move)
+
+| Raw file     | What it should be                                                                                                                                                                                                                                                        |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `flight.csv` | The FlySight CSV (classic format: `time,lat,lon,hMSL,velN,velE,velD,...`) covering the clip. If the CSV starts before the clip does, run `npm run about:assets -w @bendike/web -- --track-offset=SECONDS` with the number of seconds into the CSV where the clip begins. |
+
+With it, a live altitude, speed, descent rate and glide readout rides on the flight as the visitor scrolls. Without
+it the readout simply does not render.
+
 ## Preparation montage (chapter 2), eight photos
 
 Landscape or square, 1600px wide or more. The labels are editable in `about-story-content.ts`.

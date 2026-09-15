@@ -1,8 +1,8 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import * as authApi from '../../../auth/auth-api';
 import { SOCIAL_LINKS } from '../../../components/site/site-content';
-import { ABOUT_ASSETS, CHAPTERS, CTA_LABEL, LOGBOOK, TITLE } from './about-story-content';
+import { ABOUT_ASSETS, CAREER, CHAPTERS, CTA_LABEL, TITLE } from './about-story-content';
 import { AboutStoryPage } from './AboutStoryPage';
 
 jest.mock('../scrollcraft/scrollcraft.js', () => ({}));
@@ -11,7 +11,11 @@ jest.mock('../../../auth/auth-api');
 const mockedApi = jest.mocked(authApi);
 
 describe('AboutStoryPage', () => {
+  let fetchMock: jest.Mock;
+
   beforeEach(() => {
+    fetchMock = jest.fn().mockResolvedValue({ ok: false, headers: new Headers() });
+    Object.defineProperty(globalThis, 'fetch', { value: fetchMock, writable: true, configurable: true });
     render(
       <MemoryRouter initialEntries={['/about']}>
         <AboutStoryPage />
@@ -40,6 +44,12 @@ describe('AboutStoryPage', () => {
     expect(document.querySelector('[data-sc-act="scrub"]')).toHaveAttribute('data-sc-span', '3.6');
   });
 
+  test('asks for the FlySight track and shows no readout and no side panel without it', () => {
+    expect(fetchMock).toHaveBeenCalledWith(ABOUT_ASSETS.flightTrack, expect.anything());
+    expect(screen.queryByLabelText(CHAPTERS.air.readout.title)).not.toBeInTheDocument();
+    expect(document.querySelector('.as-log')).toBeNull();
+  });
+
   test('tells the story in six chapters after the title', () => {
     for (const chapter of [
       CHAPTERS.preparation,
@@ -63,9 +73,9 @@ describe('AboutStoryPage', () => {
     }
   });
 
-  test('carries the father line and the origin of the name', () => {
-    expect(screen.getByText(/Benjamin, and Enrique, who we call Ike/)).toBeInTheDocument();
-    expect(screen.getByText(/safer sport than the one that received me/)).toBeInTheDocument();
+  test('carries the origin of the name and the father line in Eca’s words', () => {
+    expect(screen.getByText(/At home they are Benja and Ike\. Ben and Ike: Bendike\./)).toBeInTheDocument();
+    expect(screen.getByText(/improving the safety of the community as a whole/)).toBeInTheDocument();
     expect(document.querySelector('.as-sons__portrait')).toHaveAttribute('data-sc-reveal', 'iris');
   });
 
@@ -77,12 +87,13 @@ describe('AboutStoryPage', () => {
     expect(counters).toEqual(['0 350', '0 14', '0 100']);
   });
 
-  test('keeps the full logbook in the margin with every entry as a jump link', () => {
-    const folio = screen.getByRole('complementary', { name: 'Logbook' });
-
-    expect(within(folio).getAllByRole('listitem', { hidden: true })).toHaveLength(LOGBOOK.length);
-    expect(within(folio).getByText(`1 / ${LOGBOOK.length}`)).toBeInTheDocument();
-    expect(within(folio).getByText('ECPE, University of Michigan')).toBeInTheDocument();
+  test('lists every licence in the loft and again with the career in the colophon', () => {
+    for (const credential of CHAPTERS.loft.credentials) {
+      expect(screen.getAllByText(credential.text)).toHaveLength(2);
+    }
+    for (const entry of CAREER) {
+      expect(screen.getByText(entry.text)).toBeInTheDocument();
+    }
   });
 
   test('resolves on the colophon with the CTA as running text and every link out', () => {

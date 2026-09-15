@@ -5,6 +5,7 @@ export const ABOUT_ASSETS = {
   flightMobile: `${ABOUT_ASSET_BASE}/flight-m.mp4`,
   flightPoster: `${ABOUT_ASSET_BASE}/flight-poster.webp`,
   flightPosterMobile: `${ABOUT_ASSET_BASE}/flight-poster-m.webp`,
+  flightTrack: `${ABOUT_ASSET_BASE}/flight-track.json`,
   prep: Array.from({ length: 8 }, (_, i) => `${ABOUT_ASSET_BASE}/prep-0${i + 1}`),
   loft: [`${ABOUT_ASSET_BASE}/loft-01`, `${ABOUT_ASSET_BASE}/loft-02`],
   pilot: `${ABOUT_ASSET_BASE}/pilot-01`,
@@ -33,14 +34,21 @@ export const CHAPTERS = {
   air: {
     number: '01',
     title: 'Air',
-    lines: ['Locked in.', 'The terrain comes up to meet you, and everything else goes quiet.'],
+    lines: ['Locked in.', 'The flight is the part that gets filmed.'],
     caption: 'Wingsuit flight. Eca on camera.',
+    readout: {
+      title: 'FlySight track',
+      labels: { altitude: 'Altitude', speed: 'Speed', descent: 'Descent', glide: 'Glide' },
+    },
   },
   preparation: {
     number: '02',
     title: 'Preparation',
-    heading: 'None of it is luck.',
-    body: 'Every flight that looks effortless was packed, inspected and briefed on the ground. That is where the sport is actually won, and it is the part nobody films.',
+    heading: 'Luck is where opportunity meets preparation.',
+    paragraphs: [
+      'Every flight that looks effortless was packed, inspected and briefed on the ground. That is the part nobody films, and it is where the sport is actually won.',
+      'Every major accident I have read about is an addition. A detail someone overlooked. A step someone skipped because they had pulled it off before, or thought they could. None of them alone is fatal. Together they leave no margin for error. Safety is the habit of not adding to that sum.',
+    ],
     labels: [
       'Gear check.',
       'Pin check.',
@@ -57,10 +65,11 @@ export const CHAPTERS = {
     title: 'The loft',
     heading: 'Hands on the gear.',
     paragraphs: [
-      'I own a rigging loft in Rosario. Reserve repacks, inspections, repairs, AAD service. The rigs I pack are the ones my friends jump, so there is no version of this work I take lightly.',
-      'I have been a licensed skydiver since 2015, a USPA D-licence holder, coach and tandem instructor since 2017, and a wingsuit pilot since the same year. The parachute rigger certification from ANAC came in 2025, after a decade of being the person other people trusted with their gear anyway.',
+      'I own a rigging loft in Rosario. Reserve repacks, inspections, repairs and AAD service are the services I provide, but the cornerstone of the job is being a reliable source of information. The equipment I pack is the equipment my friends jump, so there is no version of this work I take lightly.',
+      'I have been a pilot and a licensed skydiver since 2015. I hold a USPA D-licence and coach and tandem ratings since 2017, and wingsuits have been a passion since then. The parachute rigger certification from ANAC came in 2025, after a long-standing interest in safety and gear. I have always believed a rigger should be based at a dropzone to do the role well: not a qualification you carry from place to place, but a responsibility you hold as part of a community.',
     ],
     credentials: [
+      { year: '2015', text: 'Private Aircraft Pilot, ANAC' },
       { year: '2015', text: 'Paracaidista, ANAC' },
       { year: '2017', text: 'Skydive D-License, USPA' },
       { year: '2017', text: 'Coach Rating, USPA' },
@@ -74,26 +83,26 @@ export const CHAPTERS = {
   airAndCode: {
     number: '04',
     title: 'Air and code',
-    heading: 'I love flying.',
+    heading: 'Everything measured in jump tickets.',
     paragraphs: [
-      'Private aircraft pilot since 2015, licensed by ANAC. The aircraft, the drone, the wingsuit: different machines, the same air. It is the one place where I am completely present.',
-      'I am also an engineer. I taught web development to more than 350 students across 14 cities in Saudi Arabia, every one of whom found a job, then led a thirteen-week bootcamp in Berlin for two years. I spent 2024 at Bayer and I build software at John Deere today. Before any of that I taught children to ski.',
-      'Bendike is where those two lives meet: software shaped by the loft floor, built by someone who has to trust it with his own reserve.',
+      'I have always had an interest in flight. Like many of us in this sport, for the longest time every penny I made was meant for skydiving or for flying in some shape or form: the wind tunnel, a course, gear. For a few years I measured absolutely everything in jump tickets, food included. The obsession only grew.',
+      'In parallel I trained as a software engineer, building solutions to problems. It has let me travel and live in different places: a winter speedriding in Switzerland, a summer BASE jumping in Italy, a stretch based in Barcelona flying to the wingsuit tunnel one weekend and to Bovec for mountain swooping the next. I consider myself very lucky.',
+      'As an engineer I take complex problems and find systems that solve them. The hardest part is understanding a business inside out: its suppliers, the history of the tools around it, how trends shift and what that does to everyone, and how a missed service bulletin can become a fatal mistake. I stand in the crossover: something I have been obsessed with for the longest time, something I do for a living, and a need I can meet with a method I believe to be sound.',
     ],
     figures: [
       { value: '350', suffix: '+', label: 'students taught in Saudi Arabia' },
       { value: '14', suffix: '', label: 'cities the bootcamp ran in' },
       { value: '100', suffix: '%', label: 'of those graduates employed' },
     ],
-    captions: ['In the air.', 'In the classroom.'],
+    captions: ['In the air.', 'At the desk.'],
   },
   sons: {
     number: '05',
     title: 'Ben and Ike',
     heading: 'Ben and Ike.',
     paragraphs: [
-      'Bendike is my two sons. Benjamin, and Enrique, who we call Ike. Ben and Ike.',
-      'I am a father before I am any of the rest. I do not want my children to follow in my footsteps. But if they do, I want them to be received into a safer sport than the one that received me, with the information they need available to them, from me and from any other responsible, proven person.',
+      'Bendike is where all of this meets. I want air sports to be safer, and information to be delivered faster and turned into something you can act on, so anyone can grow in this sport with safety as a habit.',
+      'I have two sons so far, Benjamin and Enrique. At home they are Benja and Ike. Ben and Ike: Bendike. I do not know if they will follow my footsteps. If they do, I want them to be safe, and the only way I can do that is by improving the safety of the community as a whole.',
     ],
     attribution: 'Eca',
     caption: 'Benjamin and Enrique.',
@@ -101,35 +110,16 @@ export const CHAPTERS = {
   colophon: {
     number: '06',
     title: 'Bendike',
-    heading: 'Bendike is that environment.',
-    body: 'A rigging loft in Argentina, and the software that keeps every skydiver, rigger and dropzone current on reserve repacks, AAD service and service bulletins. Safety first, always.',
+    heading: 'Safety as a habit.',
+    body: 'A rigging loft in Rosario, and the software that keeps skydivers, riggers and dropzones current on reserve repacks, AAD service and service bulletins. Information delivered faster, and turned into something you can act on.',
     ctaLead: 'Start where the gear starts.',
   },
 } as const;
 
-export interface LogbookEntry {
-  chapter: keyof typeof CHAPTERS | 'title';
-  date: string;
-  text: string;
-}
-
-export const LOGBOOK: readonly LogbookEntry[] = [
-  { chapter: 'title', date: '2005', text: 'ECPE, University of Michigan' },
-  { chapter: 'air', date: 'Jul 2015', text: 'Private Aircraft Pilot, ANAC' },
-  { chapter: 'air', date: 'Aug 2017', text: 'Skydive Wingsuit Pilot, Next Level' },
-  { chapter: 'preparation', date: 'Jul 2015', text: 'Paracaidista, ANAC' },
-  { chapter: 'preparation', date: 'Jun 2017', text: 'Skydive D-License, USPA' },
-  { chapter: 'loft', date: 'Jun 2017', text: 'Skydive Coach Rating, USPA' },
-  { chapter: 'loft', date: 'Jun 2017', text: 'Tandem Skydive Instructor, USPA' },
-  { chapter: 'loft', date: 'Jun 2017', text: 'Sigma Tandem Instructor, United Parachute Technologies' },
-  { chapter: 'loft', date: 'Aug 2025', text: 'Parachute Rigger, ANAC' },
-  { chapter: 'airAndCode', date: '2011 to 2016', text: 'Ski Instructor, PSIA-AASI, Children Specialist' },
-  { chapter: 'airAndCode', date: 'Sep 2021', text: 'Lead Web Developer Instructor, SAFCSP, Saudi Arabia' },
-  { chapter: 'airAndCode', date: 'Dec 2021', text: 'Lead Web Developer Instructor, WBS Coding School, Berlin' },
-  { chapter: 'airAndCode', date: 'Jan 2024', text: 'Senior Software Engineer, Bayer' },
-  { chapter: 'airAndCode', date: 'Sep 2024', text: 'DJI Drone Photo Academy' },
-  { chapter: 'airAndCode', date: 'Dec 2024', text: 'Staff Software Engineer, John Deere' },
-  { chapter: 'sons', date: 'Always', text: 'Father of Ben and Ike' },
-];
-
-export const LOGBOOK_TITLE = 'Logbook';
+export const CAREER = [
+  { date: '2011 to 2016', text: 'Ski Instructor, PSIA-AASI, Children Specialist' },
+  { date: 'Sep 2021', text: 'Lead Web Developer Instructor, SAFCSP, Saudi Arabia' },
+  { date: 'Dec 2021', text: 'Lead Web Developer Instructor, WBS Coding School, Berlin' },
+  { date: 'Jan 2024', text: 'Senior Software Engineer, Bayer' },
+  { date: 'Dec 2024', text: 'Staff Software Engineer, John Deere' },
+] as const;

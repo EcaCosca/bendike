@@ -52,27 +52,27 @@ so that I can **read it like a printed feature rather than watch a film**.
 
 - The page shall render, in order: title page (type on a gold block), Air (clip), Preparation (eight photographs
   revealing one after another), The loft (dense spread, media column with parallax), Air and code (real figures
-  counting in), Ben and Ike (one portrait, iris reveal, the father's words), Colophon (navy plate).
+  counting in), Ben and Ike (one portrait, iris reveal, the father's words), Colophon (navy plate with the licences and the career in small type).
 - No two adjacent chapters shall use the same primary device; the page shall use at least four device families.
 - Grounds shall be painted per chapter with hard cuts, never interpolated.
 - Every number that animates shall be true and sourced from Eca's LinkedIn profile: 350, 14, 100.
 - Every licence and certification shown shall be one Eca holds, with its year.
 
-### Story 3: Watch the logbook fill
+### Story 3: Read the instruments
 
 As a **Visitor**,
-I want **a logbook in the margin that stamps Eca's dated credentials as I pass each chapter**,
-so that I can **see his record accumulate and jump back to any chapter from it**.
+I want **the real altitude, speed, descent rate and glide of that flight to move with the footage as I scroll**,
+so that I can **feel the numbers behind the picture, not just the picture**.
 
 #### Acceptance Criteria
 
-- A folio shall be fixed in the left margin on wide screens showing the logbook title, the current chapter, and
-  the count of stamped entries over the total.
-- When a chapter reaches the middle of the viewport, its entries and those of every earlier chapter shall be
-  stamped in and remain stamped.
-- Each stamped entry shall be a button that scrolls to its chapter.
-- Below 1180px the folio shall collapse to a bottom-left stamp counter that opens the list on tap.
-- The folio shall publish its state through `data-sc-verify-state` so the verification harness can see it.
+- When a FlySight track for the flight exists at `/about/flight-track.json`, the Air chapter shall show a readout
+  with altitude in metres, horizontal speed in km/h, descent rate in m/s and glide ratio, interpolated from the
+  track at the clip's current playhead.
+- If the track file is missing or malformed, then the readout shall not render at all; no invented figures.
+- The readout shall publish its rounded altitude and speed through `data-sc-verify-state` so the harness can see
+  it change.
+- There shall be no fixed side panel on the page (Eca's feedback of 2026-09-14).
 
 ### Story 4: Resolve
 
@@ -82,8 +82,8 @@ so that I can **act on what I just read**.
 
 #### Acceptance Criteria
 
-- The colophon shall hold on screen with the heading "Bendike is that environment.", the CTA as a line of running
-  text linking to `/register`, the full credential list in small type, and links to Home, Log in, Instagram,
+- The colophon shall hold on screen with the heading "Safety as a habit.", the CTA as a line of running text
+  linking to `/register`, the licences and the career in small type, and links to Home, Log in, Instagram,
   LinkedIn and WhatsApp.
 - Nothing on the last screen shall fade out.
 
@@ -109,9 +109,9 @@ so that I can **act on what I just read**.
 - `apps/web/public/scrollcraft/scrollcraft.css` — the engine stylesheet, injected as a `<link>` only while the About
   page is mounted, because it styles `body`
 - `apps/web/src/pages/about/story/use-scrollcraft.ts` — dynamic import of the engine, mount on the page root, unlink on leave
-- `apps/web/src/pages/about/story/about-story-content.ts` — every string, credential, logbook entry and asset path
+- `apps/web/src/pages/about/story/about-story-content.ts` — every string, credential, career entry and asset path
 - `apps/web/src/pages/about/story/chapters.tsx` — the seven chapters as real semantic markup with `data-sc-*` attributes
-- `apps/web/src/pages/about/story/LogbookFolio.tsx` — the signature move (bespoke, engine untouched)
+- `apps/web/src/pages/about/story/FlightReadout.tsx` — the signature move: FlySight readout riding the clip playhead (bespoke, engine untouched)
 - `apps/web/src/pages/about/story/about-story.css` — tokens and page classes (`as-*`)
 - `apps/web/src/pages/about/story/AboutStoryPage.tsx`, `AboutStoryPage.spec.tsx`
 - `apps/web/scripts/prepare-about-assets.mjs` — grades and encodes the clip (dense GOP), converts photos to WebP,
@@ -124,7 +124,8 @@ so that I can **act on what I just read**.
 ### Dependencies
 
 - `sharp` (dev) for image conversion; a full ffmpeg build on the machine that runs the asset script.
-- Eca's raw assets per `design/about/ASSETS.md`. Until they land the page renders with flat placeholders.
+- Eca's raw assets per `design/about/ASSETS.md`, including the FlySight CSV for the flight. Until they land the page
+  renders with flat placeholders and no readout.
 - `playwright-core` (build folder only) for the scrollcraft verification pass.
 
 ### Data Model Changes
@@ -140,8 +141,8 @@ flowchart TD
   P --> L[The loft: parallax media column, credentials]
   L --> C[Air and code: 350, 14, 100 count in]
   C --> S[Ben and Ike: iris reveal, the father line]
-  S --> K[Colophon: running-text CTA, full logbook, holds]
-  F((Logbook folio)) -. stamps as chapters pass .- A & P & L & C & S & K
+  S --> K[Colophon: running-text CTA, licences and career, holds]
+  R((FlySight readout)) -. rides the playhead .- A
 ```
 
 ```mermaid
@@ -202,12 +203,12 @@ sequenceDiagram
 
 **Depends on**: Task 2
 
-**Objective**: Seven chapters as semantic markup, content module, logbook folio, page CSS.
+**Objective**: Seven chapters as semantic markup, content module, FlySight readout, page CSS.
 
 **Verification**:
 
 - [x] `npm run test:unit -w @bendike/web -- AboutStoryPage` passes
-- [x] Exactly one `[data-sc-scrub]`; counters are `350`, `14`, `100`; 16 logbook entries
+- [x] Exactly one `[data-sc-scrub]`; counters are `350`, `14`, `100`; readout absent without a track
 
 **Done when**:
 

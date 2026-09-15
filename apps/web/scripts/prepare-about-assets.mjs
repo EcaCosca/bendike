@@ -1,5 +1,5 @@
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -209,9 +209,66 @@ async function prepareFlight() {
   report.real.push(`flight  ←  ${path.relative(REPO, raw)}  (desktop ${size(desktop)}, mobile ${size(mobile)})`);
 }
 
+function clipDurationSeconds(ffmpeg, file) {
+  const ffprobe = path.join(path.dirname(ffmpeg), path.basename(ffmpeg).replace(/ffmpeg/, 'ffprobe'));
+  const probe = spawnSync(ffprobe, ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', file], {
+    encoding: 'utf8',
+  });
+  const seconds = parseFloat(probe.stdout);
+  return Number.isFinite(seconds) ? seconds : null;
+}
+
+function readArg(name) {
+  const hit = process.argv.find((arg) => arg.startsWith(`--${name}=`));
+  return hit ? hit.slice(name.length + 3) : null;
+}
+
+function prepareTrack() {
+  const csv = findRaw('flight', ['csv', 'CSV']);
+  const target = path.join(OUT, 'flight-track.json');
+  if (!csv) {
+    if (existsSync(target)) {
+      rmSync(target);
+    }
+    report.placeholder.push('flight.csv (FlySight track; readout hidden until it exists)');
+    return;
+  }
+  const clip = path.join(OUT, 'flight.mp4');
+  const duration = existsSync(clip) ? clipDurationSeconds(pickFfmpeg(), clip) : null;
+  const offset = parseFloat(readArg('track-offset') ?? '0') || 0;
+  const rows = readFileSync(csv, 'utf8')
+    .split(/\r?\n/)
+    .map((line) => line.split(','))
+    .filter((cells) => cells.length >= 7 && /^\d{4}-\d{2}-\d{2}T/.test(cells[0]));
+  if (rows.length < 2) {
+    throw new Error(`flight.csv has no FlySight rows (expected time,lat,lon,hMSL,velN,velE,velD,...)`);
+  }
+  const t0 = Date.parse(rows[0][0]) / 1000 + offset;
+  const samples = rows
+    .map((cells) => {
+      const t = Date.parse(cells[0]) / 1000 - t0;
+      const velN = parseFloat(cells[4]);
+      const velE = parseFloat(cells[5]);
+      const velD = parseFloat(cells[6]);
+      return {
+        t: Math.round(t * 100) / 100,
+        alt: Math.round(parseFloat(cells[3])),
+        hs: Math.round(Math.hypot(velN, velE) * 3.6),
+        vs: Math.round(velD * 10) / 10,
+      };
+    })
+    .filter((sample) => sample.t >= 0 && (duration === null || sample.t <= duration + 0.5));
+  const durationS = duration ?? samples[samples.length - 1].t;
+  writeFileSync(target, JSON.stringify({ source: 'FlySight', durationS, samples }));
+  report.real.push(
+    `flight-track  ←  ${path.relative(REPO, csv)}  (${samples.length} samples over ${durationS.toFixed(1)}s, offset ${offset}s)`,
+  );
+}
+
 mkdirSync(OUT, { recursive: true });
 mkdirSync(RAW, { recursive: true });
 await prepareFlight();
+prepareTrack();
 for (const spec of IMAGES) {
   await prepareImage(spec);
 }

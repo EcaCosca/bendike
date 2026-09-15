@@ -1,10 +1,20 @@
+import { useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { SOCIAL_LINKS, WHATSAPP_HREF, WHATSAPP_LABEL } from '../../../components/site/site-content';
-import { ABOUT_ASSETS, CHAPTERS, CTA_LABEL, TITLE, imageSources } from './about-story-content';
+import { ABOUT_ASSETS, CAREER, CHAPTERS, CTA_LABEL, TITLE, imageSources } from './about-story-content';
+import { FlightReadout } from './FlightReadout';
 
 function Photo({ base, alt, className }: { base: string; alt: string; className?: string }) {
   const { src, srcSet } = imageSources(base);
   return <img src={src} srcSet={srcSet} sizes="(max-width: 860px) 100vw, 50vw" alt={alt} className={className} />;
+}
+
+function FolioMark({ number, title }: { number: string; title: string }) {
+  return (
+    <p className="as-folio-mark">
+      {number} {title}
+    </p>
+  );
 }
 
 export function TitlePage() {
@@ -29,6 +39,7 @@ export function TitlePage() {
 
 export function FlightChapter() {
   const chapter = CHAPTERS.air;
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   return (
     <section className="as-air" data-sc-act="scrub" data-sc-span="3.6" data-sc-dwell="0.42" data-chapter="air">
       <div data-sc-stage>
@@ -37,6 +48,7 @@ export function FlightChapter() {
           <img className="sc-stage__poster" src={ABOUT_ASSETS.flightPoster} alt="" />
         </picture>
         <video
+          ref={videoRef}
           data-sc-scrub
           data-sc-src={ABOUT_ASSETS.flight}
           data-sc-src-mobile={ABOUT_ASSETS.flightMobile}
@@ -46,13 +58,14 @@ export function FlightChapter() {
         />
         <div className="sc-scrim sc-scrim--lead" aria-hidden="true" />
         <div className="sc-copy sc-copy--lead" data-sc-cue="0.05 0.5 0.3">
-          <p className="as-folio-mark">
-            {chapter.number} {chapter.title}
-          </p>
+          <FolioMark number={chapter.number} title={chapter.title} />
           <h2 className="sc-display sc-display--xl">{chapter.lines[0]}</h2>
         </div>
         <div className="sc-copy sc-copy--lead" data-sc-cue="0.5 0.94">
           <p className="sc-lede as-air__line">{chapter.lines[1]}</p>
+        </div>
+        <div className="sc-copy as-air__readout" data-sc-cue="0.04 0.96 0.15 0.1">
+          <FlightReadout video={videoRef} />
         </div>
       </div>
     </section>
@@ -67,11 +80,13 @@ export function PreparationChapter() {
     <section className="sc-section as-prep" data-sc-act="flow" data-chapter="preparation">
       <div className="sc-wrap">
         <div className="sc-stack as-prep__intro" data-sc-in data-sc-stagger="70">
-          <p className="as-folio-mark">
-            {chapter.number} {chapter.title}
-          </p>
+          <FolioMark number={chapter.number} title={chapter.title} />
           <h2 className="sc-display sc-display--lg">{chapter.heading}</h2>
-          <p className="sc-body">{chapter.body}</p>
+          {chapter.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="sc-body as-body">
+              {paragraph}
+            </p>
+          ))}
         </div>
         <ul className="as-montage">
           {chapter.labels.map((label, index) => {
@@ -111,9 +126,7 @@ export function LoftChapter() {
           </figure>
         </div>
         <div className="sc-stack as-spread__text" data-sc-in data-sc-stagger="70">
-          <p className="as-folio-mark">
-            {chapter.number} {chapter.title}
-          </p>
+          <FolioMark number={chapter.number} title={chapter.title} />
           <h2 className="sc-display sc-display--lg">{chapter.heading}</h2>
           {chapter.paragraphs.map((paragraph) => (
             <p key={paragraph} className="sc-body as-body">
@@ -140,9 +153,7 @@ export function AirAndCodeChapter() {
     <section className="sc-section as-code" data-sc-act="flow" data-chapter="airAndCode">
       <div className="sc-wrap as-spread as-spread--reverse">
         <div className="sc-stack as-spread__text" data-sc-in data-sc-stagger="70">
-          <p className="as-folio-mark">
-            {chapter.number} {chapter.title}
-          </p>
+          <FolioMark number={chapter.number} title={chapter.title} />
           <h2 className="sc-display sc-display--lg">{chapter.heading}</h2>
           {chapter.paragraphs.map((paragraph) => (
             <p key={paragraph} className="sc-body as-body">
@@ -192,9 +203,7 @@ export function SonsChapter() {
           <figcaption className="sc-label">{chapter.caption}</figcaption>
         </figure>
         <div className="sc-stack as-sons__text" data-sc-in data-sc-stagger="120">
-          <p className="as-folio-mark">
-            {chapter.number} {chapter.title}
-          </p>
+          <FolioMark number={chapter.number} title={chapter.title} />
           <h2 className="sc-display sc-display--lg">{chapter.heading}</h2>
           <blockquote className="as-quote">
             {chapter.paragraphs.map((paragraph) => (
@@ -212,9 +221,6 @@ export function SonsChapter() {
 
 export function Colophon() {
   const chapter = CHAPTERS.colophon;
-  const credentials = [...CHAPTERS.loft.credentials, { year: '2015', text: 'Private Aircraft Pilot, ANAC' }].sort(
-    (a, b) => a.year.localeCompare(b.year),
-  );
   return (
     <section className="sc-section as-colophon" data-sc-act="flow" data-chapter="colophon">
       <div className="sc-wrap">
@@ -231,14 +237,24 @@ export function Colophon() {
           </p>
         </div>
         <div className="as-colophon__plate">
-          <dl className="as-credentials as-credentials--small">
-            {credentials.map((credential) => (
-              <div key={credential.text} className="as-credentials__row">
-                <dt className="sc-nums">{credential.year}</dt>
-                <dd>{credential.text}</dd>
-              </div>
-            ))}
-          </dl>
+          <div className="as-colophon__columns">
+            <dl className="as-credentials as-credentials--small">
+              {CHAPTERS.loft.credentials.map((credential) => (
+                <div key={credential.text} className="as-credentials__row">
+                  <dt className="sc-nums">{credential.year}</dt>
+                  <dd>{credential.text}</dd>
+                </div>
+              ))}
+            </dl>
+            <dl className="as-credentials as-credentials--small">
+              {CAREER.map((entry) => (
+                <div key={entry.text} className="as-credentials__row">
+                  <dt className="sc-nums">{entry.date}</dt>
+                  <dd>{entry.text}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
           <nav className="as-colophon__links" aria-label="Elsewhere">
             <RouterLink to="/">Home</RouterLink>
             <RouterLink to="/login">Log in</RouterLink>

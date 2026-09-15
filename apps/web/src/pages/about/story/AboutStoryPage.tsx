@@ -9,7 +9,6 @@ import {
   SonsChapter,
   TitlePage,
 } from './chapters';
-import { LogbookFolio } from './LogbookFolio';
 import { useScrollcraft } from './use-scrollcraft';
 
 export function AboutStoryPage() {
@@ -19,7 +18,6 @@ export function AboutStoryPage() {
   return (
     <div className="as-root">
       <div className="sc-grain" aria-hidden="true" />
-      <LogbookFolio root={rootRef} />
       <main ref={rootRef} className="as-main">
         <TitlePage />
         <FlightChapter />

@@ -26,12 +26,12 @@ Interviewed 2026-09-14 in chat. Answers are Eca's words, verbatim, dictated. Q2 
 | # | Chapter | Feeling | What on screen causes it |
 |---|---|---|---|
 | 0 | Title page | Attention | Brutalist type at scale on a solid gold block: his name, four words, one place. No media. The quiet before the drop. |
-| 1 | Air | Locked in | The one clip on the page: wingsuit flight, terrain rising, scrubbed by the hand. Sparse copy. The largest span. |
-| 2 | Preparation | Flashback | Eight photographs cutting in one after another as the wheel turns, labelled like a logbook: gear check, pin check, exit order. |
-| 3 | The loft | Trust | Paper ground, dense spread, the rigger's hands and the real dates: 2015 skydiver, 2017 D-licence, 2025 rigger. |
-| 4 | Air and code | Respect | Pilot since 2015. Then the other career: 350 students, 14 cities, Berlin, Bayer, Deere. Real numbers counting in. |
+| 1 | Air | Locked in | The one clip on the page: wingsuit flight scrubbed by the hand, the real FlySight instruments moving with it. Sparse copy. The largest span. |
+| 2 | Preparation | Flashback | "Luck is where opportunity meets preparation." Eight photographs cutting in one after another; the accident-chain paragraph. |
+| 3 | The loft | Trust | Deep navy ground, dense spread, the rigger's hands and Eca's own words on being a reliable source of information, with the real dates 2015 to 2025. |
+| 4 | Air and code | Respect | "Everything measured in jump tickets." The obsession, the engineer, the crossover; 350, 14, 100 counting in. |
 | 5 | Ben and Ike | Tenderness | One portrait of the boys, wiped in slowly, and the father's own words. The quietest screen on the page. |
-| 6 | Colophon | Resolve | Navy plate. "Bendike is that environment." The CTA as a line of running text. The complete logbook in the margin. |
+| 6 | Colophon | Resolve | Navy plate. "Safety as a habit." The CTA as a line of running text, the licences and the career in two small columns. |
 
 Adjacent feelings all differ. Energy is highest at 1 and 2, then steps down, as asked.
 
@@ -47,16 +47,16 @@ the silence of the media-free title page in front of it.
 
 ## Tell-someone sentence
 
-It's the site where you fly Eca's wingsuit with your scroll wheel while a logbook in the margin stamps every
-licence he earned, and it ends on his two sons.
+It's the site where you fly Eca's wingsuit with your scroll wheel and the real altimeter and speed from his
+FlySight tick under your hand, and it ends on his two sons.
 
 ## Signature move
 
-**The logbook folio.** A margin element present the whole page (the folio chaptered editorial requires) that
-behaves like a rigger's logbook: as each chapter passes, its dated entries stamp in and stay (2015 Private Pilot
-ANAC, 2017 USPA D-licence, 2025 Parachute Rigger ANAC, and so on, all real). Each stamped line is a link back to
-its chapter. By the colophon the margin holds his complete certification record. Bespoke page JS reading act
-progress; the engine is untouched. On phones the folio collapses to a stamp count that opens the list.
+**The FlySight readout.** Eca dislikes side panels (2026-09-14 feedback), so the logbook folio was removed. In its
+place, the flight chapter carries a live altitude, horizontal speed, descent rate and glide-ratio readout driven by
+the real FlySight track of that exact jump, interpolated to the clip's playhead: scrub the flight and the
+instruments move with your hand. Real data only; if no track is supplied the readout does not render. Bespoke page
+JS reading the video's playhead; the engine is untouched. Credentials live in the loft chapter and the colophon.
 
 ## Authored silence
 
@@ -100,9 +100,9 @@ One scrub. Total length about 11.5 viewport-heights across 7 chapters, outside t
 ## Fingerprint gate
 
 Registry `design/scrollcraft/FINGERPRINTS.md` is empty; nothing to clear. Row to append after shipping:
-chaptered editorial · margin logbook folio, no bar · title page (type on gold, no media) · flow, scrub, reveal-montage,
-parallax-column, count, iris, colophon at ~11.5vh · colophon plate with running-text CTA and full logbook ·
-"logbook that stamps real credentials as you scroll".
+chaptered editorial · no chrome, folio marks inside chapters · title page (type on gold, no media) · flow, scrub, reveal-montage,
+parallax-column, count, iris, colophon at ~11.5vh · colophon plate with running-text CTA, licences and career in small type ·
+"FlySight altimeter and speed readout riding the scrubbed flight".
 
 ## World
 
