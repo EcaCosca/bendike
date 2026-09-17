@@ -5,7 +5,8 @@ One file per feature. No production code changes without a spec here.
 
 ## Workflow Overview
 
-1. **Create a Spec Issue** — Use the "Feature To Spec" issue template to define your feature
+1. **Create a Spec Issue** — Use the "Feature To Spec" issue template to define your feature, or run the
+   `/feature-to-spec` skill in Claude Code (`.claude/skills/feature-to-spec/SKILL.md`) for the same interview in chat
 2. **Auto-Assignment** — Issues with the `copilot-ready` label trigger the coding agent
 3. **Spec Creation** — The agent (or a human) creates a structured specification in this directory
 4. **Implementation** — Follow the tasks in the spec, ticking checkboxes in the same PR that delivers the work
@@ -90,6 +91,7 @@ Each spec follows this structure (full template in `.github/instructions/spec.in
 ## Related Files
 
 - `.github/ISSUE_TEMPLATE/feature-to-spec.yml` — Issue template for creating specs
+- `.claude/skills/feature-to-spec/SKILL.md` — Claude Code skill running the same interview locally
 - `.github/workflows/assign-copilot.yml` — Workflow for mentioning the coding agent
 - `.github/instructions/spec.instructions.md` — Detailed instructions for spec writing
 - `docs/personas.md` — Personas referenced by every spec
