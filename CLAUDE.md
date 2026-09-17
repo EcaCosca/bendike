@@ -12,3 +12,6 @@ Then, depending on what you touch:
 
 Spec-driven development is mandatory: no production code changes without a spec in `.github/specs/`.
 Architectural decisions are recorded in `docs/adr/`.
+
+Repo-local Claude Code skills live in `.claude/skills/`. `/feature-to-spec` runs the "Feature To Spec" interview
+in chat and writes the spec, for features that start here instead of in a GitHub issue.
