@@ -1,7 +1,9 @@
 import type {
   AuthResponse,
+  GoogleSignInRequest,
   LoginRequest,
   RegisterRequest,
+  UpdateContactRequestBody,
   Role,
   UpdateRoleRequest,
   UserSummary,
@@ -14,6 +16,14 @@ export function register(request: RegisterRequest): Promise<AuthResponse> {
 
 export function login(request: LoginRequest): Promise<AuthResponse> {
   return apiFetch<AuthResponse>('/auth/login', { method: 'POST', body: JSON.stringify(request) });
+}
+
+export function loginWithGoogle(request: GoogleSignInRequest): Promise<AuthResponse> {
+  return apiFetch<AuthResponse>('/auth/google', { method: 'POST', body: JSON.stringify(request) });
+}
+
+export function updateContact(token: string, body: UpdateContactRequestBody): Promise<UserSummary> {
+  return apiFetch<UserSummary>('/users/me', { method: 'PATCH', body: JSON.stringify(body) }, token);
 }
 
 export function me(token: string): Promise<UserSummary> {

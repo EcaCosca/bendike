@@ -1,6 +1,7 @@
 import { Alert, Button, Stack, TextField, Typography } from '@mui/material';
 import { useState, type FormEvent } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { GoogleSignInSection } from '../auth/GoogleSignInSection';
 import { useAuth } from '../auth/use-auth';
 import { AppShell } from '../components/AppShell';
 
@@ -59,6 +60,7 @@ export function RegisterPage() {
         <Button type="submit" variant="contained" size="large" disabled={submitting}>
           Sign up
         </Button>
+        <GoogleSignInSection onSignedIn={() => void navigate('/app', { replace: true })} onError={setError} />
         <Typography variant="body2">
           Already have an account? <RouterLink to="/login">Log in</RouterLink>
         </Typography>

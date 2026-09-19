@@ -54,3 +54,11 @@ export const ABOUT_TEASER = {
   body: 'I am Enrique “Eca” Coscarelli, from Argentina: a rigger with my own loft and a programmer who builds software around the work I do there. Safety is my main priority, and Bendike exists so repacks, AADs and service bulletins never slip.',
   cta: { label: 'More about Eca and the loft', to: '/about' },
 };
+
+export const BRANDS_HEADING = 'Authorized dealer for';
+
+export const DEALER_BRANDS = [
+  { slug: 'squirrel', name: 'Squirrel', file: 'squirrel.svg', height: 48 },
+  { slug: 'vigil', name: 'Vigil', file: 'vigil.png', height: 64 },
+  { slug: 'flysight', name: 'FlySight', file: 'flysight.png', height: 40 },
+] as const;

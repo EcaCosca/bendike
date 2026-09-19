@@ -20,6 +20,7 @@ function renderLanding(user: UserSummary | null) {
     loading: false,
     login: jest.fn(),
     register: jest.fn(),
+    loginWithGoogle: jest.fn(),
     logout: jest.fn(),
   });
   render(
@@ -34,6 +35,9 @@ const skydiver: UserSummary = {
   email: 'ana@bendike.example',
   displayName: 'Ana',
   role: Role.User,
+  authMethods: ['password'],
+  phone: null,
+  locale: 'es',
   createdAt: '2026-09-11T10:00:00.000Z',
 };
 
@@ -46,6 +50,18 @@ describe('LandingPage', () => {
 
       expect(headings).toHaveLength(1);
       expect(headings[0]).toHaveTextContent(HERO.headline);
+    });
+
+    test('shows the authorized-dealer brand strip right after the hero', () => {
+      const strip = screen.getByRole('region', { name: 'Authorized dealer for' });
+      const hero = screen.getByRole('heading', { level: 1 }).closest('section');
+
+      expect(hero?.nextElementSibling).toBe(strip);
+      expect(
+        within(strip)
+          .getAllByRole('link')
+          .map((link) => link.getAttribute('href')),
+      ).toEqual(['/shop?brand=squirrel', '/shop?brand=vigil', '/shop?brand=flysight']);
     });
 
     test('offers Log in, Sign up and the About page in the navigation', () => {

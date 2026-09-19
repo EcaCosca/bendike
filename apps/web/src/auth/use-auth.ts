@@ -7,7 +7,9 @@ export interface AuthState {
   loading: boolean;
   login: (request: LoginRequest) => Promise<void>;
   register: (request: RegisterRequest) => Promise<void>;
+  loginWithGoogle: (idToken: string) => Promise<void>;
   logout: () => void;
+  updateUser?: (user: UserSummary) => void;
 }
 
 export const AuthContext = createContext<AuthState | undefined>(undefined);

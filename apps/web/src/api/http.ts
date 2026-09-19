@@ -15,7 +15,7 @@ export class ApiError extends Error {
 export async function apiFetch<T>(path: string, init: RequestInit = {}, token?: string | null): Promise<T> {
   const headers = new Headers(init.headers);
   headers.set('Accept', 'application/json');
-  if (init.body !== undefined) {
+  if (init.body !== undefined && !(init.body instanceof FormData)) {
     headers.set('Content-Type', 'application/json');
   }
   if (token) {
@@ -26,7 +26,8 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}, token?: 
   if (!response.ok) {
     throw new ApiError(response.status, await readErrorMessage(response));
   }
-  return (await response.json()) as T;
+  const body = await response.text();
+  return (body ? JSON.parse(body) : undefined) as T;
 }
 
 async function readErrorMessage(response: Response): Promise<string> {

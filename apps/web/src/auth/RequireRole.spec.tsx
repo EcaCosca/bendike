@@ -10,7 +10,16 @@ const mockedUseAuth = jest.mocked(useAuthModule.useAuth);
 
 function renderWithRole(role: Role | null) {
   const user: UserSummary | null = role
-    ? { id: 'u1', email: 'x@bendike.example', displayName: 'X', role, createdAt: '2026-09-11T10:00:00.000Z' }
+    ? {
+        id: 'u1',
+        email: 'x@bendike.example',
+        displayName: 'X',
+        role,
+        authMethods: ['password'],
+        phone: null,
+        locale: 'es',
+        createdAt: '2026-09-11T10:00:00.000Z',
+      }
     : null;
   mockedUseAuth.mockReturnValue({
     user,
@@ -18,6 +27,7 @@ function renderWithRole(role: Role | null) {
     loading: false,
     login: jest.fn(),
     register: jest.fn(),
+    loginWithGoogle: jest.fn(),
     logout: jest.fn(),
   });
   render(

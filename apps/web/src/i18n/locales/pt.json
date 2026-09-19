@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "shop": "Loja",
+    "cart": "Carrinho",
+    "services": "Serviços"
+  },
+  "localeSwitcher": {
+    "label": "Idioma"
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "body": "Esse idioma o Bendike ainda não fala."
+  },
+  "shop": {
+    "title": "Loja",
+    "searchPlaceholder": "Buscar produtos",
+    "sortLabel": "Ordenar por",
+    "sort": {
+      "name": "Nome",
+      "price-asc": "Preço: menor para maior",
+      "price-desc": "Preço: maior para menor"
+    },
+    "categories": "Categorias",
+    "allCategories": "Todas as categorias",
+    "brand": "Marca",
+    "allBrands": "Todas as marcas",
+    "availability": "Disponibilidade",
+    "anyAvailability": "Qualquer disponibilidade",
+    "availabilityOptions": {
+      "in-stock": "Em estoque",
+      "made-to-order": "Sob encomenda"
+    },
+    "noResults": "Nenhum produto corresponde aos seus filtros.",
+    "clearFilters": "Limpar filtros",
+    "loadError": "Não foi possível carregar a loja. Tente novamente.",
+    "priceOnRequest": "Preço sob consulta",
+    "indicative": "Indicativo, cotação de {{date}}",
+    "madeToOrder": "Sob encomenda",
+    "pagination": "Paginação",
+    "breadcrumb": "Caminho de navegação",
+    "condition": "Condição",
+    "anyCondition": "Qualquer condição",
+    "conditionOptions": {
+      "new": "Novo",
+      "used": "Usado"
+    },
+    "includeSold": "Incluir vendidos"
+  },
+  "product": {
+    "notFoundTitle": "Produto não encontrado",
+    "notFoundBody": "Não encontramos esse produto. Ele pode ter sido removido.",
+    "backToShop": "Voltar para a loja",
+    "loadError": "Não foi possível carregar este produto. Tente novamente.",
+    "chooseAll": "Escolha todas as opções para ver o preço exato.",
+    "sku": "SKU {{sku}}",
+    "madeToOrderNotice": "Sob encomenda: não mantido em estoque.",
+    "related": "Mais desta categoria",
+    "options": {
+      "size": "Tamanho",
+      "color": "Cor",
+      "arm-length": "Comprimento do braço"
+    },
+    "showImage": "Ver imagem {{n}}",
+    "usedLabel": "Usado",
+    "soldLabel": "Vendido",
+    "soldNotice": "Este item já foi vendido.",
+    "askOnWhatsapp": "Consultar pelo WhatsApp",
+    "whatsappMessage": "Olá Eca, tenho interesse neste item usado: {{item}}."
+  },
+  "services": {
+    "title": "Serviços",
+    "intro": "Trabalho feito à mão no ateliê de rigging da Bendike.",
+    "empty": "Ainda não há serviços publicados.",
+    "priceVaries": "Preço variável, consulte pelo WhatsApp",
+    "askOnWhatsapp": "Consultar pelo WhatsApp",
+    "turnaround": "Prazo",
+    "backToServices": "Voltar para serviços",
+    "notFoundTitle": "Serviço não encontrado",
+    "notFoundBody": "Não encontramos esse serviço. Ele pode ter sido removido.",
+    "loadError": "Não foi possível carregar os serviços. Tente novamente.",
+    "whatsappMessage": "Olá Eca, quero saber mais sobre o serviço: {{service}}."
+  }
+}

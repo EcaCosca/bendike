@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
 import { AuthProvider } from './auth/auth-context';
+import { GoogleClientIdContext } from './auth/google-client-id';
 import { theme } from './theme/theme';
 
 const container = document.getElementById('root');
@@ -11,14 +12,18 @@ if (!container) {
   throw new Error('Missing #root element in index.html');
 }
 
+const googleClientId: string | undefined = import.meta.env.VITE_GOOGLE_CLIENT_ID || undefined;
+
 createRoot(container).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
+        <GoogleClientIdContext.Provider value={googleClientId}>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </GoogleClientIdContext.Provider>
       </BrowserRouter>
     </ThemeProvider>
   </StrictMode>,

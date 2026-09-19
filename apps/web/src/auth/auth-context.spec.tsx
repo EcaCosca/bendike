@@ -10,7 +10,7 @@ jest.mock('./auth-api');
 const mockedApi = jest.mocked(authApi);
 
 function Probe() {
-  const { user, token, loading, login, logout } = useAuth();
+  const { user, token, loading, login, loginWithGoogle, logout } = useAuth();
   return (
     <div>
       <span data-testid="loading">{String(loading)}</span>
@@ -19,6 +19,7 @@ function Probe() {
       <button onClick={() => void login({ email: 'ana@bendike.example', password: 'correct horse battery staple' })}>
         login
       </button>
+      <button onClick={() => void loginWithGoogle('google-id-token')}>login with google</button>
       <button onClick={logout}>logout</button>
     </div>
   );
@@ -31,6 +32,9 @@ const response: AuthResponse = {
     email: 'ana@bendike.example',
     displayName: 'Ana',
     role: Role.Rigger,
+    authMethods: ['password'],
+    phone: null,
+    locale: 'es',
     createdAt: '2026-09-11T10:00:00.000Z',
   },
 };
@@ -63,6 +67,18 @@ describe('AuthProvider', () => {
     await userEvent.click(screen.getByRole('button', { name: 'login' }));
 
     await waitFor(() => expect(screen.getByTestId('role')).toHaveTextContent(Role.Rigger));
+    expect(window.localStorage.getItem(TOKEN_STORAGE_KEY)).toBe('jwt-token');
+  });
+
+  test('stores the token and exposes the user after signing in with Google', async () => {
+    mockedApi.loginWithGoogle.mockResolvedValue(response);
+    mockedApi.me.mockResolvedValue(response.user);
+    renderProbe();
+
+    await userEvent.click(screen.getByRole('button', { name: 'login with google' }));
+
+    await waitFor(() => expect(screen.getByTestId('role')).toHaveTextContent(Role.Rigger));
+    expect(mockedApi.loginWithGoogle).toHaveBeenCalledWith({ idToken: 'google-id-token' });
     expect(window.localStorage.getItem(TOKEN_STORAGE_KEY)).toBe('jwt-token');
   });
 

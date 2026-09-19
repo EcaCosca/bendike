@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "shop": "Shop",
+    "cart": "Cart",
+    "services": "Services"
+  },
+  "localeSwitcher": {
+    "label": "Language"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "That language isn't one Bendike speaks yet."
+  },
+  "shop": {
+    "title": "Shop",
+    "searchPlaceholder": "Search products",
+    "sortLabel": "Sort by",
+    "sort": {
+      "name": "Name",
+      "price-asc": "Price: low to high",
+      "price-desc": "Price: high to low"
+    },
+    "categories": "Categories",
+    "allCategories": "All categories",
+    "brand": "Brand",
+    "allBrands": "All brands",
+    "availability": "Availability",
+    "anyAvailability": "Any availability",
+    "availabilityOptions": {
+      "in-stock": "In stock",
+      "made-to-order": "Made to order"
+    },
+    "noResults": "No products match your filters.",
+    "clearFilters": "Clear filters",
+    "loadError": "Could not load the shop. Please try again.",
+    "priceOnRequest": "Price on request",
+    "indicative": "Indicative, rates of {{date}}",
+    "madeToOrder": "Made to order",
+    "pagination": "Pagination",
+    "breadcrumb": "Breadcrumb",
+    "condition": "Condition",
+    "anyCondition": "Any condition",
+    "conditionOptions": {
+      "new": "New",
+      "used": "Used"
+    },
+    "includeSold": "Include sold items"
+  },
+  "product": {
+    "notFoundTitle": "Product not found",
+    "notFoundBody": "We couldn't find that product. It may have been removed.",
+    "backToShop": "Back to the shop",
+    "loadError": "Could not load this product. Please try again.",
+    "chooseAll": "Choose every option to see the exact price.",
+    "sku": "SKU {{sku}}",
+    "madeToOrderNotice": "Made to order: not kept in stock.",
+    "related": "More from this category",
+    "options": {
+      "size": "Size",
+      "color": "Color",
+      "arm-length": "Arm length"
+    },
+    "showImage": "Show image {{n}}",
+    "usedLabel": "Used",
+    "soldLabel": "Sold",
+    "soldNotice": "This item has been sold.",
+    "askOnWhatsapp": "Ask on WhatsApp",
+    "whatsappMessage": "Hello Eca, I'm interested in this used item: {{item}}."
+  },
+  "services": {
+    "title": "Services",
+    "intro": "Work done by hand at the Bendike rigging loft.",
+    "empty": "No services are listed yet.",
+    "priceVaries": "Price varies, ask on WhatsApp",
+    "askOnWhatsapp": "Ask on WhatsApp",
+    "turnaround": "Turnaround",
+    "backToServices": "Back to services",
+    "notFoundTitle": "Service not found",
+    "notFoundBody": "We couldn't find that service. It may have been removed.",
+    "loadError": "Could not load the services. Please try again.",
+    "whatsappMessage": "Hello Eca, I'd like to ask about the service: {{service}}."
+  }
+}

@@ -1,6 +1,7 @@
-import { ROLES, type Role, type UserSummary } from '@bendike/shared';
+import { ROLES, type AuthMethod, type Role, type UserSummary } from '@bendike/shared';
 import {
   Alert,
+  Chip,
   MenuItem,
   Paper,
   Select,
@@ -17,6 +18,8 @@ import { useEffect, useState } from 'react';
 import { changeRole, listUsers } from '../auth/auth-api';
 import { useAuth } from '../auth/use-auth';
 import { AppShell } from '../components/AppShell';
+
+const AUTH_METHOD_LABELS: Record<AuthMethod, string> = { password: 'Password', google: 'Google' };
 
 export function AdminUsersPage() {
   const { token, user: actor } = useAuth();
@@ -59,6 +62,7 @@ export function AdminUsersPage() {
                 <TableCell>Name</TableCell>
                 <TableCell>Email</TableCell>
                 <TableCell>Role</TableCell>
+                <TableCell>Sign-in</TableCell>
                 <TableCell>Joined</TableCell>
               </TableRow>
             </TableHead>
@@ -81,6 +85,13 @@ export function AdminUsersPage() {
                         </MenuItem>
                       ))}
                     </Select>
+                  </TableCell>
+                  <TableCell>
+                    <Stack direction="row" spacing={0.5}>
+                      {u.authMethods.map((method) => (
+                        <Chip key={method} size="small" label={AUTH_METHOD_LABELS[method]} />
+                      ))}
+                    </Stack>
                   </TableCell>
                   <TableCell>{new Date(u.createdAt).toLocaleDateString()}</TableCell>
                 </TableRow>

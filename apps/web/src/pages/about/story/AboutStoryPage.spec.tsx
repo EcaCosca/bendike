@@ -23,6 +23,7 @@ describe('AboutStoryPage', () => {
       loading: false,
       login: jest.fn(),
       register: jest.fn(),
+      loginWithGoogle: jest.fn(),
       logout: jest.fn(),
     });
     fetchMock = jest.fn().mockResolvedValue({ ok: false, headers: new Headers() });

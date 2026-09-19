@@ -70,6 +70,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (request: LoginRequest) => accept(await authApi.login(request)), [accept]);
   const register = useCallback(async (request: RegisterRequest) => accept(await authApi.register(request)), [accept]);
+  const loginWithGoogle = useCallback(
+    async (idToken: string) => accept(await authApi.loginWithGoogle({ idToken })),
+    [accept],
+  );
+  const updateUser = useCallback((updated: UserSummary) => setUser(updated), []);
   const logout = useCallback(() => {
     writeStoredToken(null);
     setToken(null);
@@ -77,8 +82,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo<AuthState>(
-    () => ({ token, user, loading, login, register, logout }),
-    [token, user, loading, login, register, logout],
+    () => ({ token, user, loading, login, register, loginWithGoogle, logout, updateUser }),
+    [token, user, loading, login, register, loginWithGoogle, logout, updateUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

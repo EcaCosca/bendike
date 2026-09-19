@@ -28,6 +28,30 @@ describe('apiFetch', () => {
     expect(new Headers(init.headers).get('Authorization')).toBe('Bearer token-123');
   });
 
+  test('a JSON body is sent as application/json', async () => {
+    fetchMock.mockResolvedValue(jsonResponse(200, {}));
+
+    await apiFetch('/x', { method: 'POST', body: '{}' });
+
+    const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(new Headers(init.headers).get('Content-Type')).toBe('application/json');
+  });
+
+  test('a FormData body leaves the content type to the browser so the multipart boundary is set', async () => {
+    fetchMock.mockResolvedValue(jsonResponse(200, {}));
+
+    await apiFetch('/x', { method: 'POST', body: new FormData() });
+
+    const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(new Headers(init.headers).has('Content-Type')).toBe(false);
+  });
+
+  test('an empty success response (such as a delete) resolves to undefined instead of failing to parse', async () => {
+    fetchMock.mockResolvedValue(new Response(null, { status: 200 }));
+
+    await expect(apiFetch('/x', { method: 'DELETE' })).resolves.toBeUndefined();
+  });
+
   test('surfaces the API error message for a failed request', async () => {
     fetchMock.mockResolvedValue(jsonResponse(401, { statusCode: 401, message: 'Invalid email or password' }));
 

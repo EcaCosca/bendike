@@ -24,10 +24,40 @@ export function DashboardPage() {
           Hi, {user.displayName}
         </Typography>
         <Typography color="text.secondary">{ROLE_GREETINGS[user.role]}</Typography>
-        {user.role === Role.Admin && (
-          <Button variant="contained" component={RouterLink} to="/app/admin/users" sx={{ alignSelf: 'flex-start' }}>
-            Manage accounts
+        <Stack direction="row" spacing={2}>
+          <Button variant="contained" color="secondary" component={RouterLink} to="/app/gear">
+            {user.role === Role.Dropzone ? 'Fleet' : 'My gear'}
           </Button>
+          {(user.role === Role.Rigger || user.role === Role.Admin) && (
+            <Button variant="contained" color="secondary" component={RouterLink} to="/app/work">
+              Work queue
+            </Button>
+          )}
+          <Button variant="outlined" component={RouterLink} to="/app/riggers">
+            {user.role === Role.Rigger ? 'Customers and dropzones' : 'My riggers'}
+          </Button>
+          <Button variant="outlined" component={RouterLink} to="/app/profile">
+            Your details
+          </Button>
+        </Stack>
+        {user.role === Role.Admin && (
+          <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap', rowGap: 2 }}>
+            <Button variant="contained" component={RouterLink} to="/app/admin/users">
+              Manage accounts
+            </Button>
+            <Button variant="contained" component={RouterLink} to="/app/admin/services">
+              Manage services
+            </Button>
+            <Button variant="contained" component={RouterLink} to="/app/admin/used-gear">
+              Manage used gear
+            </Button>
+            <Button variant="contained" component={RouterLink} to="/app/admin/gear-models">
+              Gear models
+            </Button>
+            <Button variant="contained" component={RouterLink} to="/app/admin/bulletins">
+              Service bulletins
+            </Button>
+          </Stack>
         )}
       </Stack>
     </AppShell>

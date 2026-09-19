@@ -1,11 +1,12 @@
 import { AppBar, Box, Button, Chip, Container, Toolbar, Typography } from '@mui/material';
 import type { ReactNode } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Role } from '@bendike/shared';
 import { useAuth } from '../auth/use-auth';
 import { BrandMark } from './site/BrandMark';
 import { WhatsAppFab } from './site/WhatsAppFab';
 
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({ children, wide = false }: { children: ReactNode; wide?: boolean }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <AppBar position="static" elevation={0}>
-        <Toolbar sx={{ gap: 2 }}>
+        <Toolbar sx={{ gap: { xs: 1, sm: 2 }, flexWrap: 'wrap', py: { xs: 1, sm: 0 } }}>
           <Box
             component={RouterLink}
             to="/"
@@ -37,8 +38,26 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Box>
           {user ? (
             <>
+              <Button color="inherit" component={RouterLink} to="/app/gear">
+                Gear
+              </Button>
+              {(user.role === Role.Rigger || user.role === Role.Admin) && (
+                <Button color="inherit" component={RouterLink} to="/app/work">
+                  Work
+                </Button>
+              )}
+              <Button color="inherit" component={RouterLink} to="/app/riggers">
+                {user.role === Role.Rigger ? 'Customers' : 'Riggers'}
+              </Button>
               <Chip label={user.role} color="secondary" size="small" sx={{ textTransform: 'capitalize' }} />
-              <Typography variant="body2">{user.displayName}</Typography>
+              <Button
+                color="inherit"
+                component={RouterLink}
+                to="/app/profile"
+                sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
+              >
+                {user.displayName}
+              </Button>
               <Button color="inherit" onClick={handleLogout}>
                 Log out
               </Button>
@@ -55,7 +74,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           )}
         </Toolbar>
       </AppBar>
-      <Container maxWidth="md" sx={{ py: 4 }}>
+      <Container maxWidth={wide ? 'xl' : 'md'} sx={{ pt: 4, pb: 12 }}>
         {children}
       </Container>
       <WhatsAppFab />
