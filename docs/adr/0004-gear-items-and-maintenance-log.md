@@ -41,3 +41,26 @@ plus a cycle stored on the component, never typed as a separate "next due" field
 - Owners write to their own gear; riggers and admins may add maintenance entries to anyone's gear (they are the ones
   doing the work) and are recorded as `performed_by`.
 - The automated `repack_due` and `aad_service` notifications in `notifications-inbox.md` read these computed dates.
+
+## Amendment (2026-09-19)
+
+Eca's briefing that riggers are the first customer changes four details of this decision; the shape (one
+`gear_items` table, one detail table per kind, one log) stands.
+
+- **Owners may be dropzones.** `owner_id` on rigs and gear items may point at a `dropzone` account, so a dropzone's
+  fleet uses the same tables and screens. Access follows ADR 0012.
+- **The log is append-only.** An entry is never edited or deleted. A mistake is voided with a reason
+  (`voided_at`, `voided_by`, `void_reason`) and the correction is a new entry. A rigger's entry stores a snapshot of
+  their name and licence number at the time. This replaces "only the author or an admin can edit or delete an
+  entry".
+- **Rules live on a model catalogue.** A `gear_models` table holds, per manufacturer and model, the repack cycle,
+  AAD service interval, battery cycle and life in years. A component may point at a model and inherits its rules;
+  a component without one keeps the defaults (180-day repack) and hand-typed dates. This replaces typing every
+  AAD date by hand, which is what the dropzone's spreadsheet does today.
+- **Inspections carry a result.** An `inspection` entry has `result` (`passed`, `needs_work` or `grounded`); the
+  last one per rig is what a dropzone sees. A `grounded` result opens a grounding (ADR 0013).
+- **Owner-typed entries are marked.** Owners may still record work done elsewhere, flagged `owner_reported` and
+  shown as unverified; they count towards due dates but never as a rigger's sign-off. Work by a rigger outside
+  Bendike is recorded with that person's name, contact and licence, typed by the owner.
+- **Unverified safety work grounds the rig.** An owner-reported `repack`, `aad_service` or `repair` entry leaves the
+  rig grounded, pending verification, until a linked rigger or an admin verifies or voids it (decided 2026-09-19).

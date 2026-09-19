@@ -69,6 +69,22 @@ so that I can **follow the loft and contact him**.
 - Every public page and the signed-in app shell shall show a floating WhatsApp button in the bottom-right corner
   that opens `https://wa.me/5493413955408` in a new tab with a short greeting prefilled.
 
+### Story 5: See who Bendike is an authorized dealer for
+
+As a **Visitor**,
+I want **to see the brands Bendike sells as an authorized dealer**,
+so that I can **trust the shop and jump to that brand's products** (briefing of Eca, 2026-09-18).
+
+#### Acceptance Criteria
+
+- The landing page shall show a brand strip directly below the hero, titled "Authorized dealer for", with the
+  Squirrel, Vigil and FlySight logos.
+- The brand strip shall show the logos in greyscale so it stays within the site palette, scroll continuously as a carousel, pause while the visitor hovers or focuses it, and stay
+  still with every logo visible for visitors who prefer reduced motion.
+- When a visitor selects a logo, the web app shall open the shop filtered to that brand.
+- Each logo shall have the brand name as its accessible name, and the repeated copy the carousel needs for a
+  seamless loop shall be hidden from assistive technology.
+
 ### Story 4: Get in
 
 As a **Visitor**,
@@ -108,6 +124,8 @@ so that I can **enter the app from anywhere on the page**.
 - `apps/web/src/pages/landing/HeroSection.tsx` — headline, promise, calls to action
 - `apps/web/src/pages/landing/ServicesSection.tsx` — four service cards
 - `apps/web/src/pages/landing/AudiencesSection.tsx` — skydivers, riggers, dropzones
+- `apps/web/src/pages/landing/BrandCarousel.tsx` — authorized-dealer logo strip (Story 5); logos in `apps/web/public/brands/`
+  with their sources in `design/brands/`
 - `apps/web/src/pages/landing/AboutSection.tsx` — Eca teaser, Argentina, safety, social links, link to `/about`
 - `apps/web/src/pages/landing/LandingPage.tsx` — composition
 - `apps/web/src/pages/landing/LandingPage.spec.tsx` — structure assertions
@@ -232,6 +250,30 @@ without touching layout or tests.
 
 - [ ] All verification steps pass
 - [ ] The remaining Open Questions are answered or moved to Out of Scope
+
+---
+
+### Task 4: Authorized-dealer brand carousel
+
+**Objective**: Add the brand strip below the hero with the Squirrel, Vigil and FlySight logos.
+
+**Affected files**:
+
+- `apps/web/src/pages/landing/BrandCarousel.tsx`, `BrandCarousel.spec.tsx`, `landing-content.ts`, `LandingPage.tsx`,
+  `LandingPage.spec.tsx`
+- `apps/web/public/brands/*`, `design/brands/*`
+
+**Requirements**: Story 5
+
+**Verification**:
+
+- [x] Each logo links to `/shop?brand=<slug>` and is reachable by its brand name; the looping copy is `aria-hidden`
+- [x] The strip renders below the hero and the page still has exactly one H1
+- [x] Viewed in a browser at desktop and phone width: no horizontal page scroll, logos crisp, motion pauses on hover; logos shown in greyscale (Eca, 2026-09-18)
+
+**Done when**:
+
+- [x] All verification steps pass
 
 ---
 

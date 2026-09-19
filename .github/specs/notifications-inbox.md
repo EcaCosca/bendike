@@ -290,6 +290,8 @@ sequenceDiagram
 
 ## Future Considerations
 
-- Gear tracking spec: rigs, reserves, AADs, service bulletins by make and model, and the rules that emit
-  `repack_due`, `aad_service` and `service_bulletin` automatically
+- Gear tracking, rigger workspace, repack reminders and service bulletins are specified (`gear-tracking.md`,
+  `rigger-workspace.md`, `repack-reminders.md`, `service-bulletins-and-grounding.md`); the rules that emit
+  `repack_due`, `aad_service` and `service_bulletin` to owners automatically are still to be specified. A rigger
+  can now be limited to the owners they are linked to (ADR 0012), which answers the open question above
 - Preferences: which kinds a user wants, and where

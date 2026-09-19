@@ -2,6 +2,20 @@
 
 > Issue: none yet · Branch: `feat/google-sign-in` (to be created) · ADR: [0005](../../docs/adr/0005-google-sign-in-alongside-passwords.md) · Requested by Eca, 2026-09-11
 
+## Scope amendment (2026-09-19)
+
+The account model in the code today has only `displayName` and a required password; the names, phone and
+`emailVerifiedAt` this spec assumes arrive with [user-profile-and-email-verification.md](./user-profile-and-email-verification.md).
+Phase 1 therefore ships the sign-in itself against today's model, and Story 2 waits for the profile spec:
+
+- The new account's `displayName` is the token's `name`, falling back to the local part of its email. When the
+  profile spec lands, it maps the token's `given_name` and `family_name` to `firstName` and `lastName` and sets
+  `emailVerifiedAt` for Google accounts.
+- Story 2 (complete the profile) and `profileComplete` move to the profile spec.
+- `POST /auth/google` responds 503 while `GOOGLE_CLIENT_ID` is unset, and the web button renders only when
+  `VITE_GOOGLE_CLIENT_ID` is set, so the app runs unchanged without a Google Cloud project.
+- The account summary reports `authMethods` (`password`, `google` or both).
+
 ## Problem Statement
 
 Skydivers will not remember another password. Most of them have a Gmail address, and Eca asked for Gmail
@@ -37,12 +51,15 @@ so that I can **enter Bendike without creating a password**.
 - When Google returns an ID token, the web app shall send it to `POST /api/v1/auth/google`.
 - The API shall verify the token's signature, audience (Bendike's client id), issuer and expiry with Google's
   library; if verification fails, then the API shall respond 401.
-- If no account has the token's email, then the API shall create one with role `user`, first and last name from
-  the token, `emailVerifiedAt` set, no password, and a `google_sub` link.
-- If an account with that email exists, then the API shall link `google_sub` to it on first use and sign it in.
+- If the token's email is not verified by Google, then the API shall respond 401.
+- If an account already has the token's `google_sub`, then the API shall sign that account in.
+- If no account has the token's `google_sub` or email, then the API shall create one with role `user`, the token's
+  name as display name, no password, and a `google_sub` link.
+- If an account with the token's email exists, then the API shall link `google_sub` to it on first use and sign it
+  in.
 - The API shall respond with the same `AuthResponse` as password login.
 
-### Story 2: Complete the profile
+### Story 2: Complete the profile (deferred to the profile spec)
 
 As a **User** who signed in with Google,
 I want **to be asked for my WhatsApp phone once**,
@@ -65,7 +82,8 @@ so that I can **share one login for the operation**.
 - The API shall keep `POST /auth/register` and `POST /auth/login` unchanged.
 - If an account was created by Google and has no password, then password login shall respond 401 with a message
   pointing to Google sign-in.
-- An admin shall be able to see on the account list whether an account uses Google, a password, or both.
+- The account summary shall report `authMethods`, and the admin account list shall show whether an account uses
+  Google, a password, or both.
 
 ---
 
@@ -90,6 +108,7 @@ so that I can **share one login for the operation**.
   service changes in `auth.service.ts`
 - `apps/api/src/users/user.entity.ts` — `googleSub` (unique, nullable), `passwordHash` becomes nullable
 - `apps/api/src/database/migrations/1758200000000-AddGoogleSignIn.ts`
+- `apps/web/src/pages/AdminUsersPage.tsx` — "Sign-in" column
 - `apps/api/src/config/app.config.service.ts` — `GOOGLE_CLIENT_ID`
 - `apps/web/src/auth/GoogleSignInButton.tsx`, `auth-api.ts`, `pages/LoginPage.tsx`, `pages/RegisterPage.tsx`,
   `pages/CompleteProfilePage.tsx`
@@ -137,17 +156,21 @@ sequenceDiagram
 
 ## Tasks
 
-### Task 1: Entity, migration and config
+### Task 1: Contracts, entity, migration and config
 
-**Objective**: `googleSub`, nullable password hash, `GOOGLE_CLIENT_ID`.
+**Objective**: `googleSub`, nullable password hash, `GOOGLE_CLIENT_ID` (optional), `authMethods` on the summary.
+
+**Requirements**: Story 3
 
 **Verification**:
 
-- [ ] Migration applies and reverts; config validation requires the client id only when Google sign-in is enabled
+- [x] Migration applies and reverts on a database that already has users
+- [x] The summary of a password account reports `['password']`, a Google-only account `['google']`, a linked one both
+- [x] `GOOGLE_CLIENT_ID` unset is valid configuration
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -161,29 +184,35 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] Invalid audience 401; new email creates a verified user; existing email links; Google-only account cannot password-login
+- [x] A token that fails verification, or whose email Google has not verified, is 401
+- [x] A new email creates a `user` account with no password; a known `google_sub` signs in; an existing email links
+- [x] A Google-only account cannot password-login and is told to use Google
+- [x] With `GOOGLE_CLIENT_ID` unset the endpoint is 503
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
-### Task 3: Web button and complete-profile step
+### Task 3: Web button and admin column
 
 **Depends on**: Task 2
 
-**Objective**: Google button on login and register, `CompleteProfilePage` gate on missing phone.
+**Objective**: Google button on login and register (only when `VITE_GOOGLE_CLIENT_ID` is set), and the "Sign-in"
+column on the admin account list. The complete-profile step belongs to the profile spec.
 
-**Requirements**: Story 2
+**Requirements**: Story 1, Story 3
 
 **Verification**:
 
-- [ ] Button posts the token; missing phone routes to the complete-profile step before `/app`
+- [x] The button posts the token, stores the session and lands on `/app` (or the page the visitor came from)
+- [x] Without a client id no button renders and the password form is unchanged
+- [x] The admin list shows Google, Password or both for each account
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
