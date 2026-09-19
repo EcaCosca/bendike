@@ -27,3 +27,13 @@ Thumbs.db
 design/about/raw/*
 !design/about/raw/README.md
 design/scrollcraft/lab
+
+# Squirrel importer local cache of fetched page data
+apps/api/scripts/.squirrel-cache
+
+# Uploaded files (photos); only the placeholder is committed
+apps/api/uploads/*
+!apps/api/uploads/.gitkeep
+
+# Real dropzone spreadsheets (serials, names, contact details)
+excel/

@@ -5,3 +5,4 @@ package-lock.json
 apps/web/public/scrollcraft
 apps/web/src/pages/about/scrollcraft
 design/scrollcraft
+apps/api/scripts/.squirrel-cache
