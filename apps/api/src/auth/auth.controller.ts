@@ -5,6 +5,7 @@ import { toUserSummary } from '../users/user-summary';
 import { User } from '../users/user.entity';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './current-user.decorator';
+import { GoogleSignInDto } from './dto/google-sign-in.dto';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -25,6 +26,13 @@ export class AuthController {
   @ApiOperation({ summary: 'Exchange email and password for a bearer token' })
   login(@Body() dto: LoginDto): Promise<AuthResponse> {
     return this.auth.login(dto);
+  }
+
+  @Post('google')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Exchange a Google ID token for a bearer token, creating or linking the account' })
+  google(@Body() dto: GoogleSignInDto): Promise<AuthResponse> {
+    return this.auth.signInWithGoogle(dto);
   }
 
   @Get('me')

@@ -1,0 +1,320 @@
+[
+  {
+    "name": "Sprint",
+    "category": "Wingsuit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/wingsuits/sprint/"
+  },
+  {
+    "name": "Swift 5",
+    "category": "Wingsuit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/wingsuits/swift5/"
+  },
+  {
+    "name": "Low-Ki 2",
+    "category": "Wingsuit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/wingsuits/low-ki2/"
+  },
+  {
+    "name": "ATC 5",
+    "category": "Wingsuit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/wingsuits/atc5/"
+  },
+  {
+    "name": "Freak 6",
+    "category": "Wingsuit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/wingsuits/freak6/"
+  },
+  {
+    "name": "Creature 3",
+    "category": "Wingsuit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/wingsuits/creature3/"
+  },
+  {
+    "name": "Corvid 3",
+    "category": "Wingsuit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/wingsuits/corvid3/"
+  },
+  {
+    "name": "C-Race",
+    "category": "Wingsuit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/wingsuits/c-race/"
+  },
+  {
+    "name": "C-Base",
+    "category": "Wingsuit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/wingsuits/c-base/"
+  },
+  {
+    "name": "CR+",
+    "category": "Wingsuit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/wingsuits/cr-plus/"
+  },
+  {
+    "name": "Sumo 5",
+    "category": "Tracking Suit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/trackingsuits/sumo5/"
+  },
+  {
+    "name": "Mutation 3",
+    "category": "Tracking Suit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/trackingsuits/mutation3/"
+  },
+  {
+    "name": "ETMD3",
+    "category": "Tracking Suit",
+    "sizes": "Custom (made-to-measure, no fixed sizes)",
+    "link": "https://squirrel.ws/trackingsuits/etmd3/"
+  },
+  {
+    "name": "Hayduke 2",
+    "category": "BASE Canopy",
+    "sizes": ["190", "200", "210", "220", "230", "240", "250", "260", "270", "280", "290", "300", "310", "325", "350"],
+    "link": "https://squirrel.ws/parachutes/base-jumping/hayduke2/"
+  },
+  {
+    "name": "IBEX.UL",
+    "category": "BASE Canopy",
+    "sizes": ["190", "200", "210", "220", "230", "240", "250", "260", "270", "280", "290"],
+    "link": "https://squirrel.ws/parachutes/base-jumping/ibex.ul/"
+  },
+  {
+    "name": "5-Lite",
+    "category": "BASE Canopy",
+    "sizes": ["220", "230", "240", "250", "260", "270", "280", "290"],
+    "link": "https://squirrel.ws/parachutes/base-jumping/5-lite/"
+  },
+  {
+    "name": "Epicene Pro 2",
+    "category": "Skydiving Canopy",
+    "sizes": ["116", "125", "130", "140", "150", "160", "170", "180", "190", "200", "210", "220", "230"],
+    "link": "https://squirrel.ws/parachutes/skydiving/epicene-pro2/"
+  },
+  {
+    "name": "Omicron",
+    "category": "Skydiving Canopy",
+    "sizes": ["116", "125", "130", "140", "150", "160", "170", "180", "190", "200", "210", "220", "230"],
+    "link": "https://squirrel.ws/parachutes/skydiving/omicron/"
+  },
+  {
+    "name": "Crux 2",
+    "category": "Container",
+    "sizes": "Custom (built to jumper measurements + canopy size)",
+    "link": "https://squirrel.ws/equipment/base-jumping/crux2/"
+  },
+  {
+    "name": "Stream 3",
+    "category": "Container",
+    "sizes": "Custom (built to jumper measurements + canopy size)",
+    "link": "https://squirrel.ws/equipment/base-jumping/stream3/"
+  },
+  {
+    "name": "Crux 2 3R",
+    "category": "Container",
+    "sizes": "Custom (built to jumper measurements + canopy size)",
+    "link": "https://squirrel.ws/equipment/base-jumping/crux2-3r/"
+  },
+  {
+    "name": "CXUL",
+    "category": "Container",
+    "sizes": "Custom (built to jumper measurements + canopy size)",
+    "link": "https://squirrel.ws/equipment/base-jumping/cxul/"
+  },
+  {
+    "name": "Cirrus",
+    "category": "Container",
+    "sizes": "Custom (built to jumper measurements + canopy size)",
+    "link": "https://squirrel.ws/equipment/base-jumping/cirrus/"
+  },
+  {
+    "name": "Snatch 2",
+    "category": "Pilot Chute",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/snatch2/"
+  },
+  {
+    "name": "SkySnatch 2",
+    "category": "Pilot Chute",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/skydiving/skysnatch2/"
+  },
+  {
+    "name": "Simple Stache",
+    "category": "Stash Bag",
+    "sizes": "One size (60L)",
+    "link": "https://squirrel.ws/equipment/base-jumping/simple-stache/"
+  },
+  {
+    "name": "Pocket Stache Dyneema",
+    "category": "Stash Bag",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/pocket-stache-dyneema/"
+  },
+  {
+    "name": "Pocket Stache",
+    "category": "Stash Bag",
+    "sizes": "One size (60L)",
+    "link": "https://squirrel.ws/equipment/base-jumping/pocket-stache/"
+  },
+  {
+    "name": "Trail Stache",
+    "category": "Stash Bag",
+    "sizes": "One size (65L+)",
+    "link": "https://squirrel.ws/equipment/base-jumping/trail-stache/"
+  },
+  {
+    "name": "Sadl.Sacs",
+    "category": "Stash Bag",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/sadl-sacs/"
+  },
+  {
+    "name": "Such.A.Dbag",
+    "category": "Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/skydiving/accessories/dbag/"
+  },
+  {
+    "name": "Releasable Toggles",
+    "category": "Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/accessories/releasable-toggles/"
+  },
+  {
+    "name": "Big Stiffy BASE Toggles",
+    "category": "Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/accessories/big-stiffy-base-toggles/"
+  },
+  {
+    "name": "SQRL Soft Links",
+    "category": "Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/skydiving/accessories/sqrl-soft-links/"
+  },
+  {
+    "name": "Urasackofchute",
+    "category": "Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/skydiving/accessories/urasackofchute/"
+  },
+  {
+    "name": "Rap Slings",
+    "category": "Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/accessories/rap-slings/"
+  },
+  {
+    "name": "Gerber Hook Knife",
+    "category": "Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/hook-knife-gerber/"
+  },
+  {
+    "name": "Skydive Risers",
+    "category": "Accessory",
+    "sizes": "One size (20 in)",
+    "link": "https://squirrel.ws/equipment/skydiving/20-in-skydive-risers/"
+  },
+  {
+    "name": "Closing Loops",
+    "category": "Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/accessories/closing-loops/"
+  },
+  {
+    "name": "Tailgates",
+    "category": "Accessory",
+    "sizes": "One size (pack of 4)",
+    "link": "https://squirrel.ws/equipment/base-jumping/accessories/tailgates/"
+  },
+  {
+    "name": "Base Spare Kit",
+    "category": "Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/accessories/base-spare-kit/"
+  },
+  {
+    "name": "Base Bridle",
+    "category": "Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/base-bridle/"
+  },
+  {
+    "name": "6G Slider",
+    "category": "Slider",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/accessories/6g-slider/"
+  },
+  {
+    "name": "4G Slider",
+    "category": "Slider",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/accessories/4g-slider/"
+  },
+  {
+    "name": "Epicene Hole Slider",
+    "category": "Slider",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/accessories/hole-slider/"
+  },
+  {
+    "name": "Uratul.Bag",
+    "category": "Travel Bag",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/uratul-bag/"
+  },
+  {
+    "name": "Weekend 50L",
+    "category": "Travel Bag",
+    "sizes": "One size (50L)",
+    "link": "https://squirrel.ws/equipment/weekend-bag/"
+  },
+  {
+    "name": "Mission 135L",
+    "category": "Travel Bag",
+    "sizes": "One size (135L)",
+    "link": "https://squirrel.ws/equipment/mission-bag/"
+  },
+  {
+    "name": "GBOB (Great Book of BASE)",
+    "category": "Book",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/the-great-book-of-base-4th-edition/"
+  },
+  {
+    "name": "Ninja Hood Kit",
+    "category": "Wingsuit Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/base-jumping/ninja-hood-kit/"
+  },
+  {
+    "name": "Zipper Button Bungees",
+    "category": "Wingsuit Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/accessories/zipper-button-bungees/"
+  },
+  {
+    "name": "Wingsuit Bag",
+    "category": "Wingsuit Accessory",
+    "sizes": "One size",
+    "link": "https://squirrel.ws/equipment/accessories/wingsuit-bag/"
+  },
+  {
+    "name": "Carbon Gas Pedals",
+    "category": "Wingsuit Accessory",
+    "sizes": "One size (suit-dependent compatibility)",
+    "link": "https://squirrel.ws/equipment/accessories/carbon-gas-pedals/"
+  }
+]

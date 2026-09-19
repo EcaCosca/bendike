@@ -29,10 +29,13 @@ describe('UsersController', () => {
         email: stored.email,
         displayName: stored.displayName,
         role: Role.Rigger,
+        authMethods: ['password'],
+        phone: null,
+        locale: 'es',
         createdAt: stored.createdAt.toISOString(),
       },
     ]);
-    expect(JSON.stringify(result)).not.toContain(stored.passwordHash);
+    expect(JSON.stringify(result)).not.toContain(stored.passwordHash ?? 'unreachable');
   });
 
   test('PATCH /users/:id/role delegates to the service with the acting admin', async () => {

@@ -1,0 +1,25 @@
+name: Repack digest
+
+on:
+  schedule:
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask the API to send today's digests
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          test -n "$API_URL" || { echo "Set the API_URL secret to the API's base URL"; exit 1; }
+          test -n "$CRON_SECRET" || { echo "Set the CRON_SECRET secret"; exit 1; }
+          printf 'header = "x-cron-secret: %s"\n' "$CRON_SECRET" \
+            | curl --config - --fail-with-body --silent --show-error --request POST \
+              "${API_URL%/}/api/v1/internal/jobs/repack-digest"

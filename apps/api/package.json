@@ -13,7 +13,12 @@
     "test:unit:cov": "jest --coverage",
     "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/database/data-source.ts",
     "migration:run": "typeorm-ts-node-commonjs migration:run -d src/database/data-source.ts",
-    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/database/data-source.ts"
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/database/data-source.ts",
+    "seed:catalog": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/seed-catalog.ts",
+    "seed:dev-accounts": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/seed-dev-accounts.ts",
+    "seed:services": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/seed-services.ts",
+    "import:squirrel": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/import-squirrel.ts",
+    "import:fleet": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/import-fleet.ts"
   },
   "dependencies": {
     "@bendike/shared": "0.1.0",
@@ -28,6 +33,7 @@
     "bcryptjs": "3.0.3",
     "class-transformer": "0.5.1",
     "class-validator": "0.15.1",
+    "google-auth-library": "^11.1.0",
     "passport": "0.7.0",
     "passport-jwt": "4.0.1",
     "pg": "8.22.0",
@@ -41,6 +47,8 @@
     "@nestjs/testing": "11.2.1",
     "@types/express": "5.0.6",
     "@types/passport-jwt": "4.0.1",
+    "exceljs": "^4.4.0",
+    "playwright": "^1.47.2",
     "ts-node": "10.9.2"
   }
 }
