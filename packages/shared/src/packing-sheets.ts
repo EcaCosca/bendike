@@ -247,6 +247,7 @@ export interface PackingSheetSummary {
   rigId: string;
   rigName: string;
   reserveItemId: string;
+  entryId: string | null;
   sheetNo: number;
   performedOn: string;
   riggerName: string;

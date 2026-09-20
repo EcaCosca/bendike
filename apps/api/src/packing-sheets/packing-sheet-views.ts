@@ -50,6 +50,7 @@ export function toSummary(sheet: PackingSheet, context: SheetContext): PackingSh
     rigId: sheet.rigId,
     rigName: context.rigName,
     reserveItemId: sheet.reserveItemId,
+    entryId: sheet.entryId,
     sheetNo: sheet.sheetNo ?? 0,
     performedOn: sheet.performedOn,
     riggerName: sheet.riggerName,

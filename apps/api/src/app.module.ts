@@ -13,6 +13,7 @@ import { GearModule } from './gear/gear.module';
 import { HealthModule } from './health/health.module';
 import { LibraryModule } from './library/library.module';
 import { PackingSheetsModule } from './packing-sheets/packing-sheets.module';
+import { RigPhotosModule } from './rig-photos/rig-photos.module';
 import { RiggerLinksModule } from './rigger-links/rigger-links.module';
 import { WorkQueueModule } from './work-queue/work-queue.module';
 import { RemindersModule } from './reminders/reminders.module';
@@ -36,6 +37,7 @@ import { UsersModule } from './users/users.module';
     GearModule,
     LibraryModule,
     PackingSheetsModule,
+    RigPhotosModule,
     BulletinsModule,
     RiggerLinksModule,
     WorkQueueModule,
