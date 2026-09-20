@@ -8,6 +8,7 @@ const ACCOUNTS: { email: string; displayName: string; role: Role }[] = [
   { email: 'user@bendike.local', displayName: 'Regular User', role: Role.User },
   { email: 'rigger@bendike.local', displayName: 'Test Rigger', role: Role.Rigger },
   { email: 'dropzone@bendike.local', displayName: 'Test Dropzone', role: Role.Dropzone },
+  { email: 'authority@bendike.local', displayName: 'Test Authority', role: Role.Authority },
 ];
 
 async function main(): Promise<void> {

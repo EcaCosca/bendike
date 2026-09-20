@@ -1,8 +1,8 @@
 import { isRole, Role, ROLES } from './roles';
 
 describe('roles', () => {
-  test('exposes exactly the four Bendike roles in order', () => {
-    expect(ROLES).toEqual(['user', 'rigger', 'dropzone', 'admin']);
+  test('exposes exactly the five Bendike roles in order', () => {
+    expect(ROLES).toEqual(['user', 'rigger', 'dropzone', 'authority', 'admin']);
   });
 
   test('Role constants match the ROLES tuple', () => {

@@ -8,6 +8,7 @@ const ROLE_GREETINGS: Record<Role, string> = {
   user: 'You are signed in as a user.',
   rigger: 'You are signed in as a rigger.',
   dropzone: 'You are signed in as a dropzone.',
+  authority: 'You are signed in as an authority. You can read the riggers and their logs.',
   admin: 'You are signed in as an admin.',
 };
 

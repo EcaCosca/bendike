@@ -474,6 +474,16 @@ describe('PackingSheetsService: drafts', () => {
       await expect(shared.sign(otherRigger, sheetId, 'AR-2')).rejects.toThrow(NotFoundException);
     });
 
+    test('an authority can read a signed sheet but never a draft', async () => {
+      const authority = buildUser({ role: Role.Authority, displayName: 'ANAC' });
+      const sheetId = await completeDraft();
+      const { sheet: draft } = await service.start(admin, rig.id);
+      await service.sign(rigger, sheetId, 'AR-1');
+
+      await expect(service.job(authority, sheetId)).resolves.toMatchObject({ sheet: { status: 'signed' } });
+      await expect(service.job(authority, draft.id)).rejects.toThrow(NotFoundException);
+    });
+
     test('the owner and a linked rigger can read a signed sheet, a stranger cannot', async () => {
       const sheetId = await completeDraft();
       await service.sign(rigger, sheetId, 'AR-1');

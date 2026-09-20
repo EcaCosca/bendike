@@ -111,7 +111,7 @@ export class PackingSheetsService {
     const sheet = await this.load(sheetId);
     if (sheet.status === 'draft') {
       await this.assertAuthor(actor, sheet);
-    } else {
+    } else if (actor.role !== Role.Authority) {
       await this.access.assertRead(actor, sheet.ownerId);
     }
     return this.jobOf(sheet);

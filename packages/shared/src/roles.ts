@@ -1,4 +1,4 @@
-export const ROLES = ['user', 'rigger', 'dropzone', 'admin'] as const;
+export const ROLES = ['user', 'rigger', 'dropzone', 'authority', 'admin'] as const;
 
 export type Role = (typeof ROLES)[number];
 
@@ -6,6 +6,7 @@ export const Role = {
   User: 'user',
   Rigger: 'rigger',
   Dropzone: 'dropzone',
+  Authority: 'authority',
   Admin: 'admin',
 } as const satisfies Record<string, Role>;
 
