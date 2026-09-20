@@ -17,7 +17,7 @@ export function AppShell({ children, wide = false }: { children: ReactNode; wide
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <AppBar position="static" elevation={0}>
+      <AppBar position="static" elevation={0} sx={{ '@media print': { display: 'none' } }}>
         <Toolbar sx={{ gap: { xs: 1, sm: 2 }, flexWrap: 'wrap', py: { xs: 1, sm: 0 } }}>
           <Box
             component={RouterLink}
@@ -82,7 +82,9 @@ export function AppShell({ children, wide = false }: { children: ReactNode; wide
       <Container maxWidth={wide ? 'xl' : 'md'} sx={{ pt: 4, pb: 12 }}>
         {children}
       </Container>
-      <WhatsAppFab />
+      <Box sx={{ '@media print': { display: 'none' } }}>
+        <WhatsAppFab />
+      </Box>
     </Box>
   );
 }

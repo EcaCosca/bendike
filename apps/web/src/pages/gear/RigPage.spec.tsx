@@ -93,6 +93,10 @@ function inspected(result: 'passed' | 'needs_work' | 'grounded') {
 
 const bulletins = jest.mocked(bulletinApi);
 
+beforeEach(() => {
+  jest.mocked(packingApi.listSheets).mockResolvedValue([]);
+});
+
 function groundedByRigger(overrides: Parameters<typeof rigDetail>[1] = {}) {
   const grounding = groundingView();
   return rigDetail('Micro 3', {
@@ -450,5 +454,31 @@ describe('RigPage start repack', () => {
     await user.click(await screen.findByRole('button', { name: 'Start repack' }));
 
     expect(await screen.findByText('This rig has no reserve to pack')).toBeInTheDocument();
+  });
+});
+
+describe('RigPage packing log', () => {
+  test('lists the signed packing sheets of the rig, newest first', async () => {
+    mocked.listModels.mockResolvedValue([]);
+    mocked.getRig.mockResolvedValue(rigDetail('Micro 3', { id: 'micro-3' }));
+    jest.mocked(packingApi.listSheets).mockResolvedValue([
+      {
+        id: 'sheet-2',
+        rigId: 'micro-3',
+        rigName: 'Micro 3',
+        reserveItemId: 'reserve-1',
+        sheetNo: 2,
+        performedOn: '2026-09-10',
+        riggerName: 'Eca Rigger',
+        missingCount: 1,
+        voided: false,
+        signedAt: '2026-09-10T12:00:00.000Z',
+      },
+    ]);
+    renderPage(Role.Dropzone);
+
+    const table = await screen.findByRole('table', { name: 'Reserve packing log' });
+    expect(within(table).getByText('Eca Rigger')).toBeInTheDocument();
+    expect(packingApi.listSheets).toHaveBeenCalledWith('token-1', { rigId: 'micro-3' });
   });
 });

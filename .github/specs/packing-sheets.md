@@ -354,13 +354,13 @@ dialog and signing; and the Start repack button.
 
 **Verification**:
 
-- [ ] The print view shows every field of the paper form and hides navigation and buttons in `@media print`
-- [ ] The rig and reserve pages list signed sheets newest first; a void sheet says so
-- [ ] README and this spec updated
+- [x] The print view shows every field of the paper form and hides navigation and buttons in `@media print`
+- [x] The rig and reserve pages list signed sheets newest first; a void sheet says so
+- [x] README and this spec updated
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 

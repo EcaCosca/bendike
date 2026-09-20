@@ -85,6 +85,18 @@ manufacture). Publishing it finds every matching component across all gear:
 - A rigger can also ground a rig or a single component by hand, and give the green light with a note. Grounding is a
   record everyone can see, not a lock: Bendike shows it and the rigger and dropzone act on it.
 
+### The reserve packing sheet
+
+A rigger opens a rig and presses **Start repack**. The job page shows each component with its manufacturer's
+service bulletins page (saved once per model, and reused for other models of the same manufacturer), the open
+bulletins Bendike matched, and the manuals from the Library. The rigger ticks the 36 items of the CIAC/ANAC "Planilla
+plegados" in English and Spanish, answers "bulletins checked" and "MARD connected", and the draft saves as they go.
+Signing lists anything not ticked or answered "no" and needs **notes** that explain it ("No MARD on this unit",
+"Completed service bulletin 123xx", "Changed the AAD"). It numbers the sheet per rigger, keeps a snapshot of the
+components, and writes the reserve repack entry, so the next due date moves. The sheet prints on one A4 page, waiting
+for a wet signature, and every signed sheet stays in the reserve packing log on the rig and reserve pages (a mistake is
+corrected by voiding the sheet, which voids its entry, and signing a new one).
+
 ### The manual library
 
 Riggers and admins get a **Library** (`/app/library`): a searchable, paginated list of manuals and bulletins that Bendike
@@ -312,22 +324,25 @@ sequenceDiagram
 | [0012](docs/adr/0012-riggers-reach-gear-through-confirmed-links-and-dropzones-own-fleets.md)           | Riggers reach gear through confirmed links; dropzones own fleets.        |
 | [0013](docs/adr/0013-grounding-is-an-auditable-record-and-service-bulletins-ground-through-matches.md) | Grounding is an auditable record; bulletins ground through matches.      |
 | [0014](docs/adr/0014-repack-reminders-are-a-daily-digest-email-sent-by-a-cron-triggered-endpoint.md)   | The repack reminder is a daily digest sent by a cron-triggered endpoint. |
+| [0015](docs/adr/0015-the-manual-library-is-stored-in-google-drive-behind-a-storage-port.md)            | The manual library is stored in Google Drive behind a storage port.      |
+| [0016](docs/adr/0016-a-packing-sheet-is-a-signed-snapshot-that-writes-the-repack-entry.md)             | A packing sheet is a signed snapshot that writes the repack entry.       |
 
 ## A tour of the app
 
-| Route                                                                   | Who             | What is there                                                                                        |
-| ----------------------------------------------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------- |
-| `/`, `/about`                                                           | Everyone        | Landing page with the brand carousel, and the About story.                                           |
-| `/:locale/shop`, `/:locale/shop/:slug`                                  | Everyone        | The shop in `es`, `en` or `pt`, with search, filters, used gear and "Sold".                          |
-| `/:locale/services`, `/:locale/services/:slug`                          | Everyone        | The rigging services.                                                                                |
-| `/login`, `/register`                                                   | Visitors        | Email and password, and "Continue with Google" when configured.                                      |
-| `/app`, `/app/profile`                                                  | Signed in       | The dashboard, and your name, WhatsApp phone and language.                                           |
-| `/app/gear`, `/app/gear/:rigId`, `/app/gear/items/:id`                  | Signed in       | Your gear as a paginated grid (or cards): a dropzone's "Fleet", the rig page, a component's history. |
-| `/app/gear/:rigId/label`                                                | Signed in       | The printable QR label.                                                                              |
-| `/app/riggers`                                                          | Signed in       | Choose your riggers (owners) or your customers and dropzones (riggers).                              |
-| `/app/work`, `/app/work/customers`, `/app/work/bulletins`               | Riggers, admins | The work queue, the customer list and the bulletin matches to review.                                |
-| `/app/library`                                                          | Riggers, admins | The manual library: search, upload and download manuals and bulletins.                               |
-| `/app/admin/users`, `services`, `used-gear`, `gear-models`, `bulletins` | Admins          | Accounts and roles, services, used gear, the model rules, the service bulletins.                     |
+| Route                                                                   | Who                                       | What is there                                                                                        |
+| ----------------------------------------------------------------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `/`, `/about`                                                           | Everyone                                  | Landing page with the brand carousel, and the About story.                                           |
+| `/:locale/shop`, `/:locale/shop/:slug`                                  | Everyone                                  | The shop in `es`, `en` or `pt`, with search, filters, used gear and "Sold".                          |
+| `/:locale/services`, `/:locale/services/:slug`                          | Everyone                                  | The rigging services.                                                                                |
+| `/login`, `/register`                                                   | Visitors                                  | Email and password, and "Continue with Google" when configured.                                      |
+| `/app`, `/app/profile`                                                  | Signed in                                 | The dashboard, and your name, WhatsApp phone and language.                                           |
+| `/app/gear`, `/app/gear/:rigId`, `/app/gear/items/:id`                  | Signed in                                 | Your gear as a paginated grid (or cards): a dropzone's "Fleet", the rig page, a component's history. |
+| `/app/gear/:rigId/label`                                                | Signed in                                 | The printable QR label.                                                                              |
+| `/app/riggers`                                                          | Signed in                                 | Choose your riggers (owners) or your customers and dropzones (riggers).                              |
+| `/app/work`, `/app/work/customers`, `/app/work/bulletins`               | Riggers, admins                           | The work queue, the customer list and the bulletin matches to review.                                |
+| `/app/library`                                                          | Riggers, admins                           | The manual library: search, upload and download manuals and bulletins.                               |
+| `/app/gear/:rigId/packing/:sheetId`, `.../print`                        | Riggers, admins; signed sheets for owners | The repack job, and the printable signed sheet.                                                      |
+| `/app/admin/users`, `services`, `used-gear`, `gear-models`, `bulletins` | Admins                                    | Accounts and roles, services, used gear, the model rules, the service bulletins.                     |
 
 The API documents itself: open <http://localhost:3000/docs> for every endpoint, its payload and its access rules.
 
@@ -373,8 +388,13 @@ Conventions worth knowing:
 ## Roadmap
 
 Built and verified: the gear tracker, the rigger workspace, repack reminders, service bulletins and grounding, the
-shop, used gear, services, Google sign-in and the fleet importer. What is next, roughly in order:
+manual library, reserve packing sheets, the shop, used gear, services, Google sign-in and the fleet importer. What is
+next, roughly in order:
 
+- **Google Drive authorisation** for the manual library: run `drive:authorize` once (see above); until then files stay
+  on local disk.
+- **Review the packing checklist wording**: where the paper form gives a line in one language only, the other
+  language is a translation to check.
 - **Resend account and domain**, so the digest can go to real inboxes (the code is done and waits on this).
 - **Profile and email verification** ([spec](.github/specs/user-profile-and-email-verification.md)): names, verified
   email, avatars. The phone and language fields already exist.

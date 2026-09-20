@@ -27,6 +27,7 @@ import { GroundedBanner } from './GroundedBanner';
 import { HistoryTable } from './HistoryTable';
 import { LastInspection } from './LastInspection';
 import { startSheet } from '../packing/packing-api';
+import { PackingLog } from '../packing/PackingLog';
 import { KIND_LABELS } from './item-details';
 import { RigDialog } from './RigDialog';
 import { GroundedBadge, StatusBadge } from './StatusBadge';
@@ -238,6 +239,7 @@ export function RigPage() {
                 </TableContainer>
               </>
             )}
+            <PackingLog token={token} role={user.role} scope={{ rigId: rig.id }} />
             <Typography variant="h5" component="h2">
               History
             </Typography>

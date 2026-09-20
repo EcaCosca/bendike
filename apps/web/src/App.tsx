@@ -16,6 +16,7 @@ import { BulletinMatchesPage } from './pages/bulletins/BulletinMatchesPage';
 import { BulletinsPage } from './pages/bulletins/BulletinsPage';
 import { LibraryPage } from './pages/library/LibraryPage';
 import { PackingJobPage } from './pages/packing/PackingJobPage';
+import { PackingSheetPrintPage } from './pages/packing/PackingSheetPrintPage';
 import { CustomersPage } from './pages/work/CustomersPage';
 import { WorkQueuePage } from './pages/work/WorkQueuePage';
 import { LinksPage } from './pages/links/LinksPage';
@@ -52,6 +53,7 @@ export function App() {
         <Route path="/app/gear/items/:itemId" element={<ItemPage />} />
         <Route path="/app/gear/:rigId" element={<RigPage />} />
         <Route path="/app/gear/:rigId/label" element={<RigLabelPage />} />
+        <Route path="/app/gear/:rigId/packing/:sheetId/print" element={<PackingSheetPrintPage />} />
         <Route path="/app/riggers" element={<LinksPage />} />
         <Route element={<RequireRole roles={[Role.Rigger, Role.Admin]} />}>
           <Route path="/app/work" element={<WorkQueuePage />} />

@@ -9,6 +9,7 @@ import { getItem, verifyEntry } from './gear-api';
 import { GearItemCard } from './GearItemCard';
 import { GroundedBanner } from './GroundedBanner';
 import { HistoryTable } from './HistoryTable';
+import { PackingLog } from '../packing/PackingLog';
 import { useComponentActions } from './use-component-actions';
 import { VoidDialog } from './VoidDialog';
 
@@ -77,6 +78,9 @@ export function ItemPage() {
               onEditPart={(part) => actions.editPart(item, part)}
               onDeletePart={actions.removePart}
             />
+            {item.kind === 'reserve' && (
+              <PackingLog token={token} role={user.role} scope={{ reserveItemId: item.id }} />
+            )}
             <Typography variant="h5" component="h2">
               History
             </Typography>
