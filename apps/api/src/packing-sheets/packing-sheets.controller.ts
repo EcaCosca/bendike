@@ -63,6 +63,13 @@ export class PackingSheetsController {
     return this.sheets.sign(actor, id, dto.riggerLicence);
   }
 
+  @Post(':id/notify-owner')
+  @Roles(Role.Rigger, Role.Admin)
+  @ApiOperation({ summary: 'Email the owner that the repack is done, with a WhatsApp button to the rigger' })
+  notifyOwner(@CurrentUser() actor: User, @Param('id', ParseUUIDPipe) id: string): Promise<PackingSheetView> {
+    return this.sheets.notifyOwner(actor, id);
+  }
+
   @Post(':id/void')
   @Roles(Role.Rigger, Role.Admin)
   @ApiOperation({ summary: 'Void a signed sheet and its repack entry, with a reason' })

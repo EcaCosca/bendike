@@ -37,6 +37,8 @@ export function toSheetView(sheet: PackingSheet, context: SheetContext): Packing
     missing: sheet.missing,
     signedAt: sheet.signedAt?.toISOString() ?? null,
     entryId: sheet.entryId,
+    ownerNotifiedAt: sheet.ownerNotifiedAt?.toISOString() ?? null,
+    ownerNotifiedTo: sheet.ownerNotifiedTo,
     createdAt: sheet.createdAt.toISOString(),
     updatedAt: sheet.updatedAt.toISOString(),
   };

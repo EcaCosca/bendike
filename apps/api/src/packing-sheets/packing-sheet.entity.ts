@@ -78,6 +78,12 @@ export class PackingSheet {
   @Column({ name: 'entry_id', type: 'uuid', nullable: true })
   entryId!: string | null;
 
+  @Column({ name: 'owner_notified_at', type: 'timestamptz', nullable: true })
+  ownerNotifiedAt!: Date | null;
+
+  @Column({ name: 'owner_notified_to', type: 'varchar', length: 200, nullable: true })
+  ownerNotifiedTo!: string | null;
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt!: Date;
 

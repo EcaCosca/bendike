@@ -1,7 +1,10 @@
 import {
+  BadGatewayException,
   BadRequestException,
   ConflictException,
   ForbiddenException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -29,13 +32,18 @@ import { Rig } from '../gear/entities/rig.entity';
 import { GearAccessService } from '../gear/gear-access.service';
 import { GearClock } from '../gear/gear-clock';
 import { GearReadService } from '../gear/gear-read.service';
+import { AppConfigService } from '../config/app.config.service';
+import { EmailSender } from '../email/email-sender';
 import { LibraryService } from '../library/library.service';
 import { User } from '../users/user.entity';
 import { GearItem } from '../gear/entities/gear-item.entity';
 import { PackingSheet } from './packing-sheet.entity';
 import { toSheetView, toSummary } from './packing-sheet-views';
+import { renderRepackNotice } from './repack-notice-renderer';
 
 const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const NOTICE_COOLDOWN_MS = 10 * 60 * 1000;
 
 @Injectable()
 export class PackingSheetsService {
@@ -45,6 +53,8 @@ export class PackingSheetsService {
     private readonly read: GearReadService,
     private readonly library: LibraryService,
     private readonly clock: GearClock,
+    private readonly sender: EmailSender,
+    private readonly config: AppConfigService,
   ) {}
 
   async start(actor: User, rigId: string): Promise<PackingJobView> {
@@ -90,6 +100,8 @@ export class PackingSheetsService {
         riggerLicence: null,
         signedAt: null,
         entryId: null,
+        ownerNotifiedAt: null,
+        ownerNotifiedTo: null,
       }),
     );
     return this.jobOf(sheet);
@@ -266,6 +278,63 @@ export class PackingSheetsService {
       entry.voidReason = trimmed;
       await tx.save(entry);
     });
+    return (await this.jobOf(sheet)).sheet;
+  }
+
+  async notifyOwner(actor: User, sheetId: string): Promise<PackingSheetView> {
+    const sheet = await this.load(sheetId);
+    await this.access.assertRead(actor, sheet.ownerId);
+    if (sheet.status !== 'signed' || !sheet.entryId) {
+      throw new ConflictException('Only a signed sheet can be sent to the owner');
+    }
+    if (actor.role !== Role.Admin && actor.id !== sheet.riggerId) {
+      throw new ForbiddenException('Only the rigger who signed the sheet, or an admin, can email the owner');
+    }
+    const rig = await this.manager.findOne(Rig, { where: { id: sheet.rigId } });
+    const context = await this.contextOf(sheet, rig as Rig);
+    if (context.voided) {
+      throw new ConflictException('A void sheet cannot be sent to the owner');
+    }
+    const to = sheet.ownerEmail.trim();
+    if (!EMAIL.test(to)) {
+      throw new BadRequestException('This sheet has no valid owner email to send the notice to');
+    }
+    if (sheet.ownerNotifiedAt && Date.now() - sheet.ownerNotifiedAt.getTime() < NOTICE_COOLDOWN_MS) {
+      throw new HttpException(
+        'The owner was emailed a moment ago. Try again in a few minutes.',
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
+    }
+
+    const [owner, riggerAccount, reserve] = await Promise.all([
+      this.manager.findOne(User, { where: { id: sheet.ownerId } }),
+      this.manager.findOne(User, { where: { id: sheet.riggerId } }),
+      this.read.itemView(sheet.reserveItemId),
+    ]);
+    const notice = renderRepackNotice({
+      locale: owner?.locale ?? 'es',
+      ownerName: sheet.ownerName || owner?.displayName || '',
+      rigName: context.rigName,
+      reserve: sheet.elements?.reserve ?? null,
+      rigger: {
+        name: sheet.riggerName,
+        licence: sheet.riggerLicence ?? '',
+        phone: riggerAccount?.phone ?? null,
+        email: riggerAccount?.email ?? '',
+      },
+      performedOn: sheet.performedOn,
+      signedAt: sheet.signedAt as Date,
+      sheetNo: sheet.sheetNo as number,
+      nextDueOn: reserve.dues.find((due) => due.kind === 'repack')?.dueOn ?? null,
+      notes: sheet.notes,
+      rigUrl: `${this.config.webBaseUrl}/app/gear/${sheet.rigId}`,
+    });
+    await this.sender.send({ to, ...notice }).catch(() => {
+      throw new BadGatewayException('The email could not be sent, try again shortly');
+    });
+    sheet.ownerNotifiedAt = new Date();
+    sheet.ownerNotifiedTo = to;
+    await this.manager.save(sheet);
     return (await this.jobOf(sheet)).sheet;
   }
 

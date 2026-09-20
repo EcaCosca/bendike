@@ -1,4 +1,11 @@
-import { BadRequestException, ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import {
+  BadGatewayException,
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  HttpException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PACKING_CHECKLIST, PACKING_CHECKLIST_VERSION, Role, type LibraryDocumentView } from '@bendike/shared';
 import { GearModel } from '../gear/entities/gear-model.entity';
 import { GearItem } from '../gear/entities/gear-item.entity';
@@ -39,6 +46,7 @@ function libraryDoc(overrides: Partial<LibraryDocumentView> = {}): LibraryDocume
 describe('PackingSheetsService: drafts', () => {
   let manager: InMemoryManager;
   let library: { forModel: jest.Mock; view: jest.Mock };
+  let sender: { send: jest.Mock };
   const owner = buildUser({
     role: Role.User,
     displayName: 'Ana Skydiver',
@@ -57,7 +65,9 @@ describe('PackingSheetsService: drafts', () => {
     const access = new GearAccessService(links);
     const clock = { today: () => TODAY };
     const read = new GearReadService(manager as never, access, clock, noRiggers);
-    return new PackingSheetsService(manager as never, access, read, library as never, clock);
+    return new PackingSheetsService(manager as never, access, read, library as never, clock, sender, {
+      webBaseUrl: 'https://app.bendike.example',
+    } as never);
   }
 
   function addItem(kind: GearItem['kind'], values: Partial<GearItem> = {}): GearItem {
@@ -79,6 +89,7 @@ describe('PackingSheetsService: drafts', () => {
   beforeEach(() => {
     manager = new InMemoryManager();
     library = { forModel: jest.fn().mockResolvedValue([]), view: jest.fn() };
+    sender = { send: jest.fn().mockResolvedValue(undefined) };
     manager.seed(User, owner);
     rig = manager.seed(Rig, { ownerId: owner.id, name: 'Tandem 1', notes: '', active: true });
     reserve = addItem('reserve');
@@ -551,6 +562,124 @@ describe('PackingSheetsService: drafts', () => {
       const { sheet } = await service.start(rigger, rig.id);
 
       await expect(service.voidSheet(rigger, sheet.id, 'x')).rejects.toThrow(ConflictException);
+    });
+  });
+
+  describe('notifying the owner', () => {
+    const allIds = PACKING_CHECKLIST.map((item) => item.id);
+
+    async function signedSheet(actor: User = rigger) {
+      const { sheet } = await service.start(actor, rig.id);
+      await service.saveDraft(actor, sheet.id, {
+        checkedIds: allIds,
+        bulletinsChecked: true,
+        mardConnected: true,
+        notes: 'Container and AAD are not on this rig. Completed service bulletin 123xx.',
+      });
+      return service.sign(actor, sheet.id, 'AR-1234');
+    }
+
+    beforeEach(() => {
+      manager.seed(User, { ...rigger, phone: '+5493415559999', email: 'eca@bendike.example' });
+    });
+
+    test('emails the owner in their language with the rigger, the rig, the next due date and a WhatsApp link', async () => {
+      const sheet = await signedSheet();
+
+      const notified = await service.notifyOwner(rigger, sheet.id);
+
+      expect(sender.send).toHaveBeenCalledTimes(1);
+      const message = sender.send.mock.calls[0]?.[0] as { to: string; subject: string; text: string; html: string };
+      expect(message.to).toBe('ana@bendike.example');
+      expect(message.subject).toBe('Tu reserva fue plegada: Tandem 1');
+      expect(message.text).toContain('Hola Ana Skydiver');
+      expect(message.text).toContain('Eca Rigger');
+      expect(message.text).toContain('AR-1234');
+      expect(message.text).toContain('19 de marzo de 2027');
+      expect(message.text).toContain('Completed service bulletin 123xx');
+      expect(message.html).toContain('BENDIKE');
+      expect(message.html).toContain('https://wa.me/5493415559999?text=');
+      expect(message.html).toContain(`https://app.bendike.example/app/gear/${rig.id}`);
+      expect(notified.ownerNotifiedTo).toBe('ana@bendike.example');
+      expect(notified.ownerNotifiedAt).not.toBeNull();
+    });
+
+    test('sends to the address on the sheet, even when the owner account has another', async () => {
+      const { sheet } = await service.start(rigger, rig.id);
+      await service.saveDraft(rigger, sheet.id, {
+        checkedIds: allIds,
+        bulletinsChecked: true,
+        mardConnected: true,
+        ownerEmail: 'ana.personal@bendike.example',
+        notes: 'Container and AAD are not on this rig',
+      });
+      await service.sign(rigger, sheet.id, 'AR-1234');
+
+      await service.notifyOwner(rigger, sheet.id);
+
+      expect(sender.send).toHaveBeenCalledWith(expect.objectContaining({ to: 'ana.personal@bendike.example' }));
+    });
+
+    test('an admin can send it', async () => {
+      const sheet = await signedSheet();
+
+      await expect(service.notifyOwner(admin, sheet.id)).resolves.toBeDefined();
+    });
+
+    test('refuses a draft, a void sheet, a missing address and a bad address', async () => {
+      const { sheet: draft } = await service.start(rigger, rig.id);
+      await expect(service.notifyOwner(rigger, draft.id)).rejects.toThrow(ConflictException);
+
+      const signed = await signedSheet();
+      const stored = (await manager.findOne(PackingSheet, { where: { id: signed.id } })) as PackingSheet;
+      stored.ownerEmail = '';
+      await manager.save(stored);
+      await expect(service.notifyOwner(rigger, signed.id)).rejects.toThrow(/owner email/);
+      stored.ownerEmail = 'not an email';
+      await manager.save(stored);
+      await expect(service.notifyOwner(rigger, signed.id)).rejects.toThrow(BadRequestException);
+
+      stored.ownerEmail = 'ana@bendike.example';
+      await manager.save(stored);
+      await service.voidSheet(rigger, signed.id, 'Wrong reserve');
+      await expect(service.notifyOwner(rigger, signed.id)).rejects.toThrow(ConflictException);
+      expect(sender.send).not.toHaveBeenCalled();
+    });
+
+    test('only the rigger who signed it or an admin can send it', async () => {
+      const sheet = await signedSheet();
+      const shared = build(linkedTo([rigger.id, owner.id], [otherRigger.id, owner.id]));
+
+      await expect(shared.notifyOwner(otherRigger, sheet.id)).rejects.toThrow(ForbiddenException);
+      await expect(service.notifyOwner(stranger, sheet.id)).rejects.toThrow(NotFoundException);
+      expect(sender.send).not.toHaveBeenCalled();
+    });
+
+    test('will not send the same notice twice within ten minutes, but will after that', async () => {
+      const sheet = await signedSheet();
+      await service.notifyOwner(rigger, sheet.id);
+
+      const again = service.notifyOwner(rigger, sheet.id);
+      await expect(again).rejects.toBeInstanceOf(HttpException);
+      await expect(again).rejects.toMatchObject({ status: 429 });
+      expect(sender.send).toHaveBeenCalledTimes(1);
+
+      const stored = (await manager.findOne(PackingSheet, { where: { id: sheet.id } })) as PackingSheet;
+      stored.ownerNotifiedAt = new Date(Date.now() - 11 * 60 * 1000);
+      await manager.save(stored);
+      await service.notifyOwner(rigger, sheet.id);
+      expect(sender.send).toHaveBeenCalledTimes(2);
+    });
+
+    test('a provider failure is a 502 and nothing is recorded as sent', async () => {
+      const sheet = await signedSheet();
+      sender.send.mockRejectedValue(new Error('resend down'));
+
+      await expect(service.notifyOwner(rigger, sheet.id)).rejects.toThrow(BadGatewayException);
+
+      const stored = (await manager.findOne(PackingSheet, { where: { id: sheet.id } })) as PackingSheet;
+      expect(stored.ownerNotifiedAt).toBeNull();
+      expect(stored.ownerNotifiedTo).toBeNull();
     });
   });
 });

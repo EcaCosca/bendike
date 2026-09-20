@@ -1,5 +1,15 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsOptional, IsString, IsUUID, Length, MaxLength, ValidateIf } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsEmail,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Length,
+  MaxLength,
+  ValidateIf,
+} from 'class-validator';
 import { IsDateOnly } from '../../common/is-date-only';
 
 export class StartPackingSheetDto {
@@ -24,7 +34,12 @@ export class SavePackingDraftDto {
   @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(200) ownerName?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(300) ownerAddress?: string;
   @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(60) ownerPhone?: string;
-  @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(200) ownerEmail?: string;
+  @ApiPropertyOptional()
+  @IsOptional()
+  @ValidateIf((o: SavePackingDraftDto) => o.ownerEmail !== '')
+  @IsEmail()
+  @MaxLength(200)
+  ownerEmail?: string;
   @ApiPropertyOptional()
   @ValidateIf((o: SavePackingDraftDto) => o.manualDocumentId !== null)
   @IsOptional()

@@ -129,6 +129,34 @@ so that I can **look up who packed it, when, and what was noted**.
   same transaction and keep the sheet.
 - The API shall never delete or edit a signed sheet.
 
+### Story 7: Tell the owner the repack is done
+
+As a **Rigger**,
+I want **to email the owner a professional notice once a repack is signed**,
+so that I can **let them know the reserve is ready and how to reach me to arrange a pick-up**.
+
+#### Acceptance Criteria
+
+- When the rigger who signed a sheet, or an admin, asks to notify the owner, the API shall send an email to the
+  owner's address on the sheet and record when and to whom it was sent.
+- The email shall be branded with a Bendike banner and shall carry the owner's name, the reserve's manufacturer, model
+  and serial, the rig's name, the date and time of the repack, the sheet number, the rigger's name and licence number,
+  the next repack due date and, when the rigger wrote any, the notes.
+- The email shall offer a button that opens WhatsApp with the rigger's number and a prefilled message from the owner
+  to coordinate a pick-up; where the rigger has no phone recorded, the button shall write an email to the rigger
+  instead.
+- The API shall write the email in the owner's language (`es`, `en` or `pt`) and shall not address the rigger with a
+  gendered pronoun.
+- While `EMAIL_OVERRIDE_TO` is set, the API shall send the email to that address with the intended recipient in the
+  subject, as it does for every other email.
+- If the sheet is a draft or void, then the API shall respond 409; if the sheet has no valid owner email, then the API
+  shall respond 400 saying so; if someone other than the signing rigger or an admin asks, then the API shall respond 403.
+- If a notice for the same sheet was sent less than ten minutes ago, then the API shall respond 429 and send nothing.
+- If the email provider fails, then the API shall respond 502 and record nothing as sent.
+- The web app shall offer, in the signing dialog, a checkbox "Email the owner that the repack is done" that is on
+  while the sheet has an owner email, and on the printable sheet a button "Email owner" that shows when and to whom
+  the last notice was sent.
+
 ---
 
 ## Design
@@ -361,6 +389,57 @@ dialog and signing; and the Start repack button.
 **Done when**:
 
 - [x] All verification steps pass
+
+---
+
+### Task 7: Owner notice email (API)
+
+**Depends on**: Task 4
+
+**Objective**: A branded, three-language repack notice, and an endpoint that sends it and records it.
+
+**Affected files**:
+
+- `apps/api/src/packing-sheets/repack-notice-renderer.ts` (+ spec), `packing-sheets.service.ts`, controller, module,
+  entity and views, migration `owner_notified_at`, `owner_notified_to`, `packages/shared/src/packing-sheets.ts`
+
+**Requirements**: Story 7
+
+**Verification**:
+
+- [x] The renderer output carries the banner, every field named in Story 7, a WhatsApp or email button, escapes
+      user text, and reads correctly in `es`, `en` and `pt`
+- [x] Sending records who and when, refuses drafts, void sheets, missing addresses, other users and a repeat within
+      ten minutes, and reports a provider failure as 502
+
+**Done when**:
+
+- [x] All verification steps pass
+
+---
+
+### Task 8: Owner notice (web)
+
+**Depends on**: Task 7
+
+**Objective**: The signing-dialog checkbox and the "Email owner" button on the printable sheet.
+
+**Affected files**:
+
+- `apps/web/src/pages/packing/SignDialog.tsx`, `PackingJobPage.tsx`, `PackingSheetPrintPage.tsx`, `packing-api.ts`
+
+**Requirements**: Story 7
+
+**Verification**:
+
+- [ ] Signing with the box ticked sends the notice and the printable sheet says who it went to; a failure is shown
+      without losing the signed sheet
+- [ ] The button on the printable sheet sends it, shows the last send, and is hidden from anyone who cannot send
+- [ ] Verified in a browser, and the email viewed as rendered HTML
+
+**Done when**:
+
+- [ ] All verification steps pass
 
 ---
 

@@ -231,6 +231,8 @@ export interface PackingSheetView {
   missing: SheetProblem[] | null;
   signedAt: string | null;
   entryId: string | null;
+  ownerNotifiedAt: string | null;
+  ownerNotifiedTo: string | null;
   createdAt: string;
   updatedAt: string;
 }
