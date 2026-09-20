@@ -17,9 +17,11 @@ import GridViewIcon from '@mui/icons-material/GridView';
 import ViewAgendaOutlinedIcon from '@mui/icons-material/ViewAgendaOutlined';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
-import { Role, type GearOverview, type RigView } from '@bendike/shared';
+import { Role, type GearOverview, type RigCovers, type RigView } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import { getCovers } from '../rigphotos/rig-photos-api';
+import { RigCover } from '../rigphotos/RigCover';
 import { inspectionLine } from './entry-kinds';
 import { getOverview } from './gear-api';
 import { filterRigs, filterSpares, sortRigs, type RigSort, type StatusFilter } from './gear-filters';
@@ -40,13 +42,14 @@ const SUMMARY: { key: StatusFilter; label: string }[] = [
   { key: 'grounded', label: 'Grounded' },
 ];
 
-function RigCard({ rig }: { rig: RigView }) {
+function RigCard({ rig, cover }: { rig: RigView; cover: string | undefined }) {
   const grounded = rig.readiness.state === 'grounded';
   return (
     <Card variant="outlined" data-testid="rig-card">
       <CardContent>
         <Stack spacing={1}>
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ flexWrap: 'wrap', rowGap: 1 }}>
+          <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexWrap: 'wrap', rowGap: 1 }}>
+            <RigCover photoId={cover} rigName={rig.name} size={56} />
             <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
               <Link component={RouterLink} to={`/app/gear/${rig.id}`} color="inherit" underline="hover">
                 {rig.name}
@@ -111,6 +114,7 @@ export function GearPage() {
   const viewingOther = otherOwner !== undefined && otherOwner !== user?.id;
   const canAdd = !viewingOther || user?.role === Role.Admin;
   const [overview, setOverview] = useState<GearOverview | null>(null);
+  const [covers, setCovers] = useState<RigCovers>({});
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<StatusFilter | ''>('');
   const [kind, setKind] = useState<GearKind | ''>('');
@@ -129,6 +133,11 @@ export function GearPage() {
   const reload = useCallback(async () => {
     if (!token) return;
     setOverview(await getOverview(token, otherOwner));
+  }, [token, otherOwner]);
+
+  useEffect(() => {
+    if (!token) return;
+    getCovers(token, otherOwner).then(setCovers, () => setCovers({}));
   }, [token, otherOwner]);
 
   useEffect(() => {
@@ -262,7 +271,7 @@ export function GearPage() {
             )}
 
             {view === 'grid' && (overview.rigs.length > 0 || overview.spares.length > 0) && (
-              <GearGrid overview={overview} filters={filters} sort={sort} />
+              <GearGrid overview={overview} filters={filters} sort={sort} covers={covers} />
             )}
 
             {view === 'cards' && activeRigs.length > 0 && (
@@ -271,7 +280,7 @@ export function GearPage() {
                   sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' } }}
                 >
                   {activeRigs.map((rig) => (
-                    <RigCard key={rig.id} rig={rig} />
+                    <RigCard key={rig.id} rig={rig} cover={covers[rig.id]} />
                   ))}
                 </Box>
               </Section>
@@ -310,7 +319,7 @@ export function GearPage() {
                   sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' } }}
                 >
                   {inactiveRigs.map((rig) => (
-                    <RigCard key={rig.id} rig={rig} />
+                    <RigCard key={rig.id} rig={rig} cover={covers[rig.id]} />
                   ))}
                 </Box>
               </Section>

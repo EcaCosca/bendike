@@ -16,7 +16,15 @@ import {
 } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { GEAR_KINDS, paginate, type GearItemView, type GearOverview, type RigView } from '@bendike/shared';
+import {
+  GEAR_KINDS,
+  paginate,
+  type GearItemView,
+  type GearOverview,
+  type RigCovers,
+  type RigView,
+} from '@bendike/shared';
+import { RigCover } from '../rigphotos/RigCover';
 import { inspectionLine } from './entry-kinds';
 import type { GearFilters, RigSort } from './gear-filters';
 import { equipmentRows, rigNextDue, rigRows, type EquipmentRow } from './gear-grid';
@@ -119,12 +127,15 @@ function SlotCell({ item }: { item: GearItemView | null }) {
   );
 }
 
-function RigLine({ rig }: { rig: RigView }) {
+function RigLine({ rig, cover }: { rig: RigView; cover: string | undefined }) {
   const next = rigNextDue(rig);
   return (
     <TableRow hover>
       <TableCell>
-        <RigLink rig={rig} />
+        <Stack direction="row" spacing={1} alignItems="center">
+          <RigCover photoId={cover} rigName={rig.name} size={40} />
+          <RigLink rig={rig} />
+        </Stack>
       </TableCell>
       <TableCell>
         <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', rowGap: 0.5 }}>
@@ -167,10 +178,12 @@ export function GearGrid({
   overview,
   filters,
   sort,
+  covers = {},
 }: {
   overview: Pick<GearOverview, 'rigs' | 'spares'>;
   filters: GearFilters;
   sort: RigSort;
+  covers?: RigCovers;
 }) {
   const [mode, setMode] = useState<Mode>('equipment');
   const [page, setPage] = useState(0);
@@ -225,7 +238,7 @@ export function GearGrid({
               ) : mode === 'equipment' ? (
                 equipmentPage.map((row) => <EquipmentLine key={row.item.id} row={row} />)
               ) : (
-                rigPage.map((rig) => <RigLine key={rig.id} rig={rig} />)
+                rigPage.map((rig) => <RigLine key={rig.id} rig={rig} cover={covers[rig.id]} />)
               )}
             </TableBody>
           </Table>

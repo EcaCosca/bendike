@@ -14,6 +14,7 @@ function summary(overrides: Partial<PackingSheetSummary> = {}): PackingSheetSumm
     rigId: 'tandem-1',
     rigName: 'Tandem 1',
     reserveItemId: 'reserve-1',
+    entryId: 'entry-2',
     sheetNo: 2,
     performedOn: '2026-09-10',
     riggerName: 'Eca Rigger',

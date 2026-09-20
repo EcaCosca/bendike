@@ -5,6 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import * as useAuthModule from '../../auth/use-auth';
 import * as bulletinApi from '../bulletins/bulletins-api';
 import * as packingApi from '../packing/packing-api';
+import * as photoApi from '../rigphotos/rig-photos-api';
 import { entryView, gearItem, groundingView, pending, rigDetail } from './fixtures';
 import * as api from './gear-api';
 import { RigPage } from './RigPage';
@@ -13,6 +14,10 @@ jest.mock('../../auth/use-auth');
 jest.mock('./gear-api');
 jest.mock('../bulletins/bulletins-api');
 jest.mock('../packing/packing-api');
+jest.mock('../rigphotos/rig-photos-api');
+jest.mock('../rigphotos/AuthedImage', () => ({
+  AuthedImage: ({ alt }: { alt: string }) => <img alt={alt} />,
+}));
 
 const mocked = jest.mocked(api);
 
@@ -95,6 +100,7 @@ const bulletins = jest.mocked(bulletinApi);
 
 beforeEach(() => {
   jest.mocked(packingApi.listSheets).mockResolvedValue([]);
+  jest.mocked(photoApi.listPhotos).mockResolvedValue([]);
 });
 
 function groundedByRigger(overrides: Parameters<typeof rigDetail>[1] = {}) {
@@ -467,6 +473,7 @@ describe('RigPage packing log', () => {
         rigId: 'micro-3',
         rigName: 'Micro 3',
         reserveItemId: 'reserve-1',
+        entryId: 'entry-2',
         sheetNo: 2,
         performedOn: '2026-09-10',
         riggerName: 'Eca Rigger',
@@ -480,5 +487,54 @@ describe('RigPage packing log', () => {
     const table = await screen.findByRole('table', { name: 'Reserve packing log' });
     expect(within(table).getByText('Eca Rigger')).toBeInTheDocument();
     expect(packingApi.listSheets).toHaveBeenCalledWith('token-1', { rigId: 'micro-3' });
+  });
+});
+
+describe('RigPage photos', () => {
+  const rigPhoto = {
+    id: 'photo-1',
+    rigId: 'micro-3',
+    entryId: null,
+    fileName: 'front.jpg',
+    sizeBytes: 1000,
+    caption: 'Front view',
+    addedById: 'owner-1',
+    addedByName: 'Someone',
+    createdAt: '2026-09-12T10:00:00.000Z',
+  };
+
+  beforeEach(() => {
+    mocked.listModels.mockResolvedValue([]);
+    mocked.getRig.mockResolvedValue(rigDetail('Micro 3', { id: 'micro-3' }));
+  });
+
+  test('shows the rig photos and the newest as its cover', async () => {
+    jest.mocked(photoApi.listPhotos).mockResolvedValue([rigPhoto]);
+    renderPage(Role.Dropzone);
+
+    const gallery = await screen.findByRole('region', { name: 'Photos' });
+    expect(await within(gallery).findByText('Front view')).toBeInTheDocument();
+    expect(photoApi.listPhotos).toHaveBeenCalledWith('token-1', 'micro-3');
+    expect(await screen.findByRole('img', { name: 'Photo of Micro 3' })).toBeInTheDocument();
+  });
+
+  test.each([Role.User, Role.Rigger, Role.Dropzone])('a %s can add a photo', async (role) => {
+    renderPage(role);
+
+    expect(await screen.findByRole('button', { name: 'Add photo' })).toBeInTheDocument();
+  });
+
+  test('the owner can remove a photo someone else added', async () => {
+    const user = userEvent.setup();
+    jest.mocked(photoApi.listPhotos).mockResolvedValue([{ ...rigPhoto, addedById: 'rigger-9', addedByName: 'Rigger' }]);
+    jest.mocked(photoApi.removePhoto).mockResolvedValue();
+    renderPage(Role.Dropzone);
+
+    await user.click(await screen.findByRole('button', { name: 'Open photo: Front view' }));
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Remove photo' }));
+    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Yes, remove it' }));
+
+    await waitFor(() => expect(photoApi.removePhoto).toHaveBeenCalledWith('token-1', 'photo-1'));
+    await waitFor(() => expect(photoApi.listPhotos).toHaveBeenCalledTimes(2));
   });
 });

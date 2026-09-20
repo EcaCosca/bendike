@@ -15,7 +15,14 @@ import {
 } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
-import { GEAR_KINDS, Role, type GroundingView, type MaintenanceEntryView, type RigDetailView } from '@bendike/shared';
+import {
+  GEAR_KINDS,
+  Role,
+  type GroundingView,
+  type MaintenanceEntryView,
+  type RigDetailView,
+  type RigPhotoView,
+} from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
 import { ClearGroundingDialog } from '../bulletins/ClearGroundingDialog';
@@ -28,6 +35,10 @@ import { HistoryTable } from './HistoryTable';
 import { LastInspection } from './LastInspection';
 import { startSheet } from '../packing/packing-api';
 import { PackingLog } from '../packing/PackingLog';
+import { canRemovePhoto } from '../rigphotos/rig-photo-access';
+import { listPhotos } from '../rigphotos/rig-photos-api';
+import { RigCover } from '../rigphotos/RigCover';
+import { RigPhotos } from '../rigphotos/RigPhotos';
 import { KIND_LABELS } from './item-details';
 import { RigDialog } from './RigDialog';
 import { GroundedBadge, StatusBadge } from './StatusBadge';
@@ -39,6 +50,7 @@ export function RigPage() {
   const { token, user } = useAuth();
   const navigate = useNavigate();
   const [rig, setRig] = useState<RigDetailView | null>(null);
+  const [photos, setPhotos] = useState<RigPhotoView[]>([]);
   const [unavailable, setUnavailable] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [editingRig, setEditingRig] = useState(false);
@@ -57,6 +69,15 @@ export function RigPage() {
   useEffect(() => {
     reload().catch(() => setUnavailable(true));
   }, [reload]);
+
+  const reloadPhotos = useCallback(async () => {
+    if (!token) return;
+    setPhotos(await listPhotos(token, rigId));
+  }, [token, rigId]);
+
+  useEffect(() => {
+    reloadPhotos().catch(() => setPhotos([]));
+  }, [reloadPhotos]);
 
   const onChanged = useCallback(() => {
     reload().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not refresh the rig'));
@@ -106,6 +127,7 @@ export function RigPage() {
         {rig && (
           <>
             <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexWrap: 'wrap', rowGap: 1 }}>
+              <RigCover photoId={photos[0]?.id} rigName={rig.name} size={64} />
               <Typography variant="h4" component="h1" sx={{ flexGrow: 1 }}>
                 {rig.name}
               </Typography>
@@ -239,6 +261,19 @@ export function RigPage() {
                 </TableContainer>
               </>
             )}
+            <RigPhotos
+              token={token}
+              rigId={rig.id}
+              photos={photos}
+              entries={rig.entries}
+              itemLabels={itemLabels}
+              canRemove={(photo) => canRemovePhoto(photo, user, rig.ownerId)}
+              onChanged={() => {
+                reloadPhotos().catch((err: unknown) =>
+                  setError(err instanceof Error ? err.message : 'Could not refresh the photos'),
+                );
+              }}
+            />
             <PackingLog token={token} role={user.role} scope={{ rigId: rig.id }} />
             <Typography variant="h5" component="h2">
               History

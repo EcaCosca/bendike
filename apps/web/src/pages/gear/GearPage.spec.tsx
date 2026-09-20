@@ -4,12 +4,17 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import * as useAuthModule from '../../auth/use-auth';
 import { gearItem, pending, rigView } from './fixtures';
+import * as photoApi from '../rigphotos/rig-photos-api';
 import * as api from './gear-api';
 import { GEAR_VIEW_KEY } from './gear-view';
 import { GearPage } from './GearPage';
 
 jest.mock('../../auth/use-auth');
 jest.mock('./gear-api');
+jest.mock('../rigphotos/rig-photos-api');
+jest.mock('../rigphotos/AuthedImage', () => ({
+  AuthedImage: ({ alt }: { alt: string }) => <img alt={alt} />,
+}));
 
 const mocked = jest.mocked(api);
 
@@ -90,6 +95,7 @@ describe('GearPage', () => {
     localStorage.setItem(GEAR_VIEW_KEY, 'cards');
     mocked.getOverview.mockResolvedValue(overview());
     mocked.listModels.mockResolvedValue([]);
+    jest.mocked(photoApi.getCovers).mockResolvedValue({});
   });
 
   afterEach(() => localStorage.clear());
@@ -301,6 +307,7 @@ describe('GearPage grid view', () => {
     localStorage.removeItem(GEAR_VIEW_KEY);
     mocked.getOverview.mockResolvedValue(overview());
     mocked.listModels.mockResolvedValue([]);
+    jest.mocked(photoApi.getCovers).mockResolvedValue({});
   });
 
   afterEach(() => localStorage.clear());
@@ -361,5 +368,67 @@ describe('GearPage grid view', () => {
 
     expect(await screen.findByText(/no rigs yet/i)).toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
+  });
+});
+
+describe('GearPage rig photos', () => {
+  beforeEach(() => {
+    mocked.getOverview.mockResolvedValue(overview());
+    mocked.listModels.mockResolvedValue([]);
+    jest.mocked(photoApi.getCovers).mockResolvedValue({ 'escuela-11': 'photo-1' });
+  });
+
+  afterEach(() => localStorage.clear());
+
+  test('a rig card shows the cover photo of the rig, and a placeholder for one without', async () => {
+    localStorage.setItem(GEAR_VIEW_KEY, 'cards');
+    renderPage();
+
+    const withPhoto = (await screen.findByRole('link', { name: 'Escuela 11' })).closest(
+      '[data-testid="rig-card"]',
+    ) as HTMLElement;
+    expect(await within(withPhoto).findByRole('img', { name: 'Photo of Escuela 11' })).toBeInTheDocument();
+    const without = screen.getByRole('link', { name: 'Micro 3' }).closest('[data-testid="rig-card"]') as HTMLElement;
+    expect(within(without).queryByRole('img', { name: /Photo of/ })).not.toBeInTheDocument();
+    expect(within(without).getByTestId('rig-cover')).toBeInTheDocument();
+  });
+
+  test('the rigs table shows the cover too', async () => {
+    const user = userEvent.setup();
+    localStorage.removeItem(GEAR_VIEW_KEY);
+    renderPage();
+    await screen.findByRole('table', { name: 'Equipment' });
+
+    await user.click(screen.getByRole('button', { name: 'Rigs' }));
+
+    expect(await screen.findByRole('img', { name: 'Photo of Escuela 11' })).toBeInTheDocument();
+  });
+
+  test('asks for the covers of the fleet being viewed', async () => {
+    jest.mocked(useAuthModule.useAuth).mockReturnValue({
+      user: {
+        id: 'r1',
+        email: 'r@b.c',
+        displayName: 'Eca',
+        role: Role.Rigger,
+        authMethods: ['password'],
+        phone: null,
+        locale: 'es',
+        createdAt: '2026-09-19T00:00:00.000Z',
+      },
+      token: 'token-1',
+      loading: false,
+      login: jest.fn(),
+      register: jest.fn(),
+      loginWithGoogle: jest.fn(),
+      logout: jest.fn(),
+    });
+    render(
+      <MemoryRouter initialEntries={['/app/gear?ownerId=dz-1']}>
+        <GearPage />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => expect(photoApi.getCovers).toHaveBeenCalledWith('token-1', 'dz-1'));
   });
 });

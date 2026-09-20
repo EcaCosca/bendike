@@ -237,13 +237,13 @@ the rig page, and covers on the dashboard.
 
 **Verification**:
 
-- [ ] Upload, viewer, caption, link to work and remove work; a rig with no photo shows a placeholder
-- [ ] Covers show on the cards and in the rigs table, and only for rigs the account can read
-- [ ] Verified in a browser at desktop and phone width
+- [x] Upload, viewer, caption, link to work and remove work; a rig with no photo shows a placeholder
+- [x] Covers show on the cards and in the rigs table, and only for rigs the account can read
+- [x] Verified in a browser at desktop and phone width
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
