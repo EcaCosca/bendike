@@ -261,6 +261,17 @@ describe('LibraryService', () => {
     });
   });
 
+  describe('view', () => {
+    test('returns one document, and refuses an unknown or archived one', async () => {
+      const added = await service.add(rigger, pdf(), { title: 'T', kind: 'manual', manufacturer: 'M' });
+
+      await expect(service.view(added.id)).resolves.toMatchObject({ title: 'T' });
+      await expect(service.view('00000000-0000-4000-8000-00000000ffff')).rejects.toThrow(NotFoundException);
+      await service.archive(admin, added.id, 'Wrong file');
+      await expect(service.view(added.id)).rejects.toThrow(NotFoundException);
+    });
+  });
+
   describe('forModel', () => {
     test('lists the documents for a model, newest revision first, without paging', async () => {
       await service.add(rigger, pdf('a'), { title: 'Old', kind: 'manual', modelId: sigma.id, revision: 'Rev2' });

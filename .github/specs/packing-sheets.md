@@ -191,7 +191,7 @@ sequenceDiagram
   participant API
   participant Log as Maintenance log
   Rigger->>Web: Start repack on a rig
-  Web->>API: POST /rigs/:id/packing-sheets
+  Web->>API: POST /packing-sheets (rigId)
   API-->>Web: draft + components, links, manuals
   Rigger->>Web: check bulletins, follow manual, tick items
   Web->>API: PUT /packing-sheets/:id (autosave)
@@ -280,13 +280,13 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] A rigger starts and resumes a draft; a rig without a reserve is refused; another rigger or a user gets 404
-- [ ] The job view carries each component's details, resolved link, open bulletins and Library manuals
-- [ ] Saving a draft ignores fields it may not change and never touches a signed sheet
+- [x] A rigger starts and resumes a draft; a rig without a reserve is refused; another rigger or a user gets 404
+- [x] The job view carries each component's details, resolved link, open bulletins and Library manuals
+- [x] Saving a draft ignores fields it may not change and never touches a signed sheet
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -304,14 +304,14 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] Signing with missing items and empty notes is refused; with notes it succeeds and stores what was missing
-- [ ] Signing writes one repack entry on the reserve and numbers sheets 1, 2, 3 per rigger without gaps
-- [ ] A signed sheet cannot change; voiding voids the entry and keeps the sheet
-- [ ] Owners and dropzones can read signed sheets, not drafts; strangers get 404
+- [x] Signing with missing items and empty notes is refused; with notes it succeeds and stores what was missing
+- [x] Signing writes one repack entry on the reserve and numbers sheets 1, 2, 3 per rigger without gaps
+- [x] A signed sheet cannot change; voiding voids the entry and keeps the sheet
+- [x] Owners and dropzones can read signed sheets, not drafts; strangers get 404
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 

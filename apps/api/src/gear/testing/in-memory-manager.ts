@@ -17,6 +17,7 @@ const TIMESTAMPED = new Set([
   'User',
   'ServiceBulletin',
   'LibraryDocument',
+  'PackingSheet',
 ]);
 let tick = 0;
 

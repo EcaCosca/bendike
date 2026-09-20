@@ -148,6 +148,14 @@ export class LibraryService {
     return { documents: page.map((doc) => this.toView(doc, models)), total };
   }
 
+  async view(id: string): Promise<LibraryDocumentView> {
+    const doc = await this.find(id);
+    if (doc.archivedAt !== null) {
+      throw new NotFoundException('Document not found');
+    }
+    return this.toView(doc, await this.manager.find(GearModel));
+  }
+
   async forModel(modelId: string): Promise<LibraryDocumentView[]> {
     return (await this.list({ role: Role.Rigger } as User, { modelId, page: 1 })).documents;
   }
