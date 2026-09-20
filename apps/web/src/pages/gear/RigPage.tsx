@@ -11,6 +11,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -35,6 +37,7 @@ import { HistoryTable } from './HistoryTable';
 import { LastInspection } from './LastInspection';
 import { startSheet } from '../packing/packing-api';
 import { PackingLog } from '../packing/PackingLog';
+import { RigTimeline } from '../history/RigTimeline';
 import { canRemovePhoto } from '../rigphotos/rig-photo-access';
 import { listPhotos } from '../rigphotos/rig-photos-api';
 import { RigCover } from '../rigphotos/RigCover';
@@ -51,6 +54,7 @@ export function RigPage() {
   const navigate = useNavigate();
   const [rig, setRig] = useState<RigDetailView | null>(null);
   const [photos, setPhotos] = useState<RigPhotoView[]>([]);
+  const [historyView, setHistoryView] = useState<'timeline' | 'table'>('timeline');
   const [unavailable, setUnavailable] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [editingRig, setEditingRig] = useState(false);
@@ -275,18 +279,46 @@ export function RigPage() {
               }}
             />
             <PackingLog token={token} role={user.role} scope={{ rigId: rig.id }} />
-            <Typography variant="h5" component="h2">
-              History
-            </Typography>
-            <HistoryTable
-              entries={rig.entries}
-              canVerify={canSignOff(user.role)}
-              isAdmin={user.role === Role.Admin}
-              userId={user.id}
-              itemLabels={itemLabels}
-              onVerify={(entry) => verify(entry.id)}
-              onVoid={setVoiding}
-            />
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ flexWrap: 'wrap', rowGap: 1 }}
+            >
+              <Typography variant="h5" component="h2">
+                History
+              </Typography>
+              <ToggleButtonGroup
+                exclusive
+                size="small"
+                value={historyView}
+                onChange={(_, next: 'timeline' | 'table' | null) => next && setHistoryView(next)}
+                aria-label="History view"
+              >
+                <ToggleButton value="timeline">Timeline</ToggleButton>
+                <ToggleButton value="table">Table</ToggleButton>
+              </ToggleButtonGroup>
+            </Stack>
+            {historyView === 'timeline' ? (
+              <RigTimeline
+                token={token}
+                rigId={rig.id}
+                entries={rig.entries}
+                groundings={rig.groundingHistory}
+                photos={photos}
+                itemLabels={itemLabels}
+              />
+            ) : (
+              <HistoryTable
+                entries={rig.entries}
+                canVerify={canSignOff(user.role)}
+                isAdmin={user.role === Role.Admin}
+                userId={user.id}
+                itemLabels={itemLabels}
+                onVerify={(entry) => verify(entry.id)}
+                onVoid={setVoiding}
+              />
+            )}
           </>
         )}
       </Stack>

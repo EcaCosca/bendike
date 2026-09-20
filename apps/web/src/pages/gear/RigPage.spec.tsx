@@ -378,7 +378,9 @@ describe('RigPage', () => {
   });
 
   test('the history marks unverified work, and shows voided entries struck through with their reason', async () => {
+    const user = userEvent.setup();
     renderPage(Role.Dropzone);
+    await user.click(await screen.findByRole('button', { name: 'Table' }));
 
     const history = await screen.findByRole('table', { name: 'Maintenance history' });
     expect(within(history).getByText('Unverified')).toBeInTheDocument();
@@ -530,11 +532,45 @@ describe('RigPage photos', () => {
     jest.mocked(photoApi.removePhoto).mockResolvedValue();
     renderPage(Role.Dropzone);
 
-    await user.click(await screen.findByRole('button', { name: 'Open photo: Front view' }));
+    const gallery = await screen.findByRole('region', { name: 'Photos' });
+    await user.click(await within(gallery).findByRole('button', { name: 'Open photo: Front view' }));
     await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Remove photo' }));
     await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Yes, remove it' }));
 
     await waitFor(() => expect(photoApi.removePhoto).toHaveBeenCalledWith('token-1', 'photo-1'));
     await waitFor(() => expect(photoApi.listPhotos).toHaveBeenCalledTimes(2));
+  });
+});
+
+describe('RigPage history', () => {
+  beforeEach(() => {
+    mocked.listModels.mockResolvedValue([]);
+  });
+
+  test('shows the timeline first, and the table with its actions one click away', async () => {
+    const user = userEvent.setup();
+    mocked.getRig.mockResolvedValue(groundedRig());
+    renderPage(Role.Dropzone);
+
+    expect(await screen.findByRole('list', { name: 'Rig history' })).toBeInTheDocument();
+    expect(screen.queryByRole('table', { name: 'Maintenance history' })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Table' }));
+    expect(screen.getByRole('table', { name: 'Maintenance history' })).toBeInTheDocument();
+    expect(screen.queryByRole('list', { name: 'Rig history' })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Timeline' }));
+    expect(screen.getByRole('list', { name: 'Rig history' })).toBeInTheDocument();
+  });
+
+  test('the timeline includes the groundings of the rig', async () => {
+    const grounding = groundingView({ reason: 'Bent reserve pin', closedAt: null });
+    mocked.getRig.mockResolvedValue(
+      rigDetail('Micro 3', { id: 'micro-3', groundingHistory: [grounding], entries: [] }),
+    );
+    renderPage(Role.Dropzone);
+
+    const timeline = await screen.findByRole('list', { name: 'Rig history' });
+    expect(within(timeline).getByText('Bent reserve pin')).toBeInTheDocument();
   });
 });

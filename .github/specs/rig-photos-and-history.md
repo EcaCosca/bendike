@@ -261,13 +261,13 @@ the rig page, and covers on the dashboard.
 
 **Verification**:
 
-- [ ] The timeline shows work, groundings and photos in date order with sheet links and statuses; filters narrow it;
+- [x] The timeline shows work, groundings and photos in date order with sheet links and statuses; filters narrow it;
       the table stays available with its actions; an empty rig says so
-- [ ] Verified in a browser as an owner, a dropzone and a rigger; README and this spec updated
+- [x] Verified in a browser as an owner, a dropzone and a rigger; README and this spec updated
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 

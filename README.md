@@ -85,6 +85,16 @@ manufacture). Publishing it finds every matching component across all gear:
 - A rigger can also ground a rig or a single component by hand, and give the green light with a note. Grounding is a
   record everyone can see, not a lock: Bendike shows it and the rigger and dropzone act on it.
 
+### Rig photos and rig history
+
+Every rig has a **photo gallery**: the owner, a linked rigger or an admin adds photos (JPEG, PNG or WebP, up to 20 a
+rig; the browser shrinks large phone photos to 1600 px first), can say which piece of work a photo is about, and
+sees the newest one as the rig's **cover** on the rig page, the gear cards and the rigs table. Photos are stored
+through the same storage port as the manual library and are only ever served through the API to people who can read the
+rig. The rig page's **History** opens as a **timeline** of everything that happened to the rig, newest first, grouped by
+month: repacks (linked to their packing sheet), services, inspections, groundings and clearances, and photos. It can be
+narrowed to one kind of event, and the table with its verify and void actions is one click away.
+
 ### The reserve packing sheet
 
 A rigger opens a rig and presses **Start repack**. The job page shows each component with its manufacturer's
