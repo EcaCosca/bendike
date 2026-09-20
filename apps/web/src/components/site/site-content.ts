@@ -10,6 +10,8 @@ export const SOCIAL_LINKS = [
   { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/enrique-coscarelli/' },
 ] as const;
 
+export const CONTACT_EMAIL = 'enriquecoscarelli@gmail.com';
+
 export const FOOTER_TAGLINE = 'Rigging loft and software, Argentina.';
 
 export const WHATSAPP_NUMBER = '5493413955408';

@@ -1,3 +1,5 @@
+import { isAllowed } from '../consent/consent-storage';
+
 export const GIS_SCRIPT_URL = 'https://accounts.google.com/gsi/client';
 
 export interface GoogleCredentialResponse {
@@ -18,6 +20,9 @@ function loadedAccountsId(): GoogleAccountsId | undefined {
 }
 
 export function loadGoogleIdentity(): Promise<GoogleAccountsId> {
+  if (!isAllowed('thirdParty')) {
+    return Promise.reject(new Error('Google sign-in needs your permission to load'));
+  }
   const ready = loadedAccountsId();
   if (ready) {
     return Promise.resolve(ready);

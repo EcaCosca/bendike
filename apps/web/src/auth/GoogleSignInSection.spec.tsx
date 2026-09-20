@@ -1,4 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { ACCEPT_ALL, REJECT_ALL, clearConsent, readConsent, writeConsent } from '../consent/consent-storage';
+import { ConsentProvider } from '../consent/ConsentProvider';
 import { GoogleSignInSection } from './GoogleSignInSection';
 import { GoogleClientIdContext } from './google-client-id';
 import { useAuth } from './use-auth';
@@ -27,15 +30,20 @@ function authState(loginWithGoogle: jest.Mock): ReturnType<typeof useAuth> {
 
 function renderSection(clientId: string | undefined, onSignedIn: () => void, onError: (message: string) => void) {
   return render(
-    <GoogleClientIdContext.Provider value={clientId}>
-      <GoogleSignInSection onSignedIn={onSignedIn} onError={onError} />
-    </GoogleClientIdContext.Provider>,
+    <ConsentProvider>
+      <GoogleClientIdContext.Provider value={clientId}>
+        <GoogleSignInSection onSignedIn={onSignedIn} onError={onError} />
+      </GoogleClientIdContext.Provider>
+    </ConsentProvider>,
   );
 }
 
 describe('GoogleSignInSection', () => {
+  beforeEach(() => writeConsent(ACCEPT_ALL));
+
   afterEach(() => {
     delete (window as unknown as { google?: unknown }).google;
+    clearConsent();
   });
 
   test('renders nothing while no Google client id is configured', () => {
@@ -80,5 +88,45 @@ describe('GoogleSignInSection', () => {
 
     await waitFor(() => expect(onError).toHaveBeenCalledWith('Invalid Google sign-in'));
     expect(onSignedIn).not.toHaveBeenCalled();
+  });
+
+  describe('without permission for third-party services', () => {
+    test('does not load Google, and explains why with a button to allow it', () => {
+      writeConsent(REJECT_ALL);
+      mockedUseAuth.mockReturnValue(authState(jest.fn()));
+      const id = installGoogle();
+
+      renderSection('client-1', jest.fn(), jest.fn());
+
+      expect(id.initialize).not.toHaveBeenCalled();
+      expect(screen.getByText(/stays off until you allow third-party services/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Allow Google sign-in' })).toBeInTheDocument();
+    });
+
+    test('allowing it records only that permission and then shows the Google button', async () => {
+      const user = userEvent.setup();
+      writeConsent({ preferences: true, thirdParty: false });
+      mockedUseAuth.mockReturnValue(authState(jest.fn()));
+      const id = installGoogle();
+      renderSection('client-1', jest.fn(), jest.fn());
+
+      await user.click(screen.getByRole('button', { name: 'Allow Google sign-in' }));
+
+      expect(readConsent()).toMatchObject({ preferences: true, thirdParty: true });
+      await waitFor(() => expect(id.initialize).toHaveBeenCalled());
+      expect(screen.queryByRole('button', { name: 'Allow Google sign-in' })).not.toBeInTheDocument();
+    });
+
+    test('allowing it before any other choice does not turn preferences on', async () => {
+      const user = userEvent.setup();
+      clearConsent();
+      mockedUseAuth.mockReturnValue(authState(jest.fn()));
+      installGoogle();
+      renderSection('client-1', jest.fn(), jest.fn());
+
+      await user.click(screen.getByRole('button', { name: 'Allow Google sign-in' }));
+
+      expect(readConsent()).toMatchObject({ preferences: false, thirdParty: true });
+    });
   });
 });

@@ -1,4 +1,5 @@
 import { act, render, waitFor } from '@testing-library/react';
+import { ACCEPT_ALL, REJECT_ALL, clearConsent, writeConsent } from '../consent/consent-storage';
 import { GoogleSignInButton } from './GoogleSignInButton';
 import { GIS_SCRIPT_URL, type GoogleAccountsId } from './google-identity';
 
@@ -13,7 +14,10 @@ function installGoogle() {
 }
 
 describe('GoogleSignInButton', () => {
+  beforeEach(() => writeConsent(ACCEPT_ALL));
+
   afterEach(() => {
+    clearConsent();
     delete (window as unknown as GoogleWindow).google;
     document.querySelectorAll(`script[src="${GIS_SCRIPT_URL}"]`).forEach((node) => node.remove());
   });
@@ -68,5 +72,15 @@ describe('GoogleSignInButton', () => {
     });
 
     await waitFor(() => expect(onError).toHaveBeenCalledWith(expect.stringMatching(/Google/)));
+  });
+
+  test('never loads the Google script without permission for third-party services', async () => {
+    writeConsent(REJECT_ALL);
+    const onError = jest.fn();
+
+    render(<GoogleSignInButton clientId="client-1" onCredential={jest.fn()} onError={onError} />);
+
+    await waitFor(() => expect(onError).toHaveBeenCalledWith('Google sign-in needs your permission to load'));
+    expect(document.querySelector(`script[src="${GIS_SCRIPT_URL}"]`)).toBeNull();
   });
 });

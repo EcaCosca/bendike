@@ -10,6 +10,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import * as useAuthModule from '../../auth/use-auth';
+import { ACCEPT_ALL, clearConsent, writeConsent } from '../../consent/consent-storage';
 import * as libraryApi from '../library/library-api';
 import * as api from './packing-api';
 import { PackingJobPage } from './PackingJobPage';
@@ -149,12 +150,16 @@ function renderPage() {
 describe('PackingJobPage', () => {
   beforeEach(() => {
     localStorage.clear();
+    writeConsent(ACCEPT_ALL);
     mocked.getSheet.mockResolvedValue(job());
     mocked.notifyOwner.mockResolvedValue(sheet({ status: 'signed' }));
     mocked.saveDraft.mockImplementation((_t, _id, body) => Promise.resolve(job({ sheet: body })));
   });
 
-  afterEach(() => localStorage.clear());
+  afterEach(() => {
+    localStorage.clear();
+    clearConsent();
+  });
 
   test('shows the rig, the owner details and the three components with their details', async () => {
     renderPage();

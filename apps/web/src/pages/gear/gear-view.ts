@@ -1,8 +1,13 @@
+import { isAllowed } from '../../consent/consent-storage';
+
 export type GearView = 'grid' | 'cards';
 
 export const GEAR_VIEW_KEY = 'bendike.gear.view';
 
 export function readGearView(): GearView {
+  if (!isAllowed('preferences')) {
+    return 'grid';
+  }
   try {
     return localStorage.getItem(GEAR_VIEW_KEY) === 'cards' ? 'cards' : 'grid';
   } catch {
@@ -11,6 +16,9 @@ export function readGearView(): GearView {
 }
 
 export function saveGearView(view: GearView): void {
+  if (!isAllowed('preferences')) {
+    return;
+  }
   try {
     localStorage.setItem(GEAR_VIEW_KEY, view);
   } catch {

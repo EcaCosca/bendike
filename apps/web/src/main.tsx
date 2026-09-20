@@ -5,6 +5,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
 import { AuthProvider } from './auth/auth-context';
 import { GoogleClientIdContext } from './auth/google-client-id';
+import { ConsentProvider } from './consent/ConsentProvider';
+import { CookieConsent } from './consent/CookieConsent';
 import { theme } from './theme/theme';
 
 const container = document.getElementById('root');
@@ -20,9 +22,12 @@ createRoot(container).render(
       <CssBaseline />
       <BrowserRouter>
         <GoogleClientIdContext.Provider value={googleClientId}>
-          <AuthProvider>
-            <App />
-          </AuthProvider>
+          <ConsentProvider>
+            <AuthProvider>
+              <App />
+            </AuthProvider>
+            <CookieConsent />
+          </ConsentProvider>
         </GoogleClientIdContext.Provider>
       </BrowserRouter>
     </ThemeProvider>

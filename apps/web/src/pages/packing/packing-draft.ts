@@ -1,3 +1,4 @@
+import { isAllowed } from '../../consent/consent-storage';
 import type {
   PackingComponents,
   PackingElements,
@@ -58,6 +59,9 @@ export function elementsOf(components: PackingComponents): PackingElements {
 }
 
 export function readLicence(): string {
+  if (!isAllowed('preferences')) {
+    return '';
+  }
   try {
     return localStorage.getItem(LICENCE_KEY) ?? '';
   } catch {
@@ -66,6 +70,9 @@ export function readLicence(): string {
 }
 
 export function saveLicence(licence: string): void {
+  if (!isAllowed('preferences')) {
+    return;
+  }
   try {
     localStorage.setItem(LICENCE_KEY, licence);
   } catch {

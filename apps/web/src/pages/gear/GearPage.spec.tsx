@@ -6,6 +6,7 @@ import * as useAuthModule from '../../auth/use-auth';
 import { gearItem, pending, rigView } from './fixtures';
 import * as photoApi from '../rigphotos/rig-photos-api';
 import * as api from './gear-api';
+import { ACCEPT_ALL, clearConsent, writeConsent } from '../../consent/consent-storage';
 import { GEAR_VIEW_KEY } from './gear-view';
 import { GearPage } from './GearPage';
 
@@ -92,13 +93,17 @@ function renderPage(role: Role = Role.Dropzone) {
 
 describe('GearPage', () => {
   beforeEach(() => {
+    writeConsent(ACCEPT_ALL);
     localStorage.setItem(GEAR_VIEW_KEY, 'cards');
     mocked.getOverview.mockResolvedValue(overview());
     mocked.listModels.mockResolvedValue([]);
     jest.mocked(photoApi.getCovers).mockResolvedValue({});
   });
 
-  afterEach(() => localStorage.clear());
+  afterEach(() => {
+    localStorage.clear();
+    clearConsent();
+  });
 
   test('a dropzone sees its fleet, a user sees my gear', async () => {
     renderPage(Role.Dropzone);
@@ -304,13 +309,17 @@ describe('GearPage', () => {
 
 describe('GearPage grid view', () => {
   beforeEach(() => {
+    writeConsent(ACCEPT_ALL);
     localStorage.removeItem(GEAR_VIEW_KEY);
     mocked.getOverview.mockResolvedValue(overview());
     mocked.listModels.mockResolvedValue([]);
     jest.mocked(photoApi.getCovers).mockResolvedValue({});
   });
 
-  afterEach(() => localStorage.clear());
+  afterEach(() => {
+    localStorage.clear();
+    clearConsent();
+  });
 
   test('shows the equipment grid by default, with manufacturer and serial, instead of cards', async () => {
     renderPage();
@@ -373,12 +382,16 @@ describe('GearPage grid view', () => {
 
 describe('GearPage rig photos', () => {
   beforeEach(() => {
+    writeConsent(ACCEPT_ALL);
     mocked.getOverview.mockResolvedValue(overview());
     mocked.listModels.mockResolvedValue([]);
     jest.mocked(photoApi.getCovers).mockResolvedValue({ 'escuela-11': 'photo-1' });
   });
 
-  afterEach(() => localStorage.clear());
+  afterEach(() => {
+    localStorage.clear();
+    clearConsent();
+  });
 
   test('a rig card shows the cover photo of the rig, and a placeholder for one without', async () => {
     localStorage.setItem(GEAR_VIEW_KEY, 'cards');

@@ -2,6 +2,7 @@ import { Role } from '@bendike/shared';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { RequireAuth } from './auth/RequireAuth';
 import { RequireRole } from './auth/RequireRole';
+import { CookiePolicyPage } from './consent/CookiePolicyPage';
 import { LocaleLayout } from './i18n/LocaleLayout';
 import { RedirectToLocale } from './i18n/RedirectToLocale';
 import { AboutStoryPage } from './pages/about/story/AboutStoryPage';
@@ -36,6 +37,7 @@ export function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/about" element={<AboutStoryPage />} />
+      <Route path="/cookies" element={<CookiePolicyPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/shop/*" element={<RedirectToLocale />} />
