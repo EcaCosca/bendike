@@ -24,7 +24,8 @@ Bendike. The first customers are riggers like me, and the dropzones and skydiver
 
 If you are a developer joining the project, everything you need is in this file, in [`docs/`](docs) and in
 [`.github/specs/`](.github/specs). Start with [How the pieces fit](#how-the-pieces-fit) and
-[How we work](#how-we-work).
+[How we work](#how-we-work). A slide deck about the product, in English and Spanish, is in
+[`docs/presentation`](docs/presentation).
 
 ## What you can do today
 

@@ -40,3 +40,6 @@ excel/
 
 # Local copy of the manual library (development only)
 apps/api/library-files
+
+# Built by docs/presentation/embed.mjs
+docs/presentation/bendike-deck.standalone.html
