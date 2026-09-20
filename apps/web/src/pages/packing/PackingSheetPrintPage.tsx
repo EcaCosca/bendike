@@ -1,6 +1,6 @@
 import { Alert, Box, Button, Link, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
-import { Link as RouterLink, Navigate, useParams } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useLocation, useParams } from 'react-router-dom';
 import {
   PACKING_CHECKLIST,
   PACKING_ELEMENT_KINDS,
@@ -12,7 +12,8 @@ import {
 } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
-import { getSheet } from './packing-api';
+import { getSheet, notifyOwner } from './packing-api';
+import type { SheetNotice } from './packing-draft';
 import { VoidSheetDialog } from './VoidSheetDialog';
 
 const ELEMENT_LABELS: Record<PackingElementKind, string> = { reserve: 'RESERVA', container: 'CONTENEDOR', aad: 'AAD' };
@@ -32,6 +33,7 @@ const PRINT_CSS = `
   .sheet-form table { margin-bottom: 6px !important; }
 }
 `;
+const withPeriod = (message: string) => (/[.!?]$/.test(message) ? message : `${message}.`);
 const yesNo = (value: boolean | null, yes: boolean) => (value === yes ? '☒' : '☐');
 
 function Ticked({ on }: { on: boolean }) {
@@ -209,6 +211,11 @@ function SheetForm({ sheet }: { sheet: PackingSheetView }) {
 export function PackingSheetPrintPage() {
   const { rigId = '', sheetId = '' } = useParams();
   const { token, user } = useAuth();
+  const location = useLocation();
+  const [notice, setNotice] = useState<SheetNotice | null>(
+    (location.state as { notice?: SheetNotice } | null)?.notice ?? null,
+  );
+  const [sending, setSending] = useState(false);
   const [sheet, setSheet] = useState<PackingSheetView | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [voiding, setVoiding] = useState(false);
@@ -227,6 +234,21 @@ export function PackingSheetPrintPage() {
   if (sheet?.status === 'draft') {
     return <Navigate to={`/app/gear/${rigId}/packing/${sheetId}`} replace />;
   }
+  const send = () => {
+    setSending(true);
+    setNotice(null);
+    notifyOwner(token, sheetId).then(
+      (updated) => {
+        setSheet(updated);
+        setSending(false);
+      },
+      (err: unknown) => {
+        setNotice({ kind: 'error', message: err instanceof Error ? err.message : 'Could not send the email' });
+        setSending(false);
+      },
+    );
+  };
+  const canEmail = sheet !== null && !sheet.voided && (user.role === Role.Admin || user.id === sheet.riggerId);
   const canVoid = sheet !== null && !sheet.voided && (user.role === Role.Admin || user.id === sheet.riggerId);
 
   return (
@@ -241,6 +263,11 @@ export function PackingSheetPrintPage() {
           <Link component={RouterLink} to={`/app/gear/${rigId}`} underline="hover" sx={{ flexGrow: 1 }}>
             Back to the rig
           </Link>
+          {canEmail && (
+            <Button variant="outlined" onClick={send} disabled={sending || sheet.ownerEmail.trim() === ''}>
+              {sheet.ownerNotifiedAt ? 'Email owner again' : 'Email owner'}
+            </Button>
+          )}
           {canVoid && (
             <Button color="error" variant="outlined" onClick={() => setVoiding(true)}>
               Void sheet
@@ -253,6 +280,29 @@ export function PackingSheetPrintPage() {
           )}
         </Stack>
         {error && <Alert severity="error">{error}</Alert>}
+        {notice?.kind === 'sent' && (
+          <Alert
+            severity="success"
+            sx={{ '@media print': { display: 'none' } }}
+          >{`The owner was emailed at ${notice.to}.`}</Alert>
+        )}
+        {notice?.kind === 'error' && (
+          <Alert severity="warning" sx={{ '@media print': { display: 'none' } }}>
+            {notice.whileSigning
+              ? `The sheet is signed, but the owner could not be emailed. ${withPeriod(notice.message)} You can try again with Email owner.`
+              : `Could not email the owner. ${withPeriod(notice.message)}`}
+          </Alert>
+        )}
+        {canEmail && sheet.ownerEmail.trim() === '' && (
+          <Typography variant="body2" color="text.secondary" sx={{ '@media print': { display: 'none' } }}>
+            Add the owner email before the sheet is signed to email them.
+          </Typography>
+        )}
+        {sheet?.ownerNotifiedAt && sheet.ownerNotifiedTo && (
+          <Typography variant="body2" color="text.secondary" sx={{ '@media print': { display: 'none' } }}>
+            {`Emailed to ${sheet.ownerNotifiedTo} on ${sheet.ownerNotifiedAt.slice(0, 10)} ${sheet.ownerNotifiedAt.slice(11, 16)} UTC`}
+          </Typography>
+        )}
         {sheet && <SheetForm sheet={sheet} />}
       </Stack>
       {voiding && sheet && (

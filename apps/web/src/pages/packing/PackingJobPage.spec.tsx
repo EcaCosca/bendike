@@ -95,6 +95,8 @@ function sheet(overrides: Partial<PackingSheetView> = {}): PackingSheetView {
     missing: null,
     signedAt: null,
     entryId: null,
+    ownerNotifiedAt: null,
+    ownerNotifiedTo: null,
     createdAt: '2026-09-20T10:00:00.000Z',
     updatedAt: '2026-09-20T10:00:00.000Z',
     ...overrides,
@@ -148,6 +150,7 @@ describe('PackingJobPage', () => {
   beforeEach(() => {
     localStorage.clear();
     mocked.getSheet.mockResolvedValue(job());
+    mocked.notifyOwner.mockResolvedValue(sheet({ status: 'signed' }));
     mocked.saveDraft.mockImplementation((_t, _id, body) => Promise.resolve(job({ sheet: body })));
   });
 
@@ -384,6 +387,67 @@ describe('PackingJobPage', () => {
       await waitFor(() => expect(mocked.signSheet).toHaveBeenCalledWith('token-1', 'sheet-1', 'AR-1234'));
       expect(await screen.findByText('Print page')).toBeInTheDocument();
       expect(localStorage.getItem('bendike.riggerLicence')).toBe('AR-1234');
+    });
+
+    test('offers to email the owner, on by default, and sends the notice after signing', async () => {
+      const user = userEvent.setup();
+      mocked.getSheet.mockResolvedValue(complete());
+      mocked.signSheet.mockResolvedValue(sheet({ status: 'signed', sheetNo: 1 }));
+      mocked.notifyOwner.mockResolvedValue(sheet({ status: 'signed', ownerNotifiedTo: 'ana@bendike.example' }));
+      renderPage();
+
+      const dialog = await openSignDialog(user);
+      const box = dialog.getByRole('checkbox', { name: /Email the owner that the repack is done/ });
+      expect(box).toBeChecked();
+      expect(dialog.getByText(/ana@bendike.example/)).toBeInTheDocument();
+      await user.type(dialog.getByLabelText(/Licence number/), 'AR-1234');
+      await user.click(dialog.getByRole('button', { name: 'Sign' }));
+
+      await waitFor(() => expect(mocked.notifyOwner).toHaveBeenCalledWith('token-1', 'sheet-1'));
+      const signOrder = mocked.signSheet.mock.invocationCallOrder[0] as number;
+      expect(mocked.notifyOwner.mock.invocationCallOrder[0] as number).toBeGreaterThan(signOrder);
+      expect(await screen.findByText('Print page')).toBeInTheDocument();
+    });
+
+    test('does not email the owner when the box is unticked', async () => {
+      const user = userEvent.setup();
+      mocked.getSheet.mockResolvedValue(complete());
+      mocked.signSheet.mockResolvedValue(sheet({ status: 'signed', sheetNo: 1 }));
+      renderPage();
+
+      const dialog = await openSignDialog(user);
+      await user.click(dialog.getByRole('checkbox', { name: /Email the owner/ }));
+      await user.type(dialog.getByLabelText(/Licence number/), 'AR-1234');
+      await user.click(dialog.getByRole('button', { name: 'Sign' }));
+
+      expect(await screen.findByText('Print page')).toBeInTheDocument();
+      expect(mocked.notifyOwner).not.toHaveBeenCalled();
+    });
+
+    test('a failed email does not undo the signature: it still opens the printable sheet', async () => {
+      const user = userEvent.setup();
+      mocked.getSheet.mockResolvedValue(complete());
+      mocked.signSheet.mockResolvedValue(sheet({ status: 'signed', sheetNo: 1 }));
+      mocked.notifyOwner.mockRejectedValue(new Error('The email could not be sent'));
+      renderPage();
+
+      const dialog = await openSignDialog(user);
+      await user.type(dialog.getByLabelText(/Licence number/), 'AR-1234');
+      await user.click(dialog.getByRole('button', { name: 'Sign' }));
+
+      expect(await screen.findByText('Print page')).toBeInTheDocument();
+    });
+
+    test('there is nothing to tick when the sheet has no owner email', async () => {
+      const user = userEvent.setup();
+      mocked.getSheet.mockResolvedValue(
+        job({ sheet: { checkedIds: allIds, bulletinsChecked: true, mardConnected: true, ownerEmail: '' } }),
+      );
+      renderPage();
+
+      const dialog = await openSignDialog(user);
+
+      expect(dialog.queryByRole('checkbox', { name: /Email the owner/ })).not.toBeInTheDocument();
     });
 
     test('remembers the licence number for the next sheet', async () => {

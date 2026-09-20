@@ -42,3 +42,7 @@ export function listSheets(
 export function setBulletinsLink(token: string, modelId: string, url: string): Promise<GearModelView> {
   return send('PUT', `/gear/models/${modelId}/bulletins-link`, token, { url });
 }
+
+export function notifyOwner(token: string, sheetId: string): Promise<PackingSheetView> {
+  return send('POST', `/packing-sheets/${sheetId}/notify-owner`, token);
+}

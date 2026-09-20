@@ -6,8 +6,9 @@ import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
 import { ChecklistSection } from './ChecklistSection';
 import { ComponentsSection } from './ComponentsSection';
-import { getSheet, saveDraft, signSheet } from './packing-api';
+import { getSheet, notifyOwner, saveDraft, signSheet } from './packing-api';
 import { elementsOf, readLicence, saveLicence, toBody, toDraft, type Draft } from './packing-draft';
+import type { SheetNotice } from './packing-draft';
 import { SignDialog } from './SignDialog';
 
 const AUTOSAVE_DELAY_MS = 400;
@@ -71,12 +72,23 @@ export function PackingJobPage() {
     return <Navigate to={`/app/gear/${rigId}/packing/${sheetId}/print`} replace />;
   }
 
-  async function sign(licence: string) {
+  async function sign(licence: string, notify: boolean) {
     if (!draft || !token) return;
     await saveDraft(token, sheetId, toBody(draft));
     await signSheet(token, sheetId, licence);
     saveLicence(licence);
-    void navigate(`/app/gear/${rigId}/packing/${sheetId}/print`, { replace: true });
+    let notice: SheetNotice | undefined;
+    if (notify) {
+      notice = await notifyOwner(token, sheetId).then(
+        (): SheetNotice => ({ kind: 'sent', to: draft.ownerEmail.trim() }),
+        (err: unknown): SheetNotice => ({
+          kind: 'error',
+          whileSigning: true,
+          message: err instanceof Error ? err.message : 'Unknown error',
+        }),
+      );
+    }
+    void navigate(`/app/gear/${rigId}/packing/${sheetId}/print`, { replace: true, state: { notice } });
   }
 
   return (
@@ -183,6 +195,7 @@ export function PackingJobPage() {
           draft={draft}
           elements={elementsOf(components)}
           initialLicence={readLicence()}
+          ownerEmail={draft.ownerEmail}
           onNotesChange={(notes) => change({ notes })}
           onSign={sign}
           onClose={() => setSigning(false)}

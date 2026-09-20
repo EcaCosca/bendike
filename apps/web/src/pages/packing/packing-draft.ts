@@ -18,6 +18,8 @@ export interface Draft {
   notes: string;
 }
 
+export type SheetNotice = { kind: 'sent'; to: string } | { kind: 'error'; message: string; whileSigning?: boolean };
+
 export const LICENCE_KEY = 'bendike.riggerLicence';
 
 export function toDraft(sheet: PackingSheetView): Draft {

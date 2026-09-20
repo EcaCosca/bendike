@@ -58,6 +58,8 @@ function signed(overrides: Partial<PackingSheetView> = {}): PackingSheetView {
     missing: [{ code: 'item_unticked', itemId: 'mard_hooked' }, { code: 'mard_not_connected' }, { code: 'no_aad' }],
     signedAt: '2026-09-19T15:00:00.000Z',
     entryId: 'entry-1',
+    ownerNotifiedAt: null,
+    ownerNotifiedTo: null,
     createdAt: '2026-09-19T10:00:00.000Z',
     updatedAt: '2026-09-19T15:00:00.000Z',
     ...overrides,
@@ -68,7 +70,7 @@ function asJob(sheet: PackingSheetView): PackingJobView {
   return { sheet, components: { reserve: null, container: null, aad: null } };
 }
 
-function renderPage(userId = 'rigger-1', role: Role = Role.Rigger) {
+function renderPage(userId = 'rigger-1', role: Role = Role.Rigger, state?: unknown) {
   jest.mocked(useAuthModule.useAuth).mockReturnValue({
     user: {
       id: userId,
@@ -88,7 +90,7 @@ function renderPage(userId = 'rigger-1', role: Role = Role.Rigger) {
     logout: jest.fn(),
   });
   render(
-    <MemoryRouter initialEntries={['/app/gear/tandem-1/packing/sheet-1/print']}>
+    <MemoryRouter initialEntries={[{ pathname: '/app/gear/tandem-1/packing/sheet-1/print', state }]}>
       <Routes>
         <Route path="/app/gear/:rigId/packing/:sheetId/print" element={<PackingSheetPrintPage />} />
         <Route path="/app/gear/:rigId/packing/:sheetId" element={<p>Job page</p>} />
@@ -211,6 +213,94 @@ describe('PackingSheetPrintPage', () => {
       await screen.findByText('HOJA #: 7');
 
       expect(screen.queryByRole('button', { name: 'Void sheet' })).not.toBeInTheDocument();
+    });
+  });
+
+  describe('emailing the owner', () => {
+    test('the rigger who signed can email the owner, and sees when and to whom it went', async () => {
+      const user = userEvent.setup();
+      mocked.notifyOwner.mockResolvedValue(
+        signed({ ownerNotifiedAt: '2026-09-20T12:05:00.000Z', ownerNotifiedTo: 'ana@bendike.example' }),
+      );
+      renderPage();
+
+      await user.click(await screen.findByRole('button', { name: 'Email owner' }));
+
+      await waitFor(() => expect(mocked.notifyOwner).toHaveBeenCalledWith('token-1', 'sheet-1'));
+      expect(await screen.findByText('Emailed to ana@bendike.example on 2026-09-20 12:05 UTC')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Email owner again' })).toBeInTheDocument();
+    });
+
+    test('shows the last send when the page opens', async () => {
+      mocked.getSheet.mockResolvedValue(
+        asJob(signed({ ownerNotifiedAt: '2026-09-20T12:05:00.000Z', ownerNotifiedTo: 'ana@bendike.example' })),
+      );
+      renderPage();
+
+      expect(await screen.findByText('Emailed to ana@bendike.example on 2026-09-20 12:05 UTC')).toBeInTheDocument();
+    });
+
+    test('shows why the email could not be sent', async () => {
+      const user = userEvent.setup();
+      mocked.notifyOwner.mockRejectedValue(
+        new Error('The owner was emailed a moment ago. Try again in a few minutes.'),
+      );
+      renderPage();
+
+      await user.click(await screen.findByRole('button', { name: 'Email owner' }));
+
+      expect(
+        await screen.findByText(/Could not email the owner. The owner was emailed a moment ago/),
+      ).toBeInTheDocument();
+    });
+
+    test('the button is off when the sheet has no owner email', async () => {
+      mocked.getSheet.mockResolvedValue(asJob(signed({ ownerEmail: '' })));
+      renderPage();
+
+      expect(await screen.findByRole('button', { name: 'Email owner' })).toBeDisabled();
+      expect(screen.getByText('Add the owner email before the sheet is signed to email them.')).toBeInTheDocument();
+    });
+
+    test('an admin can send it; another rigger, the owner and a void sheet get no button', async () => {
+      renderPage('admin-1', Role.Admin);
+      expect(await screen.findByRole('button', { name: 'Email owner' })).toBeInTheDocument();
+    });
+
+    test.each([
+      ['another rigger', 'rigger-2', Role.Rigger],
+      ['the owner', 'owner-1', Role.User],
+    ] as const)('%s cannot email the owner', async (_name, id, role) => {
+      renderPage(id, role);
+      await screen.findByText('HOJA #: 7');
+
+      expect(screen.queryByRole('button', { name: /Email owner/ })).not.toBeInTheDocument();
+    });
+
+    test('a void sheet cannot be emailed', async () => {
+      mocked.getSheet.mockResolvedValue(asJob(signed({ voided: true, voidReason: 'Wrong reserve' })));
+      renderPage();
+      await screen.findByText('VOID');
+
+      expect(screen.queryByRole('button', { name: /Email owner/ })).not.toBeInTheDocument();
+    });
+
+    test('says what happened to the email that was requested while signing', async () => {
+      renderPage('rigger-1', Role.Rigger, { notice: { kind: 'sent', to: 'ana@bendike.example' } });
+      expect(await screen.findByText('The owner was emailed at ana@bendike.example.')).toBeInTheDocument();
+    });
+
+    test('a failed email at signing is reported, with the way to try again', async () => {
+      renderPage('rigger-1', Role.Rigger, {
+        notice: { kind: 'error', message: 'The email could not be sent', whileSigning: true },
+      });
+
+      expect(
+        await screen.findByText(
+          /The sheet is signed, but the owner could not be emailed. The email could not be sent. You can try again/,
+        ),
+      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Email owner' })).toBeInTheDocument();
     });
   });
 });

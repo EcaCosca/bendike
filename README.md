@@ -97,6 +97,12 @@ components, and writes the reserve repack entry, so the next due date moves. The
 for a wet signature, and every signed sheet stays in the reserve packing log on the rig and reserve pages (a mistake is
 corrected by voiding the sheet, which voids its entry, and signing a new one).
 
+Once a sheet is signed the rigger can **email the owner** a branded notice (a Bendike banner, the rig and reserve, the
+date and time, the rigger's name and licence, the next due date, any notes, and a button that opens WhatsApp with the
+rigger). It is offered as a checkbox in the signing dialog and as an **Email owner** button on the printable sheet, in
+the owner's language (`es`, `en` or `pt`). It goes through the same email port as the daily digest, so until Resend is
+configured it is written to the API log (see "Send the daily digest for real").
+
 ### The manual library
 
 Riggers and admins get a **Library** (`/app/library`): a searchable, paginated list of manuals and bulletins that Bendike

@@ -1,10 +1,12 @@
 import {
   Alert,
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   Stack,
   TextField,
   Typography,
@@ -19,13 +21,23 @@ interface SignDialogProps {
   draft: Draft;
   elements: PackingElements;
   initialLicence: string;
+  ownerEmail: string;
   onNotesChange: (notes: string) => void;
-  onSign: (licence: string) => Promise<void>;
+  onSign: (licence: string, notifyOwner: boolean) => Promise<void>;
   onClose: () => void;
 }
 
-export function SignDialog({ draft, elements, initialLicence, onNotesChange, onSign, onClose }: SignDialogProps) {
+export function SignDialog({
+  draft,
+  elements,
+  initialLicence,
+  ownerEmail,
+  onNotesChange,
+  onSign,
+  onClose,
+}: SignDialogProps) {
   const [licence, setLicence] = useState(initialLicence);
+  const [notifyOwner, setNotifyOwner] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -51,7 +63,7 @@ export function SignDialog({ draft, elements, initialLicence, onNotesChange, onS
     setSaving(true);
     setError(null);
     try {
-      await onSign(licence.trim());
+      await onSign(licence.trim(), ownerEmail.trim() !== '' && notifyOwner);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not sign the sheet');
       setSaving(false);
@@ -107,6 +119,12 @@ export function SignDialog({ draft, elements, initialLicence, onNotesChange, onS
             onChange={(e) => setLicence(e.target.value)}
             helperText="Your rigger licence, printed on the sheet next to your name"
           />
+          {ownerEmail.trim() !== '' && (
+            <FormControlLabel
+              control={<Checkbox checked={notifyOwner} onChange={(e) => setNotifyOwner(e.target.checked)} />}
+              label={`Email the owner that the repack is done (${ownerEmail.trim()})`}
+            />
+          )}
           {blockers.length > 0 && (
             <Alert severity="info">
               <ul style={{ margin: 0, paddingLeft: 20 }}>

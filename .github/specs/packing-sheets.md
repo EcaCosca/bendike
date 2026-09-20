@@ -432,14 +432,14 @@ dialog and signing; and the Start repack button.
 
 **Verification**:
 
-- [ ] Signing with the box ticked sends the notice and the printable sheet says who it went to; a failure is shown
+- [x] Signing with the box ticked sends the notice and the printable sheet says who it went to; a failure is shown
       without losing the signed sheet
-- [ ] The button on the printable sheet sends it, shows the last send, and is hidden from anyone who cannot send
-- [ ] Verified in a browser, and the email viewed as rendered HTML
+- [x] The button on the printable sheet sends it, shows the last send, and is hidden from anyone who cannot send
+- [x] Verified in a browser, and the email viewed as rendered HTML
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
