@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { GEAR_KINDS, Role, type GroundingView, type MaintenanceEntryView, type RigDetailView } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
@@ -26,6 +26,7 @@ import { GearItemCard } from './GearItemCard';
 import { GroundedBanner } from './GroundedBanner';
 import { HistoryTable } from './HistoryTable';
 import { LastInspection } from './LastInspection';
+import { startSheet } from '../packing/packing-api';
 import { KIND_LABELS } from './item-details';
 import { RigDialog } from './RigDialog';
 import { GroundedBadge, StatusBadge } from './StatusBadge';
@@ -35,6 +36,7 @@ import { VoidDialog } from './VoidDialog';
 export function RigPage() {
   const { rigId = '' } = useParams();
   const { token, user } = useAuth();
+  const navigate = useNavigate();
   const [rig, setRig] = useState<RigDetailView | null>(null);
   const [unavailable, setUnavailable] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -83,6 +85,12 @@ export function RigPage() {
       setError(err instanceof Error ? err.message : 'Could not verify the entry'),
     );
   };
+  const startRepack = () => {
+    startSheet(token, rigId).then(
+      (job) => void navigate(`/app/gear/${rigId}/packing/${job.sheet.id}`),
+      (err: unknown) => setError(err instanceof Error ? err.message : 'Could not start the repack'),
+    );
+  };
   const canEdit = user.role === Role.Admin || rig?.ownerId === user.id;
   const canGround = canSignOff(user.role);
 
@@ -107,6 +115,11 @@ export function RigPage() {
                 <Alert severity="info" icon={false} sx={{ py: 0 }}>
                   Inactive
                 </Alert>
+              )}
+              {canGround && rig.active && rig.slots.reserve && (
+                <Button variant="contained" onClick={startRepack}>
+                  Start repack
+                </Button>
               )}
               {canGround && rig.active && (
                 <Button

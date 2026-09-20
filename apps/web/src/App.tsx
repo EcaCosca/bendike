@@ -15,6 +15,7 @@ import { ServicesAdminPage } from './pages/services/ServicesAdminPage';
 import { BulletinMatchesPage } from './pages/bulletins/BulletinMatchesPage';
 import { BulletinsPage } from './pages/bulletins/BulletinsPage';
 import { LibraryPage } from './pages/library/LibraryPage';
+import { PackingJobPage } from './pages/packing/PackingJobPage';
 import { CustomersPage } from './pages/work/CustomersPage';
 import { WorkQueuePage } from './pages/work/WorkQueuePage';
 import { LinksPage } from './pages/links/LinksPage';
@@ -57,6 +58,7 @@ export function App() {
           <Route path="/app/work/customers" element={<CustomersPage />} />
           <Route path="/app/work/bulletins" element={<BulletinMatchesPage />} />
           <Route path="/app/library" element={<LibraryPage />} />
+          <Route path="/app/gear/:rigId/packing/:sheetId" element={<PackingJobPage />} />
         </Route>
         <Route element={<RequireRole roles={[Role.Admin]} />}>
           <Route path="/app/admin/users" element={<AdminUsersPage />} />

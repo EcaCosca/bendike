@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import * as useAuthModule from '../../auth/use-auth';
 import * as bulletinApi from '../bulletins/bulletins-api';
+import * as packingApi from '../packing/packing-api';
 import { entryView, gearItem, groundingView, pending, rigDetail } from './fixtures';
 import * as api from './gear-api';
 import { RigPage } from './RigPage';
@@ -11,6 +12,7 @@ import { RigPage } from './RigPage';
 jest.mock('../../auth/use-auth');
 jest.mock('./gear-api');
 jest.mock('../bulletins/bulletins-api');
+jest.mock('../packing/packing-api');
 
 const mocked = jest.mocked(api);
 
@@ -72,6 +74,7 @@ function renderPage(role: Role) {
     <MemoryRouter initialEntries={['/app/gear/micro-3']}>
       <Routes>
         <Route path="/app/gear/:rigId" element={<RigPage />} />
+        <Route path="/app/gear/:rigId/packing/:sheetId" element={<p>Pack job page</p>} />
       </Routes>
     </MemoryRouter>,
   );
@@ -387,5 +390,65 @@ describe('RigPage', () => {
     renderPage(Role.User);
 
     expect(await screen.findByText(/not available/i)).toBeInTheDocument();
+  });
+});
+
+describe('RigPage start repack', () => {
+  const withReserve = (overrides: Parameters<typeof rigDetail>[1] = {}) =>
+    rigDetail('Micro 3', {
+      id: 'micro-3',
+      slots: {
+        container: null,
+        main: null,
+        aad: null,
+        reserve: gearItem('reserve', { id: 'reserve-1', rigId: 'micro-3' }),
+      },
+      ...overrides,
+    });
+
+  beforeEach(() => {
+    mocked.listModels.mockResolvedValue([]);
+    mocked.getRig.mockResolvedValue(withReserve());
+  });
+
+  test('a rigger starts a pack job and lands on the job page', async () => {
+    const user = userEvent.setup();
+    jest.mocked(packingApi.startSheet).mockResolvedValue({ sheet: { id: 'sheet-9' } } as never);
+    renderPage(Role.Rigger);
+
+    await user.click(await screen.findByRole('button', { name: 'Start repack' }));
+
+    expect(packingApi.startSheet).toHaveBeenCalledWith('token-1', 'micro-3');
+    expect(await screen.findByText('Pack job page')).toBeInTheDocument();
+  });
+
+  test('an admin sees it too', async () => {
+    renderPage(Role.Admin);
+
+    expect(await screen.findByRole('button', { name: 'Start repack' })).toBeInTheDocument();
+  });
+
+  test.each([Role.User, Role.Dropzone])('a %s does not see it', async (role) => {
+    renderPage(role);
+    await screen.findByRole('heading', { name: 'Micro 3' });
+
+    expect(screen.queryByRole('button', { name: 'Start repack' })).not.toBeInTheDocument();
+  });
+
+  test('is not offered for a rig with no reserve or for an inactive rig', async () => {
+    mocked.getRig.mockResolvedValue(rigDetail('Micro 3', { id: 'micro-3' }));
+    renderPage(Role.Rigger);
+    await screen.findByRole('heading', { name: 'Micro 3' });
+    expect(screen.queryByRole('button', { name: 'Start repack' })).not.toBeInTheDocument();
+  });
+
+  test('shows why a pack job could not be started', async () => {
+    const user = userEvent.setup();
+    jest.mocked(packingApi.startSheet).mockRejectedValue(new Error('This rig has no reserve to pack'));
+    renderPage(Role.Rigger);
+
+    await user.click(await screen.findByRole('button', { name: 'Start repack' }));
+
+    expect(await screen.findByText('This rig has no reserve to pack')).toBeInTheDocument();
   });
 });

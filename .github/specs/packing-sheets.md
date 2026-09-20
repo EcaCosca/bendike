@@ -330,13 +330,13 @@ dialog and signing; and the Start repack button.
 
 **Verification**:
 
-- [ ] Ticks and answers autosave; leaving and returning restores them
-- [ ] Sign lists everything missing and needs notes; a rig with no MARD can be signed with "No MARD on this unit"
-- [ ] Verified in a browser at desktop and phone width
+- [x] Ticks and answers autosave; leaving and returning restores them
+- [x] Sign lists everything missing and needs notes; a rig with no MARD can be signed with "No MARD on this unit"
+- [x] Verified in a browser at desktop and phone width
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
