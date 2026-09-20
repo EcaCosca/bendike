@@ -148,24 +148,39 @@ itself holds real serial numbers and contact details, so **never commit it**.
 All configuration is environment variables in `apps/api/.env` (see `apps/api/.env.example`) and, for the web app, in
 `apps/web/.env`. Everything except the database and the JWT secret is optional.
 
-| Variable                                         | What it does                                                                                         |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| `DATABASE_URL`, `JWT_SECRET`                     | Required. The PostgreSQL connection and the token signing secret (at least 32 characters).           |
-| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`        | Create the first admin on startup.                                                                   |
-| `GOOGLE_CLIENT_ID` / `VITE_GOOGLE_CLIENT_ID`     | Turn on "Continue with Google". Empty means the button is hidden and the endpoint answers 503.       |
-| `DEEPL_API_KEY`, `DEEPL_API_URL`                 | Machine-translate shop copy. Without a key new copy stays in English until an admin edits it.        |
-| `EXCHANGE_RATE_PROVIDER_URL`                     | Source of the ARS and BRL rates shown next to dollar prices.                                         |
-| `UPLOADS_DIR`                                    | Where uploaded used-gear photos are stored (default `./uploads`).                                    |
-| `EMAIL_PROVIDER`, `RESEND_API_KEY`, `EMAIL_FROM` | `console` (default) writes emails to the API log; `resend` sends them for real.                      |
-| `EMAIL_OVERRIDE_TO`                              | While testing, send **every** email to this one address, with the intended recipient in the subject. |
-| `CRON_SECRET`                                    | Shared secret the scheduler sends to run the daily digest. Empty keeps the endpoint closed.          |
-| `WEB_BASE_URL`                                   | Where links inside emails point.                                                                     |
+| Variable                                         | What it does                                                                                                                                  |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`, `JWT_SECRET`                     | Required. The PostgreSQL connection and the token signing secret (at least 32 characters).                                                    |
+| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`        | Create the first admin on startup.                                                                                                            |
+| `GOOGLE_CLIENT_ID` / `VITE_GOOGLE_CLIENT_ID`     | Turn on "Continue with Google". Empty means the button is hidden and the endpoint answers 503.                                                |
+| `DEEPL_API_KEY`, `DEEPL_API_URL`                 | Machine-translate shop copy. Without a key new copy stays in English until an admin edits it.                                                 |
+| `EXCHANGE_RATE_PROVIDER_URL`                     | Source of the ARS and BRL rates shown next to dollar prices.                                                                                  |
+| `UPLOADS_DIR`                                    | Where uploaded used-gear photos are stored (default `./uploads`).                                                                             |
+| `EMAIL_PROVIDER`, `RESEND_API_KEY`, `EMAIL_FROM` | `console` (default) writes emails to the API log; `resend` sends them for real.                                                               |
+| `EMAIL_OVERRIDE_TO`                              | While testing, send **every** email to this one address, with the intended recipient in the subject.                                          |
+| `CRON_SECRET`                                    | Shared secret the scheduler sends to run the daily digest. Empty keeps the endpoint closed.                                                   |
+| `WEB_BASE_URL`                                   | Where links inside emails point.                                                                                                              |
+| `GOOGLE_DRIVE_*`, `LIBRARY_LOCAL_DIR`            | Where the manual library keeps its PDFs: Google Drive when all four `GOOGLE_DRIVE_*` values are set, otherwise local disk (development only). |
 
 ### Sign in with Google
 
 Create an OAuth 2.0 **Web client id** in Google Cloud (authorised JavaScript origins: `http://localhost:5173` and your
 production domain), then set it as `GOOGLE_CLIENT_ID` in `apps/api/.env` and `VITE_GOOGLE_CLIENT_ID` in
 `apps/web/.env`. See [ADR 0005](docs/adr/0005-google-sign-in-alongside-passwords.md).
+
+### Keep the manual library in Google Drive
+
+The Library stores riggers' manuals in a folder of your own Google Drive, through a small storage port
+([ADR 0015](docs/adr/0015-the-manual-library-is-stored-in-google-drive-behind-a-storage-port.md)). Until you configure
+it the files stay on local disk in `apps/api/library-files`, which is fine for trying it out and not for a server.
+
+1. In [Google Cloud Console](https://console.cloud.google.com/) create a project, enable the **Google Drive API**, set
+   up the OAuth consent screen (add yourself as a test user) and create an **OAuth client id** of type **Desktop app**.
+2. Run the one-time script with that client id and secret:
+   `GOOGLE_DRIVE_CLIENT_ID=... GOOGLE_DRIVE_CLIENT_SECRET=... npm run drive:authorize -w @bendike/api`.
+   Open the address it prints, allow access, and it creates a folder called "Bendike Library" in your Drive.
+3. Paste the four `GOOGLE_DRIVE_*` lines it prints into `apps/api/.env`. The API only ever sees files it created
+   (the narrow `drive.file` permission), and downloads always go through Bendike, never through a public Drive link.
 
 ### Send the daily digest for real
 

@@ -260,12 +260,12 @@ prints the three environment values.
 
 **Verification**:
 
-- [ ] The script's pure parts (consent URL, token exchange request, folder request) are unit tested with a fake
+- [x] The script's pure parts (consent URL, token exchange request, folder request) are unit tested with a fake
       `fetch`; the live run is done by Eca and reported in the spec's Open Questions
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
