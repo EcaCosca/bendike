@@ -21,6 +21,7 @@ const vigil: GearModelView = {
   batteryCycleMonths: null,
   lifeYears: 20,
   active: true,
+  bulletinsUrl: null,
 };
 
 function renderPage() {
@@ -123,5 +124,60 @@ describe('GearModelsPage', () => {
     await user.click(dialog.getByRole('button', { name: 'Save' }));
 
     expect(await dialog.findByText('Vigil Cuatro already exists in the catalogue')).toBeInTheDocument();
+  });
+
+  test('adds the manufacturer bulletins link to a new model', async () => {
+    const user = userEvent.setup();
+    mocked.createModel.mockResolvedValue({ ...vigil, id: 'm3' });
+    renderPage();
+    await screen.findByText('Cuatro');
+
+    await user.click(screen.getByRole('button', { name: 'Add model' }));
+    const dialog = within(screen.getByRole('dialog'));
+    await user.type(dialog.getByLabelText('Manufacturer'), 'UPT Vector');
+    await user.type(dialog.getByLabelText('Model'), 'Sigma Tandem');
+    await user.type(dialog.getByLabelText('Bulletins link'), 'https://uptvector.com/product-service-bulletins/');
+    await user.click(dialog.getByRole('button', { name: 'Save' }));
+
+    await waitFor(() =>
+      expect(mocked.createModel).toHaveBeenCalledWith(
+        'token-1',
+        expect.objectContaining({ bulletinsUrl: 'https://uptvector.com/product-service-bulletins/' }),
+      ),
+    );
+  });
+
+  test('changes and clears the link of an existing model', async () => {
+    const user = userEvent.setup();
+    mocked.listModels.mockResolvedValue([{ ...vigil, bulletinsUrl: 'https://vigil.example/bulletins' }]);
+    mocked.updateModel.mockResolvedValue(vigil);
+    renderPage();
+    await screen.findByText('Cuatro');
+
+    await user.click(screen.getByRole('button', { name: 'Edit' }));
+    const dialog = within(screen.getByRole('dialog'));
+    expect(dialog.getByLabelText('Bulletins link')).toHaveValue('https://vigil.example/bulletins');
+    await user.clear(dialog.getByLabelText('Bulletins link'));
+    await user.click(dialog.getByRole('button', { name: 'Save' }));
+
+    await waitFor(() =>
+      expect(mocked.updateModel).toHaveBeenCalledWith('token-1', 'm1', expect.objectContaining({ bulletinsUrl: null })),
+    );
+  });
+
+  test('refuses a bulletins link that is not https before calling the API', async () => {
+    const user = userEvent.setup();
+    renderPage();
+    await screen.findByText('Cuatro');
+
+    await user.click(screen.getByRole('button', { name: 'Add model' }));
+    const dialog = within(screen.getByRole('dialog'));
+    await user.type(dialog.getByLabelText('Manufacturer'), 'Vigil');
+    await user.type(dialog.getByLabelText('Model'), 'Cuatro');
+    await user.type(dialog.getByLabelText('Bulletins link'), 'http://vigil.example');
+    await user.click(dialog.getByRole('button', { name: 'Save' }));
+
+    expect(await dialog.findByText('The bulletins link must start with https://')).toBeInTheDocument();
+    expect(mocked.createModel).not.toHaveBeenCalled();
   });
 });

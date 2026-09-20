@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { GEAR_KINDS, type GearKind } from '@bendike/shared';
-import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Length, Max, Min } from 'class-validator';
+import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Length, Max, MaxLength, Min } from 'class-validator';
 
 export class CreateGearModelDto {
   @ApiProperty({ enum: GEAR_KINDS })
@@ -21,6 +21,7 @@ export class CreateGearModelDto {
   @ApiPropertyOptional() @IsOptional() @IsInt() @Min(1) @Max(600) serviceIntervalMonths?: number;
   @ApiPropertyOptional() @IsOptional() @IsInt() @Min(1) @Max(240) batteryCycleMonths?: number;
   @ApiPropertyOptional() @IsOptional() @IsInt() @Min(1) @Max(100) lifeYears?: number;
+  @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(2000) bulletinsUrl?: string;
 }
 
 export class UpdateGearModelDto {
@@ -31,4 +32,12 @@ export class UpdateGearModelDto {
   @ApiPropertyOptional() @IsOptional() @IsInt() @Min(1) @Max(240) batteryCycleMonths?: number | null;
   @ApiPropertyOptional() @IsOptional() @IsInt() @Min(1) @Max(100) lifeYears?: number | null;
   @ApiPropertyOptional() @IsOptional() @IsBoolean() active?: boolean;
+  @ApiPropertyOptional() @IsOptional() @IsString() @MaxLength(2000) bulletinsUrl?: string | null;
+}
+
+export class SetBulletinsLinkDto {
+  @ApiProperty()
+  @IsString()
+  @MaxLength(2000)
+  url!: string;
 }

@@ -29,4 +29,7 @@ export class GearModel {
 
   @Column({ default: true })
   active!: boolean;
+
+  @Column({ name: 'bulletins_url', type: 'varchar', length: 2000, nullable: true })
+  bulletinsUrl!: string | null;
 }

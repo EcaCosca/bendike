@@ -19,7 +19,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
-import { GEAR_KINDS, type GearKind, type GearModelView } from '@bendike/shared';
+import { GEAR_KINDS, isHttpsUrl, type GearKind, type GearModelView } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
 import { createModel, listModels, updateModel } from './gear-api';
@@ -47,6 +47,7 @@ function ModelDialog({
   const [service, setService] = useState(model?.serviceIntervalMonths?.toString() ?? '');
   const [battery, setBattery] = useState(model?.batteryCycleMonths?.toString() ?? '');
   const [life, setLife] = useState(model?.lifeYears?.toString() ?? '');
+  const [bulletinsUrl, setBulletinsUrl] = useState(model?.bulletinsUrl ?? '');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -54,6 +55,11 @@ function ModelDialog({
     event.preventDefault();
     if (!manufacturer.trim() || !name.trim()) {
       setError('Enter the manufacturer and the model.');
+      return;
+    }
+    const link = bulletinsUrl.trim();
+    if (link !== '' && !isHttpsUrl(link)) {
+      setError('The bulletins link must start with https://');
       return;
     }
     setSaving(true);
@@ -66,6 +72,7 @@ function ModelDialog({
           serviceIntervalMonths: toNumber(service),
           batteryCycleMonths: toNumber(battery),
           lifeYears: toNumber(life),
+          bulletinsUrl: link === '' ? null : link,
         });
       } else {
         const rules = {
@@ -79,6 +86,7 @@ function ModelDialog({
           manufacturer: manufacturer.trim(),
           model: name.trim(),
           ...Object.fromEntries(Object.entries(rules).filter(([, v]) => v !== null)),
+          ...(link === '' ? {} : { bulletinsUrl: link }),
         });
       }
       onSaved();
@@ -133,6 +141,12 @@ function ModelDialog({
             value={life}
             onChange={(e) => setLife(e.target.value)}
             helperText="Counted from the date of manufacture"
+          />
+          <TextField
+            label="Bulletins link"
+            value={bulletinsUrl}
+            onChange={(e) => setBulletinsUrl(e.target.value)}
+            helperText="The manufacturer's service bulletins page, offered to riggers at every repack"
           />
         </Stack>
       </DialogContent>

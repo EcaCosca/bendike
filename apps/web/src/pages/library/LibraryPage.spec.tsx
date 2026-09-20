@@ -23,6 +23,7 @@ const sigma: GearModelView = {
   batteryCycleMonths: null,
   lifeYears: null,
   active: true,
+  bulletinsUrl: null,
 };
 
 function doc(overrides: Partial<LibraryDocumentView> = {}): LibraryDocumentView {

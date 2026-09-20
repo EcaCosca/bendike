@@ -210,6 +210,8 @@ sequenceDiagram
       scan of the signed paper is left for a later step.
 - [ ] The checklist wording is copied from the form Eca supplied on 2026-09-20 as version `ciac-anac-1`; a change
       from CIAC or a manual adds a new version and leaves old sheets as they were.
+- [ ] Where the paper form gives a line in one language only, the other language on screen is Claude's translation;
+      Eca to review the wording.
 - [ ] Rigger licence number lives on the signature for now; the rigger-profile spec will store it on the account.
 
 ---
@@ -230,13 +232,13 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] The template has 36 items with unique ids, Spanish and English labels, in two columns
-- [ ] `missingItems`, `sheetProblems` and `signingBlockers` cover unticked items, "no" answers, unanswered questions, a
+- [x] The template has 36 items with unique ids, Spanish and English labels, in two columns
+- [x] `missingItems`, `sheetProblems` and `signingBlockers` cover unticked items, "no" answers, unanswered questions, a
       rig without container or AAD, empty notes and empty licence
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -255,12 +257,12 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] A model's own link wins; a same-manufacturer link is marked as the manufacturer's; nothing otherwise
-- [ ] Only `https` links are saved; users and dropzones get 403
+- [x] A model's own link wins; a same-manufacturer link is marked as the manufacturer's; nothing otherwise
+- [x] Only `https` links are saved; users and dropzones get 403
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 

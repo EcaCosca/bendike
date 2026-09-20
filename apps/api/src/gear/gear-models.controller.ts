@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Role, type GearModelView } from '@bendike/shared';
 import { IsBooleanString, IsOptional } from 'class-validator';
@@ -7,7 +7,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { User } from '../users/user.entity';
-import { CreateGearModelDto, UpdateGearModelDto } from './dto/gear-model.dto';
+import { CreateGearModelDto, SetBulletinsLinkDto, UpdateGearModelDto } from './dto/gear-model.dto';
 import { GearModelsService } from './gear-models.service';
 
 class ListModelsQuery {
@@ -41,5 +41,12 @@ export class GearModelsController {
   @ApiOperation({ summary: 'Change a model or its rules, or deactivate it (admin only)' })
   update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateGearModelDto): Promise<GearModelView> {
     return this.models.update(id, dto);
+  }
+
+  @Put(':id/bulletins-link')
+  @Roles(Role.Rigger, Role.Admin)
+  @ApiOperation({ summary: "Save the manufacturer's service bulletins page for a model (riggers and admins)" })
+  setBulletinsLink(@Param('id', ParseUUIDPipe) id: string, @Body() dto: SetBulletinsLinkDto): Promise<GearModelView> {
+    return this.models.setBulletinsUrl(id, dto.url);
   }
 }

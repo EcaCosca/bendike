@@ -1,6 +1,11 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import type { CreateGearModelRequestBody, GearModelView, UpdateGearModelRequestBody } from '@bendike/shared';
+import {
+  isHttpsUrl,
+  type CreateGearModelRequestBody,
+  type GearModelView,
+  type UpdateGearModelRequestBody,
+} from '@bendike/shared';
 import type { EntityManager } from 'typeorm';
 import { GearModel } from './entities/gear-model.entity';
 
@@ -19,7 +24,18 @@ function toView(model: GearModel): GearModelView {
     batteryCycleMonths: model.batteryCycleMonths,
     lifeYears: model.lifeYears,
     active: model.active,
+    bulletinsUrl: model.bulletinsUrl,
   };
+}
+
+function validLink(url: string | null | undefined): string | null | undefined {
+  if (url === null || url === undefined) return url;
+  const trimmed = url.trim();
+  if (trimmed === '') return null;
+  if (!isHttpsUrl(trimmed)) {
+    throw new BadRequestException('The bulletins link must start with https://');
+  }
+  return trimmed;
 }
 
 @Injectable()
@@ -48,6 +64,7 @@ export class GearModelsService {
       batteryCycleMonths: body.batteryCycleMonths ?? null,
       lifeYears: body.lifeYears ?? null,
       active: true,
+      bulletinsUrl: validLink(body.bulletinsUrl) ?? null,
     });
     return toView(await this.manager.save(model));
   }
@@ -72,7 +89,14 @@ export class GearModelsService {
     if (body.active !== undefined) {
       model.active = body.active;
     }
+    if (body.bulletinsUrl !== undefined) {
+      model.bulletinsUrl = validLink(body.bulletinsUrl) ?? null;
+    }
     return toView(await this.manager.save(model));
+  }
+
+  setBulletinsUrl(id: string, url: string): Promise<GearModelView> {
+    return this.update(id, { bulletinsUrl: url });
   }
 
   private async assertUnique(

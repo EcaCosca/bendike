@@ -68,18 +68,21 @@ export interface GearModelView extends GearModelRules {
   manufacturer: string;
   model: string;
   active: boolean;
+  bulletinsUrl: string | null;
 }
 
 export interface CreateGearModelRequestBody extends Partial<GearModelRules> {
   kind: GearKind;
   manufacturer: string;
   model: string;
+  bulletinsUrl?: string;
 }
 
 export interface UpdateGearModelRequestBody extends Partial<GearModelRules> {
   manufacturer?: string;
   model?: string;
   active?: boolean;
+  bulletinsUrl?: string | null;
 }
 
 export interface ComponentPartView {

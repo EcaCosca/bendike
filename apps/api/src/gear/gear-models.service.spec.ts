@@ -1,4 +1,4 @@
-import { ConflictException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
 import { GearModel } from './entities/gear-model.entity';
 import { GearModelsService } from './gear-models.service';
 import { InMemoryManager } from './testing/in-memory-manager';
@@ -77,5 +77,47 @@ describe('GearModelsService', () => {
     await service.create({ kind: 'reserve', manufacturer: 'PD', model: 'VR360' });
 
     expect(await manager.count(GearModel)).toBe(1);
+  });
+
+  describe('bulletins link', () => {
+    const LINK = 'https://uptvector.com/product-service-bulletins/';
+
+    test('a new model has none, and can be created or updated with an https link', async () => {
+      const plain = await service.create({ kind: 'container', manufacturer: 'UPT Vector', model: 'Vector 3' });
+      expect(plain.bulletinsUrl).toBeNull();
+
+      const created = await service.create({
+        kind: 'container',
+        manufacturer: 'UPT Vector',
+        model: 'Sigma Tandem',
+        bulletinsUrl: LINK,
+      });
+      expect(created.bulletinsUrl).toBe(LINK);
+
+      const updated = await service.update(plain.id, { bulletinsUrl: ` ${LINK} ` });
+      expect(updated.bulletinsUrl).toBe(LINK);
+      expect((await service.update(plain.id, { bulletinsUrl: null })).bulletinsUrl).toBeNull();
+    });
+
+    test('only an https link is accepted', async () => {
+      const created = await service.create({ kind: 'container', manufacturer: 'UPT Vector', model: 'Vector 3' });
+
+      await expect(service.update(created.id, { bulletinsUrl: 'http://uptvector.com/x' })).rejects.toBeInstanceOf(
+        BadRequestException,
+      );
+      await expect(
+        service.create({ kind: 'container', manufacturer: 'M', model: 'X', bulletinsUrl: 'javascript:alert(1)' }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    test('setBulletinsUrl saves a link on a model and refuses an unknown one', async () => {
+      const created = await service.create({ kind: 'container', manufacturer: 'UPT Vector', model: 'Vector 3' });
+
+      expect((await service.setBulletinsUrl(created.id, LINK)).bulletinsUrl).toBe(LINK);
+      await expect(service.setBulletinsUrl('00000000-0000-4000-8000-00000000ffff', LINK)).rejects.toBeInstanceOf(
+        NotFoundException,
+      );
+      await expect(service.setBulletinsUrl(created.id, 'ftp://x')).rejects.toBeInstanceOf(BadRequestException);
+    });
   });
 });
