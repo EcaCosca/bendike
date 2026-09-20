@@ -1,7 +1,8 @@
 # Bendike presentation
 
 A slide deck for riggers, dropzone owners, skydivers and associations: the problems Bendike solves and every feature
-built so far, with screenshots. It is one static page in English and Spanish.
+built so far, with screenshots. It is one static page in English, Spanish and Portuguese, and it includes the read-only view an authority such as ANAC gets
+of every rigger's virtual log.
 
 ## Present it
 
@@ -11,11 +12,12 @@ Open [`index.html`](index.html) in a browser (double-click it, or serve the fold
 | ------------------------- | ---------------------------------- |
 | Right arrow, space, Enter | Next slide                         |
 | Left arrow, Backspace     | Previous slide                     |
-| `L`                       | Switch between English and Spanish |
+| `L`                       | Next language: English, Spanish, Portuguese |
 | `F`                       | Full screen                        |
 | Home, End                 | First and last slide               |
 
-Add `?lang=es` or `?lang=en` to the address to choose the language, and `#12` to open a slide. It defaults to the
+Add `?lang=en`, `?lang=es` or `?lang=pt` to the address to choose the language (the EN, ES and PT buttons at the
+bottom right do the same), and `#12` to open a slide. It defaults to the
 language of the browser. On a phone, swipe.
 
 ## Share it as one file
