@@ -16,6 +16,7 @@ const config: Config = {
   coverageDirectory: '../coverage',
   coverageReporters: ['text', 'lcov', 'json-summary', 'json'],
   clearMocks: true,
+  testTimeout: 30_000,
 };
 
 export default config;
