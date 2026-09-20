@@ -9,7 +9,15 @@ interface FindOptions {
   order?: Record<string, 'ASC' | 'DESC'>;
 }
 
-const TIMESTAMPED = new Set(['Rig', 'GearItem', 'MaintenanceEntry', 'RiggerLink', 'User', 'ServiceBulletin']);
+const TIMESTAMPED = new Set([
+  'Rig',
+  'GearItem',
+  'MaintenanceEntry',
+  'RiggerLink',
+  'User',
+  'ServiceBulletin',
+  'LibraryDocument',
+]);
 let tick = 0;
 
 function nextTimestamp(): Date {

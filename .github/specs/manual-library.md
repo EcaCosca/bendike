@@ -42,7 +42,8 @@ so that I can **keep a copy that survives the manufacturer's website**.
   storage and create a Library document holding its title, kind, manufacturer, optional catalogue model, revision,
   language, source link, file name, size and SHA-256 checksum, and who added it.
 - The API shall accept only PDF files, up to 25 MB, judged by the file's first bytes and not by its name.
-- If the file is not a PDF or is over the limit, then the API shall respond 400 and store nothing.
+- If the file is not a PDF, then the API shall respond 400, and if it is over the limit, then the API shall respond 413,
+  and in both cases store nothing.
 - If a document with the same checksum is already in the Library, then the API shall respond 409 naming the existing
   document.
 - If the storage cannot be reached, then the API shall respond 502 and create no Library document, so a row never
@@ -121,7 +122,8 @@ so that I can **stop it being offered without losing the stored file**.
 
 `library_documents`: `id`, `title`, `kind` (`manual | service_bulletin | other`), `manufacturer`, `model_id`
 (nullable, references `gear_models`), `revision` (nullable), `language` (nullable), `source_url` (nullable),
-`file_name`, `mime_type`, `size_bytes`, `sha256` (unique), `storage_key`, `added_by`, `created_at`, `archived_at`,
+`file_name`, `mime_type`, `size_bytes`, `sha256` (unique), `storage_key`, `added_by`, `added_by_name` (a snapshot),
+`created_at`, `archived_at`,
 `archived_by`, `archive_reason`.
 
 ### Diagrams
@@ -233,15 +235,15 @@ Drive when it is configured.
 
 **Verification**:
 
-- [ ] Only riggers and admins reach any Library route; users and dropzones get 403
-- [ ] A non-PDF, an oversized file, a duplicate checksum and an http source link are refused; a failed storage write
+- [x] Only riggers and admins reach any Library route; users and dropzones get 403
+- [x] A non-PDF, an oversized file, a duplicate checksum and an http source link are refused; a failed storage write
       leaves no row
-- [ ] Listing filters by kind, text and model, hides archived documents from riggers, and pages
-- [ ] Only an admin can archive; the file is kept
+- [x] Listing filters by kind, text and model, hides archived documents from riggers, and pages
+- [x] Only an admin can archive; the file is kept
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
