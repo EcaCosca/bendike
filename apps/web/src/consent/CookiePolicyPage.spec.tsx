@@ -76,7 +76,7 @@ describe('CookiePolicyPage', () => {
     renderPage();
 
     expect(screen.getByRole('heading', { name: 'Removing what is stored' })).toBeInTheDocument();
-    const contact = screen.getByRole('link', { name: 'enriquecoscarelli@gmail.com' });
+    const contact = screen.getByRole('main').querySelector('a[href^="mailto:"]');
     expect(contact).toHaveAttribute('href', 'mailto:enriquecoscarelli@gmail.com');
   });
 });

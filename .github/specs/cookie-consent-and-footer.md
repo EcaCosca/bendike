@@ -285,12 +285,12 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] Every link and the settings button work; signed-out and signed-in variants; verified in a browser at desktop and
+- [x] Every link and the settings button work; signed-out and signed-in variants; verified in a browser at desktop and
       phone width; README and this spec updated
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 

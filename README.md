@@ -113,6 +113,17 @@ rigger). It is offered as a checkbox in the signing dialog and as an **Email own
 the owner's language (`es`, `en` or `pt`). It goes through the same email port as the daily digest, so until Resend is
 configured it is written to the API log (see "Send the daily digest for real").
 
+### The footer and cookie consent
+
+Every public page ends in a full **footer** (the brand, the main pages, log in or your gear, Eca's email and WhatsApp,
+the social links and the legal links). The first time someone arrives, a **cookie bar** offers Accept all, Reject
+non-essential (both the same size) and Manage, with a link to the **cookie policy** at `/cookies`. The choice is a
+first-party cookie (`bendike_consent`, 12 months) and it is honoured: without permission the remembered gear view and
+licence number are neither read nor written, and Google's sign-in script is not loaded until the visitor presses
+"Allow Google sign-in". The policy's table of stored items is checked by a test against the storage keys the code uses,
+so adding a new one without listing it fails the build. The footer's **Cookie settings** button changes the choice at
+any time.
+
 ### The manual library
 
 Riggers and admins get a **Library** (`/app/library`): a searchable, paginated list of manuals and bulletins that Bendike
@@ -433,6 +444,10 @@ Open questions that need a decision from Eca live at the bottom of each spec, un
   between them is active.
 - **Grounding is advisory.** Bendike records and shows it; the people at the dropzone act on it.
 - **Digest emails carry customer contact details**, so test with `EMAIL_OVERRIDE_TO` set.
+- **Cookie consent is enforced, not decorative.** Optional storage and third-party scripts stay off until the visitor
+  allows them; add any new storage key to `apps/web/src/consent/storage-inventory.ts` or the build fails.
+- **Rig photos and manuals are private.** They are only ever served through the API to people who can read the rig (or,
+  for manuals, to riggers and admins); no public storage link exists.
 
 ## Status of this document
 

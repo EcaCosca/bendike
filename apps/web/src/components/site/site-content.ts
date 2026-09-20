@@ -13,6 +13,8 @@ export const SOCIAL_LINKS = [
 export const CONTACT_EMAIL = 'enriquecoscarelli@gmail.com';
 
 export const FOOTER_TAGLINE = 'Rigging loft and software, Argentina.';
+export const FOOTER_BLURB =
+  'Gear tracking, repacks and service bulletins for riggers, dropzones and the skydivers they look after.';
 
 export const WHATSAPP_NUMBER = '5493413955408';
 export const WHATSAPP_LABEL = 'Chat with Eca on WhatsApp';
