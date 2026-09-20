@@ -73,6 +73,33 @@ export class EnvConfig {
   @IsOptional()
   @IsString()
   WEB_BASE_URL?: string;
+
+  @IsOptional()
+  @IsString()
+  GOOGLE_DRIVE_CLIENT_ID?: string;
+
+  @IsOptional()
+  @IsString()
+  GOOGLE_DRIVE_CLIENT_SECRET?: string;
+
+  @IsOptional()
+  @IsString()
+  GOOGLE_DRIVE_REFRESH_TOKEN?: string;
+
+  @IsOptional()
+  @IsString()
+  GOOGLE_DRIVE_FOLDER_ID?: string;
+
+  @IsOptional()
+  @IsString()
+  LIBRARY_LOCAL_DIR?: string;
+}
+
+export interface GoogleDriveSettings {
+  clientId: string;
+  clientSecret: string;
+  refreshToken: string;
+  folderId: string;
 }
 
 const DEFAULT_PORT = 3000;
@@ -80,6 +107,7 @@ const DEFAULT_JWT_EXPIRES_IN_SECONDS = 3600;
 const DEFAULT_CORS_ORIGIN = 'http://localhost:5173';
 const DEFAULT_DEEPL_API_URL = 'https://api-free.deepl.com';
 const DEFAULT_UPLOADS_DIR = './uploads';
+const DEFAULT_LIBRARY_LOCAL_DIR = './library-files';
 const DEFAULT_EMAIL_FROM = 'Bendike <onboarding@resend.dev>';
 const DEFAULT_WEB_BASE_URL = 'http://localhost:5173';
 const DEFAULT_EXCHANGE_RATE_PROVIDER_URL = 'https://open.er-api.com/v6/latest/USD';
@@ -104,6 +132,8 @@ export class AppConfigService {
   readonly emailOverrideTo: string | undefined;
   readonly cronSecret: string | undefined;
   readonly webBaseUrl: string;
+  readonly googleDrive: GoogleDriveSettings | null;
+  readonly libraryLocalDir: string;
 
   constructor(private readonly configService: ConfigService) {
     this.port = positiveIntegerOr(this.configService.get<string>('PORT'), DEFAULT_PORT);
@@ -132,6 +162,28 @@ export class AppConfigService {
     this.emailOverrideTo = emptyToUndefined(this.configService.get<string>('EMAIL_OVERRIDE_TO'));
     this.cronSecret = emptyToUndefined(this.configService.get<string>('CRON_SECRET'));
     this.webBaseUrl = emptyToUndefined(this.configService.get<string>('WEB_BASE_URL')) ?? DEFAULT_WEB_BASE_URL;
+    this.googleDrive = this.readGoogleDrive();
+    this.libraryLocalDir =
+      emptyToUndefined(this.configService.get<string>('LIBRARY_LOCAL_DIR')) ?? DEFAULT_LIBRARY_LOCAL_DIR;
+  }
+
+  private readGoogleDrive(): GoogleDriveSettings | null {
+    const names = [
+      'GOOGLE_DRIVE_CLIENT_ID',
+      'GOOGLE_DRIVE_CLIENT_SECRET',
+      'GOOGLE_DRIVE_REFRESH_TOKEN',
+      'GOOGLE_DRIVE_FOLDER_ID',
+    ] as const;
+    const values = names.map((name) => emptyToUndefined(this.configService.get<string>(name)));
+    if (values.every((value) => value === undefined)) {
+      return null;
+    }
+    const missing = names.filter((_, index) => values[index] === undefined);
+    if (missing.length > 0) {
+      throw new Error(`Google Drive needs all four settings; missing ${missing.join(', ')}`);
+    }
+    const [clientId, clientSecret, refreshToken, folderId] = values as [string, string, string, string];
+    return { clientId, clientSecret, refreshToken, folderId };
   }
 }
 

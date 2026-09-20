@@ -163,7 +163,7 @@ flowchart LR
 
 - [ ] Eca must create a Google Cloud OAuth client (type Desktop app) and run `npm run drive:authorize -w @bendike/api`
       once; that prints the refresh token and the folder id to put in the environment. Until then the API stores
-      files on local disk under `UPLOADS_DIR/library`, which is fine for development only.
+      files on local disk under `LIBRARY_LOCAL_DIR` (`./library-files`), which is fine for development only.
 - [ ] Fetching a manual straight from its link is left out: a server that fetches user-supplied links needs
       protection against reaching internal addresses, and uploading a downloaded file is one extra click.
 
@@ -185,11 +185,11 @@ flowchart LR
 
 **Verification**:
 
-- [ ] `npm run test:unit -w @bendike/shared` passes; only `https` links are valid; the limit is 25 MB
+- [x] `npm run test:unit -w @bendike/shared` passes; only `https` links are valid; the limit is 25 MB
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -208,14 +208,14 @@ Drive when it is configured.
 
 **Verification**:
 
-- [ ] The local adapter stores and returns bytes under a generated key and never trusts a caller's file name as a path
-- [ ] The Drive adapter, tested with a fake `fetch`, refreshes its token, uploads into the configured folder,
+- [x] The local adapter stores and returns bytes under a generated key and never trusts a caller's file name as a path
+- [x] The Drive adapter, tested with a fake `fetch`, refreshes its token, uploads into the configured folder,
       downloads by id, and turns any failure into a storage error
-- [ ] Without Drive settings the factory returns the local adapter
+- [x] Without Drive settings the factory returns the local adapter
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 

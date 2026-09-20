@@ -35,6 +35,8 @@ describe('AppConfigService', () => {
       expect(config.emailOverrideTo).toBeUndefined();
       expect(config.cronSecret).toBeUndefined();
       expect(config.webBaseUrl).toBe('http://localhost:5173');
+      expect(config.googleDrive).toBeNull();
+      expect(config.libraryLocalDir).toBe('./library-files');
     });
   });
 
@@ -76,6 +78,37 @@ describe('AppConfigService', () => {
       expect(config.emailOverrideTo).toBe('eca@bendike.example');
       expect(config.cronSecret).toBe('a-long-cron-secret-value');
       expect(config.webBaseUrl).toBe('https://bendike.example');
+    });
+
+    test('reads the Google Drive settings when all four are set', async () => {
+      const config = await buildConfig({
+        ...REQUIRED_ENV,
+        GOOGLE_DRIVE_CLIENT_ID: 'drive-client.apps.googleusercontent.com',
+        GOOGLE_DRIVE_CLIENT_SECRET: 'drive-secret',
+        GOOGLE_DRIVE_REFRESH_TOKEN: 'drive-refresh',
+        GOOGLE_DRIVE_FOLDER_ID: 'folder-1',
+        LIBRARY_LOCAL_DIR: '/var/bendike/library',
+      });
+
+      expect(config.googleDrive).toEqual({
+        clientId: 'drive-client.apps.googleusercontent.com',
+        clientSecret: 'drive-secret',
+        refreshToken: 'drive-refresh',
+        folderId: 'folder-1',
+      });
+      expect(config.libraryLocalDir).toBe('/var/bendike/library');
+    });
+
+    test('refuses to start with only some of the Google Drive settings', async () => {
+      await expect(
+        buildConfig({ ...REQUIRED_ENV, GOOGLE_DRIVE_CLIENT_ID: 'drive-client', GOOGLE_DRIVE_FOLDER_ID: 'folder-1' }),
+      ).rejects.toThrow(/GOOGLE_DRIVE_CLIENT_SECRET.*GOOGLE_DRIVE_REFRESH_TOKEN/);
+    });
+
+    test('treats blank Google Drive settings as not configured', async () => {
+      const config = await buildConfig({ ...REQUIRED_ENV, GOOGLE_DRIVE_CLIENT_ID: ' ', GOOGLE_DRIVE_FOLDER_ID: '' });
+
+      expect(config.googleDrive).toBeNull();
     });
 
     test('treats a blank seed admin as not configured', async () => {

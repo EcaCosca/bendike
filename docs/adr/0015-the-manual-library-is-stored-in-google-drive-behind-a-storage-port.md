@@ -32,7 +32,8 @@ the Drive file is never shared and no Drive link is ever shown.
 ## Consequences
 
 - New environment variables: `GOOGLE_DRIVE_CLIENT_ID`, `GOOGLE_DRIVE_CLIENT_SECRET`, `GOOGLE_DRIVE_REFRESH_TOKEN`,
-  `GOOGLE_DRIVE_FOLDER_ID`. When any is missing the API uses local disk under `UPLOADS_DIR/library` and logs a warning.
+  `GOOGLE_DRIVE_FOLDER_ID`. When none is set the API uses local disk under `LIBRARY_LOCAL_DIR` (`./library-files`, outside the publicly served
+  uploads folder) and logs a warning; setting only some of them stops the API at start.
 - The refresh token belongs to Eca's Google account; if he revokes it, uploads and downloads fail with a storage error
   (HTTP 502) until the script is run again. Files are owned by his Drive and count against his quota.
 - The Library row stores an opaque `storage_key` (the Drive file id, or a generated file name on disk), a SHA-256 of

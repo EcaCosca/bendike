@@ -37,3 +37,6 @@ apps/api/uploads/*
 
 # Real dropzone spreadsheets (serials, names, contact details)
 excel/
+
+# Local copy of the manual library (development only)
+apps/api/library-files
