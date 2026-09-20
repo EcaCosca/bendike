@@ -14,6 +14,7 @@ import { ProductPage } from './pages/shop/ProductPage';
 import { ServicesAdminPage } from './pages/services/ServicesAdminPage';
 import { BulletinMatchesPage } from './pages/bulletins/BulletinMatchesPage';
 import { BulletinsPage } from './pages/bulletins/BulletinsPage';
+import { LibraryPage } from './pages/library/LibraryPage';
 import { CustomersPage } from './pages/work/CustomersPage';
 import { WorkQueuePage } from './pages/work/WorkQueuePage';
 import { LinksPage } from './pages/links/LinksPage';
@@ -55,6 +56,7 @@ export function App() {
           <Route path="/app/work" element={<WorkQueuePage />} />
           <Route path="/app/work/customers" element={<CustomersPage />} />
           <Route path="/app/work/bulletins" element={<BulletinMatchesPage />} />
+          <Route path="/app/library" element={<LibraryPage />} />
         </Route>
         <Route element={<RequireRole roles={[Role.Admin]} />}>
           <Route path="/app/admin/users" element={<AdminUsersPage />} />

@@ -85,6 +85,13 @@ manufacture). Publishing it finds every matching component across all gear:
 - A rigger can also ground a rig or a single component by hand, and give the green light with a note. Grounding is a
   record everyone can see, not a lock: Bendike shows it and the rigger and dropzone act on it.
 
+### The manual library
+
+Riggers and admins get a **Library** (`/app/library`): a searchable, paginated list of manuals and bulletins that Bendike
+keeps a copy of, so they survive a manufacturer's website changing or disappearing. A rigger uploads a PDF and says
+which model and revision it is; every download goes through Bendike, and only admins can archive a document. Users
+and dropzones never see it. Files live in a Google Drive folder you own (see below) or, in development, on local disk.
+
 ### The shop and the services
 
 - A **trilingual shop** for Squirrel wingsuits and gear, FlySight and Vigil, with prices in US dollars plus derived
@@ -319,6 +326,7 @@ sequenceDiagram
 | `/app/gear/:rigId/label`                                                | Signed in       | The printable QR label.                                                                              |
 | `/app/riggers`                                                          | Signed in       | Choose your riggers (owners) or your customers and dropzones (riggers).                              |
 | `/app/work`, `/app/work/customers`, `/app/work/bulletins`               | Riggers, admins | The work queue, the customer list and the bulletin matches to review.                                |
+| `/app/library`                                                          | Riggers, admins | The manual library: search, upload and download manuals and bulletins.                               |
 | `/app/admin/users`, `services`, `used-gear`, `gear-models`, `bulletins` | Admins          | Accounts and roles, services, used gear, the model rules, the service bulletins.                     |
 
 The API documents itself: open <http://localhost:3000/docs> for every endpoint, its payload and its access rules.

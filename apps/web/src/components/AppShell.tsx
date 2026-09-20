@@ -46,6 +46,11 @@ export function AppShell({ children, wide = false }: { children: ReactNode; wide
                   Work
                 </Button>
               )}
+              {(user.role === Role.Rigger || user.role === Role.Admin) && (
+                <Button color="inherit" component={RouterLink} to="/app/library">
+                  Library
+                </Button>
+              )}
               <Button color="inherit" component={RouterLink} to="/app/riggers">
                 {user.role === Role.Rigger ? 'Customers' : 'Riggers'}
               </Button>

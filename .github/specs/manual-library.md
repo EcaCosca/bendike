@@ -284,14 +284,14 @@ navigation link and the role guard.
 
 **Verification**:
 
-- [ ] Riggers see the link and the page; users and dropzones neither
-- [ ] Upload with a chosen model shows the document in the list; download opens the file; an error message shows
+- [x] Riggers see the link and the page; users and dropzones neither
+- [x] Upload with a chosen model shows the document in the list; download opens the file; an error message shows
       when the API refuses
-- [ ] Verified in a browser at desktop and phone width
+- [x] Verified in a browser at desktop and phone width
 
 **Done when**:
 
-- [ ] All verification steps pass, README and this spec updated
+- [x] All verification steps pass, README and this spec updated
 
 ---
 
