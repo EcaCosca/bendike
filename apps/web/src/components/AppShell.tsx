@@ -38,22 +38,30 @@ export function AppShell({ children, wide = false }: { children: ReactNode; wide
           </Box>
           {user ? (
             <>
-              <Button color="inherit" component={RouterLink} to="/app/gear">
-                Gear
-              </Button>
-              {(user.role === Role.Rigger || user.role === Role.Admin) && (
-                <Button color="inherit" component={RouterLink} to="/app/work">
-                  Work
+              {user.role === Role.Authority ? (
+                <Button color="inherit" component={RouterLink} to="/app/authority/riggers">
+                  Riggers
                 </Button>
+              ) : (
+                <>
+                  <Button color="inherit" component={RouterLink} to="/app/gear">
+                    Gear
+                  </Button>
+                  {(user.role === Role.Rigger || user.role === Role.Admin) && (
+                    <Button color="inherit" component={RouterLink} to="/app/work">
+                      Work
+                    </Button>
+                  )}
+                  {(user.role === Role.Rigger || user.role === Role.Admin) && (
+                    <Button color="inherit" component={RouterLink} to="/app/library">
+                      Library
+                    </Button>
+                  )}
+                  <Button color="inherit" component={RouterLink} to="/app/riggers">
+                    {user.role === Role.Rigger ? 'Customers' : 'Riggers'}
+                  </Button>
+                </>
               )}
-              {(user.role === Role.Rigger || user.role === Role.Admin) && (
-                <Button color="inherit" component={RouterLink} to="/app/library">
-                  Library
-                </Button>
-              )}
-              <Button color="inherit" component={RouterLink} to="/app/riggers">
-                {user.role === Role.Rigger ? 'Customers' : 'Riggers'}
-              </Button>
               <Chip label={user.role} color="secondary" size="small" sx={{ textTransform: 'capitalize' }} />
               <Button
                 color="inherit"

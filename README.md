@@ -28,16 +28,17 @@ If you are a developer joining the project, everything you need is in this file,
 
 ## What you can do today
 
-Bendike has four kinds of account. Every new account starts as a `user`; an admin promotes it to `rigger`,
-`dropzone` or `admin`.
+Bendike has five kinds of account. Every new account starts as a `user`; an admin promotes it to `rigger`,
+`dropzone`, `authority` or `admin`.
 
-| Role         | Who it is                                                         | What they do in Bendike                                                                                                                                            |
-| ------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Visitor**  | Anyone who is not signed in                                       | Reads the landing page, the About story, the trilingual shop (English, Spanish, Portuguese) and the rigging services.                                              |
-| **User**     | A skydiver                                                        | Keeps their rigs and spare gear with colour-coded due dates, picks a rigger, sees inspections and groundings on their rigs.                                        |
-| **Rigger**   | A certified parachute rigger                                      | Works from one **work queue** across every dropzone and customer they look after: logs repacks in a tap, inspects, grounds, reviews bulletins, gets a daily email. |
-| **Dropzone** | An organisation account (the venue or its operator, not a person) | Keeps its whole fleet as a catalogue, assigns its riggers, sees the last inspection and any grounding on every rig.                                                |
-| **Admin**    | Eca, at first                                                     | Manages accounts, the shop, services, used gear, the gear-model rules and the service bulletins.                                                                   |
+| Role          | Who it is                                                         | What they do in Bendike                                                                                                                                                   |
+| ------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Visitor**   | Anyone who is not signed in                                       | Reads the landing page, the About story, the trilingual shop (English, Spanish, Portuguese) and the rigging services.                                                     |
+| **User**      | A skydiver                                                        | Keeps their rigs and spare gear with colour-coded due dates, picks a rigger, sees inspections and groundings on their rigs.                                               |
+| **Rigger**    | A certified parachute rigger                                      | Works from one **work queue** across every dropzone and customer they look after: logs repacks in a tap, inspects, grounds, reviews bulletins, gets a daily email.        |
+| **Dropzone**  | An organisation account (the venue or its operator, not a person) | Keeps its whole fleet as a catalogue, assigns its riggers, sees the last inspection and any grounding on every rig.                                                       |
+| **Authority** | A governing body over riggers, such as ANAC in Argentina          | Reads the register of every rigger and each rigger's virtual log (signed packing sheets, work recorded, groundings). Read only: nothing else on Bendike is visible to it. |
+| **Admin**     | Eca, at first                                                     | Manages accounts, the shop, services, used gear, the gear-model rules and the service bulletins.                                                                          |
 
 ### The gear tracker
 
@@ -58,6 +59,20 @@ risers, toggles, handles) hang off a component as notes. Everything that happens
   shows **GROUNDED** until a Bendike rigger verifies it.
 - **Fleet import.** A dropzone's existing spreadsheet can be imported in one command (see
   [Import a dropzone's fleet](#import-a-dropzones-fleet)).
+
+### The authority's view
+
+An account with the `authority` role is for a governing body over riggers (ANAC, in Argentina). It replaces a request
+for each rigger's paper logbook with a register it can open at any time.
+
+- **The register.** `/app/authority/riggers` lists every rigger, 25 a page, with WhatsApp phone, licence number, signed
+  sheets, work recorded, date of the last activity and number of customers. It searches by name, email or licence and
+  sorts by name or by last activity.
+- **The virtual log.** Opening a rigger shows what they signed and recorded: signed packing sheets (each opens exactly
+  as signed, ready to print), work they performed or verified, and groundings they opened, newest first.
+- **Read only, and nothing else.** The API refuses every write from an authority (except editing its own contact
+  details), shows it only signed sheets, never drafts, and gives it no access to anyone's gear, rig photos, manual
+  library or customer links. Admins assign the role from the accounts page.
 
 ### The rigger workspace
 
@@ -369,6 +384,7 @@ sequenceDiagram
 | `/app/work`, `/app/work/customers`, `/app/work/bulletins`               | Riggers, admins                           | The work queue, the customer list and the bulletin matches to review.                                |
 | `/app/library`                                                          | Riggers, admins                           | The manual library: search, upload and download manuals and bulletins.                               |
 | `/app/gear/:rigId/packing/:sheetId`, `.../print`                        | Riggers, admins; signed sheets for owners | The repack job, and the printable signed sheet.                                                      |
+| `/app/authority/riggers`, `/app/authority/riggers/:id`                  | Authorities, admins                       | The register of riggers, and one rigger's virtual log (signed sheets, work, groundings), read only.  |
 | `/app/admin/users`, `services`, `used-gear`, `gear-models`, `bulletins` | Admins                                    | Accounts and roles, services, used gear, the model rules, the service bulletins.                     |
 
 The API documents itself: open <http://localhost:3000/docs> for every endpoint, its payload and its access rules.

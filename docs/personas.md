@@ -37,6 +37,14 @@ out-of-date gear.
 **Pain Points**: Manual gear checks at manifest; no view of which rigs on the load are current.
 **Context**: One login per dropzone for now; staff logins are an open question.
 
+## Authority
+
+**Role**: A signed-in account with the `authority` role, held by a governing body over riggers (in Argentina, ANAC).
+**Goals**: Know who the riggers are and inspect what each has signed and recorded, without asking for a paper logbook.
+**Pain Points**: Logbooks held by each rigger, no single register, no way to check activity without visiting.
+**Context**: Read only. Sees the register of riggers and each rigger's signed sheets, work and groundings, and nothing
+of owners' gear, photos or manuals.
+
 ## Admin
 
 **Role**: A signed-in account with the `admin` role.

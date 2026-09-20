@@ -303,4 +303,28 @@ describe('PackingSheetPrintPage', () => {
       expect(screen.getByRole('button', { name: 'Email owner' })).toBeInTheDocument();
     });
   });
+  describe('read by an authority', () => {
+    test('shows the sheet as signed with no email or void action and goes back to the rigger log', async () => {
+      renderPage('authority-1', Role.Authority);
+
+      expect(await screen.findByText('HOJA #: 7')).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /Email owner/ })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Void sheet' })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Print' })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: "Back to the rigger's log" })).toHaveAttribute(
+        'href',
+        '/app/authority/riggers/rigger-1',
+      );
+      expect(screen.queryByRole('link', { name: 'Back to the rig' })).not.toBeInTheDocument();
+    });
+
+    test('still links other roles back to the rig', async () => {
+      renderPage();
+
+      expect(await screen.findByRole('link', { name: 'Back to the rig' })).toHaveAttribute(
+        'href',
+        '/app/gear/tandem-1',
+      );
+    });
+  });
 });

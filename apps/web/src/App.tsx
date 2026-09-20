@@ -7,6 +7,8 @@ import { LocaleLayout } from './i18n/LocaleLayout';
 import { RedirectToLocale } from './i18n/RedirectToLocale';
 import { AboutStoryPage } from './pages/about/story/AboutStoryPage';
 import { AdminUsersPage } from './pages/AdminUsersPage';
+import { AuthorityRiggerPage } from './pages/authority/AuthorityRiggerPage';
+import { AuthorityRiggersPage } from './pages/authority/AuthorityRiggersPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { LandingPage } from './pages/landing/LandingPage';
 import { LoginPage } from './pages/LoginPage';
@@ -51,18 +53,24 @@ export function App() {
       <Route element={<RequireAuth />}>
         <Route path="/app" element={<DashboardPage />} />
         <Route path="/app/profile" element={<ProfilePage />} />
-        <Route path="/app/gear" element={<GearPage />} />
-        <Route path="/app/gear/items/:itemId" element={<ItemPage />} />
-        <Route path="/app/gear/:rigId" element={<RigPage />} />
-        <Route path="/app/gear/:rigId/label" element={<RigLabelPage />} />
         <Route path="/app/gear/:rigId/packing/:sheetId/print" element={<PackingSheetPrintPage />} />
-        <Route path="/app/riggers" element={<LinksPage />} />
+        <Route element={<RequireRole roles={[Role.User, Role.Rigger, Role.Dropzone, Role.Admin]} />}>
+          <Route path="/app/gear" element={<GearPage />} />
+          <Route path="/app/gear/items/:itemId" element={<ItemPage />} />
+          <Route path="/app/gear/:rigId" element={<RigPage />} />
+          <Route path="/app/gear/:rigId/label" element={<RigLabelPage />} />
+          <Route path="/app/riggers" element={<LinksPage />} />
+        </Route>
         <Route element={<RequireRole roles={[Role.Rigger, Role.Admin]} />}>
           <Route path="/app/work" element={<WorkQueuePage />} />
           <Route path="/app/work/customers" element={<CustomersPage />} />
           <Route path="/app/work/bulletins" element={<BulletinMatchesPage />} />
           <Route path="/app/library" element={<LibraryPage />} />
           <Route path="/app/gear/:rigId/packing/:sheetId" element={<PackingJobPage />} />
+        </Route>
+        <Route element={<RequireRole roles={[Role.Authority, Role.Admin]} />}>
+          <Route path="/app/authority/riggers" element={<AuthorityRiggersPage />} />
+          <Route path="/app/authority/riggers/:riggerId" element={<AuthorityRiggerPage />} />
         </Route>
         <Route element={<RequireRole roles={[Role.Admin]} />}>
           <Route path="/app/admin/users" element={<AdminUsersPage />} />

@@ -43,7 +43,8 @@ so that I can **let a governing body inspect the riggers without giving it any o
   component and account page other than the riggers' registry and logs.
 - While signed in as an authority, the web app shall show a "Riggers" link in the navigation and shall not show the
   gear, work, customers or library links.
-- While signed in as an authority, the web app shall show the riggers' registry as the main action on the dashboard.
+- While signed in as an authority, the web app shall show the riggers' registry as the main action on the dashboard, and
+  shall send the gear and rigger-link pages back to the dashboard.
 
 ### Story 2: The registry of riggers
 
@@ -237,11 +238,11 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] An authority sees Riggers and none of the gear links; users and riggers cannot open the route
+- [x] An authority sees Riggers and none of the gear links; users and riggers cannot open the route
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -259,12 +260,12 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] Each list is paged and newest first; a sheet opens as signed with no actions; verified in a browser
-- [ ] README, personas and this spec updated
+- [x] Each list is paged and newest first; a sheet opens as signed with no actions; verified in a browser
+- [x] README, personas and this spec updated
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 

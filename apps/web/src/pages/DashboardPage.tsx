@@ -26,23 +26,34 @@ export function DashboardPage() {
         </Typography>
         <Typography color="text.secondary">{ROLE_GREETINGS[user.role]}</Typography>
         <Stack direction="row" spacing={2}>
-          <Button variant="contained" color="secondary" component={RouterLink} to="/app/gear">
-            {user.role === Role.Dropzone ? 'Fleet' : 'My gear'}
-          </Button>
-          {(user.role === Role.Rigger || user.role === Role.Admin) && (
-            <Button variant="contained" color="secondary" component={RouterLink} to="/app/work">
-              Work queue
+          {user.role === Role.Authority ? (
+            <Button variant="contained" color="secondary" component={RouterLink} to="/app/authority/riggers">
+              Register of riggers
             </Button>
+          ) : (
+            <>
+              <Button variant="contained" color="secondary" component={RouterLink} to="/app/gear">
+                {user.role === Role.Dropzone ? 'Fleet' : 'My gear'}
+              </Button>
+              {(user.role === Role.Rigger || user.role === Role.Admin) && (
+                <Button variant="contained" color="secondary" component={RouterLink} to="/app/work">
+                  Work queue
+                </Button>
+              )}
+              <Button variant="outlined" component={RouterLink} to="/app/riggers">
+                {user.role === Role.Rigger ? 'Customers and dropzones' : 'My riggers'}
+              </Button>
+            </>
           )}
-          <Button variant="outlined" component={RouterLink} to="/app/riggers">
-            {user.role === Role.Rigger ? 'Customers and dropzones' : 'My riggers'}
-          </Button>
           <Button variant="outlined" component={RouterLink} to="/app/profile">
             Your details
           </Button>
         </Stack>
         {user.role === Role.Admin && (
           <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap', rowGap: 2 }}>
+            <Button variant="contained" component={RouterLink} to="/app/authority/riggers">
+              Register of riggers
+            </Button>
             <Button variant="contained" component={RouterLink} to="/app/admin/users">
               Manage accounts
             </Button>

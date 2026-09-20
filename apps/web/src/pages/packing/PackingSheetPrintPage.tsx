@@ -260,9 +260,20 @@ export function PackingSheetPrintPage() {
           alignItems="center"
           sx={{ flexWrap: 'wrap', rowGap: 1, '@media print': { display: 'none' } }}
         >
-          <Link component={RouterLink} to={`/app/gear/${rigId}`} underline="hover" sx={{ flexGrow: 1 }}>
-            Back to the rig
-          </Link>
+          {user.role === Role.Authority ? (
+            <Link
+              component={RouterLink}
+              to={sheet ? `/app/authority/riggers/${sheet.riggerId}` : '/app/authority/riggers'}
+              underline="hover"
+              sx={{ flexGrow: 1 }}
+            >
+              Back to the rigger&apos;s log
+            </Link>
+          ) : (
+            <Link component={RouterLink} to={`/app/gear/${rigId}`} underline="hover" sx={{ flexGrow: 1 }}>
+              Back to the rig
+            </Link>
+          )}
           {canEmail && (
             <Button variant="outlined" onClick={send} disabled={sending || sheet.ownerEmail.trim() === ''}>
               {sheet.ownerNotifiedAt ? 'Email owner again' : 'Email owner'}
