@@ -19,6 +19,7 @@ const account: UserSummary = {
   authMethods: ['password'],
   phone: null,
   locale: 'es',
+  country: null,
   createdAt: '2026-09-19T00:00:00.000Z',
 };
 
@@ -67,10 +68,44 @@ describe('ProfilePage', () => {
         displayName: 'Ana',
         phone: '+54 9 341 555 0000',
         locale: 'en',
+        country: null,
       }),
     );
     await waitFor(() => expect(updateUser).toHaveBeenCalledWith(expect.objectContaining({ phone: '+5493415550000' })));
     expect(await screen.findByText('Saved')).toBeInTheDocument();
+  });
+
+  test('shows no country until one is chosen, then saves the choice', async () => {
+    const user = userEvent.setup();
+    mocked.updateContact.mockResolvedValue({ ...account, country: 'AR' });
+    const { updateUser } = renderPage();
+
+    expect(screen.getByRole('combobox', { name: 'Country' })).toHaveTextContent('Not stated');
+    await user.click(screen.getByRole('combobox', { name: 'Country' }));
+    await user.click(await screen.findByRole('option', { name: 'Argentina' }));
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+
+    await waitFor(() =>
+      expect(mocked.updateContact).toHaveBeenCalledWith('token-1', expect.objectContaining({ country: 'AR' })),
+    );
+    await waitFor(() => expect(updateUser).toHaveBeenCalledWith(expect.objectContaining({ country: 'AR' })));
+  });
+
+  test('clears the country by choosing Not stated', async () => {
+    const user = userEvent.setup();
+    account.country = 'AR';
+    mocked.updateContact.mockResolvedValue({ ...account, country: null });
+    renderPage();
+
+    expect(screen.getByRole('combobox', { name: 'Country' })).toHaveTextContent('Argentina');
+    await user.click(screen.getByRole('combobox', { name: 'Country' }));
+    await user.click(await screen.findByRole('option', { name: 'Not stated' }));
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+
+    await waitFor(() =>
+      expect(mocked.updateContact).toHaveBeenCalledWith('token-1', expect.objectContaining({ country: null })),
+    );
+    account.country = null;
   });
 
   test('a phone without the country code is refused before any request', async () => {

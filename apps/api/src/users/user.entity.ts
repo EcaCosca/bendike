@@ -1,4 +1,4 @@
-import { Role, ROLES, type Locale } from '@bendike/shared';
+import { Role, ROLES, type CountryCode, type Locale } from '@bendike/shared';
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('users')
@@ -23,6 +23,9 @@ export class User {
 
   @Column({ type: 'varchar', length: 2, default: 'es' })
   locale!: Locale;
+
+  @Column({ type: 'varchar', length: 2, nullable: true })
+  country!: CountryCode | null;
 
   @Column({ type: 'enum', enum: ROLES, enumName: 'user_role', default: Role.User })
   role!: Role;

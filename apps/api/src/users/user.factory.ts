@@ -13,6 +13,7 @@ export function buildUser(overrides: Partial<User> = {}): User {
   user.googleSub = null;
   user.phone = null;
   user.locale = 'es';
+  user.country = null;
   user.role = Role.User;
   user.createdAt = new Date('2026-09-11T10:00:00.000Z');
   user.updatedAt = user.createdAt;

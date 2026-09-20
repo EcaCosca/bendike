@@ -40,10 +40,12 @@ out-of-date gear.
 ## Authority
 
 **Role**: A signed-in account with the `authority` role, held by a governing body over riggers (in Argentina, ANAC).
-**Goals**: Know who the riggers are and inspect what each has signed and recorded, without asking for a paper logbook.
+**Goals**: Know who the riggers are and inspect what each has signed and recorded, without asking for a paper logbook,
+and see every rig packed and which belong to jumpers who live in its own country.
 **Pain Points**: Logbooks held by each rigger, no single register, no way to check activity without visiting.
-**Context**: Read only. Sees the register of riggers and each rigger's signed sheets, work and groundings, and nothing
-of owners' gear, photos or manuals.
+**Context**: Read only. Sees the register of riggers, each rigger's signed sheets, work and groundings, and the list of
+packed rigs with the owner's name and country, and nothing else of owners' gear, photos or manuals. Its own country
+decides what counts as local.
 
 ## Admin
 

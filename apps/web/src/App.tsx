@@ -9,6 +9,7 @@ import { AboutStoryPage } from './pages/about/story/AboutStoryPage';
 import { AdminUsersPage } from './pages/AdminUsersPage';
 import { AuthorityRiggerPage } from './pages/authority/AuthorityRiggerPage';
 import { AuthorityRiggersPage } from './pages/authority/AuthorityRiggersPage';
+import { AuthorityRigsPage } from './pages/authority/AuthorityRigsPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { LandingPage } from './pages/landing/LandingPage';
 import { LoginPage } from './pages/LoginPage';
@@ -71,6 +72,7 @@ export function App() {
         <Route element={<RequireRole roles={[Role.Authority, Role.Admin]} />}>
           <Route path="/app/authority/riggers" element={<AuthorityRiggersPage />} />
           <Route path="/app/authority/riggers/:riggerId" element={<AuthorityRiggerPage />} />
+          <Route path="/app/authority/rigs" element={<AuthorityRigsPage />} />
         </Route>
         <Route element={<RequireRole roles={[Role.Admin]} />}>
           <Route path="/app/admin/users" element={<AdminUsersPage />} />

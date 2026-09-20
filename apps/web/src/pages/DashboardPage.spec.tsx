@@ -16,6 +16,7 @@ function renderAs(role: Role) {
       authMethods: ['password'],
       phone: null,
       locale: 'es',
+      country: null,
       createdAt: '2026-09-19T00:00:00.000Z',
     },
     token: 'token-1',
@@ -36,6 +37,7 @@ describe('DashboardPage', () => {
   it('offers an authority the register of riggers and no gear shortcuts', () => {
     renderAs(Role.Authority);
     expect(screen.getByRole('link', { name: 'Register of riggers' })).toHaveAttribute('href', '/app/authority/riggers');
+    expect(screen.getByRole('link', { name: 'Packed rigs' })).toHaveAttribute('href', '/app/authority/rigs');
     for (const name of ['My gear', 'Fleet', 'Work queue', 'My riggers', 'Customers and dropzones']) {
       expect(screen.queryByRole('link', { name })).not.toBeInTheDocument();
     }
@@ -52,5 +54,11 @@ describe('DashboardPage', () => {
     renderAs(Role.Admin);
     expect(screen.getByRole('link', { name: 'Work queue' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Register of riggers' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Packed rigs' })).toBeInTheDocument();
+  });
+
+  it('does not show a user the authority pages', () => {
+    renderAs(Role.User);
+    expect(screen.queryByRole('link', { name: 'Packed rigs' })).not.toBeInTheDocument();
   });
 });

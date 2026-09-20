@@ -70,6 +70,13 @@ for each rigger's paper logbook with a register it can open at any time.
   sorts by name or by last activity.
 - **The virtual log.** Opening a rigger shows what they signed and recorded: signed packing sheets (each opens exactly
   as signed, ready to print), work they performed or verified, and groundings they opened, newest first.
+- **Packed rigs, by where the owner lives.** `/app/authority/rigs` lists every rig one of the riggers has packed and
+  signed, one row per rig from its latest non-void sheet: owner and country, reserve and serial, date of the last
+  packing, rigger and licence, number of sheets. It searches by rig, owner, serial or rigger, and filters by **where the
+  owner lives**: Local (the same country as the authority's own account, so in Argentina's case the people who live
+  in Argentina), Abroad, or Not stated. Each row opens the latest signed sheet. No owner email or phone is listed.
+- **A country on every account.** Anyone sets the country they live in on their profile page; it is empty until they do.
+  An authority sets its own, which is what "local" means for it.
 - **Read only, and nothing else.** The API refuses every write from an authority (except editing its own contact
   details), shows it only signed sheets, never drafts, and gives it no access to anyone's gear, rig photos, manual
   library or customer links. Admins assign the role from the accounts page.
@@ -377,7 +384,7 @@ sequenceDiagram
 | `/:locale/shop`, `/:locale/shop/:slug`                                  | Everyone                                  | The shop in `es`, `en` or `pt`, with search, filters, used gear and "Sold".                          |
 | `/:locale/services`, `/:locale/services/:slug`                          | Everyone                                  | The rigging services.                                                                                |
 | `/login`, `/register`                                                   | Visitors                                  | Email and password, and "Continue with Google" when configured.                                      |
-| `/app`, `/app/profile`                                                  | Signed in                                 | The dashboard, and your name, WhatsApp phone and language.                                           |
+| `/app`, `/app/profile`                                                  | Signed in                                 | The dashboard, and your name, WhatsApp phone, language and country.                                  |
 | `/app/gear`, `/app/gear/:rigId`, `/app/gear/items/:id`                  | Signed in                                 | Your gear as a paginated grid (or cards): a dropzone's "Fleet", the rig page, a component's history. |
 | `/app/gear/:rigId/label`                                                | Signed in                                 | The printable QR label.                                                                              |
 | `/app/riggers`                                                          | Signed in                                 | Choose your riggers (owners) or your customers and dropzones (riggers).                              |
@@ -385,6 +392,7 @@ sequenceDiagram
 | `/app/library`                                                          | Riggers, admins                           | The manual library: search, upload and download manuals and bulletins.                               |
 | `/app/gear/:rigId/packing/:sheetId`, `.../print`                        | Riggers, admins; signed sheets for owners | The repack job, and the printable signed sheet.                                                      |
 | `/app/authority/riggers`, `/app/authority/riggers/:id`                  | Authorities, admins                       | The register of riggers, and one rigger's virtual log (signed sheets, work, groundings), read only.  |
+| `/app/authority/rigs`                                                   | Authorities, admins                       | Every packed rig, filtered by whether the owner lives in the authority's own country.                |
 | `/app/admin/users`, `services`, `used-gear`, `gear-models`, `bulletins` | Admins                                    | Accounts and roles, services, used gear, the model rules, the service bulletins.                     |
 
 The API documents itself: open <http://localhost:3000/docs> for every endpoint, its payload and its access rules.

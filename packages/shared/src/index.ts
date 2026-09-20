@@ -1,5 +1,6 @@
 export * from './roles';
 export * from './contracts';
+export * from './countries';
 export * from './locale';
 export * from './pricing';
 export * from './catalog';

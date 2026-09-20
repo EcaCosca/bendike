@@ -27,9 +27,14 @@ export function DashboardPage() {
         <Typography color="text.secondary">{ROLE_GREETINGS[user.role]}</Typography>
         <Stack direction="row" spacing={2}>
           {user.role === Role.Authority ? (
-            <Button variant="contained" color="secondary" component={RouterLink} to="/app/authority/riggers">
-              Register of riggers
-            </Button>
+            <>
+              <Button variant="contained" color="secondary" component={RouterLink} to="/app/authority/riggers">
+                Register of riggers
+              </Button>
+              <Button variant="contained" color="secondary" component={RouterLink} to="/app/authority/rigs">
+                Packed rigs
+              </Button>
+            </>
           ) : (
             <>
               <Button variant="contained" color="secondary" component={RouterLink} to="/app/gear">
@@ -53,6 +58,9 @@ export function DashboardPage() {
           <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap', rowGap: 2 }}>
             <Button variant="contained" component={RouterLink} to="/app/authority/riggers">
               Register of riggers
+            </Button>
+            <Button variant="contained" component={RouterLink} to="/app/authority/rigs">
+              Packed rigs
             </Button>
             <Button variant="contained" component={RouterLink} to="/app/admin/users">
               Manage accounts

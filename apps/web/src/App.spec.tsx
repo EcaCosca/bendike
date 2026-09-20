@@ -11,6 +11,7 @@ jest.mock('./pages/links/LinksPage', () => ({ LinksPage: () => <p>Links page</p>
 jest.mock('./pages/authority/AuthorityRiggersPage', () => ({
   AuthorityRiggersPage: () => <p>Register of riggers page</p>,
 }));
+jest.mock('./pages/authority/AuthorityRigsPage', () => ({ AuthorityRigsPage: () => <p>Packed rigs page</p> }));
 jest.mock('./pages/packing/PackingSheetPrintPage', () => ({
   PackingSheetPrintPage: () => <p>Printable sheet page</p>,
 }));
@@ -25,6 +26,7 @@ function renderAt(path: string, role: Role) {
       authMethods: ['password'],
       phone: null,
       locale: 'es',
+      country: null,
       createdAt: '2026-09-19T00:00:00.000Z',
     },
     token: 'token-1',
@@ -50,6 +52,16 @@ describe('App routes for an authority', () => {
   it('lets an authority open the register', () => {
     renderAt('/app/authority/riggers', Role.Authority);
     expect(screen.getByText('Register of riggers page')).toBeInTheDocument();
+  });
+
+  it('lets an authority open the packed rigs', () => {
+    renderAt('/app/authority/rigs', Role.Authority);
+    expect(screen.getByText('Packed rigs page')).toBeInTheDocument();
+  });
+
+  it('sends a rigger from the packed rigs to the dashboard', () => {
+    renderAt('/app/authority/rigs', Role.Rigger);
+    expect(screen.getByText('Dashboard page')).toBeInTheDocument();
   });
 
   it('lets an authority open a printable sheet', () => {

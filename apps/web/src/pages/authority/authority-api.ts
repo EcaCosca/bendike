@@ -1,9 +1,11 @@
 import type {
   AuthorityGroundingRow,
   AuthorityPage,
+  AuthorityRigRow,
   AuthoritySheetRow,
   AuthorityWorkRow,
   RiggerRegistryRow,
+  RigResidence,
   RiggerRegistrySort,
 } from '@bendike/shared';
 import { apiFetch } from '../../api/http';
@@ -51,4 +53,21 @@ export function getRiggerGroundings(
     {},
     token,
   );
+}
+
+export interface RigsQuery {
+  search?: string;
+  residence?: RigResidence;
+  page?: number;
+}
+
+export function getRigs(token: string, query: RigsQuery): Promise<AuthorityPage<AuthorityRigRow>> {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(query)) {
+    if (value !== undefined && value !== '') {
+      params.set(key, String(value));
+    }
+  }
+  const text = params.toString();
+  return apiFetch<AuthorityPage<AuthorityRigRow>>(`/authority/rigs${text ? `?${text}` : ''}`, {}, token);
 }

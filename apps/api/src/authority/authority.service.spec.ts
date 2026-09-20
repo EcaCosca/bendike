@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { AUTHORITY_PAGE_SIZE, Role } from '@bendike/shared';
 import { Grounding } from '../bulletins/entities';
 import { GearItem } from '../gear/entities/gear-item.entity';
@@ -27,7 +27,11 @@ describe('AuthorityService', () => {
     email: 'carla@bendike.example',
     phone: null,
   });
-  const camila = buildUser({ role: Role.User, displayName: 'Camila Rossi' });
+  const camila = buildUser({ role: Role.User, displayName: 'Camila Rossi', country: 'AR' });
+  const diego = buildUser({ role: Role.User, displayName: 'Diego Visitor', country: 'US' });
+  const elena = buildUser({ role: Role.User, displayName: 'Elena Nueva', country: null });
+  const inspector = buildUser({ role: Role.Authority, displayName: 'ANAC', country: 'AR' });
+  const stranger = buildUser({ role: Role.Authority, displayName: 'Nowhere', country: null });
   const dropzone = buildUser({ role: Role.Dropzone, displayName: 'Aeroclub Demo' });
   let rig: Rig;
   let reserve: GearItem;
@@ -106,7 +110,8 @@ describe('AuthorityService', () => {
   beforeEach(() => {
     manager = new InMemoryManager();
     service = new AuthorityService(manager as never);
-    for (const user of [ana, beto, carla, camila, dropzone]) manager.seed(User, user);
+    for (const user of [ana, beto, carla, camila, diego, elena, inspector, stranger, dropzone])
+      manager.seed(User, user);
     rig = manager.seed(Rig, { ownerId: camila.id, name: "Camila's rig", notes: '', active: true });
     reserve = manager.seed(GearItem, {
       ownerId: camila.id,
@@ -445,6 +450,189 @@ describe('AuthorityService', () => {
       await expect(service.sheets(camila.id, 1)).rejects.toBeInstanceOf(NotFoundException);
       await expect(service.work(camila.id, 1)).rejects.toBeInstanceOf(NotFoundException);
       await expect(service.groundings(camila.id, 1)).rejects.toBeInstanceOf(NotFoundException);
+    });
+  });
+  describe('rigs', () => {
+    const reserveElement = {
+      kind: 'reserve',
+      manufacturer: 'PD',
+      model: 'Optimum 143',
+      serial: 'R-1',
+      manufacturedOn: null,
+    };
+
+    function ownRig(owner: User, name: string): { rig: Rig; reserve: GearItem } {
+      const own = manager.seed(Rig, { ownerId: owner.id, name, notes: '', active: true });
+      const item = manager.seed(GearItem, {
+        ownerId: owner.id,
+        rigId: own.id,
+        modelId: null,
+        kind: 'reserve',
+        manufacturer: 'Aerodyne',
+        model: 'Smart 175',
+        serial: `S-${name}`,
+        manufacturedOn: null,
+        notes: '',
+        retiredAt: null,
+      });
+      return { rig: own, reserve: item };
+    }
+
+    function packed(
+      target: { rig: Rig; reserve: GearItem },
+      owner: User,
+      riggerId: string,
+      no: number,
+      on: string,
+      overrides: Partial<PackingSheet> = {},
+    ) {
+      const signedAt = new Date(`${on}T15:00:00Z`);
+      const entry = manager.seed(MaintenanceEntry, {
+        createdAt: signedAt,
+        gearItemId: target.reserve.id,
+        kind: 'repack',
+        performedOn: on,
+        description: `Repack (packing sheet #${no})`,
+        performedById: riggerId,
+        performedByName: 'x',
+        performedByLicence: null,
+        ownerReported: false,
+        voidedAt: overrides.notes === 'void' ? new Date('2026-09-01T00:00:00Z') : null,
+        voidReason: overrides.notes === 'void' ? 'Wrong reserve' : null,
+        verifiedAt: null,
+        verifiedById: null,
+        voidedById: null,
+      });
+      return manager.seed(PackingSheet, {
+        ...sheetFields(riggerId, on),
+        rigId: target.rig.id,
+        reserveItemId: target.reserve.id,
+        ownerId: owner.id,
+        ownerName: owner.displayName,
+        riggerName: riggerId === ana.id ? 'Ana Rigger' : 'Beto Rigger',
+        status: 'signed',
+        sheetNo: no,
+        signedAt,
+        entryId: entry.id,
+        ...overrides,
+      });
+    }
+
+    let camilaRig: { rig: Rig; reserve: GearItem };
+    let diegoRig: { rig: Rig; reserve: GearItem };
+    let elenaRig: { rig: Rig; reserve: GearItem };
+
+    beforeEach(() => {
+      camilaRig = { rig, reserve };
+      diegoRig = ownRig(diego, 'Diego rig');
+      elenaRig = ownRig(elena, 'Elena rig');
+      packed(camilaRig, camila, ana.id, 1, '2026-03-10', { riggerLicence: 'AR-OLD' });
+      packed(camilaRig, camila, beto.id, 2, '2026-09-01', {
+        riggerLicence: 'AR-77',
+        elements: { reserve: reserveElement, container: null, aad: null } as never,
+      });
+      packed(diegoRig, diego, ana.id, 3, '2026-08-15', { riggerLicence: 'AR-1' });
+      packed(elenaRig, elena, beto.id, 4, '2026-09-10', { riggerLicence: 'AR-77' });
+    });
+
+    it('lists one row per rig from its latest signed sheet, newest packing first', async () => {
+      const { rows, total } = await service.rigs(inspector, {});
+
+      expect(total).toBe(3);
+      expect(rows.map((row) => row.rigName)).toEqual(['Elena rig', "Camila's rig", 'Diego rig']);
+      expect(rows[1]).toMatchObject({
+        rigId: rig.id,
+        ownerName: 'Camila Rossi',
+        ownerCountry: 'AR',
+        reserve: 'PD Optimum 143',
+        reserveSerial: 'R-1',
+        lastPackedOn: '2026-09-01',
+        riggerId: beto.id,
+        riggerName: 'Beto Rigger',
+        riggerLicence: 'AR-77',
+        sheets: 2,
+      });
+      expect(rows[1]?.latestSheetId).toBeDefined();
+    });
+
+    it('describes the reserve from the item when the sheet kept no snapshot', async () => {
+      const [first] = (await service.rigs(inspector, {})).rows;
+
+      expect(first).toMatchObject({ reserve: 'Aerodyne Smart 175', reserveSerial: 'S-Elena rig' });
+    });
+
+    it('ignores drafts and void sheets, and drops a rig with nothing left', async () => {
+      draft(carla.id);
+      const lonely = ownRig(camila, 'Lonely rig');
+      packed(lonely, camila, ana.id, 5, '2026-09-18', { notes: 'void' });
+      packed(diegoRig, diego, ana.id, 6, '2026-09-19', { notes: 'void' });
+
+      const { rows, total } = await service.rigs(inspector, {});
+
+      expect(total).toBe(3);
+      expect(rows.find((row) => row.rigName === 'Lonely rig')).toBeUndefined();
+      expect(rows.find((row) => row.rigName === 'Diego rig')).toMatchObject({ lastPackedOn: '2026-08-15', sheets: 1 });
+    });
+
+    it('never returns the owner email, phone or address', async () => {
+      const text = JSON.stringify((await service.rigs(inspector, {})).rows);
+
+      expect(text).not.toContain('@bendike.example');
+      expect(text).not.toContain('ownerEmail');
+      expect(text).not.toContain('ownerPhone');
+      expect(text).not.toContain('ownerAddress');
+    });
+
+    it.each([
+      ['the rig name', 'elena rig', ['Elena rig']],
+      ['the owner name', 'ROSSI', ["Camila's rig"]],
+      ['the reserve serial', 'r-1', ["Camila's rig"]],
+      ['the rigger name', 'beto', ['Elena rig', "Camila's rig"]],
+    ])('searches by %s', async (_label, search, expected) => {
+      expect((await service.rigs(inspector, { search })).rows.map((row) => row.rigName)).toEqual(expected);
+    });
+
+    it('keeps the rigs of owners who live in the authority country when the filter is local', async () => {
+      const { rows, total } = await service.rigs(inspector, { residence: 'local' });
+
+      expect(total).toBe(1);
+      expect(rows.map((row) => row.rigName)).toEqual(["Camila's rig"]);
+    });
+
+    it('keeps the rigs of owners with another country when abroad, and with none when unknown', async () => {
+      expect((await service.rigs(inspector, { residence: 'abroad' })).rows.map((row) => row.rigName)).toEqual([
+        'Diego rig',
+      ]);
+      expect((await service.rigs(inspector, { residence: 'unknown' })).rows.map((row) => row.rigName)).toEqual([
+        'Elena rig',
+      ]);
+    });
+
+    it('combines the filter with the search and reports the total after filtering', async () => {
+      const result = await service.rigs(inspector, { residence: 'local', search: 'diego' });
+
+      expect(result).toEqual({ rows: [], total: 0 });
+    });
+
+    it('needs the authority own country to say what is local or abroad', async () => {
+      await expect(service.rigs(stranger, { residence: 'local' })).rejects.toBeInstanceOf(BadRequestException);
+      await expect(service.rigs(stranger, { residence: 'abroad' })).rejects.toBeInstanceOf(BadRequestException);
+      expect((await service.rigs(stranger, { residence: 'unknown' })).total).toBe(1);
+      expect((await service.rigs(stranger, {})).total).toBe(3);
+    });
+
+    it('pages 25 at a time', async () => {
+      for (let i = 0; i < 26; i += 1) {
+        const extra = ownRig(camila, `Extra ${i}`);
+        packed(extra, camila, ana.id, 100 + i, '2026-01-01');
+      }
+
+      const first = await service.rigs(inspector, {});
+      const second = await service.rigs(inspector, { page: 2 });
+
+      expect(first.total).toBe(29);
+      expect(first.rows).toHaveLength(AUTHORITY_PAGE_SIZE);
+      expect(second.rows).toHaveLength(4);
     });
   });
 });

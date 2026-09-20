@@ -21,6 +21,7 @@ export function toUserSummary(user: User): UserSummary {
     authMethods: authMethodsOf(user),
     phone: user.phone,
     locale: user.locale,
+    country: user.country,
     createdAt: user.createdAt.toISOString(),
   };
 }

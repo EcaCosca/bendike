@@ -1,3 +1,4 @@
+import type { CountryCode } from './countries';
 import type { GroundingView } from './bulletins';
 import type { InspectionResult, MaintenanceKind } from './gear';
 
@@ -51,4 +52,22 @@ export interface AuthorityWorkRow {
 
 export interface AuthorityGroundingRow extends GroundingView {
   rigName: string | null;
+}
+
+export const RIG_RESIDENCES = ['all', 'local', 'abroad', 'unknown'] as const;
+export type RigResidence = (typeof RIG_RESIDENCES)[number];
+
+export interface AuthorityRigRow {
+  rigId: string;
+  rigName: string;
+  ownerName: string;
+  ownerCountry: CountryCode | null;
+  reserve: string;
+  reserveSerial: string | null;
+  lastPackedOn: string;
+  riggerId: string;
+  riggerName: string;
+  riggerLicence: string | null;
+  sheets: number;
+  latestSheetId: string;
 }

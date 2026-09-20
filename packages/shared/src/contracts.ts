@@ -1,3 +1,4 @@
+import type { CountryCode } from './countries';
 import type { Locale } from './locale';
 import type { Role } from './roles';
 
@@ -12,6 +13,7 @@ export interface UserSummary {
   authMethods: AuthMethod[];
   phone: string | null;
   locale: Locale;
+  country: CountryCode | null;
   createdAt: string;
 }
 
@@ -25,6 +27,7 @@ export interface UpdateContactRequestBody {
   displayName?: string;
   phone?: string | null;
   locale?: Locale;
+  country?: CountryCode | null;
 }
 
 export interface LoginRequest {

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import {
   AUTHORITY_PAGE_SIZE,
@@ -6,11 +6,13 @@ import {
   paginate,
   type AuthorityGroundingRow,
   type AuthorityPage,
+  type AuthorityRigRow,
   type AuthoritySheetRow,
   type AuthorityWorkRow,
   type GearKind,
   type RiggerRegistryRow,
   type RiggerRegistrySort,
+  type RigResidence,
 } from '@bendike/shared';
 import type { EntityManager } from 'typeorm';
 import { Grounding } from '../bulletins/entities';
@@ -27,6 +29,12 @@ const KIND_LABELS: Record<GearKind, string> = { container: 'Container', main: 'M
 export interface RegistryQuery {
   search?: string | undefined;
   sort?: RiggerRegistrySort | undefined;
+  page?: number | undefined;
+}
+
+export interface RigsQuery {
+  search?: string | undefined;
+  residence?: RigResidence | undefined;
   page?: number | undefined;
 }
 
@@ -61,6 +69,76 @@ export class AuthorityService {
         ? (a, b) => (b.lastActivityAt ?? '').localeCompare(a.lastActivityAt ?? '') || byName(a, b)
         : byName,
     );
+    const { page, total } = paginate(rows, query.page ?? 1, AUTHORITY_PAGE_SIZE);
+    return { rows: page, total };
+  }
+
+  async rigs(actor: User, query: RigsQuery): Promise<AuthorityPage<AuthorityRigRow>> {
+    const residence = query.residence ?? 'all';
+    if ((residence === 'local' || residence === 'abroad') && !actor.country) {
+      throw new BadRequestException('Set your country in your profile to filter by where the owner lives');
+    }
+    const [records, rigs, items, users] = await Promise.all([
+      this.records(),
+      this.manager.find(Rig),
+      this.manager.find(GearItem),
+      this.manager.find(User),
+    ]);
+    const rigName = new Map(rigs.map((rig) => [rig.id, rig.name]));
+    const itemById = new Map(items.map((item) => [item.id, item]));
+    const countryOf = new Map(users.map((user) => [user.id, user.country]));
+
+    const byRig = new Map<string, PackingSheet[]>();
+    for (const sheet of records.sheets) {
+      if (sheet.entryId !== null && records.voidedEntryIds.has(sheet.entryId)) continue;
+      byRig.set(sheet.rigId, [...(byRig.get(sheet.rigId) ?? []), sheet]);
+    }
+
+    const needle = query.search?.trim().toLowerCase();
+    let rows: AuthorityRigRow[] = [];
+    for (const [rigId, sheets] of byRig) {
+      const latest = [...sheets].sort(
+        (a, b) =>
+          b.performedOn.localeCompare(a.performedOn) || (b.signedAt?.getTime() ?? 0) - (a.signedAt?.getTime() ?? 0),
+      )[0];
+      if (!latest) continue;
+      const element = latest.elements?.reserve ?? null;
+      const item = itemById.get(latest.reserveItemId);
+      const reserve = element
+        ? `${element.manufacturer} ${element.model}`
+        : item
+          ? `${item.manufacturer} ${item.model}`
+          : '';
+      rows.push({
+        rigId,
+        rigName: rigName.get(rigId) ?? '',
+        ownerName: latest.ownerName,
+        ownerCountry: countryOf.get(latest.ownerId) ?? null,
+        reserve,
+        reserveSerial: element ? element.serial : (item?.serial ?? null),
+        lastPackedOn: latest.performedOn,
+        riggerId: latest.riggerId,
+        riggerName: latest.riggerName,
+        riggerLicence: latest.riggerLicence,
+        sheets: sheets.length,
+        latestSheetId: latest.id,
+      });
+    }
+
+    if (needle) {
+      rows = rows.filter((row) =>
+        [row.rigName, row.ownerName, row.reserveSerial ?? '', row.riggerName].some((part) =>
+          part.toLowerCase().includes(needle),
+        ),
+      );
+    }
+    rows = rows.filter((row) => {
+      if (residence === 'local') return row.ownerCountry === actor.country;
+      if (residence === 'abroad') return row.ownerCountry !== null && row.ownerCountry !== actor.country;
+      if (residence === 'unknown') return row.ownerCountry === null;
+      return true;
+    });
+    rows.sort((a, b) => b.lastPackedOn.localeCompare(a.lastPackedOn) || a.rigName.localeCompare(b.rigName));
     const { page, total } = paginate(rows, query.page ?? 1, AUTHORITY_PAGE_SIZE);
     return { rows: page, total };
   }

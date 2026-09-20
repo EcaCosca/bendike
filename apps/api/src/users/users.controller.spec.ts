@@ -32,6 +32,7 @@ describe('UsersController', () => {
         authMethods: ['password'],
         phone: null,
         locale: 'es',
+        country: null,
         createdAt: stored.createdAt.toISOString(),
       },
     ]);

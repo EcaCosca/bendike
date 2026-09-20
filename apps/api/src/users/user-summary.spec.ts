@@ -23,6 +23,11 @@ describe('toUserSummary authMethods', () => {
     expect(summary).toMatchObject({ phone: '+5493415550000', locale: 'pt' });
   });
 
+  test('carries the country, null until it is set', () => {
+    expect(toUserSummary(buildUser()).country).toBeNull();
+    expect(toUserSummary(buildUser({ country: 'AR' })).country).toBe('AR');
+  });
+
   test('never exposes the password hash or the Google subject', () => {
     const summary = toUserSummary(buildUser({ passwordHash: 'hash', googleSub: 'sub-1' }));
 

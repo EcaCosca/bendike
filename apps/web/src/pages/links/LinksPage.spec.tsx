@@ -41,6 +41,7 @@ function renderPage(role: Role) {
       authMethods: ['password'],
       phone: null,
       locale: 'es',
+      country: null,
       createdAt: '2026-09-19T00:00:00.000Z',
     },
     token: 'token-1',

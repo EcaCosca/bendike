@@ -39,9 +39,14 @@ export function AppShell({ children, wide = false }: { children: ReactNode; wide
           {user ? (
             <>
               {user.role === Role.Authority ? (
-                <Button color="inherit" component={RouterLink} to="/app/authority/riggers">
-                  Riggers
-                </Button>
+                <>
+                  <Button color="inherit" component={RouterLink} to="/app/authority/riggers">
+                    Riggers
+                  </Button>
+                  <Button color="inherit" component={RouterLink} to="/app/authority/rigs">
+                    Rigs
+                  </Button>
+                </>
               ) : (
                 <>
                   <Button color="inherit" component={RouterLink} to="/app/gear">

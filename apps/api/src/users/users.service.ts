@@ -64,6 +64,9 @@ export class UsersService {
     if (body.locale !== undefined) {
       user.locale = body.locale;
     }
+    if (body.country !== undefined) {
+      user.country = body.country;
+    }
     return this.users.save(user);
   }
 

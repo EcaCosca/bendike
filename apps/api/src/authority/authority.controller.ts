@@ -4,15 +4,18 @@ import {
   Role,
   type AuthorityGroundingRow,
   type AuthorityPage,
+  type AuthorityRigRow,
   type AuthoritySheetRow,
   type AuthorityWorkRow,
   type RiggerRegistryRow,
 } from '@bendike/shared';
+import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
 import { AuthorityService } from './authority.service';
-import { PageQueryDto, RegistryQueryDto } from './dto/authority.dto';
+import type { User } from '../users/user.entity';
+import { PageQueryDto, RegistryQueryDto, RigsQueryDto } from './dto/authority.dto';
 
 @ApiTags('authority')
 @ApiBearerAuth()
@@ -26,6 +29,12 @@ export class AuthorityController {
   @ApiOperation({ summary: 'The register of every rigger, searchable, with licence, activity and customers' })
   registry(@Query() query: RegistryQueryDto): Promise<AuthorityPage<RiggerRegistryRow>> {
     return this.authority.registry(query);
+  }
+
+  @Get('rigs')
+  @ApiOperation({ summary: 'Every rig packed with a signed sheet, filtered by where its owner lives' })
+  rigs(@CurrentUser() actor: User, @Query() query: RigsQueryDto): Promise<AuthorityPage<AuthorityRigRow>> {
+    return this.authority.rigs(actor, query);
   }
 
   @Get('riggers/:id')

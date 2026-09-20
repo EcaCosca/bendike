@@ -16,6 +16,7 @@ function renderAs(role: Role) {
       authMethods: ['password'],
       phone: null,
       locale: 'es',
+      country: null,
       createdAt: '2026-09-19T00:00:00.000Z',
     },
     token: 'token-1',
@@ -36,6 +37,7 @@ describe('AppShell navigation', () => {
   it('gives an authority the riggers register and none of the gear links', () => {
     renderAs(Role.Authority);
     expect(screen.getByRole('link', { name: 'Riggers' })).toHaveAttribute('href', '/app/authority/riggers');
+    expect(screen.getByRole('link', { name: 'Rigs' })).toHaveAttribute('href', '/app/authority/rigs');
     for (const name of ['Gear', 'Work', 'Library', 'Customers']) {
       expect(screen.queryByRole('link', { name })).not.toBeInTheDocument();
     }

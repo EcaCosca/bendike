@@ -123,6 +123,14 @@ describe('UsersService', () => {
       });
     });
 
+    test('stores the country, clears it with null, and leaves it alone when omitted', async () => {
+      const user = buildUser();
+
+      expect((await service.updateContact(user, { country: 'AR' })).country).toBe('AR');
+      expect((await service.updateContact(user, { displayName: 'Ana' })).country).toBe('AR');
+      expect((await service.updateContact(user, { country: null })).country).toBeNull();
+    });
+
     test('changes the display name, trimmed', async () => {
       const user = buildUser({ displayName: 'Ana' });
 

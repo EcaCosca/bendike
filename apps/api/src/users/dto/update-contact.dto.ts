@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { LOCALES, type Locale, type UpdateContactRequestBody } from '@bendike/shared';
-import { IsIn, IsOptional, IsString, Length } from 'class-validator';
+import { COUNTRY_CODES, LOCALES, type CountryCode, type Locale, type UpdateContactRequestBody } from '@bendike/shared';
+import { IsIn, IsOptional, IsString, Length, ValidateIf } from 'class-validator';
 
 export class UpdateContactDto implements UpdateContactRequestBody {
   @ApiPropertyOptional()
@@ -21,4 +21,14 @@ export class UpdateContactDto implements UpdateContactRequestBody {
   @IsOptional()
   @IsIn(LOCALES)
   locale?: Locale;
+
+  @ApiPropertyOptional({
+    enum: COUNTRY_CODES,
+    nullable: true,
+    description: 'The country the account lives in, as an ISO 3166-1 alpha-2 code; null clears it',
+  })
+  @ValidateIf((_, value) => value !== null)
+  @IsOptional()
+  @IsIn(COUNTRY_CODES)
+  country?: CountryCode | null;
 }

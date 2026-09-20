@@ -16,7 +16,7 @@ export class ProfileController {
   constructor(private readonly users: UsersService) {}
 
   @Patch()
-  @ApiOperation({ summary: "Change the signed-in account's display name, WhatsApp phone and language" })
+  @ApiOperation({ summary: "Change the signed-in account's display name, WhatsApp phone, language and country" })
   async update(@CurrentUser() actor: User, @Body() dto: UpdateContactDto): Promise<UserSummary> {
     return toUserSummary(await this.users.updateContact(actor, dto));
   }

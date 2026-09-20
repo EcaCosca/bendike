@@ -35,6 +35,7 @@ const response: AuthResponse = {
     authMethods: ['password'],
     phone: null,
     locale: 'es',
+    country: null,
     createdAt: '2026-09-11T10:00:00.000Z',
   },
 };

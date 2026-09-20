@@ -1,9 +1,10 @@
 import { Alert, Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { useState, type FormEvent } from 'react';
-import { LOCALES, normalizePhone, type Locale } from '@bendike/shared';
+import { LOCALES, isCountryCode, normalizePhone, type CountryCode, type Locale } from '@bendike/shared';
 import { updateContact } from '../auth/auth-api';
 import { useAuth } from '../auth/use-auth';
 import { AppShell } from '../components/AppShell';
+import { countryOptions } from '../i18n/country-names';
 
 const LANGUAGE_NAMES: Record<Locale, string> = { es: 'Español', en: 'English', pt: 'Português' };
 
@@ -12,6 +13,7 @@ export function ProfilePage() {
   const [displayName, setDisplayName] = useState(user?.displayName ?? '');
   const [phone, setPhone] = useState(user?.phone ?? '');
   const [locale, setLocale] = useState<Locale>(user?.locale ?? 'es');
+  const [country, setCountry] = useState<CountryCode | ''>(user?.country ?? '');
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -38,6 +40,7 @@ export function ProfilePage() {
         displayName: displayName.trim(),
         phone: phone.trim() || null,
         locale,
+        country: country || null,
       });
       updateUser?.(updated);
       setSaved(true);
@@ -74,6 +77,21 @@ export function ProfilePage() {
           {LOCALES.map((l) => (
             <MenuItem key={l} value={l}>
               {LANGUAGE_NAMES[l]}
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          select
+          label="Country"
+          value={country}
+          onChange={(e) => setCountry(isCountryCode(e.target.value) ? e.target.value : '')}
+          helperText="Where you live. An authority uses it to tell local jumpers from visitors."
+          slotProps={{ select: { displayEmpty: true }, inputLabel: { shrink: true } }}
+        >
+          <MenuItem value="">Not stated</MenuItem>
+          {countryOptions(user.locale).map(({ code, name }) => (
+            <MenuItem key={code} value={code}>
+              {name}
             </MenuItem>
           ))}
         </TextField>

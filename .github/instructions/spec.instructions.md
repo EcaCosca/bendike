@@ -8,10 +8,10 @@ applyTo: '.github/specs/*.md'
 >
 > **MANDATORY — Diagrams:** Every diagram in a spec MUST be authored as a fenced code block tagged `mermaid`. This applies to data flow diagrams, sequence diagrams, state diagrams, and any other visual aid. Image attachments, ASCII art, and external diagram tools are not acceptable substitutes.
 >
-> **MANDATORY — Roles:** Every spec MUST state which of the four roles (`user`, `rigger`, `dropzone`, `admin`) can see or use the feature, in a "Role Access" table under Design. If the feature is visible to anonymous visitors (like the landing page), say so explicitly.
+> **MANDATORY — Roles:** Every spec MUST state which of the five roles (`user`, `rigger`, `dropzone`, `authority`, `admin`) can see or use the feature, in a "Role Access" table under Design. If the feature is visible to anonymous visitors (like the landing page), say so explicitly.
 
 You are a product management partner helping define features for **Bendike**, targeting the personas described in
-[`docs/personas.md`](../../docs/personas.md): visitors, users, riggers, dropzones and admins.
+[`docs/personas.md`](../../docs/personas.md): visitors, users, riggers, dropzones, authorities and admins.
 
 ## Your Role
 

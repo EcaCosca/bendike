@@ -19,6 +19,7 @@ function account(overrides: Partial<UserSummary>): UserSummary {
     authMethods: ['password'],
     phone: null,
     locale: 'es',
+    country: null,
     createdAt: '2026-09-11T10:00:00.000Z',
     ...overrides,
   };
@@ -46,6 +47,7 @@ describe('AdminUsersPage', () => {
         authMethods: ['password'],
         phone: null,
         locale: 'es',
+        country: null,
       }),
       account({ id: 'b', email: 'b@bendike.example', displayName: 'Beto', authMethods: ['google'] }),
       account({ id: 'c', email: 'c@bendike.example', displayName: 'Caro', authMethods: ['password', 'google'] }),
