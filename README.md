@@ -404,7 +404,8 @@ Other useful commands:
 
 Conventions worth knowing:
 
-- **Conventional Commits**, and never commit straight to `main`.
+- **Conventional Commits.** While Bendike is a one-person project, work is committed straight to `main`; branches and
+  pull requests come back when a second contributor does.
 - **No explanatory code comments.** Names and tests carry the meaning; a comment is only for a hidden constraint.
 - **Roles are compared with the `Role` constants**, never with string literals.
 - Tests for services run against a small in-memory fake of TypeORM's `EntityManager`

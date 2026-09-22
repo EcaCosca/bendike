@@ -171,11 +171,11 @@ web route, and tests for the allowed and the forbidden role in the same PR.
   existing stack: Jest, ESLint, Prettier, Vite, Nest CLI, npm workspaces.
 - **Never commit secrets.** `apps/api/.env` is git-ignored. Verify with `git diff --staged` before every commit.
 - **Never `synchronize: true`.** Every schema change is a migration.
-- **Branch naming:** `<type>/<short-kebab-description>` where type is `feat`, `fix`, `docs`, `chore` or
-  `refactor`, for example `feat/landing-page-copy`. If a GitHub issue exists, add its number:
-  `feat/12-landing-page-copy`.
+- **Branches:** for now work goes straight to `main` (one contributor). When a branch is needed, name it
+  `<type>/<short-kebab-description>` where type is `feat`, `fix`, `docs`, `chore` or `refactor`, for example
+  `feat/landing-page-copy`. If a GitHub issue exists, add its number: `feat/12-landing-page-copy`.
 - **Commits:** Conventional Commits (`feat | fix | docs | style | refactor | perf | test | chore`), imperative
-  mood, subject 50 characters or fewer. Never commit to `main`.
+  mood, subject 50 characters or fewer. Run `npm run validate` before every commit to `main`.
 
 ## Integration with Specs
 
