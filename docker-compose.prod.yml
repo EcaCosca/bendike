@@ -1,0 +1,52 @@
+# Runs on the EC2 instance. Not used for local development (see docker-compose.yml and README).
+#   docker compose -f docker-compose.prod.yml up -d
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bendike
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: bendike
+    volumes:
+      - bendike-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U bendike -d bendike']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://bendike:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/bendike
+    volumes:
+      - bendike-uploads:/repo/apps/api/uploads
+      - bendike-library:/repo/apps/api/library-files
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - bendike-caddy-data:/data
+      - bendike-caddy-config:/config
+
+volumes:
+  bendike-postgres-data:
+  bendike-uploads:
+  bendike-library:
+  bendike-caddy-data:
+  bendike-caddy-config:

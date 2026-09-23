@@ -1,0 +1,5 @@
+# Reverse proxy for the API, with automatic HTTPS (Let's Encrypt) once api.{$DOMAIN} points at this box.
+# Set DOMAIN in .env, e.g. DOMAIN=bendike.com.ar
+api.{$DOMAIN} {
+	reverse_proxy api:3000
+}

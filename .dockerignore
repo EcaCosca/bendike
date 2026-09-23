@@ -1,0 +1,14 @@
+node_modules
+**/node_modules
+**/dist
+**/coverage
+**/*.tsbuildinfo
+.git
+apps/api/library-files
+apps/api/uploads
+apps/web/dist
+docs/presentation
+excel
+*.log
+.env*
+!.env.example

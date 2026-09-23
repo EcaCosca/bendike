@@ -35,6 +35,9 @@ One file per feature. No production code changes without a spec here.
 | [cookie-consent-and-footer.md](./cookie-consent-and-footer.md)                     | Built 2026-09-20 (Tasks 1-5: cookie bar with accept, reject and manage that really gates preferences and Google sign-in, a cookie policy page checked against the code, a fuller site footer); text is English only for now  |
 | [rigging-services.md](./rigging-services.md)                                       | Phase 1 built 2026-09-18 (public services section, admin page, peso prices); phase 2 (requests) waits for gear-tracking                                                                                                      |
 | [shop-order-tracking.md](./shop-order-tracking.md)                                 | Specified 2026-09-18, not started; depends on cart-and-whatsapp-checkout and product-catalog; order-number scheme to confirm                                                                                                 |
+| [authority-oversight.md](./authority-oversight.md)                                 | Built 2026-09-20 (Tasks 1-4: authority role, register of riggers, a rigger's virtual log, read-only enforcement)                                                                                                             |
+| [authority-rig-register.md](./authority-rig-register.md)                           | Built 2026-09-20 (Tasks 1-3: country on every account, register of packed rigs filtered by where the owner lives)                                                                                                            |
+| [aws-deployment.md](./aws-deployment.md)                                           | Specified 2026-09-23; deploy on a single EC2 instance plus S3/CloudFront, built by hand in the AWS console; Tasks 2-5 in progress                                                                                            |
 
 ## Spec File Structure
 
