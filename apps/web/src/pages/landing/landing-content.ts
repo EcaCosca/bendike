@@ -48,7 +48,7 @@ export const AUDIENCES = [
 export const ABOUT_TEASER = {
   eyebrow: 'Who is behind Bendike',
   displayName: 'Enrique “Eca” Coscarelli',
-  initials: 'EC',
+  portrait: '/about/eca-portrait.webp',
   title: 'Rigger, programmer, founder',
   location: 'Argentina',
   body: 'I am Enrique “Eca” Coscarelli, from Argentina: a rigger with my own loft and a programmer who builds software around the work I do there. Safety is my main priority, and Bendike exists so repacks, AADs and service bulletins never slip.',

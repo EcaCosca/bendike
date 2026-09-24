@@ -40,3 +40,6 @@ excel/
 
 # Local copy of the manual library (development only)
 apps/api/library-files
+
+# Raw photo/video drops from Eca, converted into apps/web/public before use
+resources/

@@ -12,17 +12,14 @@ export function AboutSection() {
           <Grid size={{ xs: 12, md: 4 }}>
             <Stack spacing={3} alignItems={{ xs: 'flex-start', md: 'center' }}>
               <Avatar
+                alt={ABOUT_TEASER.displayName}
+                src={ABOUT_TEASER.portrait}
                 sx={{
                   width: 200,
                   height: 200,
-                  fontSize: '4rem',
-                  fontWeight: 700,
                   bgcolor: 'primary.main',
-                  color: 'common.white',
                 }}
-              >
-                {ABOUT_TEASER.initials}
-              </Avatar>
+              />
               <Chip icon={<PlaceOutlinedIcon />} label={ABOUT_TEASER.location} variant="outlined" />
             </Stack>
           </Grid>
