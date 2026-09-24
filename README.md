@@ -278,6 +278,10 @@ invalidation, and sends one SSM Run Command to the instance that resets the clon
 through OpenID Connect, so no AWS key is stored anywhere
 ([ADR 0019](docs/adr/0019-deploys-run-from-github-actions-through-an-oidc-role-and-ssm-run-command.md)).
 
+Product photography is the one thing in the bucket that the build does not produce. It lives under the `shop/` prefix,
+mirrored from the manufacturer once and served from `https://bendike.com/shop/…`, so both syncs exclude it — a plain
+`aws s3 sync apps/web/dist s3://<bucket> --delete` would otherwise delete every product image on the next deploy.
+
 Until the AWS side exists the workflow ends green with a "not configured" notice. To turn it on, follow
 [`.github/specs/continuous-deployment.md`](.github/specs/continuous-deployment.md): create the OIDC provider, the role
 and its policy in the console, then set the secret `AWS_DEPLOY_ROLE_ARN` and the variables `AWS_REGION`, `WEB_BUCKET`,
