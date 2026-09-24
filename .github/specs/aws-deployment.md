@@ -201,12 +201,14 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] An AWS Budget exists with a monthly amount and an email alert, confirmed in Billing → Budgets
-- [ ] Eca is working from a named IAM user (not root), confirmed by `aws sts get-caller-identity`
+- [x] An AWS Budget exists with a monthly amount and an email alert, confirmed in Billing → Budgets — two of
+      them, a $1 zero-spend and a $10 monthly
+- [x] Eca is working from a named IAM user (not root), confirmed by `aws sts get-caller-identity`; root and `eca`
+      both carry MFA, and the account alias is `aws-eca`
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -220,10 +222,11 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] The security group allows only 22 (from Eca's IP), 80 and 443
-- [ ] `docker compose -f docker-compose.prod.yml ps` on the instance shows all three services healthy
-- [ ] `curl -I https://api.<domain>/api/v1/services` returns 200 with a valid certificate
-- [ ] Stopping and starting the instance leaves the stack running without a manual command
+- [x] The security group allows only 80 and 443 — no SSH rule at all, since access is through Session Manager
+- [x] `docker compose -f docker-compose.prod.yml ps` on the instance shows all three services healthy
+- [x] `curl -I https://api.bendike.com/api/v1/services` returns 200 with a valid certificate (Let's Encrypt,
+      issued 2026-09-24, obtained by Caddy unattended once DNS resolved)
+- [ ] Stopping and starting the instance leaves the stack running without a manual command — not yet exercised
 
 **Done when**:
 
@@ -261,7 +264,8 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] `dig <domain>` resolves to CloudFront; `dig api.<domain>` resolves to the instance's Elastic IP
+- [ ] `dig bendike.com` resolves to CloudFront — pending Task 4
+- [x] `dig api.bendike.com` resolves to the instance's Elastic IP `3.88.123.203`
 - [ ] Both `README.md` and the app's `CORS_ORIGIN`/`WEB_BASE_URL` environment values reflect the real domain
 
 **Done when**:
