@@ -52,5 +52,13 @@ unless-stopped` (set on every service) brings it back on its own, which it does 
   one (build on push, `scp`/`rsync` and `docker compose up -d --build`) is future work once the manual flow is solid.
 - The web app's deploy step becomes `npm run build -w @bendike/web` followed by `aws s3 sync` and a CloudFront
   invalidation, run by hand for now; no server ever serves `apps/web`.
-- CloudFront needs its ACM certificate requested in `us-east-1` regardless of which region everything else runs in
-  (`sa-east-1`, chosen for latency to Argentina); the API's certificate is a separate one, issued by Caddy itself.
+- Everything runs in `us-east-1` (N. Virginia). São Paulo (`sa-east-1`) was the first choice, for roughly 25ms of
+  latency to Rosario against Virginia's 130ms, but it costs about 35% more for the same instance and Eca's account
+  is past its 12-month Free Tier (it dates from October 2024), so the difference is real money every month rather
+  than nothing. For gear records and repack logging the latency is imperceptible, and the web app is served from
+  CloudFront edge locations in South America whatever region the origin sits in, so only API calls cross the
+  distance. Moving later is one instance and one DNS record.
+- CloudFront needs its ACM certificate requested in `us-east-1` regardless of where the rest of the stack runs. That
+  is free here because the stack is already there; it would have meant a second region to keep track of in São Paulo.
+  The API's certificate is a separate one, issued by Caddy itself.
+- The domain is `bendike.com`, registered through Route 53 on 2026-09-23, with its hosted zone in the same account.
