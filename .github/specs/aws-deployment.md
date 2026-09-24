@@ -162,7 +162,8 @@ sequenceDiagram
 - [ ] Whether to move outbound email from Resend to Amazon SES; no code change forces this, it is a cost/learning
       choice for later.
 - [ ] Whether to script this with Terraform or the CDK once the manual setup is familiar, per the ADR.
-- [ ] Whether to add a CI/CD pipeline (build on push, deploy over SSH) instead of deploying by hand each time.
+- [x] Whether to add a CI/CD pipeline: yes, through an OIDC role and SSM Run Command, not SSH; see
+      [continuous-deployment.md](./continuous-deployment.md) (2026-09-24).
 
 ---
 

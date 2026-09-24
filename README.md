@@ -267,6 +267,27 @@ digest is written to the API log and nothing is sent.
 To see what a digest would contain without sending anything, an admin can call
 `POST /api/v1/admin/repack-digest` (a preview by default) from Swagger.
 
+## Deploy
+
+Bendike runs on AWS: the API and Postgres in Docker on one EC2 instance behind Caddy, the web app in an S3 bucket behind
+CloudFront ([ADR 0017](docs/adr/0017-deploy-on-a-single-ec2-instance-with-s3-and-cloudfront-for-the-web-app.md)).
+**A push to `main` deploys itself**: when the CI workflow passes, the Deploy workflow
+([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) builds the web app and syncs it to S3 with a CloudFront
+invalidation, and sends one SSM Run Command to the instance that resets the clone to the validated commit and runs
+`docker compose -f docker-compose.prod.yml up -d --build api`, then checks `/api/v1/health`. GitHub assumes an IAM role
+through OpenID Connect, so no AWS key is stored anywhere
+([ADR 0019](docs/adr/0019-deploys-run-from-github-actions-through-an-oidc-role-and-ssm-run-command.md)).
+
+Until the AWS side exists the workflow ends green with a "not configured" notice. To turn it on, follow
+[`.github/specs/continuous-deployment.md`](.github/specs/continuous-deployment.md): create the OIDC provider, the role
+and its policy in the console, then set the secret `AWS_DEPLOY_ROLE_ARN` and the variables `AWS_REGION`, `WEB_BUCKET`,
+`CLOUDFRONT_DISTRIBUTION_ID`, `EC2_INSTANCE_ID` and `EC2_REPO_DIR` in the repository settings. Seeds and one-off
+scripts stay manual, from the instance:
+
+```bash
+docker compose -f docker-compose.prod.yml --profile tools run --rm tools npm run seed:learn -w @bendike/api
+```
+
 ## How the pieces fit
 
 ```mermaid
