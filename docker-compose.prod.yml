@@ -35,6 +35,21 @@ services:
       - bendike-uploads:/repo/uploads
       - bendike-library:/repo/library-files
 
+  # One-off maintenance against the deployed database: seeds, imports, migrations. Never starts with `up`.
+  #   docker compose -f docker-compose.prod.yml --profile tools run --rm tools npm run seed:catalog -w @bendike/api
+  tools:
+    profiles: ['tools']
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: build
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://bendike:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/bendike
+
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped

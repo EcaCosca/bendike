@@ -133,7 +133,7 @@ export function SiteFooter() {
             sx={{ color: 'rgba(255,255,255,0.7)', pr: 9 }}
           >
             <Typography variant="caption">{`© ${year} Bendike. All rights reserved.`}</Typography>
-            <Typography variant="caption">Built by a rigger, in Argentina.</Typography>
+            <Typography variant="caption">Motivated by the same passion.</Typography>
           </Stack>
         </Box>
       </Container>
