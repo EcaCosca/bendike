@@ -106,9 +106,6 @@ export function SiteFooter() {
             <Link href={WHATSAPP_HREF} target="_blank" rel="noopener noreferrer" sx={LINK_SX}>
               Message Eca on WhatsApp
             </Link>
-            <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
-              Based in Argentina
-            </Typography>
           </Column>
 
           <Column title="Legal">

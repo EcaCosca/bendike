@@ -14,7 +14,7 @@ export const CONTACT_EMAIL = 'enriquecoscarelli@gmail.com';
 
 export const FOOTER_TAGLINE = 'Rigging loft and software, Argentina.';
 export const FOOTER_BLURB =
-  'Gear tracking, repacks and service bulletins for riggers, dropzones and the skydivers they look after.';
+  'Bendike is a rigging loft software I built that keeps skydivers, riggers and dropzones on top of reserve repacks, AAD service and manufacturer service bulletins. Safety first, always.';
 
 export const WHATSAPP_NUMBER = '5493413955408';
 export const WHATSAPP_LABEL = 'Chat with Eca on WhatsApp';
