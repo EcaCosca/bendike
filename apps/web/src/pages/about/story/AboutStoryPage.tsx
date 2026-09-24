@@ -11,8 +11,8 @@ import {
   SonsChapter,
   TitlePage,
 } from './chapters';
-import { FlightSequence } from './FlightSequence';
 import { useScrollcraft } from './use-scrollcraft';
+import { VignetteBand } from './VignetteBand';
 
 export function AboutStoryPage() {
   const rootRef = useRef<HTMLElement | null>(null);
@@ -27,7 +27,7 @@ export function AboutStoryPage() {
         <FlightChapter />
         <PreparationChapter />
         <LoftChapter />
-        <FlightSequence />
+        <VignetteBand />
         <AirAndCodeChapter />
         <SonsChapter />
         <Colophon />

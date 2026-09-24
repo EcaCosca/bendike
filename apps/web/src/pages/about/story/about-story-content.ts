@@ -99,10 +99,11 @@ export const CHAPTERS = {
   sons: {
     number: '05',
     title: 'Ben and Ike',
-    heading: 'Ben and Ike.',
+    heading: 'Benja & Ike.',
     paragraphs: [
-      'Bendike is where all of this meets. I want air sports to be safer, and information to be delivered faster and turned into something you can act on, so anyone can grow in this sport with safety as a habit.',
-      'I have two sons so far, Benjamin and Enrique. At home they are Benja and Ike. Ben and Ike: Bendike. I do not know if they will follow my footsteps. If they do, I want them to be safe, and the only way I can do that is by improving the safety of the community as a whole.',
+      'Bendike is the medium but it is also the reason for the purpose of making air sports safer, and information delivery more accesible and faster, turned into something you can act on, so everyone can grow in this sport with safety as a habit.',
+      'I have two sons, Benjamin and Enrique. At home they are Benja and Ike, Bendike. I do not know what the future holds or even if they will follow my footsteps and pick up an interest in airsports.',
+      'I want them to have a safer enviroment than the one I grew up in, and the only way I can do that is by improving the safety of the community as a whole. This is my contribution, and I hope is something you can get behind as well.',
     ],
     attribution: 'Eca',
     caption: 'Benjamin and Enrique.',
