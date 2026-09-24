@@ -27,9 +27,13 @@ services:
     env_file: .env
     environment:
       DATABASE_URL: postgres://bendike:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/bendike
+      # The image's WORKDIR is /repo, so these must be absolute to land on the mounted volumes below
+      # rather than in the container's writable layer, where a redeploy would lose them.
+      UPLOADS_DIR: /repo/uploads
+      LIBRARY_LOCAL_DIR: /repo/library-files
     volumes:
-      - bendike-uploads:/repo/apps/api/uploads
-      - bendike-library:/repo/apps/api/library-files
+      - bendike-uploads:/repo/uploads
+      - bendike-library:/repo/library-files
 
   caddy:
     image: caddy:2-alpine
