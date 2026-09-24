@@ -11,6 +11,7 @@ import {
   SonsChapter,
   TitlePage,
 } from './chapters';
+import { FlightSequence } from './FlightSequence';
 import { useScrollcraft } from './use-scrollcraft';
 
 export function AboutStoryPage() {
@@ -26,6 +27,7 @@ export function AboutStoryPage() {
         <FlightChapter />
         <PreparationChapter />
         <LoftChapter />
+        <FlightSequence />
         <AirAndCodeChapter />
         <SonsChapter />
         <Colophon />
