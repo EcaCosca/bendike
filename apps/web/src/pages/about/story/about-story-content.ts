@@ -24,9 +24,11 @@ export function imageSources(base: string) {
 export const CTA_LABEL = 'Create an account';
 
 export const TITLE = {
-  name: 'Enrique Coscarelli',
+  given: 'Enrique',
   nickname: 'Eca',
-  words: ['Rigger.', 'Pilot.', 'Programmer.', 'Father.'],
+  family: 'Coscarelli',
+  words: ['Rigger', 'Pilot', 'Programmer', 'Father'],
+  creed: 'I spend my time rigging, programming, jumping, flying and taking care of my family.',
   place: 'Rosario, Santa Fe, Argentina',
 } as const;
 

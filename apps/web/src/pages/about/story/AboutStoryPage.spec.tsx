@@ -4,7 +4,7 @@ import * as authApi from '../../../auth/auth-api';
 import * as useAuthModule from '../../../auth/use-auth';
 import { SOCIAL_LINKS, WHATSAPP_LABEL } from '../../../components/site/site-content';
 import { CAREER, CHAPTERS, CTA_LABEL, TITLE } from './about-story-content';
-import { HERO_CLIP, VIGNETTES } from './vignette-content';
+import { HERO_CLIP, PREP_CLIPS, VIGNETTES } from './vignette-content';
 import { AboutStoryPage } from './AboutStoryPage';
 
 jest.mock('../scrollcraft/scrollcraft.js', () => ({}));
@@ -36,13 +36,15 @@ describe('AboutStoryPage', () => {
     );
   });
 
-  test('opens on a media-free title page with a single H1 carrying the four words', () => {
+  test('opens on a media-free title page whose H1 is the name, nickname in the middle', () => {
     const headings = screen.getAllByRole('heading', { level: 1 });
 
     expect(headings).toHaveLength(1);
+    expect(headings[0]).toHaveTextContent(`${TITLE.given} “${TITLE.nickname}” ${TITLE.family}`);
     for (const word of TITLE.words) {
-      expect(headings[0]).toHaveTextContent(word);
+      expect(screen.getByText(word)).toBeInTheDocument();
     }
+    expect(screen.getByText(TITLE.creed)).toBeInTheDocument();
     expect(screen.getByText(TITLE.place)).toBeInTheDocument();
   });
 
@@ -80,8 +82,9 @@ describe('AboutStoryPage', () => {
   });
 
   test('shows every vignette as a poster until its tile is near the viewport', () => {
+    // The montage plus the clips standing in for Preparation slots with no photo.
     const tiles = document.querySelectorAll('.as-vig');
-    expect(tiles).toHaveLength(VIGNETTES.length);
+    expect(tiles).toHaveLength(VIGNETTES.length + Object.keys(PREP_CLIPS).length);
     for (const item of VIGNETTES) {
       expect(screen.getByText(item.caption)).toBeInTheDocument();
     }

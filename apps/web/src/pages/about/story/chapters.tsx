@@ -3,7 +3,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import { BrandMark } from '../../../components/site/BrandMark';
 import { SOCIAL_LINKS, WHATSAPP_HREF, WHATSAPP_LABEL } from '../../../components/site/site-content';
 import { ABOUT_ASSETS, CAREER, CHAPTERS, CTA_LABEL, TITLE, imageSources } from './about-story-content';
-import { HERO_CLIP } from './vignette-content';
+import { Vignette } from './Vignette';
+import { HERO_CLIP, PREP_CLIPS } from './vignette-content';
 
 function Photo({ base, alt, className }: { base: string; alt: string; className?: string }) {
   const { src, srcSet } = imageSources(base);
@@ -21,18 +22,28 @@ function FolioMark({ number, title }: { number: string; title: string }) {
 export function TitlePage() {
   return (
     <section className="as-title" data-sc-act="flow" data-chapter="title">
-      <div className="sc-wrap as-title__wrap" data-sc-in data-sc-stagger="90">
-        <p className="as-title__name">
-          {TITLE.name} <span className="as-title__nick">“{TITLE.nickname}”</span>
-        </p>
-        <h1 className="as-title__words">
-          {TITLE.words.map((word) => (
-            <span key={word} className="as-title__word">
-              {word}
-            </span>
-          ))}
+      <div className="sc-wrap as-title__wrap">
+        <h1 className="as-title__name" data-sc-in>
+          {TITLE.given} <span className="as-title__nick">“{TITLE.nickname}”</span> {TITLE.family}
         </h1>
-        <p className="as-title__place">{TITLE.place}</p>
+
+        {/* The four words as a rule-separated strip rather than a stacked slab:
+            they read as standing, not as a second headline competing with the name. */}
+        <ul className="as-title__roles" data-sc-in data-sc-stagger="110">
+          {TITLE.words.map((word) => (
+            <li key={word} className="as-title__role">
+              {word}
+            </li>
+          ))}
+        </ul>
+
+        <p className="as-title__creed" data-sc-kinetic="words" data-sc-cue="0.18 0.72 0.34">
+          {TITLE.creed}
+        </p>
+
+        <p className="as-title__place" data-sc-in>
+          {TITLE.place}
+        </p>
       </div>
     </section>
   );
@@ -111,7 +122,11 @@ export function PreparationChapter() {
                   data-sc-reveal={PREP_DIRECTIONS[index]}
                   data-sc-reveal-at={`${start.toFixed(3)} ${(start + 0.14).toFixed(3)}`}
                 >
-                  <Photo base={ABOUT_ASSETS.prep[index] ?? ''} alt={label} />
+                  {PREP_CLIPS[index] ? (
+                    <Vignette id={PREP_CLIPS[index]} alt={label} />
+                  ) : (
+                    <Photo base={ABOUT_ASSETS.prep[index] ?? ''} alt={label} />
+                  )}
                   <figcaption className="sc-label">{label}</figcaption>
                 </figure>
               </li>

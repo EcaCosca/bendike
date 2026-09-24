@@ -56,36 +56,62 @@
 
 .as-title__wrap {
   display: grid;
-  gap: var(--sc-6);
+  gap: var(--sc-4);
+  justify-items: start;
 }
 
 .as-title__name {
-  font-size: var(--sc-t-lg);
-  letter-spacing: var(--sc-track-wide);
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.as-title__nick {
-  text-transform: none;
-  letter-spacing: var(--sc-track-normal);
-  opacity: 0.8;
-}
-
-.as-title__words {
   font-family: var(--sc-font-display);
   font-weight: 700;
   font-size: var(--sc-t-4xl);
-  line-height: 0.92;
+  line-height: 0.94;
   letter-spacing: var(--sc-track-tight);
-  text-transform: uppercase;
   margin: 0;
-  display: grid;
-  max-width: 14ch;
+  max-width: 16ch;
 }
 
-.as-title__word {
-  display: block;
+.as-title__nick {
+  font-style: italic;
+  letter-spacing: var(--sc-track-normal);
+}
+
+/* The four words, as a standing strip. Hairlines between them rather than line
+   breaks, so they read as one statement instead of a second headline. */
+.as-title__roles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sc-2) var(--sc-3);
+  font-size: var(--sc-t-sm);
+  letter-spacing: var(--sc-track-wide);
+  text-transform: uppercase;
+}
+
+.as-title__role {
+  display: flex;
+  align-items: center;
+  gap: var(--sc-2) var(--sc-3);
+}
+
+.as-title__role + .as-title__role::before {
+  content: '';
+  width: 2.25rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.as-title__creed {
+  font-family: var(--sc-font-display);
+  font-size: clamp(1.4rem, 3.2vw, 2.4rem);
+  line-height: 1.22;
+  letter-spacing: var(--sc-track-tight);
+  margin: 0;
+  max-width: 22ch;
+  text-wrap: balance;
 }
 
 .as-title__place {

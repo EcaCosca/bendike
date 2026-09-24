@@ -7,6 +7,16 @@ export const HERO_CLIP = {
 };
 
 /**
+ * Slots in the Preparation grid that have no still photograph yet and take a
+ * looping clip instead. Index matches CHAPTERS.preparation.labels.
+ */
+export const PREP_CLIPS: Record<number, string> = {
+  4: 'twiner', // Winds and weather
+  5: 'exitcliff', // Exit order
+  7: 'gainer', // Geared up
+};
+
+/**
  * Captions describe what is actually in each frame, which is not always what the
  * working file name suggests — the trims landed elsewhere than planned.
  */
