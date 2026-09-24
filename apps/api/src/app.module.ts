@@ -11,6 +11,7 @@ import { ExchangeRatesModule } from './exchange-rates/exchange-rates.module';
 import { BulletinsModule } from './bulletins/bulletins.module';
 import { GearModule } from './gear/gear.module';
 import { HealthModule } from './health/health.module';
+import { LearnModule } from './learn/learn.module';
 import { LibraryModule } from './library/library.module';
 import { PackingSheetsModule } from './packing-sheets/packing-sheets.module';
 import { RigPhotosModule } from './rig-photos/rig-photos.module';
@@ -45,6 +46,7 @@ import { UsersModule } from './users/users.module';
     TranslationModule,
     ExchangeRatesModule,
     ServicesModule,
+    LearnModule,
   ],
 })
 export class AppModule {}

@@ -57,6 +57,9 @@ export function DashboardPage() {
             <Button variant="contained" component={RouterLink} to="/app/admin/bulletins">
               Service bulletins
             </Button>
+            <Button variant="contained" component={RouterLink} to="/app/admin/learn">
+              Learn material
+            </Button>
           </Stack>
         )}
       </Stack>

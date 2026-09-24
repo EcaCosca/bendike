@@ -16,3 +16,4 @@ export * from './readiness';
 export * from './library';
 export * from './packing-sheets';
 export * from './rig-photos';
+export * from './learn';

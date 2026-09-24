@@ -14,13 +14,15 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams } from 'react-router-dom';
-import type { Category, ExchangeRates, ProductDetail, ProductSummary } from '@bendike/shared';
+import type { Category, ExchangeRates, LearnItemSummary, ProductDetail, ProductSummary } from '@bendike/shared';
 import { pickLocalized } from '@bendike/shared';
 import { ApiError } from '../../api/http';
 import { Price } from '../../components/Price';
 import { SimpleMarkdown } from '../../components/SimpleMarkdown';
 import { SitePage } from '../../components/site/SitePage';
 import { useLocale } from '../../i18n/useLocale';
+import { listLearnForProduct } from '../learn/learn-api';
+import { LearnSection } from '../learn/LearnSection';
 import { getExchangeRates, getProduct, listCategories, listProducts } from './catalog-api';
 import { ProductCard } from './ProductCard';
 import { buildProductWhatsappUrl } from './product-whatsapp-message';
@@ -41,6 +43,7 @@ export function ProductPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [rates, setRates] = useState<ExchangeRates | null>(null);
   const [related, setRelated] = useState<ProductSummary[]>([]);
+  const [learnItems, setLearnItems] = useState<LearnItemSummary[]>([]);
   const [selection, setSelection] = useState<Selection>([]);
   const [imageIndex, setImageIndex] = useState(0);
 
@@ -77,6 +80,24 @@ export function ProductPage() {
       cancelled = true;
     };
   }, [slug]);
+
+  useEffect(() => {
+    if (!product) {
+      return;
+    }
+    let cancelled = false;
+    setLearnItems([]);
+    listLearnForProduct(product.id)
+      .then((items) => {
+        if (!cancelled) {
+          setLearnItems(items);
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [product]);
 
   const category = product ? categories.find((candidate) => candidate.id === product.categoryId) : undefined;
 
@@ -261,6 +282,12 @@ export function ProductPage() {
         <Box sx={{ mt: 6, maxWidth: 800 }}>
           <SimpleMarkdown source={pickLocalized(product.descriptionMd, locale)} />
         </Box>
+
+        {learnItems.length > 0 && (
+          <Box sx={{ mt: 8 }}>
+            <LearnSection title={t('learn.beforeYouBuy')} items={learnItems} locale={locale} />
+          </Box>
+        )}
 
         {related.length > 0 && (
           <Box sx={{ mt: 8 }}>

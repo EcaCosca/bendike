@@ -54,4 +54,12 @@ export const STORAGE_INVENTORY: readonly StorageItem[] = [
       'Only when you allow it and open the login or sign-up page: lets you continue with Google. Google may set its own cookies.',
     duration: "Set by Google; see Google's privacy policy",
   },
+  {
+    name: 'YouTube, Spotify and Vimeo players (youtube-nocookie.com, open.spotify.com, player.vimeo.com)',
+    type: 'Third-party script',
+    category: 'Third-party services',
+    purpose:
+      'Only when you allow it and press play on a Learn page: shows the video or podcast player inside Bendike. The provider may set its own cookies.',
+    duration: 'Set by the provider; see its privacy policy',
+  },
 ];

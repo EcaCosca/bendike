@@ -2,7 +2,8 @@
   "nav": {
     "shop": "Shop",
     "cart": "Cart",
-    "services": "Services"
+    "services": "Services",
+    "learn": "Learn"
   },
   "localeSwitcher": {
     "label": "Language"
@@ -79,5 +80,89 @@
     "notFoundBody": "We couldn't find that service. It may have been removed.",
     "loadError": "Could not load the services. Please try again.",
     "whatsappMessage": "Hello Eca, I'd like to ask about the service: {{service}}."
+  },
+  "learn": {
+    "title": "Learn",
+    "intro": "Videos, articles, podcasts and books Eca recommends, from the manufacturers and the people he trusts. Find what you need by topic, format and level.",
+    "searchPlaceholder": "Search titles, authors and sources",
+    "topic": "Topic",
+    "allTopics": "All topics",
+    "formatLabel": "Format",
+    "allFormats": "All formats",
+    "levelLabel": "Level",
+    "allLevels": "All levels",
+    "language": "Language",
+    "allLanguages": "Any language",
+    "sortLabel": "Sort by",
+    "sort": {
+      "newest": "Newest",
+      "title": "Title"
+    },
+    "noResults": "Nothing matches those filters yet.",
+    "clearFilters": "Clear filters",
+    "loadError": "Could not load the learning material. Please try again.",
+    "pagination": "Pagination",
+    "startHere": "Start here",
+    "topics": {
+      "reserve_and_repack": "Reserve and repack",
+      "aad": "AAD",
+      "service_bulletins": "Service bulletins",
+      "canopy": "Canopy",
+      "wingsuit": "Wingsuit",
+      "weather": "Weather",
+      "first_rig": "First rig",
+      "gear_care": "Gear care",
+      "freefall": "Freefall",
+      "safety_culture": "Safety culture",
+      "instruments": "Instruments"
+    },
+    "format": {
+      "video": "Video",
+      "article": "Article",
+      "podcast": "Podcast",
+      "book": "Book",
+      "channel": "Channel",
+      "course": "Course",
+      "page": "Web page"
+    },
+    "level": {
+      "student": "Students",
+      "licensed": "Licensed",
+      "experienced": "Experienced",
+      "rigger": "Riggers",
+      "all": "Everyone"
+    },
+    "lang": {
+      "en": "English",
+      "es": "Spanish",
+      "pt": "Portuguese",
+      "other": "Other language"
+    },
+    "minutes": "{{n}} min",
+    "openAtSource": "Open at source",
+    "playHere": "Play here (loads {{provider}})",
+    "playerNotice": "The player loads from {{provider}}, which may set its own cookies. It stays off until you allow third-party services.",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied",
+    "shareWhatsapp": "Share on WhatsApp",
+    "buy": "Buy",
+    "affiliateDisclosure": "As an Amazon Associate, Bendike earns from qualifying purchases.",
+    "relatedShop": "Related in the shop",
+    "moreOnTopic": "More on this topic",
+    "by": "By {{author}}",
+    "notFoundTitle": "Not found",
+    "notFoundBody": "We could not find that item. It may have been removed.",
+    "backToLearn": "Back to Learn",
+    "beforeYouBuy": "Learn before you buy",
+    "aboutYourGear": "Learn about your gear",
+    "suggest": {
+      "title": "Suggest something",
+      "intro": "Found a video, podcast or article that helped you? Send it to Eca on WhatsApp and he will have a look.",
+      "url": "Link",
+      "reason": "Why is it worth adding? (optional)",
+      "name": "Your name (optional)",
+      "send": "Send on WhatsApp",
+      "invalidUrl": "Paste a full https:// link."
+    }
   }
 }

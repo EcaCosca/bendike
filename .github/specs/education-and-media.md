@@ -38,6 +38,8 @@ see before deciding.
 - **Topic**: one of a fixed list of subjects (below). An item has one or more topics.
 - **Level**: who the item is for: `student`, `licensed`, `experienced`, `rigger` or `all`.
 - **Embed**: a player Bendike can show in place of the link, recognised from the URL for YouTube, Spotify and Vimeo.
+- **Buy link**: an optional second link on an item (a book, an instrument) to where it can be bought, normally an
+  Amazon Associates link that pays Bendike a commission. Shown with the disclosure Amazon requires.
 
 ## User Stories
 
@@ -144,6 +146,39 @@ so that I can **answer the next question with one address**.
   list: Squirrel Learn (page), Fly Squirrel TV (channel), Brian Germain's channel and his book, the FlySight and
   Vigil channels, and the four podcasts, each linked to the matching brand where one exists in the catalogue.
 
+### Story 5: Buy the book
+
+As a **Visitor**,
+I want **to buy a recommended book or item from the item page**,
+so that I can **act on the recommendation without hunting for the right edition**.
+
+#### Acceptance Criteria
+
+- Where an item has a buy link, the item page and its card shall show a "Buy" button opening the link in a new tab
+  with `rel="sponsored noopener"`.
+- Where the buy link is marked as an affiliate link, the item page shall show the disclosure "As an Amazon Associate,
+  Bendike earns from qualifying purchases" (translated) next to the button, and the Learn page shall carry the same
+  sentence once in its footer note.
+- The API shall accept only an `https` buy link, and shall store the item with `buy_url` and `affiliate` flag.
+- The web app shall never put an affiliate link inside a WhatsApp share message or an email; those carry the Bendike
+  item address only, because the Associates programme forbids links outside the approved site.
+
+### Story 6: Suggest something
+
+As a **Visitor**,
+I want **to suggest a video, podcast or article to Eca**,
+so that I can **help the collection grow with what helped me**.
+
+#### Acceptance Criteria
+
+- The Learn page shall show a "Suggest something" box with a link field, an optional line on why it is worth adding,
+  and an optional name, and a button "Send on WhatsApp".
+- When the visitor presses the button with a valid `https` link, the web app shall open the site WhatsApp number
+  with a prefilled message holding the link, the reason and the name, built by a pure function in `packages/shared`
+  next to the existing WhatsApp message builders, in the visitor's locale.
+- If the link is missing or not `https`, then the web app shall show a field error and open nothing.
+- The web app shall store nothing and call no API for a suggestion; the conversation happens in WhatsApp.
+
 ---
 
 ## Design
@@ -203,7 +238,7 @@ erDiagram
   `translation_overrides jsonb`, `author varchar(160) null`, `source_name varchar(160)`, `url varchar(2000)`,
   `embed_provider varchar(20) null` (`youtube`, `spotify`, `vimeo`), `embed_id varchar(120) null`,
   `thumbnail_url varchar(2000) null`, `content_language varchar(5)`, `topics text[]`, `level varchar(20)`,
-  `duration_minutes int null`, `published_at date null`, `position int default 0`, `active bool default true`,
+  `duration_minutes int null`, `published_at date null`, `buy_url varchar(2000) null`, `affiliate bool default false`, `position int default 0`, `active bool default true`,
   `created_by uuid`, `created_at`, `updated_at`. Index on `active`, GIN index on `topics`.
 - `learn_item_links`: `item_id uuid`, `target_kind varchar(12)` (`product`, `brand`, `gear_model`), `target_id uuid`,
   primary key on the three. No foreign key across kinds; the service validates the target exists.
@@ -249,11 +284,13 @@ sequenceDiagram
 
 ### Open Questions
 
-- [ ] The first Spotify show (`3WjzoEn19X2rCimimh9C5N`) came without a name; Eca to confirm the title.
-- [ ] The Brian Germain book: Eca wrote "the canopy and his pilot"; the published title is "The Parachute and its
-      Pilot". Confirm before seeding.
-- [ ] Should riggers be able to suggest an item for Eca to approve? Eca said he curates; suggestions are a later
-      phase unless he wants them now.
+- [x] The first Spotify show is "Exit Point" (confirmed 2026-09-24). The others: Leading Edge, The 20 Minute Call,
+      The Krāv Show.
+- [x] The Brian Germain book is "The Parachute and its Pilot" (confirmed 2026-09-24).
+- [x] Suggestions: a box on the Learn page that opens WhatsApp to Eca with the suggestion (decided 2026-09-24); no
+      storage, no approval queue.
+- [ ] Amazon Associates: Eca to open the account (amazon.com, and amazon.com.br for Portuguese readers), accept the
+      operating agreement and confirm the tag; until then buy links are plain links with `affiliate = false`.
 - [ ] Manufacturer match by name: link brand items to rigs whose component manufacturer equals the brand name, so
       a Vigil AAD shows Vigil's channel without an explicit gear-model link. Cheap, but risks wrong matches for
       shared names; default no until asked.
@@ -281,14 +318,14 @@ place that knows provider URLs, so it must be pure and tested.
 
 **Verification**:
 
-- [ ] `parseEmbed` recognises `youtube.com/watch?v=`, `youtu.be/`, `youtube.com/@channel` (as `channel`, no embed),
+- [x] `parseEmbed` recognises `youtube.com/watch?v=`, `youtu.be/`, `youtube.com/@channel` (as `channel`, no embed),
       `open.spotify.com/show/`, `open.spotify.com/episode/`, `vimeo.com/<id>`, and returns `null` for anything else
-- [ ] `npm run test:unit -w @bendike/shared` passes
+- [x] `npm run test:unit -w @bendike/shared` passes
 
 **Done when**:
 
-- [ ] All verification steps pass
-- [ ] Code follows patterns in `.github/copilot-instructions.md`
+- [x] All verification steps pass
+- [x] Code follows patterns in `.github/copilot-instructions.md`
 
 ---
 
@@ -308,14 +345,14 @@ place that knows provider URLs, so it must be pure and tested.
 
 **Verification**:
 
-- [ ] Service tests on the in-memory manager: filters combine, inactive items hidden, `for-product` falls back to
+- [x] Service tests on the in-memory manager: filters combine, inactive items hidden, `for-product` falls back to
       brand and deduplicates, `for-rig` returns 404 through `GearAccessService` for a stranger and items for the owner
-- [ ] `npm run test:unit -w @bendike/api` and `npm run typecheck` pass
+- [x] `npm run test:unit -w @bendike/api` and `npm run typecheck` pass
 
 **Done when**:
 
-- [ ] All verification steps pass
-- [ ] Migration applies on a fresh database
+- [x] All verification steps pass
+- [x] Migration applies on a fresh database
 
 ---
 
@@ -334,13 +371,13 @@ place that knows provider URLs, so it must be pure and tested.
 
 **Verification**:
 
-- [ ] Tests: 403 for user, rigger and dropzone on every admin endpoint; 400 on a non-https URL and on an unknown topic;
+- [x] Tests: 403 for user, rigger and dropzone on every admin endpoint; 400 on a non-https URL and on an unknown topic;
       409 on a second start-here collection for a topic; links replaced, unknown id rejected
-- [ ] `npm run seed:learn -w @bendike/api` twice leaves the same rows and links Squirrel, FlySight and Vigil brands
+- [x] `npm run seed:learn -w @bendike/api` twice leaves the same rows and links Squirrel, FlySight and Vigil brands
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -356,17 +393,18 @@ place that knows provider URLs, so it must be pure and tested.
 - `apps/web/src/App.tsx`, `apps/web/src/components/site/site-content.ts`, `SiteFooter.tsx`
 - `apps/web/src/i18n/locales/{en,es,pt}.json`
 
-**Requirements**: Story 1 web criteria.
+**Requirements**: Story 1 web criteria; Story 6 suggestion box.
 
 **Verification**:
 
-- [ ] Tests: filters write to and read from the query string; empty state offers to clear; start-here strip appears
-      only when a topic is picked and a collection exists; "Learn" appears in nav and footer in all three locales
-- [ ] `npm run test:unit -w @bendike/web` passes
+- [x] Tests: filters write to and read from the query string; empty state offers to clear; start-here strip appears
+      only when a topic is picked and a collection exists; "Learn" appears in nav and footer in all three locales;
+      the suggestion box opens `wa.me` with the link in the message and blocks a non-https link
+- [x] `npm run test:unit -w @bendike/web` passes
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -382,17 +420,17 @@ and more on the topic.
 - `apps/web/src/pages/learn/LearnItemPage.tsx`, `EmbedPlayer.tsx`, specs
 - `apps/web/src/consent/storage-inventory.ts`, `apps/web/src/consent/CookiePolicyPage.tsx` if the table needs a row
 
-**Requirements**: Story 2.
+**Requirements**: Story 2; Story 5 buy button and disclosure.
 
 **Verification**:
 
-- [ ] Tests: no `<iframe>` rendered while `thirdParty` is false; clicking "Play here" saves consent and renders the
+- [x] Tests: no `<iframe>` rendered while `thirdParty` is false; clicking "Play here" saves consent and renders the
       iframe on `youtube-nocookie.com`; unknown slug shows the not-found state; WhatsApp share link carries the title
-- [ ] The inventory test in `storage-inventory.spec.ts` passes with the new entry
+- [x] The inventory test in `storage-inventory.spec.ts` passes with the new entry
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -411,13 +449,13 @@ and more on the topic.
 
 **Verification**:
 
-- [ ] Tests: section absent when the API returns nothing; product falls back to brand items; rig section grouped by
+- [x] Tests: section absent when the API returns nothing; product falls back to brand items; rig section grouped by
       component
-- [ ] `npm run test:unit -w @bendike/web` passes
+- [x] `npm run test:unit -w @bendike/web` passes
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -436,28 +474,29 @@ and more on the topic.
 
 **Verification**:
 
-- [ ] Tests: pasting a YouTube URL fills provider and thumbnail preview; a user is redirected to `/app`; links picker
+- [x] Tests: pasting a YouTube URL fills provider and thumbnail preview; a user is redirected to `/app`; links picker
       searches products, brands and gear models
-- [ ] `npm run validate` passes
+- [x] `npm run validate` passes
 
 **Done when**:
 
-- [ ] All verification steps pass
-- [ ] README "What you can do today" gains a Learn paragraph and the route table gains the three routes
+- [x] All verification steps pass
+- [x] README "What you can do today" gains a Learn paragraph and the route table gains the three routes
 
 ---
 
 ## Out of Scope
 
 - Hosting any video, audio or PDF: the manual library remains the place for files, for riggers only.
-- Suggestions or comments from users and riggers (candidate for phase 2).
+- Storing suggestions or an approval queue; the suggestion box hands off to WhatsApp.
 - View counts, analytics or "most watched" (needs consent thinking of its own).
 - Automatic import of a channel's videos from YouTube or a show's episodes from Spotify.
 - Machine translation of titles and summaries beyond the existing overrides mechanism.
 
 ## Future Considerations
 
-- Rigger suggestions with admin approval, and a "suggested by" credit.
+- A stored suggestion queue with a "suggested by" credit, if WhatsApp gets noisy.
+- Amazon Product Advertising API for live prices and covers, once the Associates account has its first sales.
 - Episode-level items pulled from a show's RSS feed, tagged by topic.
 - A "send to customer" action from the rigger work queue that prefills WhatsApp with a Learn link.
 - Notification-inbox notice when Eca adds an item to a topic a user has gear in.

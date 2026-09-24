@@ -19,7 +19,8 @@
     "seed:dev-accounts": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/seed-dev-accounts.ts",
     "seed:services": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/seed-services.ts",
     "import:squirrel": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/import-squirrel.ts",
-    "import:fleet": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/import-fleet.ts"
+    "import:fleet": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/import-fleet.ts",
+    "seed:learn": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/seed-learn.ts"
   },
   "dependencies": {
     "@bendike/shared": "0.1.0",

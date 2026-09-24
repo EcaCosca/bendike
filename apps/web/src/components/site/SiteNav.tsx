@@ -18,6 +18,8 @@ export function SiteNav() {
   const shopLabel = activeLocale ? i18n.getFixedT(activeLocale)('nav.shop') : 'Shop';
   const servicesPath = shopPath.replace(/\/shop$/, '/services');
   const servicesLabel = activeLocale ? i18n.getFixedT(activeLocale)('nav.services') : 'Services';
+  const learnPath = shopPath.replace(/\/shop$/, '/learn');
+  const learnLabel = activeLocale ? i18n.getFixedT(activeLocale)('nav.learn') : 'Learn';
 
   return (
     <AppBar
@@ -90,6 +92,15 @@ export function SiteNav() {
               sx={{ color: pathname === servicesPath ? 'primary.main' : 'text.secondary' }}
             >
               {servicesLabel}
+            </Button>
+            <Button
+              component={RouterLink}
+              to={learnPath}
+              color="inherit"
+              aria-current={pathname === learnPath ? 'page' : undefined}
+              sx={{ color: pathname === learnPath ? 'primary.main' : 'text.secondary' }}
+            >
+              {learnLabel}
             </Button>
           </Box>
           <Box sx={{ flexGrow: 1 }} />

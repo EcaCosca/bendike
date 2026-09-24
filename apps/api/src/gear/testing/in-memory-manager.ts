@@ -19,6 +19,8 @@ const TIMESTAMPED = new Set([
   'LibraryDocument',
   'PackingSheet',
   'RigPhoto',
+  'LearnItem',
+  'LearnCollection',
 ]);
 let tick = 0;
 

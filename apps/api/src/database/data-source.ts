@@ -17,6 +17,9 @@ import { BulletinMatch, BulletinTarget, Grounding, ServiceBulletin } from '../bu
 import { RiggerLink } from '../rigger-links/rigger-link.entity';
 import { DigestDelivery } from '../reminders/digest-delivery.entity';
 import { RiggerSettings } from '../reminders/rigger-settings.entity';
+import { LearnCollection, LearnCollectionItem } from '../learn/entities/learn-collection.entity';
+import { LearnItemLink } from '../learn/entities/learn-item-link.entity';
+import { LearnItem } from '../learn/entities/learn-item.entity';
 import { Service } from '../services/entities/service.entity';
 import { User } from '../users/user.entity';
 
@@ -48,6 +51,10 @@ export default new DataSource({
     BulletinTarget,
     BulletinMatch,
     Grounding,
+    LearnItem,
+    LearnItemLink,
+    LearnCollection,
+    LearnCollectionItem,
   ],
   migrations: [join(__dirname, 'migrations', '*.ts')],
 });

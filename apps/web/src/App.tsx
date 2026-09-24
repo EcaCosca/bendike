@@ -15,6 +15,9 @@ import { ProductPage } from './pages/shop/ProductPage';
 import { ServicesAdminPage } from './pages/services/ServicesAdminPage';
 import { BulletinMatchesPage } from './pages/bulletins/BulletinMatchesPage';
 import { BulletinsPage } from './pages/bulletins/BulletinsPage';
+import { LearnAdminPage } from './pages/learn/LearnAdminPage';
+import { LearnItemPage } from './pages/learn/LearnItemPage';
+import { LearnPage } from './pages/learn/LearnPage';
 import { LibraryPage } from './pages/library/LibraryPage';
 import { PackingJobPage } from './pages/packing/PackingJobPage';
 import { PackingSheetPrintPage } from './pages/packing/PackingSheetPrintPage';
@@ -42,11 +45,14 @@ export function App() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/shop/*" element={<RedirectToLocale />} />
       <Route path="/services/*" element={<RedirectToLocale />} />
+      <Route path="/learn/*" element={<RedirectToLocale />} />
       <Route path="/:locale" element={<LocaleLayout />}>
         <Route path="shop" element={<ShopPage />} />
         <Route path="shop/:slug" element={<ProductPage />} />
         <Route path="services" element={<ServicesPage />} />
         <Route path="services/:slug" element={<ServiceDetailPage />} />
+        <Route path="learn" element={<LearnPage />} />
+        <Route path="learn/:slug" element={<LearnItemPage />} />
       </Route>
       <Route element={<RequireAuth />}>
         <Route path="/app" element={<DashboardPage />} />
@@ -70,6 +76,7 @@ export function App() {
           <Route path="/app/admin/used-gear" element={<UsedGearAdminPage />} />
           <Route path="/app/admin/gear-models" element={<GearModelsPage />} />
           <Route path="/app/admin/bulletins" element={<BulletinsPage />} />
+          <Route path="/app/admin/learn" element={<LearnAdminPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

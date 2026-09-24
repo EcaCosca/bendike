@@ -80,6 +80,9 @@ export function SiteFooter() {
             <Link component={RouterLink} to={`/${activeLocale}/services`} sx={LINK_SX}>
               Services
             </Link>
+            <Link component={RouterLink} to={`/${activeLocale}/learn`} sx={LINK_SX}>
+              Learn
+            </Link>
           </Column>
 
           <Column title="Account">

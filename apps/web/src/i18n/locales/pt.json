@@ -2,7 +2,8 @@
   "nav": {
     "shop": "Loja",
     "cart": "Carrinho",
-    "services": "Serviços"
+    "services": "Serviços",
+    "learn": "Aprender"
   },
   "localeSwitcher": {
     "label": "Idioma"
@@ -79,5 +80,89 @@
     "notFoundBody": "Não encontramos esse serviço. Ele pode ter sido removido.",
     "loadError": "Não foi possível carregar os serviços. Tente novamente.",
     "whatsappMessage": "Olá Eca, quero saber mais sobre o serviço: {{service}}."
+  },
+  "learn": {
+    "title": "Aprender",
+    "intro": "Vídeos, artigos, podcasts e livros que o Eca recomenda, dos fabricantes e das pessoas em quem ele confia. Encontre o que precisa por tema, formato e nível.",
+    "searchPlaceholder": "Buscar por título, autor ou fonte",
+    "topic": "Tema",
+    "allTopics": "Todos os temas",
+    "formatLabel": "Formato",
+    "allFormats": "Todos os formatos",
+    "levelLabel": "Nível",
+    "allLevels": "Todos os níveis",
+    "language": "Idioma",
+    "allLanguages": "Qualquer idioma",
+    "sortLabel": "Ordenar por",
+    "sort": {
+      "newest": "Mais novos",
+      "title": "Título"
+    },
+    "noResults": "Ainda não há nada com esses filtros.",
+    "clearFilters": "Limpar filtros",
+    "loadError": "Não foi possível carregar o material. Tente novamente.",
+    "pagination": "Paginação",
+    "startHere": "Comece por aqui",
+    "topics": {
+      "reserve_and_repack": "Reserva e dobragem",
+      "aad": "AAD",
+      "service_bulletins": "Boletins de serviço",
+      "canopy": "Velame",
+      "wingsuit": "Wingsuit",
+      "weather": "Meteorologia",
+      "first_rig": "Primeiro equipamento",
+      "gear_care": "Cuidados com o equipamento",
+      "freefall": "Queda livre",
+      "safety_culture": "Cultura de segurança",
+      "instruments": "Instrumentos"
+    },
+    "format": {
+      "video": "Vídeo",
+      "article": "Artigo",
+      "podcast": "Podcast",
+      "book": "Livro",
+      "channel": "Canal",
+      "course": "Curso",
+      "page": "Página web"
+    },
+    "level": {
+      "student": "Alunos",
+      "licensed": "Com licença",
+      "experienced": "Experientes",
+      "rigger": "Riggers",
+      "all": "Para todos"
+    },
+    "lang": {
+      "en": "Inglês",
+      "es": "Espanhol",
+      "pt": "Português",
+      "other": "Outro idioma"
+    },
+    "minutes": "{{n}} min",
+    "openAtSource": "Abrir na fonte",
+    "playHere": "Reproduzir aqui (carrega {{provider}})",
+    "playerNotice": "O player é carregado do {{provider}}, que pode usar os próprios cookies. Fica desligado até você permitir serviços de terceiros.",
+    "copyLink": "Copiar link",
+    "linkCopied": "Link copiado",
+    "shareWhatsapp": "Compartilhar no WhatsApp",
+    "buy": "Comprar",
+    "affiliateDisclosure": "Como Associado da Amazon, a Bendike recebe comissão por compras qualificadas.",
+    "relatedShop": "Relacionado na loja",
+    "moreOnTopic": "Mais sobre este tema",
+    "by": "De {{author}}",
+    "notFoundTitle": "Não encontrado",
+    "notFoundBody": "Não encontramos esse material. Ele pode ter sido removido.",
+    "backToLearn": "Voltar para Aprender",
+    "beforeYouBuy": "Aprenda antes de comprar",
+    "aboutYourGear": "Aprenda sobre o seu equipamento",
+    "suggest": {
+      "title": "Sugira algo",
+      "intro": "Encontrou um vídeo, podcast ou artigo que ajudou você? Mande para o Eca no WhatsApp e ele dá uma olhada.",
+      "url": "Link",
+      "reason": "Por que vale a pena adicionar? (opcional)",
+      "name": "Seu nome (opcional)",
+      "send": "Enviar no WhatsApp",
+      "invalidUrl": "Cole um link completo começando com https://."
+    }
   }
 }

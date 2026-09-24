@@ -22,11 +22,15 @@ import {
   Role,
   type GroundingView,
   type MaintenanceEntryView,
+  type LearnRigSection,
   type RigDetailView,
   type RigPhotoView,
 } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import { detectLocaleFromEnvironment } from '../../i18n/detect-locale';
+import { listLearnForRig } from '../learn/learn-api';
+import { LearnSection } from '../learn/LearnSection';
 import { ClearGroundingDialog } from '../bulletins/ClearGroundingDialog';
 import { GroundDialog } from '../bulletins/GroundDialog';
 import { canSignOff } from './entry-kinds';
@@ -54,6 +58,7 @@ export function RigPage() {
   const navigate = useNavigate();
   const [rig, setRig] = useState<RigDetailView | null>(null);
   const [photos, setPhotos] = useState<RigPhotoView[]>([]);
+  const [learnSections, setLearnSections] = useState<LearnRigSection[]>([]);
   const [historyView, setHistoryView] = useState<'timeline' | 'table'>('timeline');
   const [unavailable, setUnavailable] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -82,6 +87,11 @@ export function RigPage() {
   useEffect(() => {
     reloadPhotos().catch(() => setPhotos([]));
   }, [reloadPhotos]);
+
+  useEffect(() => {
+    if (!token) return;
+    listLearnForRig(token, rigId).then(setLearnSections, () => setLearnSections([]));
+  }, [token, rigId]);
 
   const onChanged = useCallback(() => {
     reload().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not refresh the rig'));
@@ -219,6 +229,22 @@ export function RigPage() {
                 );
               })}
             </Box>
+            {learnSections.length > 0 && (
+              <Stack spacing={2} component="section" aria-label="Learn about your gear">
+                <Typography variant="h5" component="h2">
+                  Learn about your gear
+                </Typography>
+                {learnSections.map((section) => (
+                  <LearnSection
+                    key={section.gearItemId}
+                    title={section.label}
+                    items={section.items}
+                    locale={detectLocaleFromEnvironment()}
+                    headingLevel="h3"
+                  />
+                ))}
+              </Stack>
+            )}
             {rig.groundingHistory.length > 0 && (
               <>
                 <Typography variant="h5" component="h2">

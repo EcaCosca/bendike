@@ -131,6 +131,25 @@ keeps a copy of, so they survive a manufacturer's website changing or disappeari
 which model and revision it is; every download goes through Bendike, and only admins can archive a document. Users
 and dropzones never see it. Files live in a Google Drive folder you own (see below) or, in development, on local disk.
 
+### Learn: education and media
+
+A public **Learn** section (`/:locale/learn`) holds the videos, channels, podcasts, articles and books Eca recommends,
+from the manufacturers and the people he trusts: Squirrel's learn pages and channel, Brian Germain on canopy flight, the
+FlySight and Vigil channels, and the skydiving podcasts he follows. Bendike stores the link and its metadata, never the
+content.
+
+- **Findable in seconds.** Every item has a format, one or more topics (reserve and repack, AAD, service bulletins,
+  canopy, wingsuit, weather, first rig, gear care, freefall, safety culture, instruments), a level and the language of the
+  content. Filters, search, sort and page live in the URL, so a filtered view is a link you can send.
+- **Play in place, with consent.** YouTube, Spotify and Vimeo players load only after the visitor allows third-party
+  services in the cookie bar, on the providers' privacy domains. Until then the page shows the poster and the source link.
+- **Linked to the gear and the shop.** An admin links items to shop products, brands and gear models. A product page
+  shows "Learn before you buy"; a rig or component page shows "Learn about your gear" for the models it holds.
+- **Collections.** Ordered lists with an intro; the "start here" collection of a topic is shown first for that topic.
+- **Suggestions by WhatsApp.** A box on the Learn page opens WhatsApp to Eca with the suggested link; nothing is stored.
+- **Buy links.** A book or instrument can carry a buy link, normally an Amazon Associates link, shown with the
+  disclosure the programme requires. Affiliate links never go into WhatsApp messages or emails.
+
 ### The shop and the services
 
 - A **trilingual shop** for Squirrel wingsuits and gear, FlySight and Vigil, with prices in US dollars plus derived
@@ -172,6 +191,7 @@ screens. Keep any personal logins in `apps/api/.env.dev-accounts`, which git ign
 ```bash
 npm run seed:catalog  -w @bendike/api     # FlySight and Vigil products with real copy and prices
 npm run seed:services -w @bendike/api     # the five rigging services
+npm run seed:learn    -w @bendike/api     # Eca's starting list of learning material, linked to the brands
 npm run import:squirrel -w @bendike/api   # the Squirrel catalogue, from squirrel.ws (needs Playwright)
 ```
 
@@ -353,6 +373,7 @@ sequenceDiagram
 | [0014](docs/adr/0014-repack-reminders-are-a-daily-digest-email-sent-by-a-cron-triggered-endpoint.md)   | The repack reminder is a daily digest sent by a cron-triggered endpoint. |
 | [0015](docs/adr/0015-the-manual-library-is-stored-in-google-drive-behind-a-storage-port.md)            | The manual library is stored in Google Drive behind a storage port.      |
 | [0016](docs/adr/0016-a-packing-sheet-is-a-signed-snapshot-that-writes-the-repack-entry.md)             | A packing sheet is a signed snapshot that writes the repack entry.       |
+| [0018](docs/adr/0018-learning-resources-are-curated-links-with-consent-gated-embeds.md)                | Learning resources are curated links with consent-gated embeds.          |
 
 ## A tour of the app
 
@@ -361,6 +382,7 @@ sequenceDiagram
 | `/`, `/about`                                                           | Everyone                                  | Landing page with the brand carousel, and the About story.                                           |
 | `/:locale/shop`, `/:locale/shop/:slug`                                  | Everyone                                  | The shop in `es`, `en` or `pt`, with search, filters, used gear and "Sold".                          |
 | `/:locale/services`, `/:locale/services/:slug`                          | Everyone                                  | The rigging services.                                                                                |
+| `/:locale/learn`, `/:locale/learn/:slug`                                | Everyone                                  | The Learn section: filters and search in the URL, consent-gated players, related shop items.         |
 | `/login`, `/register`                                                   | Visitors                                  | Email and password, and "Continue with Google" when configured.                                      |
 | `/app`, `/app/profile`                                                  | Signed in                                 | The dashboard, and your name, WhatsApp phone and language.                                           |
 | `/app/gear`, `/app/gear/:rigId`, `/app/gear/items/:id`                  | Signed in                                 | Your gear as a paginated grid (or cards): a dropzone's "Fleet", the rig page, a component's history. |
@@ -370,6 +392,7 @@ sequenceDiagram
 | `/app/library`                                                          | Riggers, admins                           | The manual library: search, upload and download manuals and bulletins.                               |
 | `/app/gear/:rigId/packing/:sheetId`, `.../print`                        | Riggers, admins; signed sheets for owners | The repack job, and the printable signed sheet.                                                      |
 | `/app/admin/users`, `services`, `used-gear`, `gear-models`, `bulletins` | Admins                                    | Accounts and roles, services, used gear, the model rules, the service bulletins.                     |
+| `/app/admin/learn`                                                      | Admins                                    | The learning material: items, their links to products, brands and gear models, and collections.      |
 
 The API documents itself: open <http://localhost:3000/docs> for every endpoint, its payload and its access rules.
 
@@ -391,7 +414,7 @@ trustworthy.
 npm run validate     # lint, format check, typecheck, all unit tests, production build
 ```
 
-Right now that runs **977 unit tests** (shared 164, API 490, web 323) and they all pass.
+Right now that runs **1,426 unit tests** (shared 237, API 648, web 541) and they all pass.
 
 Other useful commands:
 
@@ -416,7 +439,8 @@ Conventions worth knowing:
 ## Roadmap
 
 Built and verified: the gear tracker, the rigger workspace, repack reminders, service bulletins and grounding, the
-manual library, reserve packing sheets, the shop, used gear, services, Google sign-in and the fleet importer. What is
+manual library, reserve packing sheets, the Learn section, the shop, used gear, services, Google sign-in and the fleet
+importer. What is
 next, roughly in order:
 
 - **Google Drive authorisation** for the manual library: run `drive:authorize` once (see above); until then files stay

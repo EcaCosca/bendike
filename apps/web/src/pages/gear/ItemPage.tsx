@@ -1,9 +1,12 @@
 import { Alert, Link, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
-import { Role, type GearItemDetailView, type MaintenanceEntryView } from '@bendike/shared';
+import { Role, type GearItemDetailView, type LearnItemSummary, type MaintenanceEntryView } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import { detectLocaleFromEnvironment } from '../../i18n/detect-locale';
+import { listLearnForGearItem } from '../learn/learn-api';
+import { LearnSection } from '../learn/LearnSection';
 import { canSignOff } from './entry-kinds';
 import { getItem, verifyEntry } from './gear-api';
 import { GearItemCard } from './GearItemCard';
@@ -20,6 +23,12 @@ export function ItemPage() {
   const [unavailable, setUnavailable] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [voiding, setVoiding] = useState<MaintenanceEntryView | null>(null);
+  const [learnItems, setLearnItems] = useState<LearnItemSummary[]>([]);
+
+  useEffect(() => {
+    if (!token) return;
+    listLearnForGearItem(token, itemId).then(setLearnItems, () => setLearnItems([]));
+  }, [token, itemId]);
 
   const reload = useCallback(async () => {
     if (!token) return;
@@ -78,6 +87,7 @@ export function ItemPage() {
               onEditPart={(part) => actions.editPart(item, part)}
               onDeletePart={actions.removePart}
             />
+            <LearnSection title="Learn about your gear" items={learnItems} locale={detectLocaleFromEnvironment()} />
             {item.kind === 'reserve' && (
               <PackingLog token={token} role={user.role} scope={{ reserveItemId: item.id }} />
             )}
