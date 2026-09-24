@@ -3,7 +3,8 @@ import { MemoryRouter } from 'react-router-dom';
 import * as authApi from '../../../auth/auth-api';
 import * as useAuthModule from '../../../auth/use-auth';
 import { SOCIAL_LINKS, WHATSAPP_LABEL } from '../../../components/site/site-content';
-import { ABOUT_ASSETS, CAREER, CHAPTERS, CTA_LABEL, TITLE } from './about-story-content';
+import { CAREER, CHAPTERS, CTA_LABEL, TITLE } from './about-story-content';
+import { HERO_CLIP, VIGNETTES } from './vignette-content';
 import { AboutStoryPage } from './AboutStoryPage';
 
 jest.mock('../scrollcraft/scrollcraft.js', () => ({}));
@@ -45,21 +46,25 @@ describe('AboutStoryPage', () => {
     expect(screen.getByText(TITLE.place)).toBeInTheDocument();
   });
 
-  test('spends the only clip on the wingsuit flight', () => {
-    const video = screen.getByLabelText(CHAPTERS.air.caption);
+  test('opens on a pinned clip that plays itself rather than scrubbing on scroll', () => {
+    const video = screen.getByLabelText(HERO_CLIP.alt);
 
     expect(video.tagName).toBe('VIDEO');
-    expect(video).toHaveAttribute('data-sc-scrub');
-    expect(video).toHaveAttribute('data-sc-src', ABOUT_ASSETS.flight);
-    expect(video).toHaveAttribute('data-sc-src-mobile', ABOUT_ASSETS.flightMobile);
-    expect(document.querySelectorAll('video[data-sc-scrub]')).toHaveLength(1);
-    expect(document.querySelector('[data-sc-act="scrub"]')).toHaveAttribute('data-sc-span', '3.6');
+    // Autoplaying, not scrubbed: a scroll-driven playhead freezes the moment the
+    // reader stops, which reads as a broken player.
+    expect(video).not.toHaveAttribute('data-sc-scrub');
+    expect(video).toHaveAttribute('loop');
+    // React assigns muted as a DOM property, never as an attribute.
+    expect((video as HTMLVideoElement).muted).toBe(true);
+    expect(document.querySelectorAll('video[data-sc-scrub]')).toHaveLength(0);
+    expect(document.querySelector('[data-sc-act="pin"]')).toHaveAttribute('data-sc-span', '2.4');
   });
 
-  test('asks for the FlySight track and shows no readout and no side panel without it', () => {
-    expect(fetchMock).toHaveBeenCalledWith(ABOUT_ASSETS.flightTrack, expect.anything());
-    expect(screen.queryByLabelText(CHAPTERS.air.readout.title)).not.toBeInTheDocument();
-    expect(document.querySelector('.as-log')).toBeNull();
+  test('carries the mark, and no copy, over the opening clip', () => {
+    const stage = document.querySelector('[data-sc-stage]');
+    expect(stage).not.toBeNull();
+    expect(within(stage as HTMLElement).getByRole('img', { name: 'BENDIKE' })).toBeInTheDocument();
+    expect(stage?.querySelectorAll('h1, h2, p')).toHaveLength(0);
   });
 
   test('tells the story in six chapters after the title', () => {
@@ -72,7 +77,14 @@ describe('AboutStoryPage', () => {
     ]) {
       expect(screen.getByRole('heading', { level: 2, name: chapter.heading })).toBeInTheDocument();
     }
-    expect(screen.getByRole('heading', { level: 2, name: CHAPTERS.air.lines[0] })).toBeInTheDocument();
+  });
+
+  test('shows every vignette as a poster until its tile is near the viewport', () => {
+    const tiles = document.querySelectorAll('.as-vig');
+    expect(tiles).toHaveLength(VIGNETTES.length);
+    for (const item of VIGNETTES) {
+      expect(screen.getByText(item.caption)).toBeInTheDocument();
+    }
   });
 
   test('reveals the eight preparation photographs with sequential windows', () => {
@@ -86,7 +98,9 @@ describe('AboutStoryPage', () => {
   });
 
   test('carries the origin of the name and the father line in Eca’s words', () => {
-    expect(screen.getByText(/At home they are Benja and Ike\. Ben and Ike: Bendike\./)).toBeInTheDocument();
+    // Matched loosely on purpose: this paragraph is Eca's and he rewords it. The
+    // test guards that the name's origin is still told, not his punctuation.
+    expect(screen.getByText(/Benja and Ike[^.]*Bendike/)).toBeInTheDocument();
     expect(screen.getByText(/improving the safety of the community as a whole/)).toBeInTheDocument();
     expect(document.querySelector('.as-sons__portrait')).toHaveAttribute('data-sc-reveal', 'iris');
   });

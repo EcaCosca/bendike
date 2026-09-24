@@ -34,7 +34,8 @@ export function Vignette({ id, alt, className }: VignetteProps) {
   useEffect(() => {
     const host = hostRef.current;
     if (!host || typeof IntersectionObserver !== 'function') return;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (typeof window.matchMedia !== 'function') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const near = new IntersectionObserver(
       ([entry]) => {

@@ -1,3 +1,11 @@
+export const HERO_CLIP = {
+  src: '/about/kstag.mp4',
+  srcMobile: '/about/kstag-m.mp4',
+  poster: '/about/kstag-poster.webp',
+  posterMobile: '/about/kstag-poster-m.webp',
+  alt: 'Wingsuit proximity flight down an alpine valley',
+};
+
 /**
  * Captions describe what is actually in each frame, which is not always what the
  * working file name suggests — the trims landed elsewhere than planned.

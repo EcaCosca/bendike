@@ -497,3 +497,27 @@
     gap: var(--sc-2);
   }
 }
+
+/* The pinned opener: one clip, the mark, and nothing else. */
+.as-air__clip {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.as-air__mark {
+  position: absolute;
+  inset: auto 0 clamp(var(--sc-5), 16vh, 12rem) 0;
+  display: flex;
+  justify-content: center;
+  z-index: var(--sc-z-copy);
+  pointer-events: none;
+}
+
+@media (max-width: 860px) {
+  .as-air__mark img {
+    height: 64px;
+  }
+}

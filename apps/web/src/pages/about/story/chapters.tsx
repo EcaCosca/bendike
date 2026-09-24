@@ -1,8 +1,9 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { BrandMark } from '../../../components/site/BrandMark';
 import { SOCIAL_LINKS, WHATSAPP_HREF, WHATSAPP_LABEL } from '../../../components/site/site-content';
 import { ABOUT_ASSETS, CAREER, CHAPTERS, CTA_LABEL, TITLE, imageSources } from './about-story-content';
-import { FlightReadout } from './FlightReadout';
+import { HERO_CLIP } from './vignette-content';
 
 function Photo({ base, alt, className }: { base: string; alt: string; className?: string }) {
   const { src, srcSet } = imageSources(base);
@@ -38,34 +39,46 @@ export function TitlePage() {
 }
 
 export function FlightChapter() {
-  const chapter = CHAPTERS.air;
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (typeof window.matchMedia !== 'function' || typeof IntersectionObserver !== 'function') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const seen = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) void video.play().catch(() => undefined);
+        else video.pause();
+      },
+      { threshold: 0.1 },
+    );
+    seen.observe(video);
+    return () => seen.disconnect();
+  }, []);
+
+  // The stage stays pinned, but the clip runs on its own timeline rather than on
+  // the scroll position: a scrubbed video sits frozen the moment a reader stops,
+  // which reads as a broken player instead of an effect.
   return (
-    <section className="as-air" data-sc-act="scrub" data-sc-span="3.6" data-sc-dwell="0.42" data-chapter="air">
+    <section className="as-air" data-sc-act="pin" data-sc-span="2.4" data-chapter="air">
       <div data-sc-stage>
-        <picture>
-          <source media="(max-width: 860px)" srcSet={ABOUT_ASSETS.flightPosterMobile} />
-          <img className="sc-stage__poster" src={ABOUT_ASSETS.flightPoster} alt="" />
-        </picture>
         <video
           ref={videoRef}
-          data-sc-scrub
-          data-sc-src={ABOUT_ASSETS.flight}
-          data-sc-src-mobile={ABOUT_ASSETS.flightMobile}
+          className="as-air__clip"
+          poster={HERO_CLIP.poster}
           muted
+          loop
           playsInline
-          aria-label={chapter.caption}
-        />
-        <div className="sc-scrim sc-scrim--lead" aria-hidden="true" />
-        <div className="sc-copy sc-copy--lead" data-sc-cue="0.05 0.5 0.3">
-          <FolioMark number={chapter.number} title={chapter.title} />
-          <h2 className="sc-display sc-display--xl">{chapter.lines[0]}</h2>
-        </div>
-        <div className="sc-copy sc-copy--lead" data-sc-cue="0.5 0.94">
-          <p className="sc-lede as-air__line">{chapter.lines[1]}</p>
-        </div>
-        <div className="sc-copy as-air__readout" data-sc-cue="0.04 0.96 0.15 0.1">
-          <FlightReadout video={videoRef} />
+          preload="metadata"
+          aria-label={HERO_CLIP.alt}
+        >
+          <source src={HERO_CLIP.srcMobile} type="video/mp4" media="(max-width: 860px)" />
+          <source src={HERO_CLIP.src} type="video/mp4" />
+        </video>
+        <div className="sc-scrim sc-scrim--bottom" aria-hidden="true" />
+        <div className="as-air__mark" data-sc-cue="0.08 0.9 0.2 0.2">
+          <BrandMark tone="white" height={92} />
         </div>
       </div>
     </section>
