@@ -40,6 +40,10 @@ services:
     restart: unless-stopped
     depends_on:
       - api
+    environment:
+      # The Caddyfile reads {$DOMAIN}; without this the site address resolves to a bare "api." and Caddy refuses
+      # to start, since that is not a name it can get a certificate for.
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env, e.g. DOMAIN=bendike.com}
     ports:
       - '80:80'
       - '443:443'
