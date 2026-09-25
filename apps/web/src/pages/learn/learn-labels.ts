@@ -14,4 +14,7 @@ export const TOPIC_LABELS: Record<LearnTopic, string> = {
   freefall: 'Freefall',
   safety_culture: 'Safety culture',
   instruments: 'Instruments',
+  packing: 'Packing and rigging',
+  reviews: 'Reviews',
+  wingsuit_base: 'Wingsuit BASE',
 };

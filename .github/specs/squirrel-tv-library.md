@@ -193,11 +193,14 @@ flowchart LR
 
 ### Task 1: Topics and the summaries file
 
-- [ ] Add `packing`, `reviews` and `wingsuit_base` to `LEARN_TOPICS` in `packages/shared/src/learn.ts`
-- [ ] Write `apps/api/scripts/squirrel-tv-summaries.json`: one Bendike-authored line for each of the 123 videos that
+- [x] Add `packing`, `reviews` and `wingsuit_base` to `LEARN_TOPICS` in `packages/shared/src/learn.ts`
+- [x] Write `apps/api/scripts/squirrel-tv-summaries.json`: one Bendike-authored line for each of the 123 videos that
       become items, keyed by video id. Written from the video, not copied from Squirrel's description.
-- [ ] Verify `npm run test:unit -w @bendike/shared` and `npm run typecheck` pass
-- [ ] Verify the label maps in `apps/web/src/pages/learn/learn-labels.ts` cover the three new topics
+- [x] Verify `npm run test:unit -w @bendike/shared` and `npm run typecheck` pass
+- [x] Verify the label maps in `apps/web/src/pages/learn/learn-labels.ts` cover the three new topics
+- [x] `npm run lint` and `npm run test:unit -w @bendike/web` pass (555 tests)
+- [x] Summaries live under a `summaries` key, not at the top level: three YouTube ids in this set begin with `_`,
+      so a sibling `_README` key would have been indistinguishable from a video
 
 ### Task 2: The seed
 

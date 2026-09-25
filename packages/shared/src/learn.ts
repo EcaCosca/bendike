@@ -16,6 +16,11 @@ export const LEARN_TOPICS = [
   'freefall',
   'safety_culture',
   'instruments',
+  // Shelves the Squirrel TV library needs. The list above was written for the
+  // rigger-facing Learn page, before the shop carried a manufacturer's own videos.
+  'packing',
+  'reviews',
+  'wingsuit_base',
 ] as const;
 export type LearnTopic = (typeof LEARN_TOPICS)[number];
 
