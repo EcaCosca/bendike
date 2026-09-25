@@ -194,7 +194,8 @@ screens. Keep any personal logins in `apps/api/.env.dev-accounts`, which git ign
 npm run seed:catalog  -w @bendike/api     # FlySight and Vigil products with real copy and prices
 npm run seed:services -w @bendike/api     # the five rigging services
 npm run seed:learn    -w @bendike/api     # Eca's starting list of learning material, linked to the brands
-npm run import:squirrel -w @bendike/api   # the Squirrel catalogue, from squirrel.ws (needs Playwright)
+npm run import:squirrel -w @bendike/api   # the Squirrel catalogue, from squirrel.ws (curl; Playwright only as a fallback)
+npm run import:squirrel -w @bendike/api -- --only="Aura 6"   # one product from the seed list
 ```
 
 ### Import a dropzone's fleet

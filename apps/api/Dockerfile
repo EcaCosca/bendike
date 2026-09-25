@@ -2,6 +2,7 @@
 #   docker build -f apps/api/Dockerfile -t bendike-api .
 FROM node:24-alpine AS build
 WORKDIR /repo
+RUN apk add --no-cache curl
 COPY package.json package-lock.json ./
 COPY packages/shared/package.json packages/shared/package.json
 COPY apps/api/package.json apps/api/package.json

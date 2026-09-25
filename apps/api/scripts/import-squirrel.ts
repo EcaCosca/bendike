@@ -1,7 +1,9 @@
 import 'reflect-metadata';
+import { execFile } from 'node:child_process';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { chromium } from 'playwright';
+import { promisify } from 'node:util';
+import { chromium, type Browser, type Page } from 'playwright';
 import type { LocalizedText } from '@bendike/shared';
 import { slugify } from '@bendike/shared';
 import { Brand } from '../src/catalog/entities/brand.entity';
@@ -77,17 +79,70 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function fetchPageData(
-  page: import('playwright').Page,
-  url: string,
-  cacheKey: string,
-): Promise<SquirrelPageData> {
+function pageDataUrl(productUrl: string): string {
+  const { origin, pathname } = new URL(productUrl);
+  const trimmed = pathname.replace(/^\/+|\/+$/g, '');
+  return `${origin}/page-data/${trimmed}/page-data.json`;
+}
+
+const execFileAsync = promisify(execFile);
+
+async function fetchPageDataWithCurl(url: string): Promise<string | null> {
+  try {
+    const { stdout } = await execFileAsync(
+      'curl',
+      [
+        '--silent',
+        '--show-error',
+        '--fail',
+        '--location',
+        '--max-time',
+        '60',
+        '--user-agent',
+        USER_AGENT,
+        pageDataUrl(url),
+      ],
+      { maxBuffer: 64 * 1024 * 1024 },
+    );
+    return stdout.trimStart().startsWith('{') ? stdout : null;
+  } catch {
+    return null;
+  }
+}
+
+class LazyBrowser {
+  private browser: Browser | null = null;
+  private page: Page | null = null;
+
+  async getPage(): Promise<Page> {
+    if (!this.page) {
+      this.browser = await chromium.launch();
+      this.page = await this.browser.newPage({ userAgent: USER_AGENT });
+    }
+    return this.page;
+  }
+
+  async close(): Promise<void> {
+    await this.browser?.close();
+    this.browser = null;
+    this.page = null;
+  }
+}
+
+async function fetchPageData(lazy: LazyBrowser, url: string, cacheKey: string): Promise<SquirrelPageData> {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   const cachePath = path.join(CACHE_DIR, `${cacheKey}.json`);
   if (fs.existsSync(cachePath)) {
     return JSON.parse(fs.readFileSync(cachePath, 'utf-8')) as SquirrelPageData;
   }
 
+  const direct = await fetchPageDataWithCurl(url);
+  if (direct) {
+    fs.writeFileSync(cachePath, direct);
+    return JSON.parse(direct) as SquirrelPageData;
+  }
+
+  const page = await lazy.getPage();
   let captured: string | null = null;
   const onResponse = async (response: import('playwright').Response): Promise<void> => {
     if (!captured && response.url().includes('/page-data/') && response.url().endsWith('page-data.json')) {
@@ -248,20 +303,27 @@ async function main(): Promise<void> {
   } as AppConfigService;
   const translation = new TranslationService(new HttpDeepLClient(configLike));
 
-  const browser = await chromium.launch();
-  const page = await browser.newPage({ userAgent: USER_AGENT });
+  const lazy = new LazyBrowser();
+  const only = process.argv
+    .slice(2)
+    .find((arg) => arg.startsWith('--only='))
+    ?.slice('--only='.length);
+  const entries = only ? seedEntries.filter((entry) => slugify(entry.name) === slugify(only)) : seedEntries;
+  if (entries.length === 0) {
+    throw new Error(`No seed entry matches --only=${only}`);
+  }
 
   let count = 0;
-  for (const entry of seedEntries) {
+  for (const entry of entries) {
     const cacheKey = slugify(entry.name);
-    console.log(`[${++count}/${seedEntries.length}] ${entry.name}`);
-    const pageData = await fetchPageData(page, entry.link, cacheKey);
+    console.log(`[${++count}/${entries.length}] ${entry.name}`);
+    const pageData = await fetchPageData(lazy, entry.link, cacheKey);
     const normalized = normalizeSquirrelProduct(pageData);
     await upsertProduct(brand.id, entry, normalized, translation);
     await sleep(FETCH_DELAY_MS);
   }
 
-  await browser.close();
+  await lazy.close();
   await dataSource.destroy();
 }
 
