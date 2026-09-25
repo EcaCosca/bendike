@@ -204,11 +204,17 @@ flowchart LR
 
 ### Task 2: The seed
 
-- [ ] Add `apps/api/scripts/seed-squirrel-tv.ts` and the `seed:squirrel-tv` npm script
-- [ ] Upsert items by slug `sqtv-<id>`; upsert the five collections; replace each item's links and collection memberships
-- [ ] Skip and report product slugs that match nothing; fail loudly on a missing summary
-- [ ] Verify running it twice leaves the same row counts
-- [ ] Verify `GET /api/v1/learn/for-product/<aura-6 id>` returns its 19 videos
+- [x] Add `apps/api/scripts/seed-squirrel-tv.ts` and the `seed:squirrel-tv` npm script
+- [x] Upsert items by slug `sqtv-<id>`; upsert the five collections; replace each item's links and collection memberships
+- [x] Skip and report product slugs that match nothing; fail loudly on a missing summary
+- [x] Verify running it twice leaves the same row counts — 123 items, 204 links, 72 memberships, stable across runs
+- [x] Verify `GET /api/v1/learn/for-product/<id>` returns a product's videos — checked against a local database on
+      `hayduke-2` (14) and `corvid-3` (20). Aura 6 is not in the local catalogue, so the count could not be checked
+      there; the seed reports the unmatched slug rather than failing, which is how that was noticed.
+- [x] `link.position` is numbered per product, not per video. The service sorts a product's videos by it, so it
+      describes the pairing; numbering by the order a video lists its products put a 47-second clip above a
+      five-minute explainer on the Hayduke page.
+- [x] `npm run lint`, `npm run typecheck` and `npm run test:unit -w @bendike/api` (648 tests) pass
 
 ### Task 3: Films endpoint
 
