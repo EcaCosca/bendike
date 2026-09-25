@@ -8,6 +8,7 @@ import { isLocale, pickLocalized } from '@bendike/shared';
 import { detectLocaleFromEnvironment } from '../../i18n/detect-locale';
 import { listFilms } from '../learn/learn-api';
 import { FILMS_HEADING, FILMS_INTRO } from './landing-content';
+import { useFilmBackdrop, useInView, usePrefersReducedMotion, useScrollProgress } from './useFilmBackdrop';
 
 const CARD_WIDTH = { xs: 248, md: 300 };
 /** Enough to feel deep without asking anyone to scroll past sixty-seven cards. */
@@ -36,6 +37,11 @@ export function FilmCarousel() {
   const { locale } = useParams<{ locale: string }>();
   const activeLocale = isLocale(locale) ? locale : detectLocaleFromEnvironment();
   const [films, setFilms] = useState<LearnItemSummary[]>([]);
+  const [section, setSection] = useState<HTMLDivElement | null>(null);
+  const [sectionRef, inView] = useInView<HTMLDivElement>();
+  const reduced = usePrefersReducedMotion();
+  const backdrop = useFilmBackdrop();
+  const progress = useScrollProgress(section, inView && !reduced);
 
   useEffect(() => {
     let live = true;
@@ -65,9 +71,64 @@ export function FilmCarousel() {
   return (
     <Box
       component="section"
+      ref={(node: HTMLDivElement | null) => {
+        sectionRef(node);
+        setSection(node);
+      }}
       aria-labelledby="films-heading"
-      sx={{ py: { xs: 5, md: 7 }, bgcolor: 'primary.main', color: 'common.white' }}
+      sx={{
+        position: 'relative',
+        isolation: 'isolate',
+        overflow: 'hidden',
+        py: { xs: 6, md: 9 },
+        bgcolor: 'primary.main',
+        color: 'common.white',
+      }}
     >
+      {/* Eca's own footage, self-hosted. Decorative, so it is hidden from assistive tech. */}
+      <Box aria-hidden="true" sx={{ position: 'absolute', inset: '-12% 0', zIndex: -2 }}>
+        {inView && !reduced ? (
+          <Box
+            component="video"
+            muted
+            loop
+            autoPlay
+            playsInline
+            preload="none"
+            poster={backdrop.poster}
+            sx={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+              transform: `translate3d(0, ${(progress * 7).toFixed(2)}%, 0) scale(1.12)`,
+              willChange: 'transform',
+            }}
+          >
+            <source src={backdrop.srcMobile} type="video/mp4" media="(max-width: 860px)" />
+            <source src={backdrop.src} type="video/mp4" />
+          </Box>
+        ) : (
+          <Box
+            component="img"
+            src={backdrop.poster}
+            alt=""
+            sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+        )}
+      </Box>
+      {/* The navy has to win over the footage or none of the type is readable. */}
+      <Box
+        aria-hidden="true"
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: -1,
+          background:
+            'linear-gradient(180deg, rgba(11,37,69,0.94) 0%, rgba(11,37,69,0.78) 45%, rgba(11,37,69,0.94) 100%)',
+        }}
+      />
+
       <Container maxWidth="lg">
         <Typography
           id="films-heading"
@@ -92,7 +153,7 @@ export function FilmCarousel() {
             '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255,255,255,0.28)', borderRadius: 99 },
           }}
         >
-          {shuffled.map((film) => (
+          {shuffled.map((film, index) => (
             <Box
               key={film.id}
               component="a"
@@ -103,6 +164,17 @@ export function FilmCarousel() {
                 flex: `0 0 auto`,
                 width: CARD_WIDTH,
                 scrollSnapAlign: 'start',
+                // Cards rise in as the strip arrives, a beat apart. Only the first
+                // screenful is staggered; past that the delay outlasts the scroll.
+                opacity: inView ? 1 : 0,
+                transform: inView ? 'none' : 'translateY(18px)',
+                transition: 'opacity 0.5s ease, transform 0.5s ease',
+                transitionDelay: `${Math.min(index, 5) * 80}ms`,
+                '@media (prefers-reduced-motion: reduce)': {
+                  opacity: 1,
+                  transform: 'none',
+                  transition: 'none',
+                },
                 textDecoration: 'none',
                 color: 'inherit',
                 borderRadius: 1.5,

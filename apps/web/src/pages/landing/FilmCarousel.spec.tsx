@@ -90,6 +90,41 @@ describe('FilmCarousel', () => {
     expect(container).toBeEmptyDOMElement();
   });
 
+  test('plays a self-hosted clip behind the strip, muted and looping, never an embed', async () => {
+    listFilmsMock.mockResolvedValue([film('aaa', 'Baffin Island BASE')]);
+
+    const { container } = renderCarousel();
+
+    await screen.findByRole('heading', { name: FILMS_HEADING });
+    const video = container.querySelector('video');
+    expect(video).not.toBeNull();
+    // React sets these as properties, not attributes.
+    expect((video as HTMLVideoElement).muted).toBe(true);
+    expect((video as HTMLVideoElement).loop).toBe(true);
+    expect(container.querySelectorAll('source')[1]).toHaveAttribute(
+      'src',
+      expect.stringMatching(/^\/about\/vig\/.+\.mp4$/),
+    );
+    expect(container.querySelector('iframe')).toBeNull();
+  });
+
+  test('falls back to a still when the viewer prefers reduced motion', async () => {
+    const original = window.matchMedia;
+    window.matchMedia = jest.fn().mockReturnValue({
+      matches: true,
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+    });
+    listFilmsMock.mockResolvedValue([film('aaa', 'Slovenia')]);
+
+    const { container } = renderCarousel();
+
+    await screen.findByRole('heading', { name: FILMS_HEADING });
+    expect(container.querySelector('video')).toBeNull();
+    expect(container.querySelector('img[src^="/about/vig/"]')).not.toBeNull();
+    window.matchMedia = original;
+  });
+
   test('shows at most eighteen cards however many films there are', async () => {
     listFilmsMock.mockResolvedValue(Array.from({ length: 67 }, (_, index) => film(`id${index}`, `Film ${index}`)));
 

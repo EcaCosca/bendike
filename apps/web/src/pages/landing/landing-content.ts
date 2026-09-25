@@ -57,6 +57,23 @@ export const ABOUT_TEASER = {
 
 export const BRANDS_HEADING = 'Authorized dealer for';
 
+/**
+ * Clips that loop behind the films strip. Self-hosted in `public/about/vig`, the
+ * same trims the About story uses — the Squirrel films themselves live on YouTube
+ * and would need an iframe, which the cookie bar rightly holds back until a
+ * visitor has said yes.
+ */
+export const FILM_BACKDROPS = [
+  'valley',
+  'proximity',
+  'orbit',
+  'wingsuit',
+  'canopyup',
+  'exitcliff',
+  'gainer',
+  'touchdown',
+] as const;
+
 export const FILMS_HEADING = 'From the air';
 export const FILMS_INTRO =
   'Films from Squirrel\u2019s pilots: season reels, trips, and the odd jump worth watching twice. Opens on YouTube.';
