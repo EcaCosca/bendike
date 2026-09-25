@@ -17,7 +17,7 @@ export interface ConsentChoice extends ConsentSelection {
 export const ACCEPT_ALL: ConsentSelection = { preferences: true, thirdParty: true };
 export const REJECT_ALL: ConsentSelection = { preferences: false, thirdParty: false };
 
-export const PREFERENCE_STORAGE_KEYS = ['bendike.gear.view', 'bendike.riggerLicence'] as const;
+export const PREFERENCE_STORAGE_KEYS = ['bendike.gear.view', 'bendike.riggerLicence', 'bendike.currency'] as const;
 
 function cookieValue(): string | null {
   const prefix = `${CONSENT_COOKIE}=`;

@@ -152,8 +152,10 @@ content.
 
 ### The shop and the services
 
-- A **trilingual shop** for Squirrel wingsuits and gear, FlySight and Vigil, with prices in US dollars plus derived
-  pesos and reais, search, filters, categories, pagination and a WhatsApp handoff for enquiries.
+- A **trilingual shop** for Squirrel wingsuits and gear, FlySight and Vigil, with search, filters, categories,
+  pagination and a WhatsApp handoff for enquiries. Prices are entered in US dollars (or pesos for services and used
+  gear) and shown in the **currency the visitor picks** from the navigation bar, US$, AR$ or R$, with the other two
+  beneath; the default follows the language, and the choice is remembered once preference storage is allowed.
 - **Used gear**: priced directly in pesos or dollars, with uploaded photos, and a "Sold" badge instead of deleting.
 - **Rigging services** (reserve repacks, AAD send-in, patchwork, relines) that an admin edits, priced in pesos.
 - A landing page with a brand carousel, and an About story built on a scroll-driven engine.

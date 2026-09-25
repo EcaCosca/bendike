@@ -40,6 +40,13 @@ export const STORAGE_INVENTORY: readonly StorageItem[] = [
     duration: 'Until you clear your browser data or withdraw permission',
   },
   {
+    name: 'bendike.currency',
+    type: 'Local storage',
+    category: 'Preferences',
+    purpose: 'Remembers the currency you chose for prices (US$, AR$ or R$).',
+    duration: 'Until you clear your browser data or withdraw permission',
+  },
+  {
     name: 'bendike.riggerLicence',
     type: 'Local storage',
     category: 'Preferences',

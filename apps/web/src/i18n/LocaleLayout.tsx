@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useParams } from 'react-router-dom';
 import { isLocale } from '@bendike/shared';
+import { CurrencyProvider } from '../currency/CurrencyProvider';
 import { storeLocale } from './detect-locale';
 import './i18n';
 
@@ -32,5 +33,9 @@ export function LocaleLayout() {
     );
   }
 
-  return <Outlet />;
+  return (
+    <CurrencyProvider locale={locale}>
+      <Outlet />
+    </CurrencyProvider>
+  );
 }

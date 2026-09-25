@@ -1,6 +1,13 @@
 import type { ExchangeRates } from './catalog';
+import type { Locale } from './locale';
 
-export type Currency = 'USD' | 'ARS' | 'BRL';
+export const DISPLAY_CURRENCIES = ['USD', 'ARS', 'BRL'] as const;
+
+export type Currency = (typeof DISPLAY_CURRENCIES)[number];
+
+export function isCurrency(value: unknown): value is Currency {
+  return typeof value === 'string' && (DISPLAY_CURRENCIES as readonly string[]).includes(value);
+}
 
 export const PRICE_CURRENCIES = ['ARS', 'USD'] as const;
 
@@ -11,6 +18,16 @@ const CURRENCY_LOCALES: Record<Currency, string> = {
   ARS: 'es-AR',
   BRL: 'pt-BR',
 };
+
+const DEFAULT_CURRENCY_FOR_LOCALE: Record<Locale, Currency> = {
+  en: 'USD',
+  es: 'ARS',
+  pt: 'BRL',
+};
+
+export function defaultCurrencyFor(locale: Locale): Currency {
+  return DEFAULT_CURRENCY_FOR_LOCALE[locale];
+}
 
 function round2(amount: number): number {
   return Math.round(amount * 100) / 100;
@@ -48,6 +65,36 @@ export interface PriceFigures {
   derived: Money[];
 }
 
+export interface DisplayFigures extends PriceFigures {
+  primaryConverted: boolean;
+}
+
+function ratesUsable(rates: ExchangeRates | null): rates is ExchangeRates {
+  return rates !== null && rates.ARS.usdRate > 0 && rates.BRL.usdRate > 0;
+}
+
+function toUsd(money: Money, rates: ExchangeRates): number {
+  return money.currency === 'USD' ? money.amount : money.amount / rates[money.currency].usdRate;
+}
+
+function fromUsd(amountUsd: number, currency: Currency, rates: ExchangeRates): number {
+  return currency === 'USD' ? round2(amountUsd) : convert(amountUsd, rates[currency].usdRate);
+}
+
+export function displayFigures(entered: Money, rates: ExchangeRates | null, display: Currency): DisplayFigures {
+  if (!ratesUsable(rates)) {
+    return { primary: entered, derived: [], primaryConverted: false };
+  }
+  const usd = toUsd(entered, rates);
+  const inCurrency = (currency: Currency): Money =>
+    currency === entered.currency ? entered : { amount: fromUsd(usd, currency, rates), currency };
+  return {
+    primary: inCurrency(display),
+    derived: DISPLAY_CURRENCIES.filter((currency) => currency !== display).map(inCurrency),
+    primaryConverted: display !== entered.currency,
+  };
+}
+
 export function priceFigures(
   priceAmount: number | null,
   priceCurrency: PriceCurrency | null,
@@ -56,28 +103,6 @@ export function priceFigures(
   if (priceAmount === null || priceCurrency === null) {
     return null;
   }
-
-  const primary: Money = { amount: priceAmount, currency: priceCurrency };
-  if (!rates || rates.ARS.usdRate <= 0 || rates.BRL.usdRate <= 0) {
-    return { primary, derived: [] };
-  }
-
-  if (priceCurrency === 'ARS') {
-    const usd = priceAmount / rates.ARS.usdRate;
-    return {
-      primary,
-      derived: [
-        { amount: round2(usd), currency: 'USD' },
-        { amount: convert(usd, rates.BRL.usdRate), currency: 'BRL' },
-      ],
-    };
-  }
-
-  return {
-    primary,
-    derived: [
-      { amount: convert(priceAmount, rates.ARS.usdRate), currency: 'ARS' },
-      { amount: convert(priceAmount, rates.BRL.usdRate), currency: 'BRL' },
-    ],
-  };
+  const { primary, derived } = displayFigures({ amount: priceAmount, currency: priceCurrency }, rates, priceCurrency);
+  return { primary, derived };
 }

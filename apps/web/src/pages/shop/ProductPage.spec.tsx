@@ -137,7 +137,7 @@ describe('ProductPage', () => {
     renderProduct();
 
     expect(await screen.findByText('Choose every option to see the exact price.')).toBeInTheDocument();
-    expect(screen.getAllByTestId('price-usd')[0]).toHaveTextContent('US$ 2,400.00');
+    expect(screen.getAllByTestId('price-primary')[0]).toHaveTextContent('US$ 2,400.00');
   });
 
   test('choosing every option narrows to one variant and shows its own price', async () => {
@@ -150,7 +150,7 @@ describe('ProductPage', () => {
     await user.click(screen.getByRole('combobox', { name: 'Color' }));
     await user.click(screen.getByRole('option', { name: 'red' }));
 
-    expect(screen.getAllByTestId('price-usd')[0]).toHaveTextContent('US$ 3,000.00');
+    expect(screen.getAllByTestId('price-primary')[0]).toHaveTextContent('US$ 3,000.00');
     expect(screen.getByText('SKU SKU-m-red')).toBeInTheDocument();
     expect(screen.queryByText('Choose every option to see the exact price.')).not.toBeInTheDocument();
   });

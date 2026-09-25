@@ -1,3 +1,4 @@
+import { CURRENCY_KEY } from '../currency/currency-storage';
 import { GEAR_VIEW_KEY } from '../pages/gear/gear-view';
 import { LICENCE_KEY } from '../pages/packing/packing-draft';
 import {
@@ -100,6 +101,6 @@ describe('consent storage', () => {
   });
 
   test('the preference keys are exactly the ones the code uses', () => {
-    expect([...PREFERENCE_STORAGE_KEYS].sort()).toEqual([GEAR_VIEW_KEY, LICENCE_KEY].sort());
+    expect([...PREFERENCE_STORAGE_KEYS].sort()).toEqual([GEAR_VIEW_KEY, LICENCE_KEY, CURRENCY_KEY].sort());
   });
 });

@@ -176,13 +176,13 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] Tests: USD entered shown in ARS and BRL; ARS entered shown in USD and BRL; BRL displayed from either; no rates
+- [x] Tests: USD entered shown in ARS and BRL; ARS entered shown in USD and BRL; BRL displayed from either; no rates
       gives the entered currency alone; `primaryConverted` is false only when the entered currency is displayed
-- [ ] `npm run test:unit -w @bendike/shared` passes
+- [x] `npm run test:unit -w @bendike/shared` passes
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -196,12 +196,12 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] Tests: nothing chosen → the locale default; a pick is kept in memory; written to storage only with preference
+- [x] Tests: nothing chosen → the locale default; a pick is kept in memory; written to storage only with preference
       consent; removed when consent is withdrawn; inventory test passes with the new row
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -216,15 +216,15 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] Tests: the switcher shows US$, AR$, R$ and is labelled; picking R$ makes the product card show `R$` first and
+- [x] Tests: the switcher shows US$, AR$, R$ and is labelled; picking R$ makes the product card show `R$` first and
       `US$ · AR$` beneath with the indicative note; a service priced in pesos shown in US$ marks the primary as
       indicative; `/es/shop` defaults to AR$ and `/pt/services` to R$
-- [ ] `npm run validate` passes
+- [x] `npm run validate` passes
 
 **Done when**:
 
-- [ ] All verification steps pass
-- [ ] README's shop paragraph mentions the currency selector
+- [x] All verification steps pass
+- [x] README's shop paragraph mentions the currency selector
 
 ---
 

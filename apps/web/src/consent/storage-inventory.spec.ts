@@ -36,7 +36,10 @@ describe('the cookie policy inventory', () => {
 
   test('the code only touches the browser storage through the places the policy covers', () => {
     const offenders = sources
-      .filter(({ path }) => !/(consent-storage|auth-context|detect-locale|gear-view|packing-draft)\.tsx?$/.test(path))
+      .filter(
+        ({ path }) =>
+          !/(consent-storage|auth-context|detect-locale|gear-view|packing-draft|currency-storage)\.tsx?$/.test(path),
+      )
       .filter(({ text }) => /sessionStorage|localStorage|document\.cookie|indexedDB/.test(text))
       .map(({ path }) => path.replace(SRC, ''));
 

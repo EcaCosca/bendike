@@ -3,7 +3,8 @@
     "shop": "Loja",
     "cart": "Carrinho",
     "services": "Serviços",
-    "learn": "Aprender"
+    "learn": "Aprender",
+    "currency": "Moeda"
   },
   "localeSwitcher": {
     "label": "Idioma"

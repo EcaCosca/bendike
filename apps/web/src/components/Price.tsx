@@ -1,7 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { ExchangeRates, Money, PriceCurrency } from '@bendike/shared';
-import { bendikePriceUsd, convert, formatMoney, priceFigures } from '@bendike/shared';
+import { bendikePriceUsd, displayFigures, formatMoney } from '@bendike/shared';
+import { useCurrency } from '../currency/use-currency';
 import '../i18n/i18n';
 
 interface PriceProps {
@@ -18,41 +19,38 @@ function format(money: Money): string {
 
 export function Price({ listPriceUsd, markupPercent, priceAmount, priceCurrency, rates }: PriceProps) {
   const { t } = useTranslation();
-  const direct = priceFigures(priceAmount, priceCurrency, rates);
+  const { currency } = useCurrency();
 
-  if (direct) {
-    return (
-      <Box>
-        <Typography data-testid="price-primary" variant="h6" component="p" sx={{ fontWeight: 700 }}>
-          {format(direct.primary)}
-        </Typography>
-        {direct.derived.length > 0 && rates && (
-          <Typography data-testid="price-local" variant="caption" color="text.secondary" component="p">
-            {direct.derived.map(format).join(' · ')}
-            {' · '}
-            {t('shop.indicative', { date: new Date(rates.ARS.fetchedAt).toLocaleDateString() })}
-          </Typography>
-        )}
-      </Box>
-    );
-  }
+  const entered: Money | null =
+    priceAmount !== null && priceCurrency !== null
+      ? { amount: priceAmount, currency: priceCurrency }
+      : listPriceUsd !== null
+        ? { amount: bendikePriceUsd(listPriceUsd, markupPercent), currency: 'USD' }
+        : null;
 
-  if (listPriceUsd === null) {
+  if (!entered) {
     return <Typography color="text.secondary">{t('shop.priceOnRequest')}</Typography>;
   }
 
-  const usd = bendikePriceUsd(listPriceUsd, markupPercent);
+  const figures = displayFigures(entered, rates, currency ?? entered.currency);
+  const indicative = rates ? t('shop.indicative', { date: new Date(rates.ARS.fetchedAt).toLocaleDateString() }) : '';
 
   return (
     <Box>
-      <Typography data-testid="price-usd" variant="h6" component="p" sx={{ fontWeight: 700 }}>
-        {formatMoney(usd, 'USD')}
+      <Typography
+        data-testid="price-primary"
+        data-converted={figures.primaryConverted ? 'true' : undefined}
+        variant="h6"
+        component="p"
+        sx={{ fontWeight: 700 }}
+      >
+        {format(figures.primary)}
       </Typography>
-      {rates && (
+      {figures.derived.length > 0 && (
         <Typography data-testid="price-local" variant="caption" color="text.secondary" component="p">
-          {formatMoney(convert(usd, rates.ARS.usdRate), 'ARS')} · {formatMoney(convert(usd, rates.BRL.usdRate), 'BRL')}
+          {figures.derived.map(format).join(' · ')}
           {' · '}
-          {t('shop.indicative', { date: new Date(rates.ARS.fetchedAt).toLocaleDateString() })}
+          {indicative}
         </Typography>
       )}
     </Box>

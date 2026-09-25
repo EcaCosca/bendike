@@ -5,6 +5,7 @@ import { isLocale } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { detectLocaleFromEnvironment } from '../../i18n/detect-locale';
 import { BrandMark } from './BrandMark';
+import { CurrencySwitcher } from './CurrencySwitcher';
 import { LocaleSwitcher } from './LocaleSwitcher';
 import { NAV_LINKS, SITE_NAME } from './site-content';
 
@@ -106,6 +107,7 @@ export function SiteNav() {
           <Box sx={{ flexGrow: 1 }} />
           <Stack direction="row" spacing={1.5} alignItems="center">
             {activeLocale && <LocaleSwitcher />}
+            {activeLocale && <CurrencySwitcher />}
             {user ? (
               <Button variant="contained" component={RouterLink} to="/app">
                 Open app
