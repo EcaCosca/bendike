@@ -24,6 +24,12 @@ export default defineConfig(
     },
   },
   {
+    // CloudFront Functions run on their own runtime, which calls a global `handler`.
+    // Nothing in this repo imports it, so the unused-variable rule cannot see the caller.
+    files: ['infra/cloudfront/**/*.js'],
+    rules: { 'no-unused-vars': ['error', { varsIgnorePattern: '^handler$' }] },
+  },
+  {
     files: ['**/*.{js,mjs,cjs,ts,tsx}'],
     extends: [js.configs.recommended, eslintPluginPrettierRecommended],
   },

@@ -242,8 +242,12 @@ flowchart LR
       does the same
 - [x] Tests: cards link out, no iframe, empty state, fetch failure, the 18 cap
 - [x] `npm run lint`, `npm run typecheck`, 560 web tests and 651 api tests pass
-- [ ] Update the README "What you can do today" with the Squirrel TV library
-- [ ] Run `seed:squirrel-tv` on the instance
+- [x] Update the README "What you can do today" with the Squirrel TV library
+- [x] Run `seed:squirrel-tv` on the instance — 190 items, 224 product links (204 locally plus Aura 6's 20, which
+      only production has), 5 collections, 67 films. API container rebuilt and recreated, web app synced to S3 and
+      CloudFront invalidated.
+- [x] Deep links had to be fixed before any of this was reachable: every route but `/` answered 403. See Task 4 of
+      [aws-deployment.md](./aws-deployment.md).
 
 ---
 

@@ -245,13 +245,19 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] The S3 bucket blocks all public access; only CloudFront (via Origin Access Control) can read it
-- [ ] `curl -I https://<domain>` returns 200 with a valid certificate; a client-side route (e.g. `/login`) also
-      returns 200 on a hard refresh instead of CloudFront's default 403
+- [x] The S3 bucket blocks all public access; only CloudFront (via Origin Access Control) can read it — all four
+      block settings on, and a direct `bendike-web-eca.s3.amazonaws.com` request answers 403
+- [x] `curl -I https://<domain>` returns 200 with a valid certificate; a client-side route (e.g. `/login`) also
+      returns 200 on a hard refresh instead of CloudFront's default 403 — fixed 2026-09-25 by the
+      `bendike-spa-router` CloudFront Function (`infra/cloudfront/spa-router.js`), attached to the default cache
+      behaviour as a viewer-request. It rewrites extensionless paths to `/index.html` and leaves everything with a
+      file extension alone, so a missing `/assets/*.js` still answers 403 rather than being handed HTML, which the
+      browser would report as a syntax error somewhere unrelated. Custom error responses would have been fewer
+      moving parts but would have masked genuine asset failures the same way.
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
