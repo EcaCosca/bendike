@@ -124,7 +124,8 @@
       "book": "Livro",
       "channel": "Canal",
       "course": "Curso",
-      "page": "Página web"
+      "page": "Página web",
+      "film": "Filme"
     },
     "level": {
       "student": "Alunos",

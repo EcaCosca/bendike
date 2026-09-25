@@ -15,6 +15,8 @@ describe('parseLearnQuery', () => {
       pageSize: 24,
       locale: 'es',
     });
+    // `film` is a real format, but not one the Learn page browses: it belongs to
+    // the landing carousel, so the URL must not be able to ask for it here.
     expect(parseLearnQuery(new URLSearchParams('topic=bogus&type=film&page=-1'), 'en')).toEqual({
       q: undefined,
       topic: undefined,

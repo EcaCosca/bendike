@@ -17,7 +17,7 @@ import { useSearchParams } from 'react-router-dom';
 import type { LearnCollectionDetail, LearnItemSummary, Page } from '@bendike/shared';
 import {
   CONTENT_LANGUAGES,
-  LEARN_FORMATS,
+  LEARN_BROWSABLE_FORMATS,
   LEARN_LEVELS,
   LEARN_SORTS,
   LEARN_TOPICS,
@@ -154,7 +154,7 @@ export function LearnPage() {
             onChange={(event) => update({ type: event.target.value })}
           >
             <MenuItem value="">{t('learn.allFormats')}</MenuItem>
-            {LEARN_FORMATS.map((format) => (
+            {LEARN_BROWSABLE_FORMATS.map((format) => (
               <MenuItem key={format} value={format}>
                 {t(`learn.format.${format}`)}
               </MenuItem>

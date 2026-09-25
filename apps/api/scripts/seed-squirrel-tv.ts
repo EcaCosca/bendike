@@ -15,9 +15,11 @@ import { LearnItem } from '../src/learn/entities/learn-item.entity';
  * collection membership are replaced rather than appended, so a re-run after an
  * edit to the triage file converges instead of accumulating.
  *
- * Videos marked promo that name no product are NOT imported here. They are films
- * for the landing carousel, not material anyone is meant to learn from, and an
- * inactive learn item would hide them from the carousel too.
+ * Videos marked promo that name no product come in with format 'film'. They are
+ * learn items so they stay editable in admin, but format is the axis that says
+ * what a thing is, and a season reel is not material anyone learns from — so the
+ * Learn page neither lists them nor offers them as a filter, and they surface
+ * only through GET /learn/films, for the landing carousel.
  */
 
 const CATALOG = path.join(__dirname, 'squirrel-tv-catalog.json');
@@ -130,8 +132,9 @@ async function upsertItem(entry: CatalogEntry, summary: string): Promise<LearnIt
     throw new Error(`Could not parse an embed out of ${entry.url} (${entry.title})`);
   }
   const section = entry.learnSection ? SECTIONS[entry.learnSection] : undefined;
+  const isFilm = entry.learnSection === null && entry.products.length === 0;
   const fields = {
-    format: 'video' as const,
+    format: isFilm ? ('film' as const) : ('video' as const),
     title: untranslated(entry.title),
     summary: untranslated(summary),
     author: null,
@@ -209,8 +212,8 @@ async function main(): Promise<void> {
   const summaries = (JSON.parse(fs.readFileSync(SUMMARIES, 'utf-8')) as { summaries: Record<string, string> })
     .summaries;
 
-  // Only videos that teach something or sell a product we stock become learn items.
-  const importable = catalog.filter((entry) => entry.learnSection !== null || entry.products.length > 0);
+  // Everything kept becomes a learn item; format decides whether it teaches or sells.
+  const importable = catalog;
   const written = new Map<string, string>();
   const unwritten: CatalogEntry[] = [];
   for (const entry of importable) {
@@ -261,11 +264,11 @@ async function main(): Promise<void> {
     console.log(`  ${section.slug.padEnd(28)} ${String(ordered.length).padStart(3)} videos`);
   }
 
-  const films = catalog.length - importable.length;
+  const films = catalog.filter((entry) => entry.learnSection === null && entry.products.length === 0).length;
   console.log(
     `Seeded ${importable.length} learn items, ${linkCount} product links, ${Object.keys(SECTIONS).length} collections.`,
   );
-  console.log(`${films} pure films left for the landing carousel.`);
+  console.log(`${films} of those are films, served only to the landing carousel.`);
   await dataSource.destroy();
 }
 

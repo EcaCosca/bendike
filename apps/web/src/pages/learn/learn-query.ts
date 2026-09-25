@@ -9,7 +9,7 @@ import type {
 } from '@bendike/shared';
 import {
   CONTENT_LANGUAGES,
-  LEARN_FORMATS,
+  LEARN_BROWSABLE_FORMATS,
   LEARN_LEVELS,
   LEARN_PAGE_SIZE,
   LEARN_SORTS,
@@ -32,7 +32,8 @@ export function parseLearnQuery(params: URLSearchParams, locale: Locale): LearnQ
   return {
     q: params.get('q')?.trim() || undefined,
     topic: parseOneOf<LearnTopic>(params.get('topic'), LEARN_TOPICS),
-    type: parseOneOf<LearnFormat>(params.get('type'), LEARN_FORMATS),
+    // Not LEARN_FORMATS: ?type=film would be a filter the Learn page can never satisfy.
+    type: parseOneOf<LearnFormat>(params.get('type'), LEARN_BROWSABLE_FORMATS),
     level: parseOneOf<LearnLevel>(params.get('level'), LEARN_LEVELS),
     lang: parseOneOf<ContentLanguage>(params.get('lang'), CONTENT_LANGUAGES),
     sort: parseOneOf<LearnSort>(params.get('sort'), LEARN_SORTS),

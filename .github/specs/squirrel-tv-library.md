@@ -83,8 +83,11 @@ so that I can **tell at a glance what this shop is about**.
   render no `<iframe>`, matching `EmbedPlayer`.
 - When the landing page loads, the carousel shall pick its films in a shuffled order so repeat visitors do not see the
   same three first.
-- While the viewer prefers reduced motion, the carousel shall not auto-advance.
-- If the films endpoint returns nothing, then the carousel shall not render.
+- The carousel shall not auto-advance. Revised 2026-09-25 from "shall not auto-advance under reduced motion":
+  each card carries a title and a caption, and text that slides away while it is being read fights the reader.
+  `BrandCarousel` can marquee because a logo carries no words. Horizontal scroll with snap points instead.
+- If the films endpoint returns nothing or fails, then the carousel shall not render.
+- The carousel shall show at most 18 of the films, so nobody is asked to scroll past sixty-seven cards.
 
 ### Story 4: Our words, not theirs
 
@@ -175,9 +178,11 @@ flowchart LR
 
 ### Open Questions
 
-- [ ] How the 67 pure films are marked so the films endpoint finds them but the Learn page does not list them. Two
-      candidates: a `films` collection they belong to with the items held `active: false` (wrong — inactive hides them
-      everywhere), or a sixth collection plus a Learn-page exclusion. Settle this in Task 3 before writing the endpoint.
+- [x] Settled 2026-09-25: a film is a learn item with `format: 'film'`. Format is the axis that says what a thing
+      is, so a season reel being a different format from a tutorial is simply true, and `format` is a `varchar(20)`,
+      not a database enum, so it costs no migration. It keeps films editable in the existing admin page, which a
+      static list would not. `LEARN_BROWSABLE_FORMATS` is the list the Learn page filters and browses by — everything
+      except `film` — so the format never appears as a dropdown option or a valid `?type=` value.
 - [ ] Whether the Reviews shelf should name the reviewer in the card. Eca has not said; the titles already carry the
       name ("A6 Alpinist: Dan Darby Review") so the default is no extra field.
 - [ ] Spanish and Portuguese. Every product in production currently has `es == en == pt` because DeepL is not
@@ -218,17 +223,27 @@ flowchart LR
 
 ### Task 3: Films endpoint
 
-- [ ] Settle the open question above, then expose the pure films to the web app
-- [ ] Verify the Learn page does not list them and the endpoint does
-- [ ] Service tests on the in-memory manager, matching `learn.service.spec.ts`
+- [x] `film` added to `LEARN_FORMATS`; `LEARN_BROWSABLE_FORMATS` is everything the Learn page browses
+- [x] `GET /api/v1/learn/films` serves them; `search()` and `related()` exclude them
+- [x] The seed gives a video with no section and no product `format: 'film'` — 67 of them
+- [x] `parseLearnQuery` validates `?type=` against the browsable list, so the URL cannot ask for a film on a page
+      that never returns one. An existing test caught this: it had used `type=film` as its example of a bogus value.
+- [x] Service tests: films kept off search, off related, and an inactive film kept out of the carousel
+- [x] Verified against a real database — `/learn/films` returns 67, `/learn/items` returns 123 with no film among
+      them, `/learn/items?type=film` returns 0
 
 ### Task 4: Landing carousel
 
-- [ ] Add `FilmCarousel.tsx` and mount it in `LandingPage.tsx`
-- [ ] Shuffle per load; no `<iframe>` before consent; no auto-advance under `prefers-reduced-motion`; absent when empty
-- [ ] Tests: consent gate, empty state, reduced motion
-- [ ] Verify `npm run validate` passes
+- [x] Add `FilmCarousel.tsx` and mount it in `LandingPage.tsx`, between the audiences and about sections
+- [x] Shuffled per load, capped at 18, absent when the endpoint is empty or fails
+- [x] No `<iframe>` at all, so the consent gate has nothing to hold back — cards are a thumbnail and a caption that
+      open YouTube in a new tab. Thumbnails before consent match what `EmbedPlayer` already does.
+- [x] Copy lives in `landing-content.ts`, not i18n: the landing page is not internationalised yet, and `BrandCarousel`
+      does the same
+- [x] Tests: cards link out, no iframe, empty state, fetch failure, the 18 cap
+- [x] `npm run lint`, `npm run typecheck`, 560 web tests and 651 api tests pass
 - [ ] Update the README "What you can do today" with the Squirrel TV library
+- [ ] Run `seed:squirrel-tv` on the instance
 
 ---
 

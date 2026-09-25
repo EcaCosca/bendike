@@ -1,4 +1,5 @@
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import PodcastsOutlinedIcon from '@mui/icons-material/PodcastsOutlined';
@@ -16,6 +17,7 @@ const ICONS: Record<LearnFormat, typeof ArticleOutlinedIcon> = {
   channel: SubscriptionsOutlinedIcon,
   course: SchoolOutlinedIcon,
   page: LanguageOutlinedIcon,
+  film: MovieOutlinedIcon,
 };
 
 export function FormatIcon({ format, ...props }: { format: LearnFormat } & SvgIconProps) {

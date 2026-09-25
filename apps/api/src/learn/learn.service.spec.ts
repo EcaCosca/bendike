@@ -59,6 +59,32 @@ describe('LearnService', () => {
     service = new LearnService(manager as never, new GearAccessService(linkedTo([rigger.id, owner.id])));
   });
 
+  describe('films', () => {
+    test('keeps films off the Learn page and serves them on their own', async () => {
+      addItem('reel', { format: 'film' });
+      addItem('how-to-pack');
+
+      expect((await service.search({})).items.map((item) => item.slug)).toEqual(['how-to-pack']);
+      expect((await service.films()).map((item) => item.slug)).toEqual(['reel']);
+    });
+
+    test('leaves an inactive film out of the carousel', async () => {
+      addItem('retired-reel', { format: 'film', active: false });
+
+      expect(await service.films()).toEqual([]);
+    });
+
+    test('does not offer a film as related material', async () => {
+      addItem('deployments', { topics: ['wingsuit'] });
+      addItem('season-reel', { format: 'film', topics: ['wingsuit'] });
+      addItem('flare', { topics: ['wingsuit'] });
+
+      const related = await service.related('deployments');
+
+      expect(related.map((item) => item.slug)).toEqual(['flare']);
+    });
+  });
+
   describe('search', () => {
     test('returns only active items, newest first, paginated', async () => {
       addItem('old');

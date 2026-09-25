@@ -124,7 +124,8 @@
       "book": "Book",
       "channel": "Channel",
       "course": "Course",
-      "page": "Web page"
+      "page": "Web page",
+      "film": "Film"
     },
     "level": {
       "student": "Students",

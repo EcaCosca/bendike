@@ -47,3 +47,7 @@ export function listLearnForRig(token: string, rigId: string): Promise<LearnRigS
 export function listLearnForGearItem(token: string, gearItemId: string): Promise<LearnItemSummary[]> {
   return apiFetch<LearnItemSummary[]>(`/learn/for-gear-item/${encodeURIComponent(gearItemId)}`, {}, token);
 }
+
+export function listFilms(): Promise<LearnItemSummary[]> {
+  return apiFetch<LearnItemSummary[]>('/learn/films');
+}

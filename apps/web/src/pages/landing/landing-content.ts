@@ -57,6 +57,10 @@ export const ABOUT_TEASER = {
 
 export const BRANDS_HEADING = 'Authorized dealer for';
 
+export const FILMS_HEADING = 'From the air';
+export const FILMS_INTRO =
+  'Films from Squirrel\u2019s pilots: season reels, trips, and the odd jump worth watching twice. Opens on YouTube.';
+
 export const DEALER_BRANDS = [
   { slug: 'squirrel', name: 'Squirrel', file: 'squirrel.svg', height: 48 },
   { slug: 'vigil', name: 'Vigil', file: 'vigil.png', height: 64 },

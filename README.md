@@ -146,6 +146,11 @@ content.
 - **Linked to the gear and the shop.** An admin links items to shop products, brands and gear models. A product page
   shows "Learn before you buy"; a rig or component page shows "Learn about your gear" for the models it holds.
 - **Collections.** Ordered lists with an intro; the "start here" collection of a topic is shown first for that topic.
+- **The Squirrel TV library.** All 260 videos from `@flysquirreltv`, triaged by hand: 70 dropped, 123 kept as learn
+  items across five shelves (technique and safety, packing and rigging, know your gear, before you buy, reviews), and
+  204 links putting the manufacturer's own explanation on 30 product pages. Every summary is written by us, not copied
+  from Squirrel. The 67 remaining films carry `format: 'film'`, which keeps them off the Learn page and feeds the
+  landing-page strip instead.
 - **Suggestions by WhatsApp.** A box on the Learn page opens WhatsApp to Eca with the suggested link; nothing is stored.
 - **Buy links.** A book or instrument can carry a buy link, normally an Amazon Associates link, shown with the
   disclosure the programme requires. Affiliate links never go into WhatsApp messages or emails.
@@ -194,6 +199,7 @@ screens. Keep any personal logins in `apps/api/.env.dev-accounts`, which git ign
 npm run seed:catalog  -w @bendike/api     # FlySight and Vigil products with real copy and prices
 npm run seed:services -w @bendike/api     # the five rigging services
 npm run seed:learn    -w @bendike/api     # Eca's starting list of learning material, linked to the brands
+npm run seed:squirrel-tv -w @bendike/api  # the triaged Squirrel TV videos: shelves, product links and films
 npm run import:squirrel -w @bendike/api   # the Squirrel catalogue, from squirrel.ws (curl; Playwright only as a fallback)
 npm run import:squirrel -w @bendike/api -- --only="Aura 6"   # one product from the seed list
 ```

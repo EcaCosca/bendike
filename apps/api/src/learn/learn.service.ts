@@ -10,7 +10,7 @@ import type {
   LearnTopic,
   Page,
 } from '@bendike/shared';
-import { In, IsNull, type EntityManager } from 'typeorm';
+import { In, IsNull, Not, type EntityManager } from 'typeorm';
 import { Product } from '../catalog/entities/product.entity';
 import { GearItem } from '../gear/entities/gear-item.entity';
 import { Rig } from '../gear/entities/rig.entity';
@@ -36,8 +36,14 @@ export class LearnService {
   ) {}
 
   async search(query: LearnQuery): Promise<Page<LearnItemSummary>> {
-    const items = await this.manager.find(LearnItem, { where: { active: true } });
+    const items = await this.manager.find(LearnItem, { where: { active: true, format: Not('film') } });
     return searchLearnItems(items.map(toLearnItemSummary), query);
+  }
+
+  /** Films for the landing carousel. Deliberately the one place they are served. */
+  async films(): Promise<LearnItemSummary[]> {
+    const items = await this.manager.find(LearnItem, { where: { active: true, format: 'film' } });
+    return items.sort(byCuratedOrder).map(toLearnItemSummary);
   }
 
   async findBySlug(slug: string): Promise<LearnItemDetail> {
@@ -54,7 +60,7 @@ export class LearnService {
     if (!item) {
       throw new NotFoundException(`Learn item ${slug} not found`);
     }
-    const candidates = await this.manager.find(LearnItem, { where: { active: true } });
+    const candidates = await this.manager.find(LearnItem, { where: { active: true, format: Not('film') } });
     return candidates
       .filter((other) => other.id !== item.id && other.topics.some((topic) => item.topics.includes(topic)))
       .sort(byCuratedOrder)

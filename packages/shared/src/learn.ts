@@ -1,8 +1,16 @@
 import type { TranslationOverrides } from './catalog';
 import type { Locale, LocalizedText } from './locale';
 
-export const LEARN_FORMATS = ['video', 'article', 'podcast', 'book', 'channel', 'course', 'page'] as const;
+export const LEARN_FORMATS = ['video', 'article', 'podcast', 'book', 'channel', 'course', 'page', 'film'] as const;
 export type LearnFormat = (typeof LEARN_FORMATS)[number];
+
+/**
+ * A film sells without teaching — a season reel, a trip edit, one notable jump.
+ * It is stored as a learn item so it stays editable in admin, but it is not
+ * material anyone is meant to learn from, so the Learn page neither lists it nor
+ * offers it as a filter. It reaches the landing carousel instead.
+ */
+export const LEARN_BROWSABLE_FORMATS = LEARN_FORMATS.filter((format) => format !== 'film');
 
 export const LEARN_TOPICS = [
   'reserve_and_repack',

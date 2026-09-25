@@ -33,6 +33,12 @@ export class LearnController {
     return this.learn.search(query);
   }
 
+  @Get('films')
+  @ApiOperation({ summary: 'Films for the landing carousel — footage that sells without teaching' })
+  films(): Promise<LearnItemSummary[]> {
+    return this.learn.films();
+  }
+
   @Get('items/:slug')
   @ApiOperation({ summary: 'One learning item by slug, with its links' })
   bySlug(@Param('slug') slug: string): Promise<LearnItemDetail> {
