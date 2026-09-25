@@ -134,6 +134,16 @@ flowchart LR
 - [ ] Portuguese is `PT-BR` in `deepl-client.ts`. Correct for Brazil, wrong for Portugal. No decision
       needed unless Bendike ever sells into Europe.
 
+## Revision, 2026-09-25
+
+Eca will write the Spanish and Portuguese himself rather than run DeepL over it. He is
+a native Spanish speaker in Argentina and this is his trade's vocabulary; a machine pass
+plus a review is more total work than writing it once, and it reads better.
+
+So Tasks 1 and 2 stay in the tree but go unused for now — the glossary is still the
+reference for which English terms stay English, and the backfill is there if the volume
+ever justifies it. The live path is Task 4.
+
 ## Tasks
 
 ### Task 1: The glossary
@@ -152,12 +162,29 @@ flowchart LR
       this whole problem
 - [ ] Verify running it twice translates nothing the second time — needs the key
 
-### Task 3: Run it
+### Task 3: Run it — superseded by Task 4
 
-- [ ] Eca creates a free DeepL account and the key goes into the instance `.env`
-- [ ] Dry run first, confirm the character count fits the month's allowance
-- [ ] Run, then review the flagged fields
-- [ ] Spot-check the shop and Learn page in `es` and `pt`
+- [ ] Parked. Kept because the tooling exists and a future bulk import might want it.
+
+### Task 4: Hand-written worksheets
+
+- [x] `translations:export` writes one Markdown worksheet per group per locale, with the English in a
+      comment directly above each blank. Markdown, not JSON: a 1,600-character product description is
+      unwritable inside an escaped JSON string.
+- [x] Re-running the export preserves everything already written and only adds what is new
+- [x] `translations:import` loads them back and records each field in `translation_overrides`, so a
+      later machine pass or a re-import from squirrel.ws cannot overwrite a person's work
+- [x] `translations:progress` reports how much is left without touching the database
+- [x] Round-trip verified end to end, including a description containing its own `##` headings
+- [ ] Eca writes them: 620 sections, 63,704 characters of English
+- [ ] Import, then check the shop and Learn page in `es` and `pt`
+
+### Task 5: The page copy
+
+- [ ] Landing, About and footer copy are hardcoded English constants in `landing-content.ts`,
+      `about-story-content.ts`, `vignette-content.ts` and `site-content.ts` — about 7,000 characters. They
+      are not in the database, so the worksheets do not reach them. Migrate them to the locale JSON files
+      the rest of the app already uses, then they can be translated too.
 
 ## Out of Scope
 

@@ -22,7 +22,10 @@
     "import:fleet": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/import-fleet.ts",
     "seed:learn": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/seed-learn.ts",
     "seed:squirrel-tv": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/seed-squirrel-tv.ts",
-    "translate:backfill": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/backfill-translations.ts"
+    "translate:backfill": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/backfill-translations.ts",
+    "translations:export": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/translations-export.ts",
+    "translations:import": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/translations-import.ts",
+    "translations:progress": "ts-node -P tsconfig.json -r tsconfig-paths/register scripts/translations-progress.ts"
   },
   "dependencies": {
     "@bendike/shared": "0.1.0",
