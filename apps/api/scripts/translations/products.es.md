@@ -98,9 +98,9 @@ EN-->
 - Diseño de ala MonoChamber
 - Velocidad, planeo y rango que aplastan a su categoría
 - ¡Se lleva bien con los Freak!
-- Perfecto para pilotos que vienen de trajes de iniciación
+- Perfecto para pilotos que vienen de trajes de principiantes
 
-La serie ATC sigue aprovechando la tecnología MonoChamber y el perfil SymBlend, con mejoras en todos lados. Ahora es todavía más fácil de volar, y perfecto para pilotos que vienen de trajes de iniciación. El ATC 5 anda cómodo tanto en formaciones de trajes "grandes" como "chicos" en tu dropzone.
+La serie ATC sigue aprovechando la tecnología MonoChamber y el perfil SymBlend, con mejoras en todos lados. Ahora es todavía más fácil de volar, y perfecto para pilotos que vienen de trajes de principiantes. El ATC 5 anda cómodo tanto en formaciones de trajes "grandes" como "chicos" en tu dropzone.
 
 Como sus antecesores, tiene rendimiento de sobra para volar una formación con los FREAK de última generación, y a la vez es lo bastante chico y ágil para flockear tranquilo con SWIFT y FUNK. Nuestros pilotos de equipo coinciden en que este mini-FREAK rinde sorprendentemente para su tamaño. Para la serie ATC recomendamos el [Airfoil Cross Section Freestyle](/wingsuits/options/freestyle-arm-foam).
 
@@ -110,7 +110,7 @@ Como sus antecesores, tiene rendimiento de sobra para volar una formación con l
 Replacement bridle for SQRL harness container systems ONLY. Not for use with other containers due to the fact that pin spacing is specific to Squirrel container
 EN-->
 
-Bridle de repuesto ÚNICAMENTE para sistemas arnés-contenedor SQRL. No usar con otros contenedores: la separación de los pines es específica de los contenedores
+Bridle de repuesto ÚNICAMENTE para contenedor SQRL. No usar con otros contenedores: la separación de los pines es específica de los contenedores Squirrel
 
 <!--# base-bridle · descriptionMd #-->
 <!-- BASE Bridle -->
@@ -120,7 +120,7 @@ Replacement bridle for SQRL harness container systems ONLY. Not for use with oth
 "Replacement" means that this is a bridle only and does not include a magnet to add to your container. It is not a kit, and a kit is not available.
 EN-->
 
-Bridle de repuesto ÚNICAMENTE para sistemas arnés-contenedor SQRL. No usar con otros contenedores: la separación de los pines es específica de los contenedores Squirrel, y que esa separación sea la correcta es crítico para la seguridad y el funcionamiento.
+Bridle de repuesto ÚNICAMENTE para contenedor SQRL. No usar con otros contenedores: la separación de los pines es específica de los contenedores Squirrel, y que esa separación sea la correcta es crítico para la seguridad y el funcionamiento.
 
 "De repuesto" quiere decir que es solamente el bridle y no incluye un imán para agregar a tu contenedor. No es un kit, y no hay kit disponible.
 
@@ -133,7 +133,7 @@ SQRL harness container system component kit: Includes tailgates, closing loops, 
 - 2x short closing loop
 EN-->
 
-Kit de componentes para el sistema arnés-contenedor SQRL: incluye tailgates, loops de cierre, pull-ups y elásticos.
+Kit de componentes para el contenedor SQRL: incluye tailgates, loops de cierre, pull-ups y elásticos.
 
 - 2x loops de cierre largos
 - 2x loop de cierre corto
@@ -258,11 +258,42 @@ EN-->
 - ```[2014 Aces](image:6)```: 1st Place, Andy Farrington
 EN-->
 
+- Récord mundial de velocidad vigente
+- 2/2 WOWS ganador de velocidad en el campeonato
+- Invicto en Aces
+- El 3.º flare más grande jamás registrado @114.7m (376.3 pies), superado solo por el CR+
+- 2023 WWL barrida del podio Target Punch - Vincent Descols, Dan Darby, Shupeng Zhang
+- 2019 WWL oro y plata en velocidad - 7 of the top 8 volaban el C-Race
+- 2019 WWL medalla de oro Target Punch - Brandon Mikesell
+- 2019 UK Nacionales: Dr. Angelo Grubisic - 1st
+- 2018 WBR at Gridset: Espen Fadnes - 1st, Chris Byrnes 2nd
+- 2018 WBR at Hellesy: Chris Byrnes - 1st
+- 2018 WOWS at Switzerland: Pascal Intini - Speed 1st
+- 2018 WOWS at Grenchen: Pascal Intini - 1.º en velocidad
+- 2018 Campeonato Mundial: Espen Fadnes - 1st
+- [2018 Norway Wingsuit Nacionales](http://intimescoring.com/InTime/InTimeMeetWSPerformanceDCDetails.aspx?CID=53&DBID=1089&MID=21&MDCID=67&IT=1): Espen Fadnes - 1st, Amber Forte - 2nd, Andreas Hemli - 3rd
+- 2018 WOWS at Fano: Nicoolo Porcella - 1.º en distancia
+- 2017 WOWS at Kapowsin: Justin Duclose - 1.º en velocidad
+- 2017 WOWS at Skydive Gorgia: Todd Davis - 1.º en velocidad 1.º en distancia
+- 2017 WWL medalla de oro
+- `[2016 ACES Total Sweep](image:1)`: podio, finales y cuartos de final
+- `[2016 WWL](image:2)`: podio y barrida del top cuatro
+- `[2016 Wings For Love](image:3)`: barrida del evento de velocidad
+- [2016 WOWS at CSC](http://wingsuitrace.org/results): primer puesto, velocidad
+- [2016 WOWS at Kapowsin](http://wingsuitrace.org/results): barrida del podio en velocidad
+- 2016 WOWS at Kapowsin: Justin Duclose - 1.º en velocidad
+- 2016 WOWS at Perris: Sebastian Alvarez - 1.º en velocidad Sebastian Alvarez
+- `[2015 Aces](image:4)`: 1st, 2nd, 3rd, 4th, Andy, Noah, Matt, Plamer
+- `[2015 WWL](image:5)`: 1st, 2nd, Noah, Julian
+- `[2014 Aces](image:6)`: 1.º, Andy Farrington
+
 <!--# carbon-gas-pedals · summary #-->
 <!-- Carbon Gas Pedals -->
 <!--EN
 Gas Pedals can be added to certain models in our range. If your suit has the velcro-closed pocket in the bottom of the foot cup (just above the rubber sole), th
 EN-->
+
+Los Gas Pedals se pueden agregar a ciertos modelos de nuestra línea. Si tu traje tiene el bolsillo con velcro en la base del pie (justo arriba de la suela de goma),
 
 <!--# carbon-gas-pedals · descriptionMd #-->
 <!-- Carbon Gas Pedals -->
@@ -270,11 +301,15 @@ EN-->
 Gas Pedals can be added to certain models in our range. If your suit has the velcro-closed pocket in the bottom of the foot cup (just above the rubber sole), then your suit is compatible. Adding the gas pedals will increase the feeling of lengthwise tension in the suit.
 EN-->
 
+Los Gas Pedals se pueden agregar a ciertos modelos de nuestra línea. Si tu traje tiene el bolsillo con velcro en la base del pie (justo arriba de la suela de goma), entonces es compatible. Agregar los gas pedals aumenta la sensación de tensión a lo largo del traje.
+
 <!--# cirrus · summary #-->
 <!-- CIRRUS -->
 <!--EN
 FOR ALPINE MISSIONS
 EN-->
+
+PARA MISIONES DE ALTA MONTAÑA
 
 <!--# cirrus · descriptionMd #-->
 <!-- CIRRUS -->
@@ -301,11 +336,30 @@ Designed for slider up alpine missions. Used with an ultralite SQRL canopy, tota
 The CIRRUS is 100% CAD designed and precision built with laser & CNC cut parts in Squirrel's own production facility. Each rig is hand-inspected by Martin Tilley, of Asylum Designs.
 EN-->
 
+- **Esquinas dinámicas limpias**
+- **Geometría de arnés Easy-Riser-Access**
+- **Perneras anchas**
+- **Cinta de mezcla de Dyneema de 30 mm**
+- **Diseño y construcción CAD-a-láser**
+- **Hebillas de placa a medida**
+
+El CIRRUS está diseñado para BASE alpino slider up, donde el peso y el volumen de plegado son críticos. Es un arnés especializado: para la mayoría de los que hacen WS BASE alpino, recomendamos el [Stream 3](/equipment/base-jumping/stream3).
+
+#### GEOMETRÍA DEL ARNÉS
+
+Como en todos nuestros arneses, el acceso a las bandas es inusualmente fácil gracias a la geometría del MLW adelantado. El arnés es limpio, simple y resistente, con MLW doble, puente y laterales prolijos, y uniones no-peel de perfil bajo. Los loops de rappel vienen integrados en el arnés.
+
+#### MATERIALES
+
+Usamos cinta propia de mezcla de Dyneema de 30 mm desde las bandas hasta las perneras. La diagonal es de Amsteel. El contenedor es una mezcla de poliéster y tela de vela, con refuerzos de solapa cortados en CNC.
+
 <!--# closing-loops · summary #-->
 <!-- Closing Loops -->
 <!--EN
 Double-ended and sewn closing loops, for SQRL harness container systems.
 EN-->
+
+Loops de cierre cosidos y de doble punta, para contenedores SQRL.
 
 <!--# closing-loops · descriptionMd #-->
 <!-- Closing Loops -->
@@ -313,11 +367,15 @@ EN-->
 Double-ended and sewn closing loops, for SQRL harness container systems.
 EN-->
 
+Loops de cierre cosidos y de doble punta, para contenedores SQRL.
+
 <!--# corvid-3 · summary #-->
 <!-- Corvid 3 -->
 <!--EN
 ALL-TERRAIN WS BASE
 EN-->
+
+WS BASE TODO TERRENO
 
 <!--# corvid-3 · descriptionMd #-->
 <!-- Corvid 3 -->
@@ -336,11 +394,26 @@ Profile refinements to the arm and leg wing, a new leading edge design, a slight
 The CORVID series is for experienced WS BASE jumpers looking for short start performance, good glide, and comfort in steep technical lines. It's an all-terrain suit with a long history of reliable performance.
 EN-->
 
+- Perfil y planta refinados
+- Nuevo diseño de borde de ataque
+- Mejor flujo del MonoChamber
+- Arranques todavía más fáciles y menor velocidad de pérdida
+- El "traje grande" más cómodo del WS BASE
+- Acceso simple a las bandas
+
+La serie CORVID marcó un nuevo estándar en arranques fáciles y abrió algunas de las salidas más técnicas del mundo. El CORVID 3 es un traje más eficiente y de mayor rendimiento, con toda la comodidad y facilidad de uso por la que se conoce a la serie.
+
+Las mejoras de perfil en el ala de brazo y de pierna, un nuevo diseño de borde de ataque, un leve aumento de superficie en el ala del brazo y un mejor flujo del MonoChamber se combinan para dar más eficiencia y mejor arranque. Gracias a la velocidad de pérdida algo más baja y al mejor flujo entre cámaras, los arranques cortos son todavía más fáciles. El aumento de superficie en el ala del brazo también mejoró un poco el mejor planeo.
+
+La serie CORVID es para BASE jumpers experimentados que buscan
+
 <!--# cr-plus · summary #-->
 <!-- CR+ -->
 <!--EN
 8X WORLD CHAMPION, 9X US NATIONAL CHAMPION, MULTIPLE WORLD RECORDS, 50+ NATIONAL TITLES: THE CR+ IS THE CHOICE OF CHAMPIONS
 EN-->
+
+8 VECES CAMPEÓN DEL MUNDO, 9 VECES CAMPEÓN NACIONAL DE EE. UU., VARIOS RÉCORDS MUNDIALES, MÁS DE 50 TÍTULOS NACIONALES: EL CR+ ES LA ELECCIÓN DE LOS CAMPEONES
 
 <!--# cr-plus · descriptionMd #-->
 <!-- CR+ -->
@@ -414,11 +487,80 @@ Its flare-power is unmatched in the wingsuit world, allowing pilots to nick the 
 We make the same CR+ Worlds Version available to all qualfied pilots because our goal is to “level the playing field”, allowing pilot skill to become the major determining factor.
 EN-->
 
+- 2025 Campeonato Mundial: Alexey Galda - Oro, Ali Asker - Plata, Jason Dodunski - Bronce (todos en CR+)
+- 2025 Campeonato Mundial categoría naciones: Equipo Kuwait - Oro (todos en CR+)
+- 2025 American, Australian, French, Danish, Finnish, Canadian & more Nacionales - 1.º
+- 2024 Campeonato Mundial: Luke Rogers - Oro, Jason Dodunski - Plata, Ali Asker - Bronce (todos en CR+)
+- 2024 Campeonato Mundial categoría naciones: Equipo Australia - Oro (todos en CR+)
+- 2024 American, Australian, French, Danish, finnish, Canadian & more Nacionales - 1.º
+- 2023 Campeonato Mundial: Alexey Galda - Oro, Luca Sala - Plata, Luke Rogers - Bronce (todos en CR+)
+- 2023 Campeonato Mundial categoría naciones: Equipo Australia - Oro (todos en CR+)
+- 2023 Italian, French, Danish, Canadian, Australian & more Nacionales - 1.º
+- 2022 Campeonato Mundial: Chris Geiler - Oro, Alexey Galda - Plata, Luke Rogers - Bronce. (todos en CR+)
+- 2022 Campeonato Mundial categoría naciones: Equipo USA - Oro (todos en CR+)
+- 2022 American, Australian, Danish, Dutch, Finnish & more Nacionales - 1.º
+- [2021 Campeonato Mundial](/news/view/2021-chris-geiler-and-team-usa-win-world-championships): Chris Geiler - Oro, Alexey Galda - Bronce
+- 2021 Campeonato Mundial Nations Category: Equipo USA - Oro (todos en CR+)
+- 2021 [Canada](/news/view/2021-canadian-nationals), [Denmark](/news/view/2021-sqrl-pilots-sweet-danish-champs), [Australia](/news/view/chris-and-luke-win-2021-australian-nations), Switzerland, Italy & more Nacionales - 1st place
+- 2020 & 2021 Wingsuit Performance Games - 1st place
+- 2020 - [France](/news/view/sqrl-pilots-sweep-2020-french-championships), [Australia](/news/view/2020-australian-nationals), [Denmark](/news/view/2020-danish-nationals), [Norway](/news/view/2020-norwegian-nationals), [Switzerland](/news/view/2020-swiss-champs) & more Nacionales - 1st place
+- [2019 Wings over Marl](https://skyderby.ru/events/122): Alexey Galda - 1st, Dawid Winczewski - 2nd
+- [2019 Wingsuit Performance Games](https://skyder.by/events/109) - Max Diebold - 1st, Dawid Winczewski - 2nd, Marco Pistolesi - 3rd
+- 2019 UK Nacionales Open Class: Max Diebold - 2nd
+- [2019 Wings over Eschbach](https://skyderby.ru/events/87): Alexey Galda - 1st, Dawid Winczewski - 2nd
+- 2019 Australian Nacionales: Chris Byrne - 1st, Luke Rogers - 2nd
+- [2019 Tony Suits Performance Cup](https://skyderby.ru/events/79): Alexey Galda - 1st
+- 2018 WOWS at Grenchen: Marc Pfiffner - 2nd Speed & Distance
+- [2018 US Nacionales](http://www.omniskore.com/comp/2018/2018nsc/main_PerformanceWingsuitFlyingOpen.shtml): Chris Geiler - 1st, Alexey Galda - 2nd, Kristian Szczepitko - 3rd
+- 2018 Campeonato Mundial: Chris Geiler - 2nd
+- [2018 Danish National Championships](https://ppc.paralog.net/showevent_compact.php?event=Danish+Nacionales+Wingsuit+Performance+Flying+2018): Ulf Munkedal - 1st, Tanya Barkhuus - 2nd, Dennis Werenskiold - 3rd
+- [2018 Wings over Marl](https://skyderby.ru/events/65): Alexey Galda - 1st, Ulf Munkedal - 2nd, Leonid -Sigalov - 3rd, Fons Ban Den Boom - 4th
+- [2018 Ukraine National Championships](https://skyderby.ru/events/58): Oleksiy Akemov - 1st
+- [2018 Swedish Nacionales](http://intimescoring.com/InTime/InTimeMeetWSPerformanceDCDetails.aspx?CID=39&DBID=1087&MID=249&MDCID=743&IT=1): Anton Andersson - 1st, Marko Makela - 2nd
+- [2018 Italian Wingsuit Performance Cup](https://skyderby.ru/events/48): Alexey Galda - 1st, Chris Geiler - 2nd
+- [2018 Italian Nacionales](https://skyderby.ru/events/48): Marco Pistolesi - 1st, Alessandro Urzi - 2nd
+- 2018 WOWS at Fano: Ulf Munkedal - 1.º en velocidad
+- 2018 WOWS at FDK: Speed Podium Sweep, Distance Podium Sweep
+- [2018 Australian Nacionales](https://ppc.paralog.net/showevent_compact.php?event=Australian+Nacionales+Wingsuit+Performance+Flying+2018): Chris Geiler - 1st, Luke Rogers - 2nd, Stephen Arkwrite - 3rd
+- 2018 Tony Suits Performance Cup: Alexey Galda - 1st, Kristian Szczepitko - 2nd
+- [2017 FAI World Cup](https://ppc.paralog.net/showevent_compact.php?event=2%3Csup%3End%3C%2Fsup%3E+FAI+World+Cup+of+Wingsuit+Performance+Flying): Chris Geiler - 1st, Alexey Galda - 2nd
+  Current World Distance Record Holder
+- 2017 US Nacionales, Oro
+- 2017 Wings Over Marl, Oro
+  More National Championship Wins Than Any Other Suit
+- `[2016 Campeonato Mundial](image:1)`:Chris Geiler, Oro. Espen Fadness, Bronce. 5 out of the top 10, Squirrel CR+.
+- `[2016 USA Nacionales](image:2)`:1st, 2nd, 4th, 5th, 6th, 7th, Alexey, Chris, Kristian, Joe, Max, Jason
+- [2016 WOWS at CSC](http://wingsuitrace.org/results): Distance Podium Sweep
+- [2016 WOWS at Kapowsin](http://wingsuitrace.org/results): Distance Podium Sweep
+- `[2016 Wings Over Marl](image:3)`: 1st, 2nd, Ulf, Dawid
+- 2016 Danish Nacionales: 1st, Tanya Barkhuus
+- `[2016 Australian Nacionales](image:4)`: 1st, Steve Holden
+
+# The CR+ is an evolving design and is revised according to development progress and competition schedules. There are 3 versions available:
+
+**CR+:** If you are entering the world of competitive performance flying, this suit is for you. Competitive performance without the complexity of foot fairings & wing extensions.
+
+**CR+ WORLDS:** Designed for pilots who already have competition experience and are vying for the top 10 of a World or National event. With foot fairings and wing extensions.
+
+**CR+ BASE:** Exclusively for elite WS BASE Jumpers with several seasons of experience in high performance suits. BASE-friendly mods to improve start and deployment characteristics.
+
+**All CR+ orders are subject to approval**
+
+The CR+ series is designed in collaboration with our world champion, national champion, and world record holding team pilots. With feedback and data provided by our team, we strive to evolve the CR+ constantly so as to maintain a competitive edge over other available suits.
+
+For nearly 10 years the CR+ has won every major wingsuit performance event, including FAI World Cup and World Championship events. The CR+ is designed specifically for competitions which include Time, Distance, and Speed events.
+
+Its flare-power is unmatched in the wingsuit world, allowing pilots to nick the top of the competition window and flare hundreds of feet above it, extending time and distance scores. At high speeds, the suit is stable at low angles of attack. The efficiency of the leading edge and the amount of surface area are calculated for an optimal balance in time, speed, and distance tasks.
+
+We make the same CR+ Worlds Version available to all qualfied pilots because our goal is to “level the playing field”, allowing pilot skill to become the major determining factor.
+
 <!--# creature-3 · summary #-->
 <!-- Creature 3 -->
 <!--EN
 HIGH-PERFORMANCE DYNAMIC FREESTYLE
 EN-->
+
+FREESTYLE DINÁMICO DE ALTO RENDIMIENTO
 
 <!--# creature-3 · descriptionMd #-->
 <!-- Creature 3 -->
@@ -436,11 +578,23 @@ Like all previous suits in the series, this is a powerful machine with which to 
 If you are trying to decide between the Freak and the Creature, please watch [this video](https://vimeo.com/904918248). The Creature will satisfy pilots who need more surface area than the Freak series offers.
 EN-->
 
+- Tomas de aire Gen2 de baja resistencia
+- Nuevo diseño y nuevos materiales en el borde de ataque
+- Rendimiento de la serie C-Race con la agilidad del Freak
+- ¿El traje de freestyle de mayor rendimiento... de la historia?
+- Se luce en formaciones dinámicas a alta velocidad, XRW, trabajo de cámara y demás
+
+El Creature 3 es un traje más rápido y más eficiente gracias a dos frentes de desarrollo: las tomas de aire y el borde de ataque. El carácter de la serie Creature no cambió. Sigue siendo un traje de freestyle potente, con más velocidad, agilidad, flare y potencia que cualquier otro de su categoría.
+
+Como todos los trajes anteriores de la serie, es una máquina potente para volar líneas grandes y dinámicas. Las picadas a alta velocidad que terminan en flare y los rollover de bajo G son para lo que se construyó. Armar formaciones cerradas a alta velocidad que se sostienen por kilómetros es para lo que nació.
+
 <!--# crux-2 · summary #-->
 <!-- CRUX 2 -->
 <!--EN
 THE DO-EVERYTHING HARNESS-CONTAINER SYSTEM
 EN-->
+
+EL CONTENEDOR QUE HACE DE TODO
 
 <!--# crux-2 · descriptionMd #-->
 <!-- CRUX 2 -->
@@ -457,11 +611,24 @@ EN-->
 This versatile and low profile container system is designed for all types of BASE jumping, and is an ideal choice for jumpers who want an all-in-one solution. All CRUX options are included in the price.
 EN-->
 
+- Cómodo, de perfil bajo y liviano
+- Cinta de mezcla de Dyneema de 7000 lb
+- Construcción con bartack de nueva generación
+- Contenedor medio-largo para acceso fácil al BOC
+- Bolsillo para stash bag mejorado
+- Anclajes para ojalillos del slider
+- Sujetador magnético de bridle
+- Hebillas de placa a medida
+
+Este contenedor versátil y de perfil bajo está diseñado para todo tipo de BASE, y es la opción ideal para quien quiere una solución todo en uno. Todas las opciones del CRUX vienen incluidas en el precio.
+
 <!--# crux-2-3r · summary #-->
 <!-- CRUX 2 3R -->
 <!--EN
 THE DO-EVERYTHING 3-RING SYSTEM
 EN-->
+
+EL SISTEMA DE 3 ANILLOS QUE HACE DE TODO
 
 <!--# crux-2-3r · descriptionMd #-->
 <!-- CRUX 2 3R -->
@@ -480,11 +647,26 @@ The CRUX series versatility is now available in a 3-Ring version, using the same
 Modern harness geometry, custom forged aluminum plate buckles, bridle-safe pin protection, and proprietary Dyneema blend webbing with all available options included in the price -- it's the ultimate 3-Ring system.
 EN-->
 
+- Cinta de mezcla de Dyneema de 7000 lb
+- Construcción con bartack de nueva generación
+- Sujetador magnético de bridle para salidas con el pilotín en la mano
+- Hebillas de placa forjadas a medida
+- Diseñado para saltos slider off
+- Cómodo y de perfil bajo
+- Nuevo diseño de esquinas dinámicas
+- Nuevo bolsillo para Stache bag
+
+La versatilidad de la serie CRUX ahora viene en versión de 3 anillos, con los mismos materiales y la misma construcción de arnés moderna. Está pensado sobre todo para saltos slider off y sirve para saltadores de cualquier nivel y experiencia.
+
+Geometría de arnés moderna, hebillas de placa de aluminio forjadas a medida, protección de pines segura para el bridle y cinta propia de mezcla de Dyneema, con todas las opciones incluidas en el precio: el sistema de 3 anillos definitivo.
+
 <!--# cxul · summary #-->
 <!-- CXUL -->
 <!--EN
 THE ALPINE RIG
 EN-->
+
+EL EQUIPO ALPINO
 
 <!--# cxul · descriptionMd #-->
 <!-- CXUL -->
@@ -509,11 +691,29 @@ The CXUL is designed to be used with the IBEX.UL canopy. Total system weight wil
 The CXUL is 100% CAD designed and precision built with laser & CNC cut parts in Squirrel's own production facility. Each rig is hand-inspected by Martin Tilley, of Asylum Designs.
 EN-->
 
+- **800 g de peso en talle promedio**
+- **Nueva geometría de arnés, más simple**
+- **Cinta de mezcla de Dyneema de 30 mm**
+- **Diseño y construcción CAD-a-láser**
+- **Hebillas de placa a medida**
+
+El CXUL está diseñado para BASE jumpers experimentados, para saltos slider up en ambiente alpino, donde el peso y el volumen de plegado son la preocupación principal. No lo recomendamos para principiantes ni como primer equipo.
+
+#### GEOMETRÍA DEL ARNÉS
+
+La nueva geometría del CXUL es limpia, simple y resistente. Un MLW de doble espesor lleva la resistencia completa desde las bandas hasta las perneras, con una unión prolija entre puente y laterales. La unión banda/diagonal es no-peel y de perfil bajo.
+
+#### MATERIALES
+
+Usamos cinta propia de mezcla de Dyneema de 30 mm desde las bandas hasta las perneras. La diagonal es de Amsteel. El contenedor está hecho de
+
 <!--# epicene-hole-slider · summary #-->
 <!-- Hole Slider -->
 <!--EN
 The HOLE SLIDER allows a quicker but still progressive opening for the Epicene and Epicene Pro. If your Epicene / Epicene Pro is ageing and the opening times ar
 EN-->
+
+El HOLE SLIDER permite una apertura más rápida pero igual de progresiva para la Epicene y la Epicene Pro. Si tu Epicene o Epicene Pro ya tiene uso y los tiempos de apertura
 
 <!--# epicene-hole-slider · descriptionMd #-->
 <!-- Hole Slider -->
@@ -521,11 +721,15 @@ EN-->
 The HOLE SLIDER allows a quicker but still progressive opening for the Epicene and Epicene Pro. If your Epicene / Epicene Pro is ageing and the opening times are prolonged, or if you just prefer a more rapid opening sequence for your canopy, then this is a recommended option. Always consult Squirrel LLC and / or your trusted rigger if you are unsure of whether you need a hole slider, or how to install it.
 EN-->
 
+El HOLE SLIDER permite una apertura más rápida pero igual de progresiva para la Epicene y la Epicene Pro. Si tu Epicene o Epicene Pro ya tiene uso y los tiempos de apertura se alargan, o si simplemente preferís una secuencia de apertura más rápida, es una opción recomendada. Consultá siempre con Squirrel LLC o con tu rigger de confianza si no estás seguro de necesitar un hole slider, o de cómo instalarlo.
+
 <!--# epicene-pro-2 · summary #-->
 <!-- Epicene Pro 2 -->
 <!--EN
 LOW PACK VOLUME, HIGH RELIABILITY
 EN-->
+
+BAJO VOLUMEN DE PLEGADO, ALTA CONFIABILIDAD
 
 <!--# epicene-pro-2 · descriptionMd #-->
 <!-- Epicene Pro 2 -->
@@ -543,6 +747,17 @@ Like its predecessor, the EP2's primary characteristic is reliable openings for 
 
 Since 2014 the EPICENE series has cared for some of the world's best skydivers: Andy Farrington, Noah Bahnson, Mike Swanson, Amber & Espen, The RedBull Skydive Team, Sebastian Alvarez, Dani Roman, Dan Darby, Jack Lane, and the [Squirrel Team](https://squirrel.ws/people/friends) all jump the EPICENE series by choice.
 EN-->
+
+- **Para paracaidistas de wingsuit de cualquier nivel**
+- **El mejor comportamiento de apertura de su categoría**
+- **Menos presión en las bandas delanteras**
+- **Mejor velocidad, planeo y flare**
+- **Volumen de plegado muy bajo**
+- **Increíblemente fácil de plegar**
+
+La EP2 es la última de la serie Epicene y está diseñada para paracaidistas de wingsuit de cualquier nivel. Si estás entrando al wingsuit o si el comportamiento de apertura es tu prioridad número uno, la EP2 es la campana que tenés que elegir.
+
+Como su antecesora, la característica principal de la EP2 son las aperturas confiables para wingsuit. La velocidad, el planeo y el flare mejoraron gracias a un perfil nuevo que salió del desarrollo de la Omicron, y la presión en las bandas delanteras bajó, lo que hace los giros de aterrizaje más fáciles y más divertidos. El flare no es
 
 <!--# etmd3 · summary #-->
 <!-- ETMD3 -->

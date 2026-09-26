@@ -45,7 +45,21 @@ export const GLOSSARY: GlossaryTerm[] = [
 
   // The rig
   { en: 'rig', wrong: ['aparejo', 'plataforma', 'equipamento de perfuração'], es: 'equipo', pt: 'equipamento' },
-  { en: 'container', wrong: ['contenedor', 'recipiente'], es: 'contenedor', pt: 'container' },
+  { en: 'container', wrong: ['recipiente'], es: 'contenedor', pt: 'container' },
+  // Eca, 2026-09-25: do not calque the English compound. "harness container system" is just
+  // "contenedor" to anyone who owns one, and "beginner suit" is a traje de principiantes.
+  {
+    en: 'harness container system',
+    wrong: ['sistema arnés-contenedor', 'sistema de arnés y contenedor', 'sistema arnés contenedor'],
+    es: 'contenedor',
+    pt: 'container',
+  },
+  {
+    en: 'beginner suit',
+    wrong: ['traje de iniciación', 'trajes de iniciación'],
+    es: 'traje de principiantes',
+    pt: 'roupa de iniciante',
+  },
   { en: 'harness', wrong: ['arnés de seguridad', 'cablagem', 'chicote'], es: 'arnés', pt: 'arnês' },
   { en: 'pilot chute', wrong: ['paracaídas piloto', 'paraquedas piloto', 'pilotillo'], es: 'pilotín', pt: 'pilotinho' },
   { en: 'deployment bag', wrong: ['bolsa de despliegue', 'saco de implantação'], es: 'd-bag', pt: 'd-bag' },

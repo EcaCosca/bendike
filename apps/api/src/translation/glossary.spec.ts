@@ -41,6 +41,8 @@ describe('applyGlossary', () => {
     expect(applyGlossary('un pilotillo de 32 pulgadas', 'es')).toBe('un pilotín de 32 pulgadas');
     expect(applyGlossary('configuración todo malla', 'es')).toBe('configuración mesh');
     expect(applyGlossary('equipo de skydive', 'es')).toBe('equipo de paracaidismo');
+    expect(applyGlossary('el sistema arnés-contenedor SQRL', 'es')).toBe('el contenedor SQRL');
+    expect(applyGlossary('vienen de trajes de iniciación', 'es')).toBe('vienen de traje de principiantes');
   });
 
   test('every term carries both readings and something to replace', () => {
