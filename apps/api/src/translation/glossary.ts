@@ -47,7 +47,7 @@ export const GLOSSARY: GlossaryTerm[] = [
   { en: 'rig', wrong: ['aparejo', 'plataforma', 'equipamento de perfuração'], es: 'equipo', pt: 'equipamento' },
   { en: 'container', wrong: ['contenedor', 'recipiente'], es: 'contenedor', pt: 'container' },
   { en: 'harness', wrong: ['arnés de seguridad', 'cablagem', 'chicote'], es: 'arnés', pt: 'arnês' },
-  { en: 'pilot chute', wrong: ['paracaídas piloto', 'paraquedas piloto'], es: 'pilotillo', pt: 'pilotinho' },
+  { en: 'pilot chute', wrong: ['paracaídas piloto', 'paraquedas piloto', 'pilotillo'], es: 'pilotín', pt: 'pilotinho' },
   { en: 'deployment bag', wrong: ['bolsa de despliegue', 'saco de implantação'], es: 'd-bag', pt: 'd-bag' },
   { en: 'bridle', wrong: ['brida', 'rédea', 'freio'], es: 'bridle', pt: 'bridle' },
   { en: 'reserve', wrong: ['reservar', 'reserva natural'], es: 'reserva', pt: 'reserva' },
@@ -71,6 +71,14 @@ export const GLOSSARY: GlossaryTerm[] = [
 
   // Flying
   { en: 'wingsuit', wrong: ['traje de alas', 'traje aéreo', 'roupa de voo'], es: 'wingsuit', pt: 'wingsuit' },
+  // Eca's calls, 2026-09-25: skydiving translates, mesh does not.
+  {
+    en: 'skydiving',
+    wrong: ['skydive', 'salto en caída libre', 'paraquedismo esportivo'],
+    es: 'paracaidismo',
+    pt: 'paraquedismo',
+  },
+  { en: 'mesh', wrong: ['malla', 'todo malla', 'rede', 'tela'], es: 'mesh', pt: 'mesh' },
   {
     en: 'tracking suit',
     wrong: ['traje de seguimiento', 'roupa de rastreamento'],
@@ -107,7 +115,9 @@ export function applyGlossary(text: string, locale: 'es' | 'pt'): string {
   let result = text;
   for (const term of GLOSSARY) {
     const right = term[locale];
-    for (const wrong of term.wrong) {
+    // Longest first, so "todo malla" is replaced whole rather than leaving "todo mesh"
+    // behind after the shorter "malla" matched inside it.
+    for (const wrong of [...term.wrong].sort((a, b) => b.length - a.length)) {
       const pattern = new RegExp(`(?<![\\p{L}\\p{N}])${escapeRegExp(wrong)}(?![\\p{L}\\p{N}])`, 'giu');
       result = result.replace(pattern, (match) => matchCase(match, right));
     }

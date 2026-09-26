@@ -15,7 +15,7 @@ describe('applyGlossary', () => {
     expect(applyGlossary('Revisá los elevadores y el paracaídas piloto.', 'es')).toBe(
       // "los bandas", not "las bandas": a lookup table cannot fix the article it did
       // not touch. Documented in glossary.ts; the backfill flags these for a reader.
-      'Revisá los bandas y el pilotillo.',
+      'Revisá los bandas y el pilotín.',
     );
     expect(applyGlossary('O dossel abriu limpo.', 'pt')).toBe('O vela abriu limpo.');
   });
@@ -32,8 +32,15 @@ describe('applyGlossary', () => {
   });
 
   test('leaves text that is already right alone', () => {
-    const already = 'Revisá las bandas y el pilotillo antes de saltar.';
+    const already = 'Revisá las bandas y el pilotín antes de saltar.';
     expect(applyGlossary(already, 'es')).toBe(already);
+  });
+
+  test("uses Eca's readings, not the ones a dictionary suggests", () => {
+    // Corrected by Eca on review, 2026-09-25.
+    expect(applyGlossary('un pilotillo de 32 pulgadas', 'es')).toBe('un pilotín de 32 pulgadas');
+    expect(applyGlossary('configuración todo malla', 'es')).toBe('configuración mesh');
+    expect(applyGlossary('equipo de skydive', 'es')).toBe('equipo de paracaidismo');
   });
 
   test('every term carries both readings and something to replace', () => {

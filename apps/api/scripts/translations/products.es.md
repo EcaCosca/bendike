@@ -20,17 +20,23 @@ and a Squirrel TV title names an English video.
 Ideal for softening terminal and sub-terminal openings. Strongly recommended for jumps of over 6 seconds delay. For terminal slick jumps, or terminal tracking j
 EN-->
 
+Ideal para suavizar aperturas terminales y subterminales. Muy recomendado para saltos con más de 6 segundos de demora. Para saltos terminales slick, o de tracking
+
 <!--# 4g-slider · descriptionMd #-->
 <!-- 4G Slider -->
 <!--EN
 Ideal for softening terminal and sub-terminal openings. Strongly recommended for jumps of over 6 seconds delay. For terminal slick jumps, or terminal tracking jumps, we recommend pairing this slider with a 32"-34" PC. Please contact us for advice that is tailored to your equipment and goals. Comes with 2 removable slider brakes, for 3 customizable configurations: All mesh, Small brake, Large brake.
 EN-->
 
+Ideal para suavizar aperturas terminales y subterminales. Muy recomendado para saltos con más de 6 segundos de demora. Para saltos terminales slick, o de tracking terminal, recomendamos combinar este slider con un pilotin de 32"-34". Escribinos y te asesoramos según tu equipo y lo que quieras hacer. Viene con 2 frenos de slider desmontables, para 3 configuraciones posibles: mesh, freno chico, freno grande.
+
 <!--# 5-lite · summary #-->
 <!-- 5-LITE -->
 <!--EN
 ULTIMATE SIMPLICITY
 EN-->
+
+SIMPLICIDAD ABSOLUTA
 
 <!--# 5-lite · descriptionMd #-->
 <!-- 5-LITE -->
@@ -42,11 +48,19 @@ EN-->
 - Pretty-darn-decent flare, glide, and handling
 EN-->
 
+- Nacida de dos años de investigacion y desarrollo enfocados en confiabilidad
+- La mayor confiabilidad posible en una campana cuadrada
+- La campana de BASE más liviana y de menor volumen jamás hecha
+- Una campana de BASE que entra en TU equipo de paracaidismo
+- Un flare, un planeo y un manejo francamente buenos
+
 <!--# 6g-slider · summary #-->
 <!-- 6G Slider -->
 <!--EN
 The 6G SLIDER improves BASE canopy reliability by reducing interaction between line groups. Sliders with >4 grommets have been in use for many years, but have o
 EN-->
+
+El 6G SLIDER mejora la confiabilidad de la campana de BASE reduciendo la interacción entre grupos de líneas. Los sliders de más de 4 ojalillos se usan hace años, pero
 
 <!--# 6g-slider · descriptionMd #-->
 <!-- 6G Slider -->
@@ -54,11 +68,15 @@ EN-->
 The 6G SLIDER improves BASE canopy reliability by reducing interaction between line groups. Sliders with >4 grommets have been in use for many years, but have only recently been applied to BASE canopies. Although still new, we think this is one of the most compelling advancements in BASE. Comes with 2 removable slider brakes, for 3 customizable configurations: All mesh, Small brake, Large brake.
 EN-->
 
+El 6G SLIDER mejora la confiabilidad de la campana de BASE reduciendo la interacción entre grupos de líneas. Los sliders de más de 4 ojalillos se usan hace muchos años, pero recién hace poco se aplicaron a campanas de BASE. Aunque todavía es nuevo, nos parece uno de los avances más interesantes del BASE. Viene con 2 frenos de slider desmontables, para 3 configuraciones posibles: mesh, freno chico, freno grande.
+
 <!--# atc-5 · summary #-->
 <!-- ATC 5 -->
 <!--EN
 AIR TRAFFIC CONTROLLER
 EN-->
+
+AIR TRAFFIC CONTROLLER
 
 <!--# atc-5 · descriptionMd #-->
 <!-- ATC 5 -->
@@ -75,11 +93,24 @@ The ATC series continues to benefit from MonoChamber tech and the SymBlend profi
 Like its predecessors, it has enough performance to fly a formation with the latest generation FREAKs, yet is small and nimble enough to flock easily with SWIFTs and FUNKs. Our team pilots agree that this mini-FREAK has surprising performance for its size. The [Freestyle Airfoil Cross Section](/wingsuits/options/freestyle-arm-foam) is recommended for the ATC Series.
 EN-->
 
+- Más potencia y estabilidad en el ala del brazo
+- Perfil del ala de pierna refinado
+- Diseño de ala MonoChamber
+- Velocidad, planeo y rango que aplastan a su categoría
+- ¡Se lleva bien con los Freak!
+- Perfecto para pilotos que vienen de trajes de iniciación
+
+La serie ATC sigue aprovechando la tecnología MonoChamber y el perfil SymBlend, con mejoras en todos lados. Ahora es todavía más fácil de volar, y perfecto para pilotos que vienen de trajes de iniciación. El ATC 5 anda cómodo tanto en formaciones de trajes "grandes" como "chicos" en tu dropzone.
+
+Como sus antecesores, tiene rendimiento de sobra para volar una formación con los FREAK de última generación, y a la vez es lo bastante chico y ágil para flockear tranquilo con SWIFT y FUNK. Nuestros pilotos de equipo coinciden en que este mini-FREAK rinde sorprendentemente para su tamaño. Para la serie ATC recomendamos el [Airfoil Cross Section Freestyle](/wingsuits/options/freestyle-arm-foam).
+
 <!--# base-bridle · summary #-->
 <!-- BASE Bridle -->
 <!--EN
 Replacement bridle for SQRL harness container systems ONLY. Not for use with other containers due to the fact that pin spacing is specific to Squirrel container
 EN-->
+
+Bridle de repuesto ÚNICAMENTE para sistemas arnés-contenedor SQRL. No usar con otros contenedores: la separación de los pines es específica de los contenedores
 
 <!--# base-bridle · descriptionMd #-->
 <!-- BASE Bridle -->
@@ -89,6 +120,10 @@ Replacement bridle for SQRL harness container systems ONLY. Not for use with oth
 "Replacement" means that this is a bridle only and does not include a magnet to add to your container. It is not a kit, and a kit is not available.
 EN-->
 
+Bridle de repuesto ÚNICAMENTE para sistemas arnés-contenedor SQRL. No usar con otros contenedores: la separación de los pines es específica de los contenedores Squirrel, y que esa separación sea la correcta es crítico para la seguridad y el funcionamiento.
+
+"De repuesto" quiere decir que es solamente el bridle y no incluye un imán para agregar a tu contenedor. No es un kit, y no hay kit disponible.
+
 <!--# base-spare-kit · summary #-->
 <!-- BASE Spare Kit -->
 <!--EN
@@ -97,6 +132,11 @@ SQRL harness container system component kit: Includes tailgates, closing loops, 
 - 2x long closing loops
 - 2x short closing loop
 EN-->
+
+Kit de componentes para el sistema arnés-contenedor SQRL: incluye tailgates, loops de cierre, pull-ups y elásticos.
+
+- 2x loops de cierre largos
+- 2x loop de cierre corto
 
 <!--# base-spare-kit · descriptionMd #-->
 <!-- BASE Spare Kit -->
@@ -111,11 +151,22 @@ SQRL harness container system component kit: Includes tailgates, closing loops, 
 - 2x pull-up cords
 EN-->
 
+Kit de componentes para el sistema arnés-contenedor SQRL: incluye tailgates, loops de cierre, pull-ups y elásticos.
+
+- 2x loops de cierre largos
+- 2x loops de cierre cortos
+- 2x arandelas de acero inoxidable
+- 4x tailgates
+- 4x elásticos (cortados al medio)
+- 2x pull-ups
+
 <!--# big-stiffy-base-toggles · summary #-->
 <!-- Big Stiffy BASE Toggles -->
 <!--EN
 They're big and stiff and a pleasure to grab. Sold as a pair.
 EN-->
+
+Son grandes, firmes y un placer de agarrar. Se venden por par.
 
 <!--# big-stiffy-base-toggles · descriptionMd #-->
 <!-- Big Stiffy BASE Toggles -->
@@ -123,11 +174,15 @@ EN-->
 They're big and stiff and a pleasure to grab. Sold as a pair.
 EN-->
 
+Son grandes, firmes y un placer de agarrar. Se venden por par.
+
 <!--# c-base · summary #-->
 <!-- C-BASE -->
 <!--EN
 MAXIMUM SPEED & AGILITY FOR WS BASE
 EN-->
+
+MÁXIMA VELOCIDAD Y AGILIDAD PARA WS BASE
 
 <!--# c-base · descriptionMd #-->
 <!-- C-BASE -->
@@ -146,6 +201,20 @@ This line of suits has always been a meant for only the most experienced skydive
 
 The C-BASE is designed for BASE jumpers who want maximum speed and flare power for big-mountain flying. It is essentially a BASE-optimized C-RACE with modifications to improve usability and comfort in the BASE environment.
 EN-->
+
+- C-Race optimizado para BASE
+- Opciones de almacenamiento disponibles
+- Diseño de ala MonoChamber
+- Borde de ataque sin costuras
+- Máxima velocidad, agilidad y potencia de flare en la categoría WS BASE
+
+El historial de rendimiento del C-Race no necesita presentación: se lo conoce como uno de los trajes más potentes que hicimos. Tiene varios récords mundiales y, junto con el CR+, el palmarés de competición más fuerte de cualquier otro diseño.
+
+Durante años, nuestros amigos, compañeros de equipo y clientes vinieron usando el C-Race en el ambiente del BASE. Uno de tantos ejemplos se puede ver [acá](https://vimeo.com/217519079). Ahora, por primera vez, lanzamos oficialmente el C-Race con modificaciones para BASE.
+
+Esta línea de trajes siempre fue solo para los paracaidistas y BASE jumpers más experimentados, y el nuevo C-BASE no es la excepción. Este no puede ser tu primer "traje grande" para WS BASE: vas a tener que mostrarnos experiencia previa relevante para poder hacer el pedido.
+
+El C-BASE está pensado para BASE jumpers que buscan la máxima velocidad y potencia de flare para volar en alta montaña. Es, en esencia, un C-RACE optimizado para BASE, con modificaciones que mejoran la usabilidad y el confort en el ambiente del BASE.
 
 <!--# c-race · summary #-->
 <!-- C-RACE -->
