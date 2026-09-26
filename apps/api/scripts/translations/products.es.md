@@ -104,6 +104,44 @@ La serie ATC sigue aprovechando la tecnología MonoChamber y el perfil SymBlend,
 
 Como sus antecesores, tiene rendimiento de sobra para volar una formación con los FREAK de última generación, y a la vez es lo bastante chico y ágil para flockear tranquilo con SWIFT y FUNK. Nuestros pilotos de equipo coinciden en que este mini-FREAK rinde sorprendentemente para su tamaño. Para la serie ATC recomendamos el [Airfoil Cross Section Freestyle](/wingsuits/options/freestyle-arm-foam).
 
+<!--# aura-6 · summary #-->
+<!-- Aura 6 -->
+<!--EN
+For Big Mountain Lines.
+EN-->
+
+Para líneas de alta montaña.
+
+<!--# aura-6 · descriptionMd #-->
+<!-- Aura 6 -->
+<!--EN
+- New Inlet Position
+- MonoChamber design improves start behavior
+- Improved Speed & Glide
+- Even better flare power &  high-AoA flight
+
+# There are several suits in the "Advanced WS BASE" category -- the AURA series stands out as the most versatile.
+
+While the Corvid series is all about short starts and ease of use, and the CR+ variants are focused on maximum surface area and glide, the AURA series is the ultimate all-rounder.
+
+The new A6 is an incremental evolution of the A5. After over a year of testing inlet type and positioning, we have arrived at a new location and a new slightly lower drag inlet design. This suit is not a revolution vs the A5, but there is a measurable performance improvement as a result of the inlet change. All other design aspects remain the same as the A5.
+
+The AURA series is for pilots who have at least two seasons of WS BASE experience and fly at an advanced level in skydive and BASE. The AURA excels in big mountain lines and delivers class-leading speed, glide, and flare power.
+EN-->
+
+- Nueva posición de la toma de aire
+- El diseño MonoChamber mejora el comportamiento en el arranque
+- Mejor velocidad y mejor planeo
+- Todavía más potencia de flare y mejor vuelo con AoA alto
+
+# Hay varios trajes en la categoría "Advanced WS BASE", y la serie AURA se destaca como la más versátil.
+
+Mientras la serie Corvid se trata de arranques cortos y facilidad de uso, y las variantes CR+ apuntan a la máxima superficie y planeo, la serie AURA es el todoterreno definitivo.
+
+El nuevo A6 es una evolución incremental del A5. Después de más de un año probando tipos y posiciones de toma de aire, llegamos a una ubicación nueva y a un diseño de toma con algo menos de resistencia. Este traje no es una revolución frente al A5, pero el cambio de toma trae una mejora de rendimiento medible. Todos los demás aspectos del diseño se mantienen igual que en el A5.
+
+La serie AURA es para pilotos con al menos dos temporadas de experiencia en WS BASE que vuelan a nivel avanzado tanto en paracaidismo como en BASE. El AURA se luce en líneas de alta montaña y entrega velocidad, planeo y potencia de flare líderes en su categoría.
+
 <!--# base-bridle · summary #-->
 <!-- BASE Bridle -->
 <!--EN
