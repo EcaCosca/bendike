@@ -225,6 +225,11 @@ El C-BASE está pensado para BASE jumpers que buscan la máxima velocidad y pote
 - 3rd Largest Flare ever recorded @114.7m (376.3 Feet), second onl
 EN-->
 
+- Récord mundial de velocidad vigente
+- Ganador de velocidad en 2 de 2 campeonatos WOWS
+- Invicto en Aces
+- El 3.º flare más grande jamás registrado, 114,7 m (376,3 pies), superado solo
+
 <!--# c-race · descriptionMd #-->
 <!-- C-RACE -->
 <!--EN
@@ -405,7 +410,7 @@ La serie CORVID marcó un nuevo estándar en arranques fáciles y abrió algunas
 
 Las mejoras de perfil en el ala de brazo y de pierna, un nuevo diseño de borde de ataque, un leve aumento de superficie en el ala del brazo y un mejor flujo del MonoChamber se combinan para dar más eficiencia y mejor arranque. Gracias a la velocidad de pérdida algo más baja y al mejor flujo entre cámaras, los arranques cortos son todavía más fáciles. El aumento de superficie en el ala del brazo también mejoró un poco el mejor planeo.
 
-La serie CORVID es para BASE jumpers experimentados que buscan
+La serie CORVID es para saltadores BASE experimentados que buscan
 
 <!--# cr-plus · summary #-->
 <!-- CR+ -->
@@ -765,6 +770,8 @@ Como su antecesora, la característica principal de la EP2 son las aperturas con
 HIGH PERFORMANCE TRACKING WITH EASE
 EN-->
 
+TRACKING DE ALTO RENDIMIENTO, SIN COMPLICACIONES
+
 <!--# etmd3 · descriptionMd #-->
 <!-- ETMD3 -->
 <!--EN
@@ -776,11 +783,20 @@ EN-->
 - BASE-specific storage and suit options are all included
 EN-->
 
+- Nuevo gripper, ala de brazo más grande
+- Tomas de aire sin resistencia en el ala del brazo
+- Tecnología MonoChamber
+- Brazo totalmente libre, con 100 % de rango de movimiento
+- Planeo bastante mejor y manejo más fácil
+- Todas las opciones de almacenamiento y de traje específicas de BASE vienen incluidas
+
 <!--# flysight-2 · summary #-->
 <!-- FlySight 2 -->
 <!--EN
 GPS and motion-sensor logger for debriefing your jumps.
 EN-->
+
+Registrador GPS y de sensores de movimiento para debriefear tus saltos.
 
 <!--# flysight-2 · descriptionMd #-->
 <!-- FlySight 2 -->
@@ -810,11 +826,31 @@ A compact GPS and motion-sensor logger from Bionic Avionics.
 Debrief your jumps with FlySight Viewer, or import the data into Paralog.
 EN-->
 
+# FlySight 2
+
+Un registrador compacto de GPS y sensores de movimiento, de Bionic Avionics.
+
+- GNSS (u-blox NEO-M9N) con hasta 25 Hz de frecuencia de medición
+- Acelerómetro/giróscopo, magnetómetro, barómetro y sensores de humedad y temperatura
+- 2 GB de almacenamiento, con los saltos guardados en archivos CSV que podés leer directamente
+- Unas 6 horas de autonomía
+- 50 × 50 × 17 mm, 44 g sin el soporte
+- Resistente al agua, IPx7 (sumersión de hasta 1 m durante 30 minutos)
+- Salida de audio para auriculares
+
+## En la caja
+
+- FlySight 2 y soporte
+- Pies VHB para montarlo sin tornillos, más la tornillería para montarlo con tornillos
+- Destapador para sacar la unidad del
+
 <!--# freak-6 · summary #-->
 <!-- Freak 6 -->
 <!--EN
 LESS DRAG = MORE POWER
 EN-->
+
+MENOS RESISTENCIA = MÁS POTENCIA
 
 <!--# freak-6 · descriptionMd #-->
 <!-- Freak 6 -->
@@ -839,11 +875,27 @@ The Freak series remains the benchmark for all-around performance in the experie
 NOTE: Our [Airfoil Cross Section](/wingsuits/options/sport-arm-foam) foam is highly recommended for FREAK series suits.
 EN-->
 
+- Tomas de aire sin resistencia en los brazos
+- MonoChamber Gen2
+- Nuevo gripper de placa de carbono
+- Más agilidad y más velocidad
+- Borde de ataque sin costuras
+- Velocidad, planeo y rango líderes en su categoría
+
+# Agilidad de freestyle con rendimiento... Es la elección de cabecera para pilotos de wingsuit avanzados. La serie Freak es lo más cerca que vas a estar de un traje que "hace todo".
+
+Un diseño de toma de aire radicalmente nuevo y de baja resistencia, combinado con mejoras de perfil y de monochamber, hacen del Freak 6 un salto importante en rendimiento y manejo.
+
+- Menos resistencia en la toma de aire tiene efecto directo sobre la velocidad y el planeo.
+- Un monochamber y un ala de pierna refinados mejoran el manejo y el tránsito
+
 <!--# gbob-great-book-of-base · summary #-->
 <!-- The Great Book of BASE 4th Edition -->
 <!--EN
 The Great Book of BASE has sold out of 3 editions and the latest 4th edition is now available. It has over 350 pages of knowledge, photographs, and hard-won wis
 EN-->
+
+The Great Book of BASE agotó 3 ediciones y ya está disponible la cuarta. Tiene más de 350 páginas de conocimiento, fotografías y sabiduría ganada a pulso.
 
 <!--# gbob-great-book-of-base · descriptionMd #-->
 <!-- The Great Book of BASE 4th Edition -->
@@ -853,11 +905,17 @@ The Great Book of BASE has sold out of 3 editions and the latest 4th edition is 
 For more details about the book, check out [base-book.com](https://base-book.com).
 EN-->
 
+The Great Book of BASE agotó 3 ediciones y ya está disponible la cuarta. Tiene más de 350 páginas de conocimiento, fotografías y sabiduría ganada a pulso. Conocido en todo el mundo como la "Biblia del BASE": la referencia más importante para cualquier saltador.
+
+Para más detalles sobre el libro, entrá en [base-book.com](https://base-book.com).
+
 <!--# gerber-hook-knife · summary #-->
 <!-- Gerber Hook Knife -->
 <!--EN
 We tested every hook knife that we could get our hands on, and there were huge performance differences between the best and the worst. The Gerber Strap Cutter i
 EN-->
+
+Probamos todos los cuchillos gancho que pudimos conseguir, y las diferencias de rendimiento entre el mejor y el peor eran enormes. El Gerber Strap Cutter es
 
 <!--# gerber-hook-knife · descriptionMd #-->
 <!-- Gerber Hook Knife -->
@@ -865,11 +923,15 @@ EN-->
 We tested every hook knife that we could get our hands on, and there were huge performance differences between the best and the worst. The Gerber Strap Cutter is the best of the best, and cut through webbing and lines better than almost any other knife we tried. Our wingsuits and Trackwingsuits built after January of 2026 come with a hook knife pocket that fits this knife.
 EN-->
 
+Probamos todos los cuchillos gancho que pudimos conseguir, y las diferencias de rendimiento entre el mejor y el peor eran enormes. El Gerber Strap Cutter es el mejor de todos, y cortó cinta y líneas mejor que casi cualquier otro que probamos. Nuestros wingsuits y Trackwingsuits fabricados después de enero de 2026 vienen con un bolsillo para cuchillo gancho que entra justo con este.
+
 <!--# hayduke-2 · summary #-->
 <!-- Hayduke 2 -->
 <!--EN
 ULTIMATE ALL-AROUND BASE - FROM LOW-URBAN TO HIGH-ALPINE
 EN-->
+
+EL BASE TODOTERRENO DEFINITIVO: DE LO URBANO BAJO A LO ALPINO ALTO
 
 <!--# hayduke-2 · descriptionMd #-->
 <!-- Hayduke 2 -->
@@ -888,11 +950,24 @@ EN-->
 **Heavier jumpers:** Heavier jumpers (>200lbs / 100kg) may consider loading their parachute at over .68, and even as high as .75. Like lightweight jumpers, heavier jumpers must accept that the laws of physics are non-negotiable. Heavier bodies accelerate faster and commonly reach higher deployment airspeeds, which increases the force on equipment. A larger parachute does not have more lines, which means that each line and line attachment point and loaded rib are all subject to higher force during opening, which increases the strain on the equipment and therefore the risk. In terms of handling, like small parachutes, “big parachutes always act like big parachutes, regardless of wingloading”. This means that a 320 loaded at .75 will still have softer openings and less dynamic behavior than a 190 loaded at .69. This is good news for heavier jumpers in that handling characteristics do not degrade as quickly as WL increases. The main concern is the overall force that can be applied to the parachute and the rest of your load-bearing equipment. Heavier jumpers MUST carefully manage their deployment airspeed and gear configuration. A 220lb (100kg) jumper doing a terminal slick jump or tracking jump on a 290 can result in disaster (equipment failure or bodily injury, or death) if the airspeed at deployment, slider, PC, and body position are all wrong. Or, it can be a non-event if the jumper manages airspeed, chooses the correct PC, and configures their slider and packjob properly. It is your responsibility to understand the proper packing, configuration, airspeed, and body position needed for a reduced-risk parachute opening. 
 EN-->
 
+- Sistema de 5 vents y Float Flap
+- Forma transversal
+- Crossporting ampliado
+- Slider de seis ojalillos
+- Nuevo perfil de costilla sin carga
+- 100 % CAD-a-láser y corte en capa única, como todas las campanas SQRL
+
+**Carga alar:** recomendamos cargar la HD2 entre 0,60 y 0,68. Ese rango da lo que nos parece un buen equilibrio entre manejo, velocidad de avance y velocidad de descenso. NOTA: si estás en el extremo muy liviano o muy pesado del espectro, es fundamental entender que las recomendaciones de carga alar no son perfectamente lineales de una punta a la otra.
+
+**Saltadores livianos:** si bien ofrecemos talles 200 y más chicos, ya no recomendamos
+
 <!--# ibex-ul · summary #-->
 <!-- IBEX.UL -->
 <!--EN
 FOR ALPINE MISSIONS
 EN-->
+
+PARA MISIONES DE ALTA MONTAÑA
 
 <!--# ibex-ul · descriptionMd #-->
 <!-- IBEX.UL -->
@@ -917,11 +992,23 @@ NOTE: If you are on the very light or very heavy end of the spectrum, it is crit
 **Heavier jumpers:** Heavier jumpers (>200lbs / 100kg) may consider loading their parachute at over .68, and even as high as .75. Like lightweight jumpers, heavier jumpers must accept that the laws of physics are non-negotiable. Heavier bodies accelerate faster and commonly reach higher deployment airspeeds, which increases the force on equipment. A larger parachute does not have more lines, which means that each line and line attachment point and loaded rib are all subject to higher force during opening, which increases the strain on the equipment and therefore the risk. In terms of handling, like small parachutes, “big parachutes always act like big parachutes, regardless of wingloading”. This means that a 320 loaded at .75 will still have softer openings and less dynamic behavior than a 190 loaded at .69. This is good news for heavier jumpers in that handling characteristics do not degrade as quickly as WL increases. The main concern is the overall force that can be applied to the parachute and the rest of your load-bearing equipment. Heavier jumpers MUST carefully manage their deployment airspeed and gear configuration. A 220lb (100kg) jumper doing a terminal slick jump or tracking jump on a 290 can result in disaster (equipment failure or bodily injury, or death) if the airspeed at deployment, slider, PC, and body position are all wrong. Or, it can be a non-event if the jumper manages airspeed, chooses the correct PC, and configures their slider and packjob properly. It is your responsibility to understand the proper packing, configuration, airspeed, and body position needed for a reduced-risk parachute opening. 
 EN-->
 
+- **La 7 celdas más liviana**
+- **La 7 celdas de menor volumen de plegado**
+- **Manejo reactivo**
+- **Excelente flare**
+- **Vuelo en frenos profundos indulgente**
+
+La IBEX.UL está diseñada para saltar en la montaña. Es ideal para aplicaciones slider up donde el peso y el volumen de plegado son la preocupación principal.
+
+Tomando el perfil de la HAYDUKE, la IBEX.UL es eficiente y probada. El excelente planeo se debe al borde de ataque limpio y a las líneas de Spectra (UHMWPE). El manejo es reactivo, y es indulgente en frenos profundos, con una velocidad de pérdida baja incluso con cargas alares más altas. Tiene todo el flare que necesitás para altura
+
 <!--# low-ki-2 · summary #-->
 <!-- Low-Ki 2 -->
 <!--EN
 EFFICIENT ACRO PERFORMANCE
 EN-->
+
+RENDIMIENTO ACRO EFICIENTE
 
 <!--# low-ki-2 · descriptionMd #-->
 <!-- Low-Ki 2 -->
@@ -941,11 +1028,25 @@ Our mission for the Low-Ki 2 was to increase comfort and performance, in paralle
 NOTE: Our [Airfoil Cross Section](/wingsuits/options/freestyle-arm-foam) foam is recommended.
 EN-->
 
+- Ahora con gripper de carbono en la celda de punta
+- Diseño MonoChamber para agilidad compacta
+- Rendimiento acro con la mejor eficiencia de su categoría
+- Ala de pierna y cavidad de pie refinadas
+- Diseño de costillas Total-Sym para un rendimiento equilibrado de espalda y panza
+
+# El Low-Ki 2 es un traje potente de nivel principiante-intermedio, en partes iguales divertido y tranquilo.
+
+Tiene una agilidad que conforma a pilotos de acro campeones del mundo, y rendimiento suficiente para divertirse en el ambiente del BASE. Es un traje fácil de volar para la superficie y el rendimiento que tiene.
+
+Nuestra misión con el Low-Ki 2 fue aumentar comodidad y rendimiento en paralelo. El nuevo gripper de carbono en la celda de punta
+
 <!--# mission-135l · summary #-->
 <!-- Mission 135 L -->
 <!--EN
 The MSN.135L is our go-to option for big trips. It delivers massive volume, yet is very light-weight for its size. It will easily take multiple rigs and wingsui
 EN-->
+
+El MSN.135L es nuestra opción de cabecera para viajes grandes. Tiene un volumen enorme y aun así es muy liviano para su tamaño. Entran varios equipos y wingsuits
 
 <!--# mission-135l · descriptionMd #-->
 <!-- Mission 135 L -->
@@ -959,11 +1060,18 @@ The MSN.135L is our go-to option for big trips. It delivers massive volume, yet 
 - This bag is YUGE
 EN-->
 
+El MSN.135L es nuestra opción de cabecera para viajes grandes. Tiene un volumen enorme y aun así es muy liviano para su tamaño. Entran varios equipos y wingsuits sin problema. Siempre llegamos al límite de peso de la aerolínea mucho antes de quedarnos sin espacio en esta bestia. Hecho en ripstop 600D, con tres manijas reforzadas y correas de compresión laterales, es una opción liviana y duradera para mover equipo con comodidad.
+
+- Compartimento superior grande con cierre y ventana para dirección o tarjeta
+- Cinturón acolchado generoso con dos
+
 <!--# mutation-3 · summary #-->
 <!-- Mutation 3 -->
 <!--EN
 QUICK & EASY BASE PERFORMANCE
 EN-->
+
+RENDIMIENTO BASE, RÁPIDO Y FÁCIL
 
 <!--# mutation-3 · descriptionMd #-->
 <!-- Mutation 3 -->
@@ -974,11 +1082,18 @@ EN-->
 - BASE-specific storage and suit options are all included
 EN-->
 
+- Rápido y fácil de volar
+- Nueva manga de brazo y nuevas tomas de aire
+- Panel de entrepierna con fuelle en el ala de pierna, para una zancada más larga
+- Todas las opciones de almacenamiento y de traje específicas de BASE vienen incluidas
+
 <!--# ninja-hood-kit · summary #-->
 <!-- Ninja Hood Kit -->
 <!--EN
 The Ninja Hood Kit includes you everything you need to install a Ninja Hood on your current (any brand) wingsuit. Some sewing is needed: estimated sewing time i
 EN-->
+
+El Ninja Hood Kit trae todo lo que necesitás para instalar una Ninja Hood en tu wingsuit actual (de cualquier marca). Hay que coser un poco: calculamos unos
 
 <!--# ninja-hood-kit · descriptionMd #-->
 <!-- Ninja Hood Kit -->
@@ -986,11 +1101,15 @@ EN-->
 The Ninja Hood Kit includes you everything you need to install a Ninja Hood on your current (any brand) wingsuit. Some sewing is needed: estimated sewing time is 5 minutes, which we estimate to be one six-pack of beer for your local rigger or your grandmother on her sewing machine, unless of course she prefers whiskey. This is a perfect option if you have long hair - it's easier than fumbling with a buff or neck gaiter, you can't lose it or forget it because it's attached to your suit (don't worry it's also removable, it zips off) and it's super comfortable and lightweight.
 EN-->
 
+El Ninja Hood Kit trae todo lo que necesitás para instalar una Ninja Hood en tu wingsuit actual (de cualquier marca). Hay que coser un poco: calculamos unos 5 minutos de costura, lo que para nosotros equivale a un six pack de cerveza para tu rigger de confianza o para tu abuela y su máquina de coser, salvo que prefiera whisky. Es una opción perfecta si tenés el pelo largo: es más práctico que pelearse con un buff o un cuello, no lo podés perder ni olvidar porque va cosido al traje (tranquilo, también es desmontable
+
 <!--# omicron · summary #-->
 <!-- Omicron -->
 <!--EN
 ULTRA-LOW-BULK WINGSUIT SKYDIVING MAIN
 EN-->
+
+CAMPANA PRINCIPAL DE VOLUMEN ULTRABAJO PARA WINGSUIT
 
 <!--# omicron · descriptionMd #-->
 <!-- Omicron -->
@@ -1004,6 +1123,14 @@ EN-->
 The Omicron is a 7-cell ultra-low-bulk parachute for wingsuit skydiving. Think of it as a turbo-charged Epicene Pro designed for experienced wingsuiters. It is not just a material change: A new profile and improved panel shaping combine with a ZP top surface to deliver incredible flare, speed, and glide in a canopy that opens comfortably with all wingsuit types.
 EN-->
 
+- **Diseño híbrido ZP / PN9**
+- **Rendimiento y durabilidad muchísimo mejores**
+- **Nuevo perfil y nuevo borde de ataque**
+- **Menos presión en las bandas delanteras**
+- **Excelente flare en el tramo final y buena respuesta de bandas traseras**
+
+La Omicron es una campana 7 celdas de volumen ultrabajo para wingsuit. Pensala como una Epicene Pro turboalimentada, diseñada para wingsuiters experimentados. No es solo un cambio de material: un perfil nuevo y paneles mejor formados se combinan con una superficie superior en ZP para dar un flare, una velocidad y un planeo increíbles en una
+
 <!--# pocket-stache · summary #-->
 <!-- Pocket Stache -->
 <!--EN
@@ -1015,6 +1142,16 @@ EN-->
 
 The Pocket Stache is a very basic, very sta
 EN-->
+
+- Tiras levemente acolchadas
+- Un bolsillo exterior.
+- Cierre con cordón.
+- Hecha en tela de vela de 40 g/m².
+- 60 L de volumen.
+
+La Pocket Stache es una mochila muy básica y muy guardable, pensada para caminatas cortas.
+
+También es la herramienta perfecta par
 
 <!--# pocket-stache · descriptionMd #-->
 <!-- Pocket Stache -->
@@ -1032,6 +1169,18 @@ It is also a perfect tool to keep in the nutsack of your wingsuit, in case of an
 This is not a super-durable or high-tech approach pack - it is a simple and inexpensive stash bag that fits in your pocket. We made this bag because we wanted something that fit easily into our pocket, had comfortable support straps, and didn't break the bank. It's not designed to be dragged over sharp limestone in the Alps: this is a basic and non-durable pack that is meant for easy use. We like the Pocket Stache for simple urban missions, and short hikes.
 EN-->
 
+- Tiras levemente acolchadas
+- Un bolsillo exterior.
+- Cierre con cordón.
+- Hecha en tela de vela de 40 g/m².
+- 60 L de volumen.
+
+La Pocket Stache es una mochila muy básica y muy guardable, pensada para caminatas cortas.
+
+También es la herramienta perfecta para llevar en el nutsack del wingsuit, por si aterrizás afuera.
+
+No es una mochila de aproximación ultrarresistente ni de alta tecnología: es una stash bag simple y barata que entra en tu bolsillo. La hicimos porque queríamos algo que entrara fácil en el bolsillo, con tiras cómodas
+
 <!--# pocket-stache-dyneema · summary #-->
 <!-- Pocket Stache Dyneema -->
 <!--EN
@@ -1043,6 +1192,16 @@ EN-->
 
 The Pocket Stache is a very basi
 EN-->
+
+- Tiras levemente acolchadas
+- Un bolsillo exterior.
+- Cierre con cordón.
+- Hecha en ripstop reforzado con Dyneema.
+- 60 L de volumen.
+
+La Pocket Stache es una mochila muy básica y muy guardable, pensada para caminatas cortas.
+
+También es la herramienta perfec
 
 <!--# pocket-stache-dyneema · descriptionMd #-->
 <!-- Pocket Stache Dyneema -->
@@ -1060,17 +1219,33 @@ It is also a perfect tool to keep in the nutsack of your wingsuit, in case of an
 This is not high-tech approach pack - it is a simple stash bag that fits in your pocket. the Dyneema version is more durable than the less expensive sail cloth version. We made this bag because we wanted something that fit easily into our pocket and had comfortable support straps. It’s not designed to be dragged over sharp limestone in the Alps: this is a basic pack that is meant for occasional use. We like the Pocket Stache for simple urban missions, and short hikes.
 EN-->
 
+- Tiras levemente acolchadas
+- Un bolsillo exterior.
+- Cierre con cordón.
+- Hecha en ripstop reforzado con Dyneema.
+- 60 L de volumen.
+
+La Pocket Stache es una mochila muy básica y muy guardable, pensada para caminatas cortas.
+
+También es la herramienta perfecta para llevar en el nutsack del wingsuit, por si aterrizás afuera.
+
+No es una mochila de aproximación de alta tecnología: es una stash bag simple que entra en tu bolsillo. La versión en Dyneema es más resistente que la de tela de vela, que sale más barata. La hicimos porque queríamos algo
+
 <!--# rap-slings · summary #-->
 <!-- Rap Slings -->
 <!--EN
 Amsteel rappel slings for use with SQ harnesses which have rappel anchor loops. Details for use included in your harness / container manual, available on the pr
 EN-->
 
+Slings de rappel en Amsteel para arneses SQ que tienen loops de anclaje para rappel. Los detalles de uso vienen en el manual de tu arnés/contenedor, disponible en la
+
 <!--# rap-slings · descriptionMd #-->
 <!-- Rap Slings -->
 <!--EN
 Amsteel rappel slings for use with SQ harnesses which have rappel anchor loops. Details for use included in your harness / container manual, available on the product page. Locking carabiner not included.
 EN-->
+
+Slings de rappel en Amsteel para arneses SQ que tienen loops de anclaje para rappel. Los detalles de uso vienen en el manual de tu arnés/contenedor, disponible en la página del producto. No incluye mosquetón de seguridad.
 
 <!--# releasable-toggles · summary #-->
 <!-- Releasable Toggles -->
@@ -1081,6 +1256,12 @@ EN-->
 - Accidental-release-resistant
 - Open
 EN-->
+
+- Diseño totalmente original, desarrollado con Thomas Hirsch
+- Máxima simplicidad
+- La lengüeta de liberación es fácil de encontrar y fácil de sacar
+- Resistente a liberaciones accidentales
+- Diseño abierto
 
 <!--# releasable-toggles · descriptionMd #-->
 <!-- Releasable Toggles -->
@@ -1100,17 +1281,31 @@ This design is open source. You can download the ```[releasable toggle pattern f
 Sold as a pair.
 EN-->
 
+- Diseño totalmente original, desarrollado con Thomas Hirsch
+- Máxima simplicidad
+- La lengüeta de liberación es fácil de encontrar y fácil de sacar
+- Resistente a liberaciones accidentales
+- Diseño abierto
+
+El nuevo comando liberable de SQAD es robusto y confiable. El mecanismo de sujeción y liberación de la línea está anclado alrededor de la punta del comando. La línea de freno se asegura y se libera con una mecánica parecida a la de los sistemas de amarre de frenos slider off.
+
+La forma de la lengüeta y la fricción del anclaje hacen improbable una liberación accidental, y aun así
+
 <!--# sadl-sacs · summary #-->
 <!-- Sadl.Sacs -->
 <!--EN
 Additional storage for STREAM and CRUX series BASE harness container systems. Left side bag is an expandable lycra pouch, perfect for storing a rolled stashbag
 EN-->
 
+Almacenamiento extra para los contenedores de BASE de las series STREAM y CRUX. La bolsa del lado izquierdo es una funda de lycra expandible, ideal para guardar una stash bag enrollada
+
 <!--# sadl-sacs · descriptionMd #-->
 <!-- Sadl.Sacs -->
 <!--EN
 Additional storage for STREAM and CRUX series BASE harness container systems. Left side bag is an expandable lycra pouch, perfect for storing a rolled stashbag which is easily retrieved, quickdraw style. Right side is zipper-closed. These saddlebags are sold as a set of two, only. Color: Black.
 EN-->
+
+Almacenamiento extra para los contenedores de BASE de las series STREAM y CRUX. La bolsa del lado izquierdo es una funda de lycra expandible, ideal para guardar una stash bag enrollada que se saca fácil, estilo quickdraw. La del lado derecho cierra con cierre. Estas alforjas se venden únicamente como juego de dos. Color: negro.
 
 <!--# simple-stache · summary #-->
 <!-- Simple Stache -->
@@ -1119,6 +1314,8 @@ The Simple Stache is the closest thing to a "traditional" stash bag that we make
 
 It has the durability, volume,
 EN-->
+
+La Simple Stache es lo más parecido a una stash bag "tradicional" que hacemos, y es muchísimo mejor que la stash promedio...
 
 <!--# simple-stache · descriptionMd #-->
 <!-- Simple Stache -->
@@ -1133,11 +1330,22 @@ Weight: 0.6 lbs, or 260 grams.\
 Folded size: About like a Coke can, or an american burger, or your mom's fupa, depending on how you fold it.
 EN-->
 
+La Simple Stache es lo más parecido a una stash bag "tradicional" que hacemos, y es muchísimo mejor que la stash promedio...
+
+Tiene la durabilidad, el volumen y lo compacta que es una stash bag de BASE tradicional, pero con mucha mejor comodidad de carga.
+
+Tiras ergonómicas de doble cara, un cordón exterior para ajustar volumen y llevar carga, y un bolsillo exterior simple la convierten en la mejor opción para misiones de BASE básicas donde la durabilidad importa.
+
+Peso: 260 gramos.\
+Tamaño plegada: más o menos como una lata de Coca, o una
+
 <!--# skydive-risers · summary #-->
 <!-- Skydive Risers -->
 <!--EN
 For skydiving only. These 20" mini-ring Ty-17 webbing risers are our favorite for wingsuiting. The length is about right for us and our very average arms. If yo
 EN-->
+
+Solo para paracaidismo. Estas bandas de 20" con mini-anillos y cinta Ty-17 son nuestras favoritas para wingsuit. El largo nos queda bien, con nuestros brazos muy promedio. Si
 
 <!--# skydive-risers · descriptionMd #-->
 <!-- Skydive Risers -->
@@ -1145,11 +1353,15 @@ EN-->
 For skydiving only. These 20" mini-ring Ty-17 webbing risers are our favorite for wingsuiting. The length is about right for us and our very average arms. If you are massively above average you may find them short, depending on your preference and experience. In general, we like this length (not long) for wingsuiting. The brake setting is secure and the toggle size is pretty average... like our hands.
 EN-->
 
+Solo para paracaidismo. Estas bandas de 20" con mini-anillos y cinta Ty-17 son nuestras favoritas para wingsuit. El largo nos queda bien, con nuestros brazos muy promedio. Si estás muy por encima del promedio puede que te queden cortas, según tu preferencia y tu experiencia. En general nos gusta este largo (no largo) para wingsuit. El seteo de frenos es seguro y el tamaño del comando es bastante promedio... como nuestras manos.
+
 <!--# skysnatch-2 · summary #-->
 <!-- SkySnatch 2 -->
 <!--EN
 THE NEXT GENERATION OF PILOT CHUTES
 EN-->
+
+LA NUEVA GENERACIÓN DE PILOTINES
 
 <!--# skysnatch-2 · descriptionMd #-->
 <!-- SkySnatch 2 -->
@@ -1163,11 +1375,17 @@ The SkySNATCH 2 comes in 2 sizes: 26" and 30". Both are constructed from ZP with
 See below for advice on choosing your size.
 EN-->
 
+El SkySNATCH 2 parte del concepto de pilotín de arco toroidal, que demostró ser el más estable de la industria. La forma toroidal parcial en tres dimensiones es el diseño más avanzado del paracaidismo. Dicho simple: es el pilotín más eficiente y más estable que hay.
+
+Nuestro sistema de pilotín con kill-line para paracaidismo viene de fábrica con un bridle de 8 pies (del pin al punto de anclaje del pilotín, 11 pies en total), maillones de unión y manija de fibra de carbono. Está diseñado para funcionar con D-
+
 <!--# snatch-2 · summary #-->
 <!-- Snatch 2 -->
 <!--EN
 THE NEW STANDARD FOR STABILITY & RELIABILITY
 EN-->
+
+EL NUEVO ESTÁNDAR EN ESTABILIDAD Y CONFIABILIDAD
 
 <!--# snatch-2 · descriptionMd #-->
 <!-- Snatch 2 -->
@@ -1175,11 +1393,15 @@ EN-->
 The Snatch 2 continues our revolutionary toroidal arc PC concept with improved shaping for even greater stability, faster inflation, lighter weight, better durability, and the same [proven](/learn/pc-extraction-and-inflation) drag force. It is the most technically advanced design in BASE and is the most efficient, stable, and precisely-built PC in the world. Fun fact: When you order a complete BASE system a discount will automatically be applied to the contents of your cart, including to the Snatch 2.
 EN-->
 
+El Snatch 2 continúa nuestro concepto revolucionario de pilotín de arco toroidal, con una forma mejorada que da todavía más estabilidad, inflado más rápido, menos peso, mejor durabilidad y la misma fuerza de arrastre [comprobada](/learn/pc-extraction-and-inflation). Es el diseño más avanzado del BASE y el pilotín más eficiente, estable y mejor construido del mundo. Dato: cuando pedís un sistema completo de BASE se aplica automáticamente un descuento al contenido del carrito,
+
 <!--# sprint · summary #-->
 <!-- Sprint -->
 <!--EN
 A RAPID START
 EN-->
+
+UN ARRANQUE RÁPIDO
 
 <!--# sprint · descriptionMd #-->
 <!-- Sprint -->
@@ -1199,11 +1421,21 @@ If you are an instructor looking to make your FFC courses more successful, the S
 The SPRINT is meant for use in wingsuit training programs and is not for sale to the general public. We recommend purchasing a suit from the SWIFT or GüS series for the first year of wingsuit progression.
 EN-->
 
+- Paneles de brazo súper flexibles para aperturas seguras y acceso a las bandas
+- Superficie diseñada cerca del centro de gravedad del piloto, para estabilidad en cabeceo y alabeo
+- Presión interna totalmente ajustable
+- Barrido de brazo cómodo
+- Acceso fácil al BOC
+
+Apoyándose en la experiencia del equipo docente de Next Level y Lightning Flight, el SPRINT se diseñó desde cero para dar una entrada al wingsuit ultraindulgente pero realista. Es un traje para pilotos alumnos. Los paneles flexibles de brazo
+
 <!--# sqrl-soft-links · summary #-->
 <!-- SQRL Soft Links -->
 <!--EN
 SQRL Soft Links are made from CSR Braids Spectra, and have a breaking strength of 5,000 lbs. We recommend them for use with the Epicene main parachute. Install
 EN-->
+
+Los SQRL Soft Links están hechos en Spectra de CSR Braids y tienen una resistencia a la rotura de 5000 lb. Los recomendamos para usar con la campana principal Epicene. Instalalos
 
 <!--# sqrl-soft-links · descriptionMd #-->
 <!-- SQRL Soft Links -->
@@ -1211,11 +1443,15 @@ EN-->
 SQRL Soft Links are made from CSR Braids Spectra, and have a breaking strength of 5,000 lbs. We recommend them for use with the Epicene main parachute. Install only under the supervision of an experienced rigger, following the [user manual guidelines](/manuals/sqrl-soft-links) precisely. Offered with PD's blessing. (Set of 4 soft links).
 EN-->
 
+Los SQRL Soft Links están hechos en Spectra de CSR Braids y tienen una resistencia a la rotura de 5000 lb. Los recomendamos para usar con la campana principal Epicene. Instalalos únicamente bajo la supervisión de un rigger experimentado, siguiendo al pie de la letra las [indicaciones del manual](/manuals/sqrl-soft-links). Con el visto bueno de PD. (Juego de 4 soft links).
+
 <!--# stream-3 · summary #-->
 <!-- Stream 3 -->
 <!--EN
 WINGSUIT BASE PERFORMANCE & COMFORT
 EN-->
+
+RENDIMIENTO Y COMODIDAD PARA WINGSUIT BASE
 
 <!--# stream-3 · descriptionMd #-->
 <!-- Stream 3 -->
@@ -1233,11 +1469,25 @@ EN-->
 The STREAM 3 is a light, low-profile, and aerodynamic system designed for wingsuit BASE jumpers. It features class-leading pin protection and overall strength with excellent comfort in-flight and under canopy.
 EN-->
 
+*Una colaboración entre Asylum y Squirrel.
+
+- Arnés y contenedor nuevos, más livianos
+- Cinta de mezcla de Dyneema de 30 mm
+- Construcción con bartack CNC
+- Protección de pines y contra el viento insuperable
+- Contenedor largo para acceso fácil al BOC
+- Hebillas de placa antideslizantes a medida
+- Perfil fino y de baja resistencia
+
+El STREAM 3 es un sistema liviano, de perfil bajo y aerodinámico, diseñado para BASE jumpers de wingsuit. Tiene la mejor protección de pines de su categoría y una resistencia general excelente, con muy buena comodidad en vuelo y bajo campana.
+
 <!--# such-a-dbag · summary #-->
 <!-- SUCH.A.DBAG -->
 <!--EN
 We love this semi-stowless D-Bag design and have been using it since 2014. It has been a secret menu option that our friends and team pilots are now all addicte
 EN-->
+
+Nos encanta este diseño de d-bag semi-stowless y lo venimos usando desde 2014. Fue una opción de menú secreto a la que nuestros amigos y pilotos de equipo ya están todos
 
 <!--# such-a-dbag · descriptionMd #-->
 <!-- SUCH.A.DBAG -->
@@ -1251,11 +1501,19 @@ It's light. Lighter D-Bags are better for deployment. It has no magnets, and it 
 Finally, it delivers the best openings of any D-Bag we have ever used. Lines pay out smoothly with low resistance. If you're looking to get the best openings possible, combine this D-Bag with a SkySnatch. Note: This D-Bag uses a #5 grommet and it is your responsibility to ensure compatibility with your PC bridle.
 EN-->
 
+Nos encanta este diseño de d-bag semi-stowless y lo venimos usando desde 2014. Fue una opción de menú secreto a la que nuestros amigos y pilotos de equipo ya están todos enganchados, y por fin lo hicimos producto oficial. Es demasiado bueno para seguir guardándolo.
+
+Es increíblemente fácil de plegar. Amarrar las líneas lleva unos 15 segundos, porque lo único que hacés es una serie de dobleces en S y después un solo amarre.
+
+Es liviano. Los d-bags más livianos son mejores para la apertura. No tiene
+
 <!--# sumo-5 · summary #-->
 <!-- Sumo 5 -->
 <!--EN
 YOUR FIRST TRACKING SUIT
 EN-->
+
+TU PRIMER TRACKING SUIT
 
 <!--# sumo-5 · descriptionMd #-->
 <!-- Sumo 5 -->
@@ -1266,11 +1524,18 @@ EN-->
 - Solid, stable, easy to fly fast and far
 EN-->
 
+- El primer diseño de pantalón totalmente cameroado de la historia
+- Nueva planta de pantalón para mejor estabilidad y rendimiento
+- La cámara inflada del brazo da un control superior
+- Sólido, estable, fácil de volar rápido y lejos
+
 <!--# swift-5 · summary #-->
 <!-- Swift 5 -->
 <!--EN
 ACCESSIBLE PERFORMANCE
 EN-->
+
+RENDIMIENTO ACCESIBLE
 
 <!--# swift-5 · descriptionMd #-->
 <!-- Swift 5 -->
@@ -1286,11 +1551,23 @@ EN-->
 The latest iteration benefits from drag reductions in several locations including the inlet design. The planform is focused on a balance between aspect ratio and near-CG surface area. Arm wing surface area is concentrated closer to the body for stability, with a large root chord. The added surface at the wing root increases roll stability by supporting the pilot’s CG and hips.
 EN-->
 
+- Vuelo de espalda y transiciones simples
+- Borde de ataque "sin costuras"
+- Nuevas tomas de aire con válvula
+- Acceso fácil al BOC y aperturas sencillas
+- Nuevo gripper de carbono en la celda de punta
+
+# Es el primer traje perfecto. El SWIFT 5 ofrece la mayor agilidad, el mejor rendimiento y la mayor facilidad de uso para pilotos de nivel principiante-intermedio.
+
+Esta última versión se beneficia de reducciones de resistencia en varios puntos, incluido el diseño de las tomas de aire. La planta está pensada para equilibrar el alargamiento con la superficie cercana al centro de gravedad. Brazo
+
 <!--# tailgates · summary #-->
 <!-- Tailgates -->
 <!--EN
 Replacement Tailgates for BASE canopy line retention.
 EN-->
+
+Tailgates de repuesto para la retención de líneas de campanas de BASE.
 
 <!--# tailgates · descriptionMd #-->
 <!-- Tailgates -->
@@ -1298,11 +1575,15 @@ EN-->
 Replacement Tailgates for BASE canopy line retention.
 EN-->
 
+Tailgates de repuesto para la retención de líneas de campanas de BASE.
+
 <!--# trail-stache · summary #-->
 <!-- Trail Stache -->
 <!--EN
 The new Dyneema reinforced fabric version of the Trail Stache delivers 65+ liters of volume and improved carry comfort and storage options. It will fit inside y
 EN-->
+
+La nueva versión de la Trail Stache en tela reforzada con Dyneema da más de 65 litros de volumen, y mejora la comodidad de carga y las opciones de guardado. Entra dentro del
 
 <!--# trail-stache · descriptionMd #-->
 <!-- Trail Stache -->
@@ -1314,11 +1595,17 @@ This new Trail Stache design is made from more durable Dyneema weave material, a
 This bag is designed to carry gear on long missions. The articulated shoulder straps and the padded waist belt are genuinely comfortable.
 EN-->
 
+La nueva versión de la Trail Stache en tela reforzada con Dyneema da más de 65 litros de volumen, y mejora la comodidad de carga y las opciones de guardado. Entra dentro del nutsack de tu wingsuit, y también se puede llevar debajo del equipo.
+
+Este nuevo diseño de la Trail Stache está hecho con un tejido de Dyneema más resistente y viene en dos tamaños. Hay mejoras por todos lados, incluidas tiras de hombro más cómodas y más guardado exterior, un paso para hidratación,
+
 <!--# urasackofchute · summary #-->
 <!-- UrASackOfChute -->
 <!--EN
 It's a bag. For your canopy. Your Sack of Chute has riser attach points to help keep things organized if you're trying to, and it fits any size of Epicene serie
 EN-->
+
+Es una bolsa. Para tu campana. Tu Sack of Chute tiene puntos de anclaje para las bandas, para mantener todo ordenado si es que estás en esa, y entra cualquier talle de la serie Epicene
 
 <!--# urasackofchute · descriptionMd #-->
 <!-- UrASackOfChute -->
@@ -1326,11 +1613,15 @@ EN-->
 It's a bag. For your canopy. Your Sack of Chute has riser attach points to help keep things organized if you're trying to, and it fits any size of Epicene series or Omicron.
 EN-->
 
+Es una bolsa. Para tu campana. Tu Sack of Chute tiene puntos de anclaje para las bandas, para mantener todo ordenado si es que estás en esa, y entra cualquier talle de la serie Epicene o la Omicron.
+
 <!--# uratul-bag · summary #-->
 <!-- Uratul.Bag -->
 <!--EN
 It's for your tools. Or your toothbrush and shave kit. Or your camera equipment. We have several, and we use them for all of the above purposes. Clear zip pocke
 EN-->
+
+Es para tus herramientas. O para el cepillo de dientes y el kit de afeitar. O para el equipo de cámara. Tenemos varias y las usamos para todo eso. Bolsillos transparentes con cierre
 
 <!--# uratul-bag · descriptionMd #-->
 <!-- Uratul.Bag -->
@@ -1338,11 +1629,15 @@ EN-->
 It's for your tools. Or your toothbrush and shave kit. Or your camera equipment. We have several, and we use them for all of the above purposes. Clear zip pockets for the small stuff, mesh compartments for the big stuff. Fits four full-size packing clamps easily, and is just big enough for a 10" (25cm) packing stake. (Bag only, includes no tools).
 EN-->
 
+Es para tus herramientas. O para el cepillo de dientes y el kit de afeitar. O para el equipo de cámara. Tenemos varias y las usamos para todo eso. Bolsillos transparentes con cierre para lo chico, compartimentos de mesh para lo grande. Entran cuatro clamps de plegado de tamaño completo sin problema, y es justo lo bastante grande para una estaca de plegado de 25 cm. (Solo la bolsa, no incluye herramientas).
+
 <!--# vigil-cuatro · summary #-->
 <!-- Vigil Cuatro -->
 <!--EN
 Automatic activation device (AAD) with four modes: Pro, Student, Tandem and Xtreme.
 EN-->
+
+Dispositivo de activación automática (AAD) con cuatro modos: Pro, Student, Tandem y Xtreme.
 
 <!--# vigil-cuatro · descriptionMd #-->
 <!-- Vigil Cuatro -->
@@ -1362,6 +1657,18 @@ The Vigil 2+ Cuatro automatic activation device (AAD) from AAD nv/sa, Advanced A
 The manufacturer states an activation altitude accuracy of ±60 feet. More at vigil.aero.
 EN-->
 
+# Vigil Cuatro
+
+El dispositivo de activación automática (AAD) Vigil 2+ Cuatro, de AAD nv/sa, Advanced Aerospace Designs.
+
+- Cuatro modos en uno: Pro, Student, Tandem y Xtreme
+- Resistente al agua (IP68, hasta 1,8 m durante 24 horas)
+- Sin mantenimiento programado; cambio de batería entre los 8 y los 12 años
+- 20 años de vida útil
+- Cutter y controlador reemplazables en campo
+- Memoria de cantidad de saltos, tiempo de caída libre, cantidad de activaciones, presión atmosférica y temperatura
+- Caja negra
+
 <!--# weekend-50l · summary #-->
 <!-- Weekend 50 L -->
 <!--EN
@@ -1370,6 +1677,11 @@ The WKND.50 is not a stash bag. It's a 50 Liter travel bag with just the right a
 - Removable padded waist belt with two zipper pockets
 - Easy
 EN-->
+
+El WKND.50 no es una stash bag. Es un bolso de viaje de 50 litros con la cantidad justa de prestaciones:
+
+- Cinturón acolchado desmontable con dos bolsillos con cierre
+- Fácil
 
 <!--# weekend-50l · descriptionMd #-->
 <!-- Weekend 50 L -->
@@ -1385,11 +1697,23 @@ The WKND.50 is not a stash bag. It's a 50 Liter travel bag with just the right a
 - Full zip front
 EN-->
 
+El WKND.50 no es una stash bag. Es un bolso de viaje de 50 litros con la cantidad justa de prestaciones:
+
+- Cinturón acolchado desmontable con dos bolsillos con cierre
+- Bolsillo superior de acceso rápido con ventana para dirección o tarjeta
+- Dos bolsillos exteriores con cierre
+- Correas de compresión frontales
+- Correa de pecho regulable con silbato de emergencia
+- Espaldar acolchado semirrígido
+- Frente con cierre completo
+
 <!--# wingsuit-bag · summary #-->
 <!-- Wingsuit Bag -->
 <!--EN
 SQRL wingsuit bag, for all suit models.
 EN-->
+
+Bolso SQRL para wingsuit, para todos los modelos de traje.
 
 <!--# wingsuit-bag · descriptionMd #-->
 <!-- Wingsuit Bag -->
@@ -1397,14 +1721,20 @@ EN-->
 SQRL wingsuit bag, for all suit models.
 EN-->
 
+Bolso SQRL para wingsuit, para todos los modelos de traje.
+
 <!--# zipper-button-bungees · summary #-->
 <!-- Zipper Button Bungees -->
 <!--EN
 Replacement bungee / button attachments for SQRL wingsuits.
 EN-->
 
+Elásticos y botones de repuesto para wingsuits SQRL.
+
 <!--# zipper-button-bungees · descriptionMd #-->
 <!-- Zipper Button Bungees -->
 <!--EN
 Replacement bungee / button attachments for SQRL wingsuits.
 EN-->
+
+Elásticos y botones de repuesto para wingsuits SQRL.
