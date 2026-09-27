@@ -4,10 +4,11 @@ import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
 import { isLocale } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { detectLocaleFromEnvironment } from '../../i18n/detect-locale';
+import '../../i18n/i18n';
 import { BrandMark } from './BrandMark';
 import { CurrencySwitcher } from './CurrencySwitcher';
 import { LocaleSwitcher } from './LocaleSwitcher';
-import { NAV_LINKS, SITE_NAME } from './site-content';
+import { SITE_NAME } from './site-content';
 
 export function SiteNav() {
   const { user } = useAuth();
@@ -15,6 +16,7 @@ export function SiteNav() {
   const { i18n } = useTranslation();
   const { locale } = useParams<{ locale: string }>();
   const activeLocale = isLocale(locale) ? locale : undefined;
+  const t = i18n.getFixedT(activeLocale ?? detectLocaleFromEnvironment());
   const shopPath = `/${activeLocale ?? detectLocaleFromEnvironment()}/shop`;
   const shopLabel = activeLocale ? i18n.getFixedT(activeLocale)('nav.shop') : 'Shop';
   const servicesPath = shopPath.replace(/\/shop$/, '/services');
@@ -64,7 +66,10 @@ export function SiteNav() {
               overflowX: 'auto',
             }}
           >
-            {NAV_LINKS.map((link) => (
+            {[
+              { to: activeLocale ? `/${activeLocale}` : '/', label: t('site.home') },
+              { to: activeLocale ? `/${activeLocale}/about` : '/about', label: t('site.about') },
+            ].map((link) => (
               <Button
                 key={link.to}
                 component={RouterLink}
@@ -115,7 +120,7 @@ export function SiteNav() {
             ) : (
               <>
                 <Button variant="outlined" component={RouterLink} to="/login">
-                  Log in
+                  {t('site.login')}
                 </Button>
                 <Button
                   variant="contained"
@@ -124,7 +129,7 @@ export function SiteNav() {
                   to="/register"
                   sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
                 >
-                  Sign up
+                  {t('site.signup')}
                 </Button>
               </>
             )}

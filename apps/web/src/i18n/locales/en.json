@@ -9,10 +9,6 @@
   "localeSwitcher": {
     "label": "Language"
   },
-  "notFound": {
-    "title": "Page not found",
-    "body": "That language isn't one Bendike speaks yet."
-  },
   "shop": {
     "title": "Shop",
     "searchPlaceholder": "Search products",
@@ -166,5 +162,30 @@
       "send": "Send on WhatsApp",
       "invalidUrl": "Paste a full https:// link."
     }
+  },
+  "notFoundPage": {
+    "title": "We could not find that page",
+    "body": "The link may be old, or the address may have a typo. Nothing is broken on your side.",
+    "home": "Go to the home page",
+    "shop": "Browse the shop",
+    "help": "If you followed a link from Bendike to get here, tell Eca — that one is ours to fix."
+  },
+  "site": {
+    "home": "Home",
+    "about": "About",
+    "login": "Log in",
+    "signup": "Sign up",
+    "myGear": "My gear",
+    "explore": "Explore",
+    "account": "Account",
+    "contact": "Contact",
+    "legal": "Legal",
+    "cookiePolicy": "Cookie policy",
+    "cookieSettings": "Cookie settings",
+    "whatsapp": "Message Eca on WhatsApp",
+    "rights": "All rights reserved.",
+    "tagline": "Rigging loft and software, Argentina.",
+    "blurb": "Bendike is a rigging loft software I built that keeps skydivers, riggers and dropzones on top of reserve repacks, AAD service and manufacturer service bulletins. Safety first, always.",
+    "motto": "Motivated by the same passion."
   }
 }

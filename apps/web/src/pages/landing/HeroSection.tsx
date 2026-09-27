@@ -1,9 +1,10 @@
 import { Box, Button, Chip, Container, Grid, Stack, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { BrandMark } from '../../components/site/BrandMark';
-import { HERO } from './landing-content';
+import { HERO_LINKS, useLandingCopy } from './landing-content';
 
 export function HeroSection() {
+  const { hero } = useLandingCopy();
   return (
     <Box
       component="section"
@@ -21,17 +22,17 @@ export function HeroSection() {
                 variant="overline"
                 sx={{ color: 'secondary.light', letterSpacing: '0.18em', fontWeight: 700 }}
               >
-                {HERO.eyebrow}
+                {hero.eyebrow}
               </Typography>
               <Typography
                 variant="h1"
                 component="h1"
                 sx={{ fontSize: { xs: '2.5rem', md: '3.75rem' }, lineHeight: 1.1 }}
               >
-                {HERO.headline}
+                {hero.headline}
               </Typography>
               <Typography variant="h6" component="p" sx={{ color: 'rgba(255,255,255,0.82)', fontWeight: 400 }}>
-                {HERO.body}
+                {hero.body}
               </Typography>
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ pt: 1 }}>
                 <Button
@@ -39,21 +40,21 @@ export function HeroSection() {
                   color="secondary"
                   size="large"
                   component={RouterLink}
-                  to={HERO.primaryCta.to}
+                  to={HERO_LINKS.primary}
                 >
-                  {HERO.primaryCta.label}
+                  {hero.primaryCta}
                 </Button>
                 <Button
                   variant="outlined"
                   size="large"
-                  href={HERO.secondaryCta.href}
+                  href={HERO_LINKS.secondary}
                   sx={{ color: 'common.white', borderColor: 'rgba(255,255,255,0.5)' }}
                 >
-                  {HERO.secondaryCta.label}
+                  {hero.secondaryCta}
                 </Button>
               </Stack>
               <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ pt: 2 }}>
-                {HERO.highlights.map((item) => (
+                {hero.highlights.map((item) => (
                   <Chip
                     key={item}
                     label={item}

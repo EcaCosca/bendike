@@ -1,7 +1,7 @@
 import { Box, Container, Link, Typography } from '@mui/material';
 import { keyframes } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
-import { BRANDS_HEADING, DEALER_BRANDS } from './landing-content';
+import { DEALER_BRANDS, useLandingCopy } from './landing-content';
 
 const REPEATS_PER_HALF = 4;
 const REDUCED_MOTION = '@media (prefers-reduced-motion: reduce)';
@@ -17,6 +17,7 @@ const TRACK = Array.from({ length: 2 * REPEATS_PER_HALF * DEALER_BRANDS.length }
 }));
 
 export function BrandCarousel() {
+  const { brandsHeading } = useLandingCopy();
   return (
     <Box
       component="section"
@@ -32,7 +33,7 @@ export function BrandCarousel() {
           color="text.secondary"
           sx={{ display: 'block', mb: 3, letterSpacing: '0.16em' }}
         >
-          {BRANDS_HEADING}
+          {brandsHeading}
         </Typography>
       </Container>
       <Box

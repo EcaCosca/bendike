@@ -6,8 +6,12 @@ import * as useAuthModule from '../../auth/use-auth';
 import { ConsentProvider } from '../../consent/ConsentProvider';
 import { CookieSettingsDialog } from '../../consent/CookieSettingsDialog';
 import { clearConsent } from '../../consent/consent-storage';
-import { CONTACT_EMAIL, FOOTER_TAGLINE, SOCIAL_LINKS, WHATSAPP_HREF } from './site-content';
+import { CONTACT_EMAIL, SOCIAL_LINKS, WHATSAPP_HREF } from './site-content';
+import en from '../../i18n/locales/en.json';
+import es from '../../i18n/locales/es.json';
 import { SiteFooter } from './SiteFooter';
+
+const FOOTER_TAGLINE = en.site.tagline;
 
 jest.mock('../../auth/use-auth');
 
@@ -64,10 +68,12 @@ describe('SiteFooter', () => {
   test('links to the main pages, in the visitor language for the shop and services', () => {
     const footer = renderFooter(null, '/es/shop');
 
-    expect(footer.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/');
-    expect(footer.getByRole('link', { name: 'About' })).toHaveAttribute('href', '/about');
-    expect(footer.getByRole('link', { name: 'Shop' })).toHaveAttribute('href', '/es/shop');
-    expect(footer.getByRole('link', { name: 'Services' })).toHaveAttribute('href', '/es/services');
+    // Every label and every href now comes from the locale in the URL, so a Spanish
+    // reader who clicks Inicio stays in Spanish instead of landing on the English page.
+    expect(footer.getByRole('link', { name: es.site.home })).toHaveAttribute('href', '/es');
+    expect(footer.getByRole('link', { name: es.site.about })).toHaveAttribute('href', '/es/about');
+    expect(footer.getByRole('link', { name: es.nav.shop })).toHaveAttribute('href', '/es/shop');
+    expect(footer.getByRole('link', { name: es.nav.services })).toHaveAttribute('href', '/es/services');
   });
 
   test('falls back to the browser language for the shop when the page has none', () => {

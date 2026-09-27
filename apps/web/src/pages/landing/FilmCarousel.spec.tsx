@@ -3,7 +3,9 @@ import { MemoryRouter } from 'react-router-dom';
 import type { LearnItemSummary } from '@bendike/shared';
 import { listFilms } from '../learn/learn-api';
 import { FilmCarousel } from './FilmCarousel';
-import { FILMS_HEADING } from './landing-content';
+import { EN_LANDING_COPY } from './landing-content';
+
+const FILMS_HEADING = EN_LANDING_COPY.filmsHeading;
 
 jest.mock('../learn/learn-api', () => ({ listFilms: jest.fn() }));
 const listFilmsMock = listFilms as jest.MockedFunction<typeof listFilms>;

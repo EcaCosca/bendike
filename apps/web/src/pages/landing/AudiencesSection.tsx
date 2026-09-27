@@ -1,7 +1,8 @@
 import { Box, Container, Grid, Paper, Stack, Typography } from '@mui/material';
-import { AUDIENCES, AUDIENCES_HEADING } from './landing-content';
+import { useLandingCopy } from './landing-content';
 
 export function AudiencesSection() {
+  const { audiences, audiencesHeading } = useLandingCopy();
   return (
     <Box
       component="section"
@@ -11,10 +12,10 @@ export function AudiencesSection() {
       <Container maxWidth="lg">
         <Stack spacing={5}>
           <Typography variant="h2" component="h2" sx={{ fontSize: { xs: '2rem', md: '2.75rem' } }}>
-            {AUDIENCES_HEADING}
+            {audiencesHeading}
           </Typography>
           <Grid container spacing={3}>
-            {AUDIENCES.map((audience) => (
+            {audiences.map((audience) => (
               <Grid key={audience.role} size={{ xs: 12, md: 4 }}>
                 <Paper
                   elevation={0}

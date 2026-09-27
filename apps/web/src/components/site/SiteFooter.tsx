@@ -2,11 +2,13 @@ import { Box, Button, Container, Link, Stack, Typography } from '@mui/material';
 import type { ReactNode } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { isLocale } from '@bendike/shared';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../auth/use-auth';
 import { useConsent } from '../../consent/use-consent';
 import { detectLocaleFromEnvironment } from '../../i18n/detect-locale';
+import '../../i18n/i18n';
 import { BrandMark } from './BrandMark';
-import { CONTACT_EMAIL, FOOTER_BLURB, FOOTER_TAGLINE, SITE_NAME, WHATSAPP_HREF } from './site-content';
+import { CONTACT_EMAIL, SITE_NAME, WHATSAPP_HREF } from './site-content';
 import { SocialLinks } from './SocialLinks';
 
 const LINK_SX = {
@@ -34,10 +36,14 @@ function Column({ title, children }: { title: string; children: ReactNode }) {
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
+  const { i18n } = useTranslation();
   const { user } = useAuth();
   const { openSettings } = useConsent();
   const { locale } = useParams<{ locale: string }>();
   const activeLocale = isLocale(locale) ? locale : detectLocaleFromEnvironment();
+  // Bound to the locale in the URL rather than i18n's current language, so the
+  // labels and the hrefs always agree. The nav does the same.
+  const t = i18n.getFixedT(activeLocale);
 
   return (
     <Box component="footer" sx={{ bgcolor: 'primary.main', color: 'common.white', pt: { xs: 6, md: 8 }, pb: 4 }}>
@@ -57,70 +63,70 @@ export function SiteFooter() {
                   {SITE_NAME}
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
-                  {FOOTER_TAGLINE}
+                  {t('site.tagline')}
                 </Typography>
               </Box>
             </Stack>
             <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.78)', maxWidth: 360, mb: 2 }}>
-              {FOOTER_BLURB}
+              {t('site.blurb')}
             </Typography>
             <SocialLinks color="inherit" />
           </Box>
 
-          <Column title="Explore">
-            <Link component={RouterLink} to="/" sx={LINK_SX}>
-              Home
+          <Column title={t('site.explore')}>
+            <Link component={RouterLink} to={`/${activeLocale}`} sx={LINK_SX}>
+              {t('site.home')}
             </Link>
-            <Link component={RouterLink} to="/about" sx={LINK_SX}>
-              About
+            <Link component={RouterLink} to={`/${activeLocale}/about`} sx={LINK_SX}>
+              {t('site.about')}
             </Link>
             <Link component={RouterLink} to={`/${activeLocale}/shop`} sx={LINK_SX}>
-              Shop
+              {t('nav.shop')}
             </Link>
             <Link component={RouterLink} to={`/${activeLocale}/services`} sx={LINK_SX}>
-              Services
+              {t('nav.services')}
             </Link>
             <Link component={RouterLink} to={`/${activeLocale}/learn`} sx={LINK_SX}>
-              Learn
+              {t('nav.learn')}
             </Link>
           </Column>
 
-          <Column title="Account">
+          <Column title={t('site.account')}>
             {user ? (
               <Link component={RouterLink} to="/app/gear" sx={LINK_SX}>
-                My gear
+                {t('site.myGear')}
               </Link>
             ) : (
               <>
                 <Link component={RouterLink} to="/login" sx={LINK_SX}>
-                  Log in
+                  {t('site.login')}
                 </Link>
                 <Link component={RouterLink} to="/register" sx={LINK_SX}>
-                  Sign up
+                  {t('site.signup')}
                 </Link>
               </>
             )}
           </Column>
 
-          <Column title="Contact">
+          <Column title={t('site.contact')}>
             <Link href={`mailto:${CONTACT_EMAIL}`} sx={{ ...LINK_SX, wordBreak: 'break-word' }}>
               {CONTACT_EMAIL}
             </Link>
             <Link href={WHATSAPP_HREF} target="_blank" rel="noopener noreferrer" sx={LINK_SX}>
-              Message Eca on WhatsApp
+              {t('site.whatsapp')}
             </Link>
           </Column>
 
-          <Column title="Legal">
+          <Column title={t('site.legal')}>
             <Link component={RouterLink} to="/cookies" sx={LINK_SX}>
-              Cookie policy
+              {t('site.cookiePolicy')}
             </Link>
             <Button
               variant="text"
               onClick={openSettings}
               sx={{ ...LINK_SX, p: 0, minWidth: 0, textTransform: 'none', fontWeight: 400, fontSize: 'inherit' }}
             >
-              Cookie settings
+              {t('site.cookieSettings')}
             </Button>
           </Column>
         </Box>
@@ -132,8 +138,8 @@ export function SiteFooter() {
             spacing={1}
             sx={{ color: 'rgba(255,255,255,0.7)', pr: 9 }}
           >
-            <Typography variant="caption">{`© ${year} Bendike. All rights reserved.`}</Typography>
-            <Typography variant="caption">Motivated by the same passion.</Typography>
+            <Typography variant="caption">{`© ${year} Bendike. ${t('site.rights')}`}</Typography>
+            <Typography variant="caption">{t('site.motto')}</Typography>
           </Stack>
         </Box>
       </Container>

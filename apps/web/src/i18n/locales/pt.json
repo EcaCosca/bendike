@@ -9,10 +9,6 @@
   "localeSwitcher": {
     "label": "Idioma"
   },
-  "notFound": {
-    "title": "Página não encontrada",
-    "body": "Esse idioma o Bendike ainda não fala."
-  },
   "shop": {
     "title": "Loja",
     "searchPlaceholder": "Buscar produtos",
@@ -166,5 +162,30 @@
       "send": "Enviar no WhatsApp",
       "invalidUrl": "Cole um link completo começando com https://."
     }
+  },
+  "notFoundPage": {
+    "title": "Não encontramos essa página",
+    "body": "O link pode estar velho, ou o endereço pode ter um erro de digitação. Não é nada do seu lado.",
+    "home": "Ir para o início",
+    "shop": "Ver a loja",
+    "help": "Se você chegou aqui por um link do Bendike, avise o Eca: esse é nosso para consertar."
+  },
+  "site": {
+    "home": "Início",
+    "about": "Sobre o Eca",
+    "login": "Entrar",
+    "signup": "Criar conta",
+    "myGear": "Meu equipamento",
+    "explore": "Explorar",
+    "account": "Conta",
+    "contact": "Contato",
+    "legal": "Jurídico",
+    "cookiePolicy": "Política de cookies",
+    "cookieSettings": "Configurar cookies",
+    "whatsapp": "Fale com o Eca no WhatsApp",
+    "rights": "Todos os direitos reservados.",
+    "tagline": "Oficina de dobragem e software, Argentina.",
+    "blurb": "O Bendike é o software de oficina de dobragem que construí para manter paraquedistas, riggers e dropzones em dia com as redobras de reserva, o serviço de AAD e os boletins de serviço dos fabricantes. Segurança em primeiro lugar, sempre.",
+    "motto": "Movidos pela mesma paixão."
   }
 }

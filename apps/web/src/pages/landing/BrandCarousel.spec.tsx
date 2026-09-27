@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { BrandCarousel } from './BrandCarousel';
-import { BRANDS_HEADING, DEALER_BRANDS } from './landing-content';
+import { DEALER_BRANDS, EN_LANDING_COPY } from './landing-content';
+
+const BRANDS_HEADING = EN_LANDING_COPY.brandsHeading;
 
 function renderCarousel() {
   return render(

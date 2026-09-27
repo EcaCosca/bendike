@@ -1,15 +1,15 @@
-import { Container, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useParams } from 'react-router-dom';
 import { isLocale } from '@bendike/shared';
+import { NotFoundPage } from '../pages/NotFoundPage';
 import { CurrencyProvider } from '../currency/CurrencyProvider';
 import { storeLocale } from './detect-locale';
 import './i18n';
 
 export function LocaleLayout() {
   const { locale } = useParams<{ locale: string }>();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const valid = isLocale(locale);
 
   useEffect(() => {
@@ -23,14 +23,9 @@ export function LocaleLayout() {
   }, [locale, valid, i18n]);
 
   if (!valid) {
-    return (
-      <Container maxWidth="sm" sx={{ py: 8, textAlign: 'center' }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          {t('notFound.title')}
-        </Typography>
-        <Typography color="text.secondary">{t('notFound.body')}</Typography>
-      </Container>
-    );
+    // The same 404 the rest of the site shows. The bespoke message this used to
+    // render had no navigation at all, so an unsupported locale was a dead end.
+    return <NotFoundPage />;
   }
 
   return (

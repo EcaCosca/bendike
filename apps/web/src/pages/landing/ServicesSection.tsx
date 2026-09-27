@@ -4,7 +4,7 @@ import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlin
 import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
 import { Box, Card, CardContent, Container, Grid, Stack, Typography } from '@mui/material';
 import type { ReactElement } from 'react';
-import { SERVICES, SERVICES_HEADING } from './landing-content';
+import { useLandingCopy } from './landing-content';
 
 const SERVICE_ICONS: readonly ReactElement[] = [
   <BuildOutlinedIcon key="rigging" fontSize="large" color="secondary" />,
@@ -14,15 +14,16 @@ const SERVICE_ICONS: readonly ReactElement[] = [
 ];
 
 export function ServicesSection() {
+  const { services, servicesHeading } = useLandingCopy();
   return (
     <Box component="section" id="services" sx={{ py: { xs: 8, md: 12 } }}>
       <Container maxWidth="lg">
         <Stack spacing={5}>
           <Typography variant="h2" component="h2" sx={{ fontSize: { xs: '2rem', md: '2.75rem' } }}>
-            {SERVICES_HEADING}
+            {servicesHeading}
           </Typography>
           <Grid container spacing={3}>
-            {SERVICES.map((service, index) => (
+            {services.map((service, index) => (
               <Grid key={service.title} size={{ xs: 12, sm: 6, md: 3 }}>
                 <Card variant="outlined" sx={{ height: '100%' }}>
                   <CardContent sx={{ p: 3 }}>

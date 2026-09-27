@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { BrandMark } from '../../../components/site/BrandMark';
 import { SOCIAL_LINKS, WHATSAPP_HREF, WHATSAPP_LABEL } from '../../../components/site/site-content';
-import { ABOUT_ASSETS, CAREER, CHAPTERS, CTA_LABEL, TITLE, imageSources } from './about-story-content';
+import { ABOUT_ASSETS, imageSources, useAboutCopy } from './about-story-content';
 import { Vignette } from './Vignette';
 import { HERO_CLIP, PREP_CLIPS } from './vignette-content';
 
@@ -20,6 +20,7 @@ function FolioMark({ number, title }: { number: string; title: string }) {
 }
 
 export function TitlePage() {
+  const { title: TITLE } = useAboutCopy();
   return (
     <section className="as-title" data-sc-act="flow" data-chapter="title">
       <div className="sc-wrap as-title__wrap">
@@ -99,7 +100,8 @@ export function FlightChapter() {
 const PREP_DIRECTIONS = ['up', 'left', 'right', 'up', 'down', 'left', 'right', 'up'] as const;
 
 export function PreparationChapter() {
-  const chapter = CHAPTERS.preparation;
+  const { chapters } = useAboutCopy();
+  const chapter = chapters.preparation;
   return (
     <section className="sc-section as-prep" data-sc-act="flow" data-chapter="preparation">
       <div className="sc-wrap">
@@ -139,7 +141,8 @@ export function PreparationChapter() {
 }
 
 export function LoftChapter() {
-  const chapter = CHAPTERS.loft;
+  const { chapters } = useAboutCopy();
+  const chapter = chapters.loft;
   return (
     <section className="sc-section as-loft" data-sc-act="flow" data-chapter="loft">
       <div className="sc-wrap as-spread">
@@ -176,7 +179,8 @@ export function LoftChapter() {
 }
 
 export function AirAndCodeChapter() {
-  const chapter = CHAPTERS.airAndCode;
+  const { chapters } = useAboutCopy();
+  const chapter = chapters.airAndCode;
   return (
     <section className="sc-section as-code" data-sc-act="flow" data-chapter="airAndCode">
       <div className="sc-wrap as-spread as-spread--reverse">
@@ -216,7 +220,8 @@ export function AirAndCodeChapter() {
 }
 
 export function SonsChapter() {
-  const chapter = CHAPTERS.sons;
+  const { chapters } = useAboutCopy();
+  const chapter = chapters.sons;
   return (
     <section className="sc-section as-sons" data-sc-act="flow" data-chapter="sons">
       <div className="sc-wrap as-sons__grid">
@@ -242,7 +247,8 @@ export function SonsChapter() {
 }
 
 export function Colophon() {
-  const chapter = CHAPTERS.colophon;
+  const { chapters, ctaLabel, career } = useAboutCopy();
+  const chapter = chapters.colophon;
   return (
     <section className="sc-section as-colophon" data-sc-act="flow" data-chapter="colophon">
       <div className="sc-wrap">
@@ -253,7 +259,7 @@ export function Colophon() {
           <p className="as-colophon__cta">
             {chapter.ctaLead}{' '}
             <RouterLink to="/register" className="as-running-link">
-              {CTA_LABEL}
+              {ctaLabel}
             </RouterLink>
             .
           </p>
@@ -261,7 +267,7 @@ export function Colophon() {
         <div className="as-colophon__plate">
           <div className="as-colophon__columns">
             <dl className="as-credentials as-credentials--small">
-              {CHAPTERS.loft.credentials.map((credential) => (
+              {chapters.loft.credentials.map((credential) => (
                 <div key={credential.text} className="as-credentials__row">
                   <dt className="sc-nums">{credential.year}</dt>
                   <dd>{credential.text}</dd>
@@ -269,7 +275,7 @@ export function Colophon() {
               ))}
             </dl>
             <dl className="as-credentials as-credentials--small">
-              {CAREER.map((entry) => (
+              {career.map((entry) => (
                 <div key={entry.text} className="as-credentials__row">
                   <dt className="sc-nums">{entry.date}</dt>
                   <dd>{entry.text}</dd>

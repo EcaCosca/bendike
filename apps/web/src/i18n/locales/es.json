@@ -9,10 +9,6 @@
   "localeSwitcher": {
     "label": "Idioma"
   },
-  "notFound": {
-    "title": "Página no encontrada",
-    "body": "Ese idioma todavía no lo habla Bendike."
-  },
   "shop": {
     "title": "Tienda",
     "searchPlaceholder": "Buscar productos",
@@ -166,5 +162,30 @@
       "send": "Enviar por WhatsApp",
       "invalidUrl": "Pegá un enlace completo que empiece con https://."
     }
+  },
+  "notFoundPage": {
+    "title": "No encontramos esa página",
+    "body": "Puede que el enlace sea viejo, o que la dirección tenga un error de tipeo. No es nada tuyo.",
+    "home": "Ir al inicio",
+    "shop": "Ver la tienda",
+    "help": "Si llegaste acá desde un enlace de Bendike, avisale a Eca: ese lo tenemos que arreglar nosotros."
+  },
+  "site": {
+    "home": "Inicio",
+    "about": "Sobre Eca",
+    "login": "Ingresar",
+    "signup": "Crear cuenta",
+    "myGear": "Mi equipo",
+    "explore": "Explorar",
+    "account": "Cuenta",
+    "contact": "Contacto",
+    "legal": "Legal",
+    "cookiePolicy": "Política de cookies",
+    "cookieSettings": "Configurar cookies",
+    "whatsapp": "Escribile a Eca por WhatsApp",
+    "rights": "Todos los derechos reservados.",
+    "tagline": "Taller de plegado y software, Argentina.",
+    "blurb": "Bendike es el software de taller de plegado que construí para mantener a paracaidistas, riggers y dropzones al día con los replegados de reserva, el servicio de AAD y los boletines de servicio de los fabricantes. La seguridad primero, siempre.",
+    "motto": "Movidos por la misma pasión."
   }
 }

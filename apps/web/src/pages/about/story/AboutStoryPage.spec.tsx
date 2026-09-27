@@ -3,9 +3,12 @@ import { MemoryRouter } from 'react-router-dom';
 import * as authApi from '../../../auth/auth-api';
 import * as useAuthModule from '../../../auth/use-auth';
 import { SOCIAL_LINKS, WHATSAPP_LABEL } from '../../../components/site/site-content';
-import { CAREER, CHAPTERS, CTA_LABEL, TITLE } from './about-story-content';
+import { EN_ABOUT_COPY } from './about-story-copy';
+
 import { HERO_CLIP, PREP_CLIPS, VIGNETTES } from './vignette-content';
 import { AboutStoryPage } from './AboutStoryPage';
+
+const { title: TITLE, chapters: CHAPTERS, career: CAREER, ctaLabel: CTA_LABEL } = EN_ABOUT_COPY;
 
 jest.mock('../scrollcraft/scrollcraft.js', () => ({}));
 jest.mock('../../../auth/auth-api');

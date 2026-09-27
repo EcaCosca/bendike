@@ -7,7 +7,7 @@ import type { LearnItemSummary } from '@bendike/shared';
 import { isLocale, pickLocalized } from '@bendike/shared';
 import { detectLocaleFromEnvironment } from '../../i18n/detect-locale';
 import { listFilms } from '../learn/learn-api';
-import { FILMS_HEADING, FILMS_INTRO } from './landing-content';
+import { useLandingCopy } from './landing-content';
 import { useFilmBackdrop, useInView, usePrefersReducedMotion, useScrollProgress } from './useFilmBackdrop';
 
 const CARD_WIDTH = { xs: 248, md: 300 };
@@ -34,6 +34,7 @@ function shuffle<T>(items: T[]): T[] {
 }
 
 export function FilmCarousel() {
+  const { filmsHeading, filmsIntro } = useLandingCopy();
   const { locale } = useParams<{ locale: string }>();
   const activeLocale = isLocale(locale) ? locale : detectLocaleFromEnvironment();
   const [films, setFilms] = useState<LearnItemSummary[]>([]);
@@ -136,10 +137,10 @@ export function FilmCarousel() {
           component="h2"
           sx={{ display: 'block', mb: 0.5, letterSpacing: '0.16em', color: 'secondary.main' }}
         >
-          {FILMS_HEADING}
+          {filmsHeading}
         </Typography>
         <Typography variant="body2" sx={{ mb: 3, color: 'rgba(255,255,255,0.72)', maxWidth: '60ch' }}>
-          {FILMS_INTRO}
+          {filmsIntro}
         </Typography>
 
         <Box

@@ -4,8 +4,10 @@ import { MemoryRouter } from 'react-router-dom';
 import * as authApi from '../../auth/auth-api';
 import * as useAuthModule from '../../auth/use-auth';
 import { SOCIAL_LINKS, WHATSAPP_LABEL, WHATSAPP_NUMBER } from '../../components/site/site-content';
-import { ABOUT_TEASER, AUDIENCES, HERO, SERVICES } from './landing-content';
+import { ABOUT_TEASER_ASSETS, EN_LANDING_COPY } from './landing-content';
 import { LandingPage } from './LandingPage';
+
+const { hero: HERO, services: SERVICES, audiences: AUDIENCES, aboutTeaser: ABOUT_TEASER } = EN_LANDING_COPY;
 
 jest.mock('../../auth/use-auth');
 jest.mock('../../auth/auth-api');
@@ -86,10 +88,10 @@ describe('LandingPage', () => {
     });
 
     test('introduces Eca, Argentina and the safety priority, and points to the About page', () => {
-      expect(screen.getByRole('heading', { level: 2, name: ABOUT_TEASER.displayName })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 2, name: ABOUT_TEASER_ASSETS.displayName })).toBeInTheDocument();
       expect(screen.getByText(ABOUT_TEASER.location)).toBeInTheDocument();
       expect(screen.getByText(/safety is my main priority/i)).toBeInTheDocument();
-      expect(screen.getByRole('link', { name: ABOUT_TEASER.cta.label })).toHaveAttribute('href', '/about');
+      expect(screen.getByRole('link', { name: ABOUT_TEASER.cta })).toHaveAttribute('href', '/about');
     });
 
     test.each(SOCIAL_LINKS)('links to $label in the about section and the footer, opening safely', (link) => {

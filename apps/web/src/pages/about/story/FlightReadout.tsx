@@ -1,5 +1,5 @@
 import { useEffect, useState, type RefObject } from 'react';
-import { ABOUT_ASSETS, CHAPTERS } from './about-story-content';
+import { ABOUT_ASSETS, useAboutCopy } from './about-story-content';
 import { glideRatio, sampleAt, type FlightTrack, type TrackSample } from './flight-track';
 
 const formatInt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
@@ -45,17 +45,21 @@ export function FlightReadout({ video }: { video: RefObject<HTMLVideoElement | n
     return () => cancelAnimationFrame(frame);
   }, [track, video]);
 
+  // Above the early return: a hook after a conditional return is a Rules of Hooks
+  // violation and breaks the moment the track loads and the component re-renders.
+  const { chapters } = useAboutCopy();
+
   if (!track || !sample) {
     return null;
   }
 
-  const labels = CHAPTERS.air.readout.labels;
+  const labels = chapters.air.readout.labels;
   const glide = glideRatio(sample);
 
   return (
     <dl
       className="as-readout"
-      aria-label={CHAPTERS.air.readout.title}
+      aria-label={chapters.air.readout.title}
       data-sc-verify-state={`${Math.round(sample.alt)}:${Math.round(sample.hs)}`}
     >
       <div className="as-readout__cell">
