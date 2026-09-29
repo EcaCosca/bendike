@@ -17,12 +17,14 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import type { BulletinMatchView } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
-import { KIND_LABELS } from '../gear/item-details';
-import { SEVERITY_COLORS, SEVERITY_LABELS } from './bulletin-labels';
+import '../../i18n/i18n';
+import { KIND_LABEL_KEYS } from '../gear/item-details';
+import { SEVERITY_COLORS, SEVERITY_LABEL_KEYS } from './bulletin-labels';
 import { listMatches } from './bulletins-api';
 import { GroundDialog } from './GroundDialog';
 import { ResolveMatchDialog } from './ResolveMatchDialog';
@@ -30,6 +32,7 @@ import { ResolveMatchDialog } from './ResolveMatchDialog';
 type Dialog = { type: 'resolve'; match: BulletinMatchView } | { type: 'ground'; match: BulletinMatchView } | null;
 
 export function BulletinMatchesPage() {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [matches, setMatches] = useState<BulletinMatchView[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -41,8 +44,8 @@ export function BulletinMatchesPage() {
   }, [token, includeResolved]);
 
   useEffect(() => {
-    load().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not load the matches'));
-  }, [load]);
+    load().catch((err: unknown) => setError(err instanceof Error ? err.message : t('bulletins.matches.loadFailed')));
+  }, [load, t]);
 
   const groups = useMemo(() => {
     const byBulletin = new Map<string, BulletinMatchView[]>();
@@ -54,7 +57,7 @@ export function BulletinMatchesPage() {
 
   if (!token) return null;
   const refresh = () => {
-    load().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not refresh'));
+    load().catch((err: unknown) => setError(err instanceof Error ? err.message : t('bulletins.matches.refreshFailed')));
   };
 
   return (
@@ -62,23 +65,20 @@ export function BulletinMatchesPage() {
       <Stack spacing={3}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ flexWrap: 'wrap', rowGap: 1 }}>
           <Typography variant="h4" component="h1">
-            Service bulletins
+            {t('bulletins.matches.title')}
           </Typography>
           <Button component={RouterLink} to="/app/work" variant="outlined">
-            Work queue
+            {t('bulletins.matches.workQueue')}
           </Button>
         </Stack>
-        <Typography color="text.secondary">
-          Components of the owners you look after that a published bulletin applies to. Resolve each one, and ground a
-          rig when it should not be used until you say so.
-        </Typography>
+        <Typography color="text.secondary">{t('bulletins.matches.intro')}</Typography>
         {error && <Alert severity="error">{error}</Alert>}
         <FormControlLabel
           control={<Checkbox checked={includeResolved} onChange={(e) => setIncludeResolved(e.target.checked)} />}
-          label="Show resolved matches too"
+          label={t('bulletins.matches.showResolved')}
         />
         {matches && matches.length === 0 && (
-          <Typography color="text.secondary">No open matches. Nothing to review.</Typography>
+          <Typography color="text.secondary">{t('bulletins.matches.empty')}</Typography>
         )}
         {groups.map((group) => {
           const bulletin = (group[0] as BulletinMatchView).bulletin;
@@ -92,7 +92,7 @@ export function BulletinMatchesPage() {
                   <Chip
                     size="small"
                     color={SEVERITY_COLORS[bulletin.severity]}
-                    label={SEVERITY_LABELS[bulletin.severity]}
+                    label={t(SEVERITY_LABEL_KEYS[bulletin.severity])}
                   />
                   <Typography variant="body2" color="text.secondary">
                     {bulletin.manufacturer} · {bulletin.reference}
@@ -101,18 +101,18 @@ export function BulletinMatchesPage() {
                 <Typography variant="body2">{bulletin.requiredAction}</Typography>
                 {bulletin.sourceUrl && (
                   <Link href={bulletin.sourceUrl} target="_blank" rel="noreferrer" variant="body2">
-                    Manufacturer bulletin
+                    {t('bulletins.matches.manufacturerBulletin')}
                   </Link>
                 )}
               </Stack>
               <TableContainer component={Paper} variant="outlined">
-                <Table size="small" aria-label={`Matches for ${bulletin.reference}`}>
+                <Table size="small" aria-label={t('bulletins.matches.table', { reference: bulletin.reference })}>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Customer</TableCell>
-                      <TableCell>Rig</TableCell>
-                      <TableCell>Component</TableCell>
-                      <TableCell>Status</TableCell>
+                      <TableCell>{t('bulletins.matches.customer')}</TableCell>
+                      <TableCell>{t('bulletins.matches.rig')}</TableCell>
+                      <TableCell>{t('bulletins.matches.component')}</TableCell>
+                      <TableCell>{t('bulletins.matches.status')}</TableCell>
                       <TableCell />
                     </TableRow>
                   </TableHead>
@@ -131,27 +131,31 @@ export function BulletinMatchesPage() {
                               {match.rig.name}
                             </Link>
                           ) : (
-                            'Spare gear'
+                            t('bulletins.matches.spareGear')
                           )}
                         </TableCell>
                         <TableCell>
-                          {KIND_LABELS[match.item.kind]}: {match.item.manufacturer} {match.item.model}
+                          {t(KIND_LABEL_KEYS[match.item.kind])}: {match.item.manufacturer} {match.item.model}
                           {match.item.serial ? ` #${match.item.serial}` : ''}
                         </TableCell>
                         <TableCell>
                           <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', rowGap: 0.5 }}>
                             {match.status === 'open' ? (
-                              <Chip size="small" variant="outlined" label="Open" />
+                              <Chip size="small" variant="outlined" label={t('bulletins.matches.open')} />
                             ) : (
                               <Chip
                                 size="small"
                                 color="success"
                                 variant="outlined"
-                                label={match.status === 'complied' ? 'Complied' : 'Not applicable'}
+                                label={
+                                  match.status === 'complied'
+                                    ? t('bulletins.matches.complied')
+                                    : t('bulletins.matches.notApplicable')
+                                }
                               />
                             )}
                             {match.confidence === 'needs_review' && (
-                              <Chip size="small" color="warning" label="Needs review" />
+                              <Chip size="small" color="warning" label={t('bulletins.matches.needsReview')} />
                             )}
                           </Stack>
                           {match.resolutionNote && (
@@ -168,10 +172,10 @@ export function BulletinMatchesPage() {
                                 variant="outlined"
                                 onClick={() => setDialog({ type: 'resolve', match })}
                               >
-                                Resolve
+                                {t('bulletins.matches.resolve')}
                               </Button>
                               <Button size="small" color="error" onClick={() => setDialog({ type: 'ground', match })}>
-                                {match.rig ? 'Ground rig' : 'Ground component'}
+                                {match.rig ? t('bulletins.matches.groundRig') : t('bulletins.matches.groundComponent')}
                               </Button>
                             </Stack>
                           )}

@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   LIBRARY_DOCUMENT_KINDS,
   LIBRARY_MAX_BYTES,
@@ -19,9 +20,10 @@ import {
   type GearModelView,
   type LibraryDocumentKind,
 } from '@bendike/shared';
-import { KIND_LABELS as GEAR_KIND_LABELS } from '../gear/item-details';
+import '../../i18n/i18n';
+import { KIND_LABEL_KEYS as GEAR_KIND_LABEL_KEYS } from '../gear/item-details';
 import { listModels } from '../gear/gear-api';
-import { KIND_LABELS, formatBytes } from './library-labels';
+import { KIND_LABEL_KEYS, formatBytes } from './library-labels';
 import { uploadDocument } from './library-api';
 
 interface AddDocumentDialogProps {
@@ -31,6 +33,7 @@ interface AddDocumentDialogProps {
 }
 
 export function AddDocumentDialog({ token, onClose, onSaved }: AddDocumentDialogProps) {
+  const { t } = useTranslation();
   const [models, setModels] = useState<GearModelView[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
@@ -78,29 +81,29 @@ export function AddDocumentDialog({ token, onClose, onSaved }: AddDocumentDialog
       onSaved();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not add the document');
+      setError(err instanceof Error ? err.message : t('library.add.saveFailed'));
       setSaving(false);
     }
   }
 
   function validate(): string | null {
-    if (!file) return 'Choose a PDF file';
-    if (file.size > LIBRARY_MAX_BYTES) return 'The file is over the 25 MB limit';
-    if (title.trim() === '') return 'Give the document a title';
-    if (!model && manufacturer.trim() === '') return 'Choose a model or say which manufacturer it is from';
-    if (sourceUrl.trim() !== '' && !isHttpsUrl(sourceUrl)) return 'The source link must start with https://';
+    if (!file) return t('library.add.needFile');
+    if (file.size > LIBRARY_MAX_BYTES) return t('library.add.tooLarge');
+    if (title.trim() === '') return t('library.add.needTitle');
+    if (!model && manufacturer.trim() === '') return t('library.add.needModelOrManufacturer');
+    if (sourceUrl.trim() !== '' && !isHttpsUrl(sourceUrl)) return t('library.add.badSourceUrl');
     return null;
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="sm" component="form" onSubmit={(e) => void submit(e)}>
-      <DialogTitle>Add to the Library</DialogTitle>
+      <DialogTitle>{t('library.add.title')}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
           <Box>
             <Button component="label" variant="outlined">
-              Choose PDF
+              {t('library.add.choosePdf')}
               <input
                 hidden
                 type="file"
@@ -109,62 +112,71 @@ export function AddDocumentDialog({ token, onClose, onSaved }: AddDocumentDialog
               />
             </Button>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              {file ? `${file.name} (${formatBytes(file.size)})` : 'PDF only, up to 25 MB'}
+              {file ? `${file.name} (${formatBytes(file.size)})` : t('library.add.pdfOnly')}
             </Typography>
           </Box>
-          <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-          <TextField select label="Kind" value={kind} onChange={(e) => setKind(e.target.value as LibraryDocumentKind)}>
+          <TextField label={t('library.add.docTitle')} value={title} onChange={(e) => setTitle(e.target.value)} />
+          <TextField
+            select
+            label={t('library.add.kind')}
+            value={kind}
+            onChange={(e) => setKind(e.target.value as LibraryDocumentKind)}
+          >
             {LIBRARY_DOCUMENT_KINDS.map((k) => (
               <MenuItem key={k} value={k}>
-                {KIND_LABELS[k]}
+                {t(KIND_LABEL_KEYS[k])}
               </MenuItem>
             ))}
           </TextField>
           <TextField
             select
-            label="Model"
+            label={t('library.add.model')}
             value={modelId}
             onChange={(e) => setModelId(e.target.value)}
             slotProps={{ inputLabel: { shrink: true }, select: { displayEmpty: true } }}
           >
-            <MenuItem value="">No specific model</MenuItem>
+            <MenuItem value="">{t('library.add.noModel')}</MenuItem>
             {models.map((m) => (
               <MenuItem key={m.id} value={m.id}>
-                {`${m.manufacturer} ${m.model} (${GEAR_KIND_LABELS[m.kind]})`}
+                {`${m.manufacturer} ${m.model} (${t(GEAR_KIND_LABEL_KEYS[m.kind])})`}
               </MenuItem>
             ))}
           </TextField>
           {!model && (
-            <TextField label="Manufacturer" value={manufacturer} onChange={(e) => setManufacturer(e.target.value)} />
+            <TextField
+              label={t('library.add.manufacturer')}
+              value={manufacturer}
+              onChange={(e) => setManufacturer(e.target.value)}
+            />
           )}
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
-              label="Revision"
+              label={t('library.add.revision')}
               value={revision}
               onChange={(e) => setRevision(e.target.value)}
-              helperText="For example Rev4"
+              helperText={t('library.add.revisionHint')}
               sx={{ flex: 1 }}
             />
             <TextField
-              label="Language"
+              label={t('library.add.language')}
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              helperText="For example en"
+              helperText={t('library.add.languageHint')}
               sx={{ flex: 1 }}
             />
           </Stack>
           <TextField
-            label="Source link"
+            label={t('library.add.sourceUrl')}
             value={sourceUrl}
             onChange={(e) => setSourceUrl(e.target.value)}
-            helperText="Where it was downloaded from (kept as a reference)"
+            helperText={t('library.add.sourceUrlHint')}
           />
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('library.add.cancel')}</Button>
         <Button type="submit" variant="contained" disabled={saving}>
-          Add document
+          {t('library.add.save')}
         </Button>
       </DialogActions>
     </Dialog>

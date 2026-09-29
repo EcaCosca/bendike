@@ -1,10 +1,12 @@
 import { Alert, Link, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Role, type GearItemDetailView, type LearnItemSummary, type MaintenanceEntryView } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
 import { detectLocaleFromEnvironment } from '../../i18n/detect-locale';
+import '../../i18n/i18n';
 import { listLearnForGearItem } from '../learn/learn-api';
 import { LearnSection } from '../learn/LearnSection';
 import { canSignOff } from './entry-kinds';
@@ -17,6 +19,7 @@ import { useComponentActions } from './use-component-actions';
 import { VoidDialog } from './VoidDialog';
 
 export function ItemPage() {
+  const { t } = useTranslation();
   const { itemId = '' } = useParams();
   const { token, user } = useAuth();
   const [item, setItem] = useState<GearItemDetailView | null>(null);
@@ -40,8 +43,8 @@ export function ItemPage() {
   }, [reload]);
 
   const onChanged = useCallback(() => {
-    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not refresh'));
-  }, [reload]);
+    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : t('gear.item.refreshFailed')));
+  }, [reload, t]);
 
   const { actions, dialogs } = useComponentActions({
     token: token ?? '',
@@ -54,7 +57,7 @@ export function ItemPage() {
   if (!token || !user) return null;
   const verify = (entryId: string) => {
     verifyEntry(token, entryId).then(onChanged, (err: unknown) =>
-      setError(err instanceof Error ? err.message : 'Could not verify the entry'),
+      setError(err instanceof Error ? err.message : t('gear.item.verifyFailed')),
     );
   };
   const canEdit = user.role === Role.Admin || item?.ownerId === user.id;
@@ -63,9 +66,9 @@ export function ItemPage() {
     <AppShell>
       <Stack spacing={3}>
         <Link component={RouterLink} to={item?.rigId ? `/app/gear/${item.rigId}` : '/app/gear'} underline="hover">
-          Back
+          {t('gear.item.back')}
         </Link>
-        {unavailable && <Alert severity="warning">This component is not available.</Alert>}
+        {unavailable && <Alert severity="warning">{t('gear.item.unavailable')}</Alert>}
         {error && <Alert severity="error">{error}</Alert>}
         {item && (
           <>
@@ -87,12 +90,16 @@ export function ItemPage() {
               onEditPart={(part) => actions.editPart(item, part)}
               onDeletePart={actions.removePart}
             />
-            <LearnSection title="Learn about your gear" items={learnItems} locale={detectLocaleFromEnvironment()} />
+            <LearnSection
+              title={t('gear.rig.learnAboutYourGear')}
+              items={learnItems}
+              locale={detectLocaleFromEnvironment()}
+            />
             {item.kind === 'reserve' && (
               <PackingLog token={token} role={user.role} scope={{ reserveItemId: item.id }} />
             )}
             <Typography variant="h5" component="h2">
-              History
+              {t('gear.common.history')}
             </Typography>
             <HistoryTable
               entries={item.entries}

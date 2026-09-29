@@ -19,11 +19,13 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GEAR_KINDS, isHttpsUrl, type GearKind, type GearModelView } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { createModel, listModels, updateModel } from './gear-api';
-import { KIND_LABELS } from './item-details';
+import { KIND_LABEL_KEYS } from './item-details';
 
 function toNumber(value: string): number | null {
   return value.trim() === '' ? null : Number(value);
@@ -40,6 +42,7 @@ function ModelDialog({
   onClose: () => void;
   onSaved: () => void;
 }) {
+  const { t } = useTranslation();
   const [kind, setKind] = useState<GearKind>(model?.kind ?? 'aad');
   const [manufacturer, setManufacturer] = useState(model?.manufacturer ?? '');
   const [name, setName] = useState(model?.model ?? '');
@@ -54,12 +57,12 @@ function ModelDialog({
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!manufacturer.trim() || !name.trim()) {
-      setError('Enter the manufacturer and the model.');
+      setError(t('gear.models.enterManufacturerModel'));
       return;
     }
     const link = bulletinsUrl.trim();
     if (link !== '' && !isHttpsUrl(link)) {
-      setError('The bulletins link must start with https://');
+      setError(t('gear.models.bulletinsHttps'));
       return;
     }
     setSaving(true);
@@ -92,68 +95,77 @@ function ModelDialog({
       onSaved();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the model');
+      setError(err instanceof Error ? err.message : t('gear.models.saveFailed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="xs" component="form" onSubmit={(event) => void submit(event)}>
-      <DialogTitle>{model ? 'Edit model' : 'Add model'}</DialogTitle>
+      <DialogTitle>{model ? t('gear.models.editTitle') : t('gear.models.add')}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
           {!model && (
-            <TextField select label="Kind" value={kind} onChange={(e) => setKind(e.target.value as GearKind)}>
+            <TextField
+              select
+              label={t('gear.common.kind')}
+              value={kind}
+              onChange={(e) => setKind(e.target.value as GearKind)}
+            >
               {GEAR_KINDS.map((k) => (
                 <MenuItem key={k} value={k}>
-                  {KIND_LABELS[k]}
+                  {t(KIND_LABEL_KEYS[k])}
                 </MenuItem>
               ))}
             </TextField>
           )}
-          <TextField label="Manufacturer" value={manufacturer} onChange={(e) => setManufacturer(e.target.value)} />
-          <TextField label="Model" value={name} onChange={(e) => setName(e.target.value)} />
           <TextField
-            label="Repack cycle (days)"
+            label={t('gear.common.manufacturer')}
+            value={manufacturer}
+            onChange={(e) => setManufacturer(e.target.value)}
+          />
+          <TextField label={t('gear.common.model')} value={name} onChange={(e) => setName(e.target.value)} />
+          <TextField
+            label={t('gear.models.repackCycle')}
             type="number"
             value={repack}
             onChange={(e) => setRepack(e.target.value)}
-            helperText="Reserves. Empty means 180 days"
+            helperText={t('gear.models.repackCycleHint')}
           />
           <TextField
-            label="Service interval (months)"
+            label={t('gear.models.serviceInterval')}
             type="number"
             value={service}
             onChange={(e) => setService(e.target.value)}
-            helperText="AADs"
+            helperText={t('gear.models.aads')}
           />
           <TextField
-            label="Battery cycle (months)"
+            label={t('gear.models.batteryCycle')}
             type="number"
             value={battery}
             onChange={(e) => setBattery(e.target.value)}
-            helperText="AADs"
+            helperText={t('gear.models.aads')}
           />
           <TextField
-            label="Life (years)"
+            label={t('gear.models.lifeYears')}
             type="number"
             value={life}
             onChange={(e) => setLife(e.target.value)}
-            helperText="Counted from the date of manufacture"
+            helperText={t('gear.models.lifeHint')}
           />
           <TextField
-            label="Bulletins link"
+            label={t('gear.models.bulletinsLink')}
             value={bulletinsUrl}
             onChange={(e) => setBulletinsUrl(e.target.value)}
-            helperText="The manufacturer's service bulletins page, offered to riggers at every repack"
+            helperText={t('gear.models.bulletinsHint')}
           />
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('gear.common.cancel')}</Button>
         <Button type="submit" variant="contained" disabled={saving}>
-          Save
+          {t('gear.common.save')}
         </Button>
       </DialogActions>
     </Dialog>
@@ -161,6 +173,7 @@ function ModelDialog({
 }
 
 export function GearModelsPage() {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [models, setModels] = useState<GearModelView[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -172,15 +185,15 @@ export function GearModelsPage() {
   }, [token]);
 
   useEffect(() => {
-    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not load the catalogue'));
-  }, [reload]);
+    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : t('gear.models.loadFailed')));
+  }, [reload, t]);
 
   if (!token) return null;
 
   const toggle = (model: GearModelView) => {
     updateModel(token, model.id, { active: !model.active }).then(
       () => void reload(),
-      (err: unknown) => setError(err instanceof Error ? err.message : 'Could not change the model'),
+      (err: unknown) => setError(err instanceof Error ? err.message : t('gear.models.changeFailed')),
     );
   };
 
@@ -189,29 +202,26 @@ export function GearModelsPage() {
       <Stack spacing={3}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h4" component="h1">
-            Gear models
+            {t('gear.models.title')}
           </Typography>
           <Button variant="contained" onClick={() => setDialog({})}>
-            Add model
+            {t('gear.models.add')}
           </Button>
         </Stack>
-        <Typography color="text.secondary">
-          The rules a component inherits: repack cycle for reserves, and service interval, battery cycle and life for
-          AADs. Enter the manufacturer&apos;s figures; a component can still override them.
-        </Typography>
+        <Typography color="text.secondary">{t('gear.models.intro')}</Typography>
         {error && <Alert severity="error">{error}</Alert>}
         <TableContainer component={Paper} variant="outlined">
-          <Table size="small" aria-label="Gear models">
+          <Table size="small" aria-label={t('gear.models.title')}>
             <TableHead>
               <TableRow>
-                <TableCell>Manufacturer</TableCell>
-                <TableCell>Model</TableCell>
-                <TableCell>Kind</TableCell>
-                <TableCell>Repack</TableCell>
-                <TableCell>Service</TableCell>
-                <TableCell>Battery</TableCell>
-                <TableCell>Life</TableCell>
-                <TableCell>Active</TableCell>
+                <TableCell>{t('gear.common.manufacturer')}</TableCell>
+                <TableCell>{t('gear.common.model')}</TableCell>
+                <TableCell>{t('gear.common.kind')}</TableCell>
+                <TableCell>{t('gear.models.repack')}</TableCell>
+                <TableCell>{t('gear.models.service')}</TableCell>
+                <TableCell>{t('gear.models.battery')}</TableCell>
+                <TableCell>{t('gear.models.life')}</TableCell>
+                <TableCell>{t('gear.models.active')}</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
@@ -220,21 +230,29 @@ export function GearModelsPage() {
                 <TableRow key={m.id}>
                   <TableCell>{m.manufacturer}</TableCell>
                   <TableCell>{m.model}</TableCell>
-                  <TableCell>{KIND_LABELS[m.kind]}</TableCell>
-                  <TableCell>{m.repackCycleDays ? `${m.repackCycleDays} days` : ''}</TableCell>
-                  <TableCell>{m.serviceIntervalMonths ? `${m.serviceIntervalMonths} months` : ''}</TableCell>
-                  <TableCell>{m.batteryCycleMonths ? `${m.batteryCycleMonths} months` : ''}</TableCell>
-                  <TableCell>{m.lifeYears ? `${m.lifeYears} years` : ''}</TableCell>
+                  <TableCell>{t(KIND_LABEL_KEYS[m.kind])}</TableCell>
+                  <TableCell>{m.repackCycleDays ? t('gear.models.days', { count: m.repackCycleDays }) : ''}</TableCell>
+                  <TableCell>
+                    {m.serviceIntervalMonths ? t('gear.models.months', { count: m.serviceIntervalMonths }) : ''}
+                  </TableCell>
+                  <TableCell>
+                    {m.batteryCycleMonths ? t('gear.models.months', { count: m.batteryCycleMonths }) : ''}
+                  </TableCell>
+                  <TableCell>{m.lifeYears ? t('gear.models.years', { count: m.lifeYears }) : ''}</TableCell>
                   <TableCell>
                     <Switch
                       checked={m.active}
                       onChange={() => toggle(m)}
-                      slotProps={{ input: { 'aria-label': `Active: ${m.manufacturer} ${m.model}` } }}
+                      slotProps={{
+                        input: {
+                          'aria-label': t('gear.models.activeFor', { model: `${m.manufacturer} ${m.model}` }),
+                        },
+                      }}
                     />
                   </TableCell>
                   <TableCell align="right">
                     <Button size="small" onClick={() => setDialog({ model: m })}>
-                      Edit
+                      {t('gear.common.edit')}
                     </Button>
                   </TableCell>
                 </TableRow>

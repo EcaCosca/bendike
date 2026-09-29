@@ -1,9 +1,9 @@
 import { Box, ButtonBase, Chip, Link, Stack, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   TIMELINE_CATEGORIES,
-  TIMELINE_CATEGORY_LABELS,
   buildRigTimeline,
   filterTimeline,
   type GroundingView,
@@ -13,7 +13,9 @@ import {
   type TimelineCategory,
   type TimelineEvent,
 } from '@bendike/shared';
-import { ENTRY_KIND_LABELS } from '../gear/entry-kinds';
+import { formatMonth } from '../../i18n/format-date';
+import '../../i18n/i18n';
+import { ENTRY_KIND_LABEL_KEYS, INSPECTION_RESULT_LABEL_KEYS } from '../gear/entry-kinds';
 import { listSheets } from '../packing/packing-api';
 import { AuthedImage } from '../rigphotos/AuthedImage';
 import { PhotoViewer } from '../rigphotos/PhotoViewer';
@@ -28,28 +30,17 @@ const MARKER_COLORS: Record<TimelineCategory, string> = {
   other: '#78909C',
 };
 
-function monthOf(date: string): string {
-  return new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
-    new Date(`${date}T12:00:00Z`),
-  );
-}
-
 function Thumb({ photo, onOpen }: { photo: RigPhotoView; onOpen: (photo: RigPhotoView) => void }) {
+  const { t } = useTranslation();
   return (
     <ButtonBase
-      aria-label={`Open photo: ${photo.caption || photo.fileName}`}
+      aria-label={t('gear.photos.openPhoto', { name: photo.caption || photo.fileName })}
       onClick={() => onOpen(photo)}
       sx={{ width: 84, height: 64, borderRadius: 1, overflow: 'hidden', flexShrink: 0 }}
     >
-      <AuthedImage photoId={photo.id} alt={photo.caption || 'Rig photo'} />
+      <AuthedImage photoId={photo.id} alt={photo.caption || t('gear.photos.rigPhoto')} />
     </ButtonBase>
   );
-}
-
-function workStatus(entry: MaintenanceEntryView): string | null {
-  if (entry.voidedAt !== null) return `Void: ${entry.voidReason ?? ''}`;
-  if (!entry.ownerReported) return null;
-  return entry.verifiedAt ? 'Verified by a rigger' : 'Reported by the owner, not verified yet';
 }
 
 function EventBody({
@@ -61,18 +52,28 @@ function EventBody({
   rigId: string;
   onOpen: (photo: RigPhotoView) => void;
 }) {
+  const { t } = useTranslation();
   if (event.type === 'work') {
     const { entry } = event;
-    const status = workStatus(entry);
     const voided = entry.voidedAt !== null;
+    const status = voided
+      ? t('gear.timeline.void', { reason: entry.voidReason ?? '' })
+      : !entry.ownerReported
+        ? null
+        : entry.verifiedAt
+          ? t('gear.timeline.verifiedByRigger')
+          : t('gear.timeline.reportedNotVerified');
     return (
       <Stack spacing={0.5}>
         <Stack direction="row" spacing={1} alignItems="baseline" sx={{ flexWrap: 'wrap' }}>
           <Typography component="span" sx={{ fontWeight: 700 }}>
-            {ENTRY_KIND_LABELS[entry.kind]}
+            {t(ENTRY_KIND_LABEL_KEYS[entry.kind])}
           </Typography>
           {entry.result && (
-            <Typography component="span" variant="body2">{`: ${entry.result.replace('_', ' ')}`}</Typography>
+            <Typography
+              component="span"
+              variant="body2"
+            >{`: ${t(INSPECTION_RESULT_LABEL_KEYS[entry.result])}`}</Typography>
           )}
           {event.componentLabel && (
             <Typography component="span" variant="body2" color="text.secondary">
@@ -83,7 +84,9 @@ function EventBody({
         <Typography variant="body2" sx={{ textDecoration: voided ? 'line-through' : 'none' }}>
           {entry.description}
         </Typography>
-        <Typography variant="caption" color="text.secondary">{`Done by ${entry.performedByName}`}</Typography>
+        <Typography variant="caption" color="text.secondary">
+          {t('gear.timeline.doneBy', { name: entry.performedByName })}
+        </Typography>
         <Stack direction="row" spacing={1} alignItems="center" sx={{ flexWrap: 'wrap', rowGap: 0.5 }}>
           {status && (
             <Chip
@@ -95,7 +98,7 @@ function EventBody({
           )}
           {event.sheet && (
             <Link component={RouterLink} to={`/app/gear/${rigId}/packing/${event.sheet.id}/print`} variant="body2">
-              {`Packing sheet #${event.sheet.sheetNo}`}
+              {t('gear.timeline.packingSheet', { number: event.sheet.sheetNo })}
             </Link>
           )}
         </Stack>
@@ -113,14 +116,20 @@ function EventBody({
     const { grounding } = event;
     return (
       <Stack spacing={0.5}>
-        <Typography sx={{ fontWeight: 700 }}>{event.phase === 'opened' ? 'Grounded' : 'Grounding cleared'}</Typography>
+        <Typography sx={{ fontWeight: 700 }}>
+          {event.phase === 'opened' ? t('gear.timeline.grounded') : t('gear.timeline.groundingCleared')}
+        </Typography>
         {event.phase === 'opened' ? (
           <>
             <Typography variant="body2">{grounding.reason}</Typography>
-            <Typography variant="caption" color="text.secondary">{`Opened by ${grounding.openedByName}`}</Typography>
+            <Typography variant="caption" color="text.secondary">
+              {t('gear.timeline.openedBy', { name: grounding.openedByName })}
+            </Typography>
           </>
         ) : (
-          <Typography variant="body2">{`Cleared by ${grounding.closedByName ?? ''}: ${grounding.closeNote ?? ''}`}</Typography>
+          <Typography variant="body2">
+            {t('gear.timeline.clearedBy', { name: grounding.closedByName ?? '', note: grounding.closeNote ?? '' })}
+          </Typography>
         )}
       </Stack>
     );
@@ -129,9 +138,11 @@ function EventBody({
     <Stack direction="row" spacing={1.5} alignItems="center">
       <Thumb photo={event.photo} onOpen={onOpen} />
       <Stack spacing={0.25}>
-        <Typography sx={{ fontWeight: 700 }}>Photo</Typography>
+        <Typography sx={{ fontWeight: 700 }}>{t('gear.timeline.photo')}</Typography>
         {event.photo.caption && <Typography variant="body2">{event.photo.caption}</Typography>}
-        <Typography variant="caption" color="text.secondary">{`Added by ${event.photo.addedByName}`}</Typography>
+        <Typography variant="caption" color="text.secondary">
+          {t('gear.timeline.addedBy', { name: event.photo.addedByName })}
+        </Typography>
       </Stack>
     </Stack>
   );
@@ -147,6 +158,7 @@ interface RigTimelineProps {
 }
 
 export function RigTimeline({ token, rigId, entries, groundings, photos, itemLabels }: RigTimelineProps) {
+  const { t, i18n } = useTranslation();
   const [sheets, setSheets] = useState<PackingSheetSummary[]>([]);
   const [category, setCategory] = useState<TimelineCategory | null>(null);
   const [viewing, setViewing] = useState<RigPhotoView | null>(null);
@@ -162,12 +174,12 @@ export function RigTimeline({ token, rigId, entries, groundings, photos, itemLab
   const shown = useMemo(() => filterTimeline(events, category), [events, category]);
 
   if (events.length === 0) {
-    return <Typography color="text.secondary">Nothing has been recorded for this rig yet.</Typography>;
+    return <Typography color="text.secondary">{t('gear.timeline.empty')}</Typography>;
   }
 
   const rows: { month: string; events: TimelineEvent[] }[] = [];
   for (const event of shown) {
-    const month = monthOf(event.date);
+    const month = formatMonth(event.date, i18n.language);
     const last = rows[rows.length - 1];
     if (last && last.month === month) last.events.push(event);
     else rows.push({ month, events: [event] });
@@ -178,7 +190,7 @@ export function RigTimeline({ token, rigId, entries, groundings, photos, itemLab
     <Stack spacing={2}>
       <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', rowGap: 1 }}>
         <Chip
-          label="All"
+          label={t('gear.timeline.all')}
           onClick={() => setCategory(null)}
           color={category === null ? 'primary' : 'default'}
           variant={category === null ? 'filled' : 'outlined'}
@@ -186,7 +198,7 @@ export function RigTimeline({ token, rigId, entries, groundings, photos, itemLab
         {TIMELINE_CATEGORIES.map((key) => (
           <Chip
             key={key}
-            label={TIMELINE_CATEGORY_LABELS[key]}
+            label={t(`gear.timelineCategory.${key}`)}
             onClick={() => setCategory(category === key ? null : key)}
             color={category === key ? 'primary' : 'default'}
             variant={category === key ? 'filled' : 'outlined'}
@@ -194,9 +206,9 @@ export function RigTimeline({ token, rigId, entries, groundings, photos, itemLab
         ))}
       </Stack>
       {shown.length === 0 ? (
-        <Typography color="text.secondary">Nothing matches this filter.</Typography>
+        <Typography color="text.secondary">{t('gear.timeline.noMatch')}</Typography>
       ) : (
-        <Box component="ul" aria-label="Rig history" sx={{ listStyle: 'none', m: 0, p: 0 }}>
+        <Box component="ul" aria-label={t('gear.timeline.list')} sx={{ listStyle: 'none', m: 0, p: 0 }}>
           {rows.flatMap((row) => [
             <Box key={row.month} component="li" role="presentation" sx={{ listStyle: 'none' }}>
               <Typography variant="h6" component="h3" sx={{ mt: 2, mb: 1 }}>
@@ -230,7 +242,7 @@ export function RigTimeline({ token, rigId, entries, groundings, photos, itemLab
         <PhotoViewer
           token={token}
           photo={viewing}
-          work={viewingEntry ? workLabel(viewingEntry, itemLabels) : null}
+          work={viewingEntry ? workLabel(viewingEntry, itemLabels, t) : null}
           canRemove={false}
           onClose={() => setViewing(null)}
           onRemoved={() => setViewing(null)}

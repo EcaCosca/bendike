@@ -33,7 +33,7 @@ export function parsePriceInput(
   return { priceAmount: Number(normalised), priceCurrency: currency };
 }
 
-export const PRICE_MESSAGES = {
-  incomplete: 'Enter both an amount and a currency, or leave both empty.',
-  invalid: 'The amount must be a number, for example 55000 or 55.000,50.',
+export const PRICE_MESSAGE_KEYS = {
+  incomplete: 'admin.services.price.incomplete',
+  invalid: 'admin.services.price.invalid',
 } as const;

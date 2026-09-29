@@ -1,5 +1,7 @@
 import { Box, Checkbox, FormControlLabel, Paper, Stack, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { PACKING_CHECKLIST } from '@bendike/shared';
+import '../../i18n/i18n';
 import { YesNo } from './YesNo';
 
 interface ChecklistSectionProps {
@@ -10,14 +12,15 @@ interface ChecklistSectionProps {
 }
 
 export function ChecklistSection({ checkedIds, mardConnected, onToggle, onMardChange }: ChecklistSectionProps) {
+  const { t } = useTranslation();
   const checked = new Set(checkedIds);
   return (
-    <Paper variant="outlined" component="section" aria-label="Checklist" sx={{ p: 2 }}>
+    <Paper variant="outlined" component="section" aria-label={t('packing.checklist.title')} sx={{ p: 2 }}>
       <Stack spacing={2}>
         <Typography variant="h6" component="h2">
-          Checklist
+          {t('packing.checklist.title')}
         </Typography>
-        <YesNo label="MARD connected" value={mardConnected} onChange={onMardChange} />
+        <YesNo label={t('packing.checklist.mardConnected')} value={mardConnected} onChange={onMardChange} />
         <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' } }}>
           {(['left', 'right'] as const).map((column) => (
             <Stack key={column}>

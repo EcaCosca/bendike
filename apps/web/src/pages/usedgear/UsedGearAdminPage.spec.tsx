@@ -3,6 +3,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import * as useAuthModule from '../../auth/use-auth';
+import i18n from '../../i18n/i18n';
 import * as catalogApi from '../shop/catalog-api';
 import * as adminApi from './used-gear-admin-api';
 import { UsedGearAdminPage } from './UsedGearAdminPage';
@@ -81,6 +82,18 @@ describe('UsedGearAdminPage', () => {
     ]);
     catalog.listBrands.mockResolvedValue([icarus]);
     catalog.listCategories.mockResolvedValue(categories);
+  });
+
+  afterEach(async () => {
+    await i18n.changeLanguage('en');
+  });
+
+  test('renders the heading in Spanish when the interface language is Spanish', async () => {
+    await i18n.changeLanguage('es');
+    renderPage();
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'Equipo usado' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Agregar artículo usado' })).toBeInTheDocument();
   });
 
   test('lists every used item with its price and whether it is listed or sold', async () => {

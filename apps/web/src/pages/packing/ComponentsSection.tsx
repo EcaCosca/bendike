@@ -1,5 +1,6 @@
 import { Alert, Box, Button, Link, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   PACKING_ELEMENT_KINDS,
@@ -8,7 +9,8 @@ import {
   type PackingComponentInfo,
   type PackingComponents,
 } from '@bendike/shared';
-import { KIND_LABELS } from '../gear/item-details';
+import '../../i18n/i18n';
+import { KIND_LABEL_KEYS } from '../gear/item-details';
 import { downloadDocument } from '../library/library-api';
 import { setBulletinsLink } from './packing-api';
 import { YesNo } from './YesNo';
@@ -16,12 +18,13 @@ import { YesNo } from './YesNo';
 const documentLabel = (doc: LibraryDocumentView) => `${doc.title}${doc.revision ? ` (${doc.revision})` : ''}`;
 
 function BulletinsLink({ token, info, onSaved }: { token: string; info: PackingComponentInfo; onSaved: () => void }) {
+  const { t } = useTranslation();
   const [url, setUrl] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   async function save() {
     if (!isHttpsUrl(url)) {
-      setError('The link must start with https://');
+      setError(t('packing.components.linkMustBeHttps'));
       return;
     }
     try {
@@ -29,7 +32,7 @@ function BulletinsLink({ token, info, onSaved }: { token: string; info: PackingC
       setError(null);
       onSaved();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the link');
+      setError(err instanceof Error ? err.message : t('packing.components.linkSaveFailed'));
     }
   }
 
@@ -37,11 +40,11 @@ function BulletinsLink({ token, info, onSaved }: { token: string; info: PackingC
     return (
       <Box>
         <Link href={info.bulletinsLink.url} target="_blank" rel="noopener noreferrer">
-          Service bulletins page
+          {t('packing.components.bulletinsPage')}
         </Link>
         {info.bulletinsLink.source === 'manufacturer' && (
           <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-            This is the manufacturer&apos;s page, saved on another of its models.
+            {t('packing.components.manufacturerPageNote')}
           </Typography>
         )}
       </Box>
@@ -50,8 +53,7 @@ function BulletinsLink({ token, info, onSaved }: { token: string; info: PackingC
   if (!info.modelId) {
     return (
       <Typography variant="body2" color="text.secondary">
-        This component is not linked to a catalogue model, so no bulletins page can be saved. Ask an admin to add the
-        model.
+        {t('packing.components.noModel')}
       </Typography>
     );
   }
@@ -59,15 +61,15 @@ function BulletinsLink({ token, info, onSaved }: { token: string; info: PackingC
     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} alignItems={{ sm: 'flex-start' }}>
       <TextField
         size="small"
-        label="Bulletins page link"
+        label={t('packing.components.linkLabel')}
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         error={error !== null}
-        helperText={error ?? "Paste the manufacturer's service bulletins page once; it is kept for next time"}
+        helperText={error ?? t('packing.components.linkHint')}
         sx={{ flexGrow: 1 }}
       />
       <Button variant="outlined" onClick={() => void save()}>
-        Save link
+        {t('packing.components.saveLink')}
       </Button>
     </Stack>
   );
@@ -86,24 +88,28 @@ function ComponentCard({
   onLinkSaved: () => void;
   onError: (message: string) => void;
 }) {
+  const { t } = useTranslation();
   const download = (doc: LibraryDocumentView) =>
     downloadDocument(token, doc).catch((err: unknown) =>
-      onError(err instanceof Error ? err.message : 'Could not download the document'),
+      onError(err instanceof Error ? err.message : t('packing.components.downloadFailed')),
     );
 
   return (
-    <Paper variant="outlined" component="section" aria-label={KIND_LABELS[kind]} sx={{ p: 2 }}>
+    <Paper variant="outlined" component="section" aria-label={t(KIND_LABEL_KEYS[kind])} sx={{ p: 2 }}>
       <Stack spacing={1}>
         <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 700 }}>
-          {KIND_LABELS[kind]}
+          {t(KIND_LABEL_KEYS[kind])}
         </Typography>
         {info ? (
           <>
             <Typography variant="body2">{`${info.manufacturer} ${info.model}`}</Typography>
             <Typography variant="body2" color="text.secondary">
-              {[info.serial && `Serial ${info.serial}`, info.manufacturedOn && `Made ${info.manufacturedOn}`]
+              {[
+                info.serial && t('packing.components.serial', { serial: info.serial }),
+                info.manufacturedOn && t('packing.components.made', { date: info.manufacturedOn }),
+              ]
                 .filter(Boolean)
-                .join(' · ') || 'No serial or date recorded'}
+                .join(' · ') || t('packing.components.noSerialOrDate')}
             </Typography>
             <BulletinsLink token={token} info={info} onSaved={onLinkSaved} />
             {info.openBulletins.map((notice) => (
@@ -116,15 +122,19 @@ function ComponentCard({
                 <Typography variant="body2" sx={{ flexGrow: 1 }}>
                   {documentLabel(doc)}
                 </Typography>
-                <Button size="small" aria-label={`Download ${doc.title}`} onClick={() => void download(doc)}>
-                  Download
+                <Button
+                  size="small"
+                  aria-label={t('packing.components.downloadDoc', { title: doc.title })}
+                  onClick={() => void download(doc)}
+                >
+                  {t('packing.components.download')}
                 </Button>
               </Stack>
             ))}
           </>
         ) : (
           <Typography variant="body2" color="text.secondary">
-            None on this rig
+            {t('packing.components.none')}
           </Typography>
         )}
       </Stack>
@@ -155,6 +165,7 @@ export function ComponentsSection({
   onLinkSaved,
   onError,
 }: ComponentsSectionProps) {
+  const { t } = useTranslation();
   const manuals = new Map<string, LibraryDocumentView>();
   for (const kind of PACKING_ELEMENT_KINDS) {
     for (const doc of components[kind]?.manuals ?? []) manuals.set(doc.id, doc);
@@ -164,7 +175,7 @@ export function ComponentsSection({
   return (
     <Stack spacing={2}>
       <Typography variant="h6" component="h2">
-        Bulletins and manual
+        {t('packing.components.title')}
       </Typography>
       <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', md: 'repeat(3, minmax(0, 1fr))' } }}>
         {(['reserve', 'container', 'aad'] as const).map((kind) => (
@@ -178,17 +189,19 @@ export function ComponentsSection({
           />
         ))}
       </Box>
-      <YesNo label="Service bulletins checked" value={bulletinsChecked} onChange={onBulletinsChange} />
+      <YesNo label={t('packing.components.bulletinsChecked')} value={bulletinsChecked} onChange={onBulletinsChange} />
       {manuals.size > 0 || chosenMissing ? (
         <TextField
           select
-          label="Manual followed"
+          label={t('packing.components.manualFollowed')}
           value={manualDocumentId ?? ''}
           onChange={(e) => onManualChange(e.target.value === '' ? null : e.target.value)}
           slotProps={{ inputLabel: { shrink: true }, select: { displayEmpty: true } }}
         >
-          <MenuItem value="">None chosen</MenuItem>
-          {chosenMissing && <MenuItem value={manualDocumentId}>{manualLabel ?? 'Chosen document'}</MenuItem>}
+          <MenuItem value="">{t('packing.components.noneChosen')}</MenuItem>
+          {chosenMissing && (
+            <MenuItem value={manualDocumentId}>{manualLabel ?? t('packing.components.chosenDocument')}</MenuItem>
+          )}
           {[...manuals.values()].map((doc) => (
             <MenuItem key={doc.id} value={doc.id}>
               {documentLabel(doc)}
@@ -197,11 +210,11 @@ export function ComponentsSection({
         </TextField>
       ) : (
         <Typography variant="body2" color="text.secondary">
-          No manual in the Library yet for these models.{' '}
+          {t('packing.components.noManual')}{' '}
           <Link component={RouterLink} to="/app/library">
-            Open the Library
+            {t('packing.components.openLibrary')}
           </Link>{' '}
-          to add one.
+          {t('packing.components.toAddOne')}
         </Typography>
       )}
     </Stack>

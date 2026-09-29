@@ -10,7 +10,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { MaintenanceEntryView } from '@bendike/shared';
+import '../../i18n/i18n';
 import { voidEntry } from './gear-api';
 
 interface VoidDialogProps {
@@ -21,6 +23,7 @@ interface VoidDialogProps {
 }
 
 export function VoidDialog({ token, entry, onClose, onVoided }: VoidDialogProps) {
+  const { t } = useTranslation();
   const [reason, setReason] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -28,7 +31,7 @@ export function VoidDialog({ token, entry, onClose, onVoided }: VoidDialogProps)
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!reason.trim()) {
-      setError('Say why the entry is void.');
+      setError(t('gear.void.reasonRequired'));
       return;
     }
     setSaving(true);
@@ -37,28 +40,30 @@ export function VoidDialog({ token, entry, onClose, onVoided }: VoidDialogProps)
       onVoided();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not void the entry');
+      setError(err instanceof Error ? err.message : t('gear.void.failed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="xs" component="form" onSubmit={(event) => void submit(event)}>
-      <DialogTitle>Void this entry</DialogTitle>
+      <DialogTitle>{t('gear.void.title')}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
-          <Typography variant="body2">
-            The record stays in the history, marked void, and no longer counts towards due dates. To correct it, add a
-            new entry.
-          </Typography>
-          <TextField label="Reason" value={reason} onChange={(e) => setReason(e.target.value)} autoFocus />
+          <Typography variant="body2">{t('gear.void.body')}</Typography>
+          <TextField
+            label={t('gear.void.reason')}
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            autoFocus
+          />
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('gear.common.cancel')}</Button>
         <Button type="submit" color="error" variant="contained" disabled={saving}>
-          Void entry
+          {t('gear.void.submit')}
         </Button>
       </DialogActions>
     </Dialog>

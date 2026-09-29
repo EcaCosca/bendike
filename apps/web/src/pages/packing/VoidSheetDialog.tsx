@@ -10,6 +10,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
+import '../../i18n/i18n';
 import { voidSheet } from './packing-api';
 
 interface VoidSheetDialogProps {
@@ -21,6 +23,7 @@ interface VoidSheetDialogProps {
 }
 
 export function VoidSheetDialog({ token, sheetId, sheetNo, onClose, onVoided }: VoidSheetDialogProps) {
+  const { t } = useTranslation();
   const [reason, setReason] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -33,22 +36,20 @@ export function VoidSheetDialog({ token, sheetId, sheetNo, onClose, onVoided }: 
       onVoided();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not void the sheet');
+      setError(err instanceof Error ? err.message : t('packing.void.failed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="xs" component="form" onSubmit={(e) => void submit(e)}>
-      <DialogTitle>Void sheet {sheetNo}</DialogTitle>
+      <DialogTitle>{t('packing.void.title', { sheetNo: sheetNo ?? '' })}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
-          <Typography variant="body2">
-            The sheet and its repack entry stay in the log, marked void. Sign a new sheet to record the repack again.
-          </Typography>
+          <Typography variant="body2">{t('packing.void.body')}</Typography>
           <TextField
-            label="Reason"
+            label={t('packing.void.reason')}
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             required
@@ -58,9 +59,9 @@ export function VoidSheetDialog({ token, sheetId, sheetNo, onClose, onVoided }: 
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('packing.actions.cancel')}</Button>
         <Button type="submit" variant="contained" color="error" disabled={saving || reason.trim() === ''}>
-          Void
+          {t('packing.void.void')}
         </Button>
       </DialogActions>
     </Dialog>

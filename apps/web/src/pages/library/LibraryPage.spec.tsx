@@ -1,8 +1,9 @@
 import { Role, type GearModelView, type LibraryDocumentView } from '@bendike/shared';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import * as useAuthModule from '../../auth/use-auth';
+import i18n from '../../i18n/i18n';
 import * as gearApi from '../gear/gear-api';
 import * as api from './library-api';
 import { LibraryPage } from './LibraryPage';
@@ -295,5 +296,15 @@ describe('LibraryPage', () => {
         }),
       );
     });
+  });
+
+  test('renders the heading in Spanish once the language changes', async () => {
+    await i18n.changeLanguage('es');
+    try {
+      renderPage();
+      expect(await screen.findByRole('heading', { name: 'Biblioteca' })).toBeInTheDocument();
+    } finally {
+      await act(() => i18n.changeLanguage('en'));
+    }
   });
 });

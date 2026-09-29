@@ -1,6 +1,8 @@
 import { useState, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { ComponentPartView, GearItemView, GearKind, MaintenanceEntryView, RigView, Role } from '@bendike/shared';
 import { todayIn } from '@bendike/shared';
+import '../../i18n/i18n';
 import { EntryDialog } from './EntryDialog';
 import { deletePart } from './gear-api';
 import { GearItemDialog } from './GearItemDialog';
@@ -35,6 +37,7 @@ export function useComponentActions({ token, role, ownerId, rigs, previousEntrie
   actions: ComponentActions;
   dialogs: ReactNode;
 } {
+  const { t } = useTranslation();
   const [state, setState] = useState<DialogState | null>(null);
   const close = () => setState(null);
 
@@ -46,7 +49,7 @@ export function useComponentActions({ token, role, ownerId, rigs, previousEntrie
     editPart: (item, part) => setState({ type: 'part', item, part }),
     removePart: (part) => {
       deletePart(token, part.id).then(onChanged, (err: unknown) =>
-        onError(err instanceof Error ? err.message : 'Could not remove the part'),
+        onError(err instanceof Error ? err.message : t('gear.card.removePartFailed')),
       );
     },
   };

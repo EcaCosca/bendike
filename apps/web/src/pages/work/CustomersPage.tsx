@@ -13,13 +13,16 @@ import {
   Alert,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { whatsappDigits, type CustomerSummary } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { getCustomers } from './work-api';
 
 export function CustomersPage() {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [customers, setCustomers] = useState<CustomerSummary[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -28,39 +31,39 @@ export function CustomersPage() {
     if (!token) return;
     getCustomers(token)
       .then(setCustomers)
-      .catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not load your customers'));
-  }, [token]);
+      .catch((err: unknown) => setError(err instanceof Error ? err.message : t('work.customers.loadFailed')));
+  }, [token, t]);
 
   return (
     <AppShell>
       <Stack spacing={3}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h4" component="h1">
-            Customers and dropzones
+            {t('work.customers.title')}
           </Typography>
           <Button component={RouterLink} to="/app/work" variant="outlined">
-            Work queue
+            {t('work.customers.workQueue')}
           </Button>
         </Stack>
         {error && <Alert severity="error">{error}</Alert>}
         {customers?.length === 0 && (
           <Typography color="text.secondary">
-            You look after no customers or dropzones yet.{' '}
+            {t('work.customers.empty')}{' '}
             <Link component={RouterLink} to="/app/riggers">
-              Add a customer
+              {t('work.customers.addOne')}
             </Link>
           </Typography>
         )}
         {customers && customers.length > 0 && (
           <TableContainer component={Paper} variant="outlined">
-            <Table size="small" aria-label="Customers and dropzones">
+            <Table size="small" aria-label={t('work.customers.table')}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Customer</TableCell>
-                  <TableCell align="right">Rigs</TableCell>
-                  <TableCell align="right">Overdue</TableCell>
-                  <TableCell align="right">Due soon</TableCell>
-                  <TableCell align="right">Grounded</TableCell>
+                  <TableCell>{t('work.customers.customer')}</TableCell>
+                  <TableCell align="right">{t('work.customers.rigs')}</TableCell>
+                  <TableCell align="right">{t('work.customers.overdue')}</TableCell>
+                  <TableCell align="right">{t('work.customers.dueSoon')}</TableCell>
+                  <TableCell align="right">{t('work.customers.grounded')}</TableCell>
                   <TableCell />
                 </TableRow>
               </TableHead>
@@ -82,7 +85,7 @@ export function CustomersPage() {
                     <TableCell align="right">
                       <Stack direction="row" spacing={1} justifyContent="flex-end">
                         <Button size="small" component={RouterLink} to={`/app/gear?ownerId=${owner.id}`}>
-                          View fleet
+                          {t('work.customers.viewFleet')}
                         </Button>
                         {owner.phone ? (
                           <Button
@@ -92,11 +95,11 @@ export function CustomersPage() {
                             target="_blank"
                             rel="noreferrer"
                           >
-                            WhatsApp
+                            {t('work.customers.whatsapp')}
                           </Button>
                         ) : (
                           <Button size="small" component="a" href={`mailto:${owner.email}`}>
-                            Email
+                            {t('work.customers.email')}
                           </Button>
                         )}
                       </Stack>

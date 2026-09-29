@@ -56,7 +56,7 @@ export function SiteNav() {
           </Stack>
           <Box
             component="nav"
-            aria-label="Site"
+            aria-label={t('site.navigation')}
             sx={{
               display: 'flex',
               gap: 1,

@@ -1,5 +1,7 @@
 import { useId } from 'react';
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import '../../i18n/i18n';
 
 interface YesNoProps {
   label: string;
@@ -8,6 +10,7 @@ interface YesNoProps {
 }
 
 export function YesNo({ label, value, onChange }: YesNoProps) {
+  const { t } = useTranslation();
   const labelId = useId();
   return (
     <FormControl>
@@ -18,8 +21,8 @@ export function YesNo({ label, value, onChange }: YesNoProps) {
         value={value === null ? '' : value ? 'yes' : 'no'}
         onChange={(e) => onChange(e.target.value === 'yes')}
       >
-        <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-        <FormControlLabel value="no" control={<Radio />} label="No" />
+        <FormControlLabel value="yes" control={<Radio />} label={t('packing.yesNo.yes')} />
+        <FormControlLabel value="no" control={<Radio />} label={t('packing.yesNo.no')} />
       </RadioGroup>
     </FormControl>
   );

@@ -1,3 +1,187 @@
 {
-  "admin": {}
+  "admin": {
+    "common": {
+      "cancel": "Cancel",
+      "close": "Close",
+      "save": "Save",
+      "edit": "Edit",
+      "editTitle": "Edit: {{name}}",
+      "editAria": "Edit {{name}}",
+      "active": "Active",
+      "activeAria": "Active: {{name}}",
+      "name": "Name",
+      "title": "Title",
+      "summary": "Summary",
+      "description": "Description",
+      "brand": "Brand",
+      "category": "Category",
+      "price": "Price",
+      "priceAmount": "Price amount",
+      "currency": "Currency",
+      "position": "Position",
+      "priceAndDetails": "Price and details",
+      "saveDetails": "Save details",
+      "detailsSaved": "Details saved.",
+      "copy": "Copy",
+      "copyLanguage": "Copy language",
+      "saveCopy": "Save copy",
+      "copySaved": "Copy saved.",
+      "saveFailed": "Could not save",
+      "somethingWrong": "Something went wrong",
+      "writeInEnglish": "Write it in English. Spanish and Portuguese are translated automatically, and you can edit them afterwards."
+    },
+    "usedGear": {
+      "title": "Used gear",
+      "add": "Add used item",
+      "table": "Used items",
+      "col": {
+        "item": "Item",
+        "status": "Status",
+        "sold": "Sold"
+      },
+      "status": {
+        "sold": "Sold",
+        "listed": "Listed",
+        "hidden": "Hidden"
+      },
+      "soldAria": "Sold: {{name}}",
+      "loadFailed": "Could not load used items",
+      "changeFailed": "Could not change the item",
+      "create": {
+        "intro": "Write it in English. Spanish and Portuguese are translated automatically, and you can edit them afterwards. Put the details buyers ask about (jumps, date of manufacture, condition) in the description.",
+        "newBrand": "Add a new brand…",
+        "newBrandName": "New brand name",
+        "choosePhotos": "Choose photos",
+        "photos": "Photos",
+        "submit": "Create item",
+        "amountInvalid": "The amount must be a number, for example 450000 or 450.000,50.",
+        "priceIncomplete": "Enter a price and choose a currency.",
+        "chooseBrand": "Choose a brand.",
+        "chooseCategory": "Choose a category.",
+        "createFailed": "Could not create the item"
+      },
+      "edit": {
+        "listed": "Listed in the shop",
+        "photos": "Photos",
+        "photo": "Photo {{n}}",
+        "removePhoto": "Remove photo {{n}}",
+        "addPhotos": "Add photos",
+        "photosAdded": "Photos added.",
+        "photoRemoved": "Photo removed."
+      }
+    },
+    "services": {
+      "title": "Services",
+      "add": "Add service",
+      "table": "Services",
+      "varies": "Varies",
+      "noPrice": "No price (varies)",
+      "slug": "Slug (used in the URL)",
+      "turnaroundOptional": "Turnaround note (optional)",
+      "turnaroundNote": "Turnaround note",
+      "submit": "Create service",
+      "loadFailed": "Could not load services",
+      "changeFailed": "Could not change the service",
+      "createFailed": "Could not create the service",
+      "category": {
+        "repack": "Repack",
+        "aad_service": "AAD service",
+        "repair": "Repair",
+        "reline": "Reline",
+        "other": "Other"
+      },
+      "price": {
+        "incomplete": "Enter both an amount and a currency, or leave both empty.",
+        "invalid": "The amount must be a number, for example 55000 or 55.000,50."
+      }
+    },
+    "learn": {
+      "title": "Learn",
+      "addItem": "Add item",
+      "table": "Learn items",
+      "col": {
+        "format": "Format",
+        "topics": "Topics",
+        "source": "Source",
+        "player": "Player",
+        "links": "Links"
+      },
+      "chip": {
+        "affiliate": "affiliate",
+        "buyLink": "buy link"
+      },
+      "links": "Links",
+      "linksAria": "Links {{name}}",
+      "loadFailed": "Could not load the items",
+      "changeFailed": "Could not change the item",
+      "embed": {
+        "noPlayer": "No player recognised for this link; it will open at the source.",
+        "recognised": "{{provider}} {{kind}} recognised: {{id}}",
+        "kind": {
+          "video": "video",
+          "show": "show",
+          "episode": "episode"
+        }
+      },
+      "fields": {
+        "link": "Link (https)",
+        "format": "Format",
+        "level": "Level",
+        "contentLanguage": "Content language",
+        "topics": "Topics",
+        "sourceName": "Source name",
+        "author": "Author (optional)",
+        "duration": "Duration in minutes (optional)",
+        "publishedOn": "Published on (optional)",
+        "buyUrl": "Buy link (optional, https)",
+        "buyUrlHelp": "An Amazon Associates link goes here. Tick the box below so the disclosure is shown.",
+        "affiliate": "The buy link is an affiliate link"
+      },
+      "validate": {
+        "httpsLink": "The link must start with https://.",
+        "pickTopic": "Pick at least one topic.",
+        "sourceName": "Enter the source name.",
+        "buyHttps": "The buy link must start with https://.",
+        "duration": "Duration must be a whole number of minutes.",
+        "titleOrSlug": "Enter a title or a slug."
+      },
+      "create": {
+        "intro": "Paste the link first. YouTube, Spotify and Vimeo players are recognised from it. Write the title and summary in English; Spanish and Portuguese are translated automatically and can be edited afterwards.",
+        "slug": "Slug (optional, from the title if empty)",
+        "addFailed": "Could not add the item"
+      },
+      "edit": {
+        "titleAndSummary": "Title and summary",
+        "titleIn": "Title ({{locale}})",
+        "summaryIn": "Summary ({{locale}})",
+        "saveCopy": "Save {{locale}} copy",
+        "copySaved": "{{locale}} copy saved.",
+        "saveCopyFailed": "Could not save the copy"
+      },
+      "linksDialog": {
+        "title": "Links: {{name}}",
+        "intro": "Linked products show this item under \"Learn before you buy\". Brand links cover every product of the brand. Gear model links show it on rigs with that model under \"Learn about your gear\".",
+        "products": "Products",
+        "brands": "Brands",
+        "gearModels": "Gear models",
+        "save": "Save links",
+        "saveFailed": "Could not save the links"
+      },
+      "collections": {
+        "title": "Collections",
+        "add": "Add collection",
+        "table": "Collections",
+        "topic": "Topic",
+        "startHere": "Start here",
+        "items": "Items",
+        "yes": "Yes",
+        "editTitle": "Edit collection: {{name}}",
+        "intro": "Intro",
+        "startHereLabel": "Show first for this topic (start here); one per topic",
+        "itemsInOrder": "Items, in order",
+        "saveFailed": "Could not save the collection",
+        "changeFailed": "Could not change the collection"
+      }
+    }
+  }
 }

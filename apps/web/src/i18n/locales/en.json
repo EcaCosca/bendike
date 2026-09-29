@@ -111,7 +111,10 @@
       "gear_care": "Gear care",
       "freefall": "Freefall",
       "safety_culture": "Safety culture",
-      "instruments": "Instruments"
+      "instruments": "Instruments",
+      "packing": "Packing and rigging",
+      "reviews": "Reviews",
+      "wingsuit_base": "Wingsuit BASE"
     },
     "format": {
       "video": "Video",
@@ -187,6 +190,7 @@
     "tagline": "Rigging loft and software, Argentina.",
     "blurb": "Bendike is a rigging loft software I built that keeps skydivers, riggers and dropzones on top of reserve repacks, AAD service and manufacturer service bulletins. Safety first, always.",
     "motto": "Motivated by the same passion.",
-    "openApp": "Open app"
+    "openApp": "Open app",
+    "navigation": "Site"
   }
 }

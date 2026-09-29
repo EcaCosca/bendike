@@ -1,3 +1,110 @@
 {
-  "packing": {}
+  "packing": {
+    "actions": {
+      "cancel": "Cancelar"
+    },
+    "yesNo": {
+      "yes": "Sí",
+      "no": "No"
+    },
+    "checklist": {
+      "title": "Checklist",
+      "mardConnected": "MARD conectado"
+    },
+    "components": {
+      "title": "Boletines y manual",
+      "bulletinsPage": "Página de boletines de servicio",
+      "manufacturerPageNote": "Esta es la página del fabricante, guardada en otro de sus modelos.",
+      "noModel": "Este componente no está vinculado a un modelo del catálogo, así que no se puede guardar una página de boletines. Pedile a un admin que agregue el modelo.",
+      "linkLabel": "Link a la página de boletines",
+      "linkHint": "Pegá la página de boletines de servicio del fabricante una sola vez. Queda guardada para la próxima",
+      "linkMustBeHttps": "El link tiene que empezar con https://",
+      "linkSaveFailed": "No se pudo guardar el link",
+      "saveLink": "Guardar link",
+      "downloadFailed": "No se pudo descargar el documento",
+      "serial": "Serie {{serial}}",
+      "made": "Fabricado {{date}}",
+      "noSerialOrDate": "Sin número de serie ni fecha registrados",
+      "downloadDoc": "Descargar {{title}}",
+      "download": "Descargar",
+      "none": "No hay en este equipo",
+      "bulletinsChecked": "Boletines de servicio chequeados",
+      "manualFollowed": "Manual seguido",
+      "noneChosen": "Ninguno elegido",
+      "chosenDocument": "Documento elegido",
+      "noManual": "Todavía no hay un manual en la Biblioteca para estos modelos.",
+      "openLibrary": "Abrí la Biblioteca",
+      "toAddOne": "para agregar uno."
+    },
+    "job": {
+      "loadFailed": "No se pudo cargar la planilla de plegado",
+      "unknownError": "Error desconocido",
+      "refreshFailed": "No se pudieron actualizar los componentes",
+      "backToRig": "Volver al equipo",
+      "title": "Plegado: {{rig}}",
+      "saving": "Guardando…",
+      "saved": "Guardado",
+      "saveFailed": "No se pudo guardar: {{error}}",
+      "ownerAndDate": "Dueño y fecha",
+      "date": "Fecha",
+      "ownerName": "Nombre del dueño",
+      "ownerAddress": "Dirección del dueño",
+      "ownerPhone": "Teléfono del dueño",
+      "ownerEmail": "Email del dueño",
+      "notesSection": "Notas",
+      "notes": "Notas de este plegado",
+      "notesHint": "Por ejemplo: Sin MARD en esta unidad. Cumplido el boletín de servicio 123xx. Se cambió el AAD.",
+      "reviewAndSign": "Revisar y firmar"
+    },
+    "log": {
+      "loadFailed": "No se pudo cargar la bitácora de plegados",
+      "title": "Bitácora de plegados de reserva",
+      "empty": "Todavía no hay planillas de plegado firmadas. Iniciá un plegado para crear una.",
+      "sheet": "Planilla",
+      "date": "Fecha",
+      "rigger": "Rigger",
+      "checklist": "Checklist",
+      "notComplete_one": "{{count}} sin completar",
+      "notComplete_other": "{{count}} sin completar",
+      "complete": "Completa",
+      "void": "Anulada",
+      "openSheet": "Abrir planilla {{sheetNo}}",
+      "open": "Abrir"
+    },
+    "sign": {
+      "failed": "No se pudo firmar la planilla",
+      "title": "Firmar planilla de plegado",
+      "allDone": "Todo está tildado y respondido.",
+      "incomplete": "Esto no está completo. Explicalo en las notas antes de firmar:",
+      "unticked_one": "{{count}} ítem del checklist sin tildar",
+      "unticked_other": "{{count}} ítems del checklist sin tildar",
+      "notes": "Notas",
+      "notesHint": "Por ejemplo: Sin MARD en esta unidad. Cumplido el boletín de servicio 123xx. Se cambió el AAD.",
+      "licence": "Número de licencia",
+      "licenceHint": "Tu licencia de rigger, impresa en la planilla junto a tu nombre",
+      "emailOwner": "Avisar por email al dueño que el plegado está hecho ({{email}})",
+      "sign": "Firmar"
+    },
+    "void": {
+      "failed": "No se pudo anular la planilla",
+      "title": "Anular planilla {{sheetNo}}",
+      "body": "La planilla y su registro de plegado quedan en la bitácora, marcados como anulados. Firmá una planilla nueva para registrar el plegado de nuevo.",
+      "reason": "Motivo",
+      "void": "Anular"
+    },
+    "print": {
+      "loadFailed": "No se pudo cargar la planilla de plegado",
+      "sendFailed": "No se pudo enviar el email",
+      "backToRig": "Volver al equipo",
+      "emailOwner": "Enviar email al dueño",
+      "emailOwnerAgain": "Reenviar email al dueño",
+      "voidSheet": "Anular planilla",
+      "print": "Imprimir",
+      "emailed": "Se envió el email al dueño a {{to}}.",
+      "emailFailedAfterSigning": "La planilla quedó firmada, pero no se pudo enviar el email al dueño. {{message}} Podés intentar de nuevo con Enviar email al dueño.",
+      "emailFailed": "No se pudo enviar el email al dueño. {{message}}",
+      "addOwnerEmail": "Agregá el email del dueño antes de firmar la planilla para poder avisarle.",
+      "emailedOn": "Email enviado a {{to}} el {{date}} {{time}} UTC"
+    }
+  }
 }

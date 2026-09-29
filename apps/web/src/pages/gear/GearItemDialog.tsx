@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   GEAR_KINDS,
   type AadDetails,
@@ -22,8 +23,9 @@ import {
   type ReserveDetails,
   type RigView,
 } from '@bendike/shared';
+import '../../i18n/i18n';
 import { createItem, getOverview, listModels, updateItem } from './gear-api';
-import { KIND_LABELS } from './item-details';
+import { KIND_LABEL_KEYS } from './item-details';
 
 interface GearItemDialogProps {
   token: string;
@@ -64,6 +66,7 @@ export function GearItemDialog({
   onClose,
   onSaved,
 }: GearItemDialogProps) {
+  const { t } = useTranslation();
   const editing = item !== undefined;
   const [kind, setKind] = useState<GearKind>(item?.kind ?? fixedKind ?? 'reserve');
   const [manufacturer, setManufacturer] = useState(item?.manufacturer ?? '');
@@ -134,7 +137,7 @@ export function GearItemDialog({
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!manufacturer.trim() || !model.trim()) {
-      setError('Enter the manufacturer and the model.');
+      setError(t('gear.itemDialog.enterManufacturerModel'));
       return;
     }
     setSaving(true);
@@ -167,7 +170,7 @@ export function GearItemDialog({
       onSaved();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the component');
+      setError(err instanceof Error ? err.message : t('gear.itemDialog.saveFailed'));
       setSaving(false);
     }
   }
@@ -180,7 +183,7 @@ export function GearItemDialog({
       onSaved();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not change the component');
+      setError(err instanceof Error ? err.message : t('gear.itemDialog.changeFailed'));
       setSaving(false);
     }
   }
@@ -188,55 +191,84 @@ export function GearItemDialog({
   const kindFields: Record<GearKind, ReactNode> = {
     container: (
       <>
-        <TextField label="Harness size" value={harnessSize} onChange={(e) => setHarnessSize(e.target.value)} />
-        <TextField label="TSO" value={tso} onChange={(e) => setTso(e.target.value)} />
+        <TextField
+          label={t('gear.itemDialog.harnessSize')}
+          value={harnessSize}
+          onChange={(e) => setHarnessSize(e.target.value)}
+        />
+        <TextField label={t('gear.itemDialog.tso')} value={tso} onChange={(e) => setTso(e.target.value)} />
       </>
     ),
     main: (
       <>
-        <TextField label="Size (sq ft)" type="number" value={sizeSqft} onChange={(e) => setSizeSqft(e.target.value)} />
-        <TextField label="Line type" value={lineType} onChange={(e) => setLineType(e.target.value)} />
+        <TextField
+          label={t('gear.itemDialog.sizeSqft')}
+          type="number"
+          value={sizeSqft}
+          onChange={(e) => setSizeSqft(e.target.value)}
+        />
+        <TextField
+          label={t('gear.itemDialog.lineType')}
+          value={lineType}
+          onChange={(e) => setLineType(e.target.value)}
+        />
       </>
     ),
     reserve: (
       <>
-        <TextField label="Size (sq ft)" type="number" value={sizeSqft} onChange={(e) => setSizeSqft(e.target.value)} />
         <TextField
-          label="Repack cycle (days)"
+          label={t('gear.itemDialog.sizeSqft')}
+          type="number"
+          value={sizeSqft}
+          onChange={(e) => setSizeSqft(e.target.value)}
+        />
+        <TextField
+          label={t('gear.itemDialog.repackCycle')}
           type="number"
           value={repackCycle}
           onChange={(e) => setRepackCycle(e.target.value)}
-          helperText="Leave empty to use the model's cycle, or 180 days"
+          helperText={t('gear.itemDialog.repackCycleHint')}
         />
       </>
     ),
     aad: (
       <>
-        <TextField label="Mode" value={mode} onChange={(e) => setMode(e.target.value)} />
-        <DateField label="Battery installed on" value={batteryInstalledOn} onChange={setBatteryInstalledOn} />
+        <TextField label={t('gear.itemDialog.mode')} value={mode} onChange={(e) => setMode(e.target.value)} />
+        <DateField
+          label={t('gear.itemDialog.batteryInstalledOn')}
+          value={batteryInstalledOn}
+          onChange={setBatteryInstalledOn}
+        />
         <TextField
-          label="Battery cycle (months)"
+          label={t('gear.itemDialog.batteryCycle')}
           type="number"
           value={batteryCycle}
           onChange={(e) => setBatteryCycle(e.target.value)}
         />
-        <DateField label="Service due on" value={serviceDueOn} onChange={setServiceDueOn} />
-        <DateField label="Expires on" value={expiresOn} onChange={setExpiresOn} />
+        <DateField label={t('gear.itemDialog.serviceDueOn')} value={serviceDueOn} onChange={setServiceDueOn} />
+        <DateField label={t('gear.itemDialog.expiresOn')} value={expiresOn} onChange={setExpiresOn} />
       </>
     ),
   };
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="sm" component="form" onSubmit={(event) => void submit(event)}>
-      <DialogTitle>{editing ? `Edit ${KIND_LABELS[kind]}` : 'Add component'}</DialogTitle>
+      <DialogTitle>
+        {editing ? t('gear.itemDialog.editTitle', { kind: t(KIND_LABEL_KEYS[kind]) }) : t('gear.itemDialog.addTitle')}
+      </DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
           {!editing && !fixedKind && (
-            <TextField select label="Kind" value={kind} onChange={(e) => setKind(e.target.value as GearKind)}>
+            <TextField
+              select
+              label={t('gear.common.kind')}
+              value={kind}
+              onChange={(e) => setKind(e.target.value as GearKind)}
+            >
               {GEAR_KINDS.map((k) => (
                 <MenuItem key={k} value={k}>
-                  {KIND_LABELS[k]}
+                  {t(KIND_LABEL_KEYS[k])}
                 </MenuItem>
               ))}
             </TextField>
@@ -244,12 +276,12 @@ export function GearItemDialog({
           {catalogue.length > 0 && (
             <TextField
               select
-              label="Catalogue model"
+              label={t('gear.itemDialog.catalogueModel')}
               value={modelId}
               onChange={(e) => chooseModel(e.target.value)}
-              helperText="Picks the manufacturer, model and their rules"
+              helperText={t('gear.itemDialog.catalogueHint')}
             >
-              <MenuItem value={NONE}>Not in the catalogue</MenuItem>
+              <MenuItem value={NONE}>{t('gear.itemDialog.notInCatalogue')}</MenuItem>
               {catalogue.map((m) => (
                 <MenuItem key={m.id} value={m.id}>
                   {m.manufacturer} {m.model}
@@ -257,14 +289,29 @@ export function GearItemDialog({
               ))}
             </TextField>
           )}
-          <TextField label="Manufacturer" value={manufacturer} onChange={(e) => setManufacturer(e.target.value)} />
-          <TextField label="Model" value={model} onChange={(e) => setModel(e.target.value)} />
-          <TextField label="Serial" value={serial} onChange={(e) => setSerial(e.target.value)} />
-          <DateField label="Date of manufacture" value={manufacturedOn} onChange={setManufacturedOn} />
+          <TextField
+            label={t('gear.common.manufacturer')}
+            value={manufacturer}
+            onChange={(e) => setManufacturer(e.target.value)}
+          />
+          <TextField label={t('gear.common.model')} value={model} onChange={(e) => setModel(e.target.value)} />
+          <TextField label={t('gear.common.serial')} value={serial} onChange={(e) => setSerial(e.target.value)} />
+          <DateField label={t('gear.common.dateOfManufacture')} value={manufacturedOn} onChange={setManufacturedOn} />
           {kindFields[kind]}
-          <TextField label="Notes" value={notes} onChange={(e) => setNotes(e.target.value)} multiline minRows={2} />
-          <TextField select label="Rig" value={assignedRig} onChange={(e) => setAssignedRig(e.target.value)}>
-            <MenuItem value={NONE}>No rig (spare gear)</MenuItem>
+          <TextField
+            label={t('gear.common.notes')}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            multiline
+            minRows={2}
+          />
+          <TextField
+            select
+            label={t('gear.common.rig')}
+            value={assignedRig}
+            onChange={(e) => setAssignedRig(e.target.value)}
+          >
+            <MenuItem value={NONE}>{t('gear.itemDialog.noRig')}</MenuItem>
             {rigList.map((r) => (
               <MenuItem key={r.id} value={r.id}>
                 {r.name}
@@ -273,7 +320,7 @@ export function GearItemDialog({
           </TextField>
           {editing && (
             <Typography variant="body2" color="text.secondary">
-              Retiring keeps the history but takes the component off its rig and out of the due dates.
+              {t('gear.itemDialog.retireHint')}
             </Typography>
           )}
         </Stack>
@@ -281,12 +328,12 @@ export function GearItemDialog({
       <DialogActions>
         {editing && (
           <Button color="error" onClick={() => void setRetired(item.retiredAt === null)} sx={{ mr: 'auto' }}>
-            {item.retiredAt === null ? 'Retire' : 'Restore'}
+            {item.retiredAt === null ? t('gear.itemDialog.retire') : t('gear.itemDialog.restore')}
           </Button>
         )}
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('gear.common.cancel')}</Button>
         <Button type="submit" variant="contained" disabled={saving}>
-          Save
+          {t('gear.common.save')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,6 +1,14 @@
 import type { MaintenanceEntryView } from '@bendike/shared';
-import { ENTRY_KIND_LABELS } from '../gear/entry-kinds';
+import type { TFunction } from 'i18next';
+import i18n from '../../i18n/i18n';
+import { ENTRY_KIND_LABEL_KEYS } from '../gear/entry-kinds';
 
-export function workLabel(entry: MaintenanceEntryView, itemLabels: Record<string, string>): string {
-  return [entry.performedOn, ENTRY_KIND_LABELS[entry.kind], itemLabels[entry.gearItemId]].filter(Boolean).join(' · ');
+export function workLabel(
+  entry: MaintenanceEntryView,
+  itemLabels: Record<string, string>,
+  t: TFunction = i18n.t,
+): string {
+  return [entry.performedOn, t(ENTRY_KIND_LABEL_KEYS[entry.kind]), itemLabels[entry.gearItemId]]
+    .filter(Boolean)
+    .join(' · ');
 }

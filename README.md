@@ -29,11 +29,13 @@ If you are a developer joining the project, everything you need is in this file,
 ## What you can do today
 
 Bendike has four kinds of account. Every new account starts as a `user`; an admin promotes it to `rigger`,
-`dropzone` or `admin`.
+`dropzone` or `admin`. The whole site and the whole signed-in app speak English, Spanish and Portuguese: public pages
+take the language from the URL or the visitor's choice, the app takes it from the account, and a test fails the build
+if any of the three languages misses a key ([ADR 0020](docs/adr/0020-one-language-source-per-surface-and-per-area-translation-files.md)).
 
 | Role         | Who it is                                                         | What they do in Bendike                                                                                                                                            |
 | ------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Visitor**  | Anyone who is not signed in                                       | Reads the landing page, the About story, the trilingual shop (English, Spanish, Portuguese) and the rigging services.                                              |
+| **Visitor**  | Anyone who is not signed in                                       | Reads the landing page, the About story, the shop, the rigging services and the Learn section, in English, Spanish or Portuguese.                                  |
 | **User**     | A skydiver                                                        | Keeps their rigs and spare gear with colour-coded due dates, picks a rigger, sees inspections and groundings on their rigs.                                        |
 | **Rigger**   | A certified parachute rigger                                      | Works from one **work queue** across every dropzone and customer they look after: logs repacks in a tap, inspects, grounds, reviews bulletins, gets a daily email. |
 | **Dropzone** | An organisation account (the venue or its operator, not a person) | Keeps its whole fleet as a catalogue, assigns its riggers, sees the last inspection and any grounding on every rig.                                                |
@@ -389,25 +391,28 @@ sequenceDiagram
 
 ### Decisions on record
 
-| ADR                                                                                                    | Decision                                                                 |
-| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
-| [0001](docs/adr/0001-npm-workspaces-monorepo.md)                                                       | One npm-workspaces monorepo with a shared types package.                 |
-| [0002](docs/adr/0002-credentials-jwt-and-roles.md)                                                     | Email and password sign-in, one of four roles, a JWT.                    |
-| [0003](docs/adr/0003-usd-pricing-derived-currencies-whatsapp-checkout.md)                              | Prices in USD, derived pesos and reais, WhatsApp handoff.                |
-| [0004](docs/adr/0004-gear-items-and-maintenance-log.md)                                                | A rig is four gear items; every date comes from an append-only log.      |
-| [0005](docs/adr/0005-google-sign-in-alongside-passwords.md)                                            | Google sign-in as a second credential on the same account.               |
-| [0006](docs/adr/0006-scrollcraft-engine-for-the-about-story.md)                                        | The About story runs on a vendored scroll engine.                        |
-| [0007](docs/adr/0007-trilingual-catalog-locale-routing-and-machine-translation.md)                     | Trilingual shop behind a URL locale prefix.                              |
-| [0008](docs/adr/0008-service-requests-resolve-into-maintenance-entries.md)                             | Service requests resolve into maintenance entries.                       |
-| [0009](docs/adr/0009-local-disk-storage-for-profile-avatars.md)                                        | Avatars and uploads on local disk.                                       |
-| [0010](docs/adr/0010-checkout-requires-sign-in.md)                                                     | Checkout requires sign-in.                                               |
-| [0011](docs/adr/0011-used-gear-in-the-products-table-with-direct-price-and-uploaded-photos.md)         | Used gear in the products table with a direct price.                     |
-| [0012](docs/adr/0012-riggers-reach-gear-through-confirmed-links-and-dropzones-own-fleets.md)           | Riggers reach gear through confirmed links; dropzones own fleets.        |
-| [0013](docs/adr/0013-grounding-is-an-auditable-record-and-service-bulletins-ground-through-matches.md) | Grounding is an auditable record; bulletins ground through matches.      |
-| [0014](docs/adr/0014-repack-reminders-are-a-daily-digest-email-sent-by-a-cron-triggered-endpoint.md)   | The repack reminder is a daily digest sent by a cron-triggered endpoint. |
-| [0015](docs/adr/0015-the-manual-library-is-stored-in-google-drive-behind-a-storage-port.md)            | The manual library is stored in Google Drive behind a storage port.      |
-| [0016](docs/adr/0016-a-packing-sheet-is-a-signed-snapshot-that-writes-the-repack-entry.md)             | A packing sheet is a signed snapshot that writes the repack entry.       |
-| [0018](docs/adr/0018-learning-resources-are-curated-links-with-consent-gated-embeds.md)                | Learning resources are curated links with consent-gated embeds.          |
+| ADR                                                                                                    | Decision                                                                  |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| [0001](docs/adr/0001-npm-workspaces-monorepo.md)                                                       | One npm-workspaces monorepo with a shared types package.                  |
+| [0002](docs/adr/0002-credentials-jwt-and-roles.md)                                                     | Email and password sign-in, one of four roles, a JWT.                     |
+| [0003](docs/adr/0003-usd-pricing-derived-currencies-whatsapp-checkout.md)                              | Prices in USD, derived pesos and reais, WhatsApp handoff.                 |
+| [0004](docs/adr/0004-gear-items-and-maintenance-log.md)                                                | A rig is four gear items; every date comes from an append-only log.       |
+| [0005](docs/adr/0005-google-sign-in-alongside-passwords.md)                                            | Google sign-in as a second credential on the same account.                |
+| [0006](docs/adr/0006-scrollcraft-engine-for-the-about-story.md)                                        | The About story runs on a vendored scroll engine.                         |
+| [0007](docs/adr/0007-trilingual-catalog-locale-routing-and-machine-translation.md)                     | Trilingual shop behind a URL locale prefix.                               |
+| [0008](docs/adr/0008-service-requests-resolve-into-maintenance-entries.md)                             | Service requests resolve into maintenance entries.                        |
+| [0009](docs/adr/0009-local-disk-storage-for-profile-avatars.md)                                        | Avatars and uploads on local disk.                                        |
+| [0010](docs/adr/0010-checkout-requires-sign-in.md)                                                     | Checkout requires sign-in.                                                |
+| [0011](docs/adr/0011-used-gear-in-the-products-table-with-direct-price-and-uploaded-photos.md)         | Used gear in the products table with a direct price.                      |
+| [0012](docs/adr/0012-riggers-reach-gear-through-confirmed-links-and-dropzones-own-fleets.md)           | Riggers reach gear through confirmed links; dropzones own fleets.         |
+| [0013](docs/adr/0013-grounding-is-an-auditable-record-and-service-bulletins-ground-through-matches.md) | Grounding is an auditable record; bulletins ground through matches.       |
+| [0014](docs/adr/0014-repack-reminders-are-a-daily-digest-email-sent-by-a-cron-triggered-endpoint.md)   | The repack reminder is a daily digest sent by a cron-triggered endpoint.  |
+| [0015](docs/adr/0015-the-manual-library-is-stored-in-google-drive-behind-a-storage-port.md)            | The manual library is stored in Google Drive behind a storage port.       |
+| [0016](docs/adr/0016-a-packing-sheet-is-a-signed-snapshot-that-writes-the-repack-entry.md)             | A packing sheet is a signed snapshot that writes the repack entry.        |
+| [0017](docs/adr/0017-deploy-on-a-single-ec2-instance-with-s3-and-cloudfront-for-the-web-app.md)        | One EC2 instance for the API and Postgres, S3 and CloudFront for the web. |
+| [0018](docs/adr/0018-learning-resources-are-curated-links-with-consent-gated-embeds.md)                | Learning resources are curated links with consent-gated embeds.           |
+| [0019](docs/adr/0019-deploys-run-from-github-actions-through-an-oidc-role-and-ssm-run-command.md)      | Deploys run from GitHub Actions through an OIDC role and SSM Run Command. |
+| [0020](docs/adr/0020-one-language-source-per-surface-and-per-area-translation-files.md)                | One language source per surface, and per-area translation files.          |
 
 ## A tour of the app
 

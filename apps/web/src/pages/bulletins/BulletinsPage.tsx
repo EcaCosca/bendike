@@ -18,14 +18,17 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { BulletinView } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { BulletinDialog } from './BulletinDialog';
-import { SEVERITY_COLORS, SEVERITY_LABELS, STATUS_LABELS } from './bulletin-labels';
+import { SEVERITY_COLORS, SEVERITY_LABEL_KEYS, STATUS_LABEL_KEYS } from './bulletin-labels';
 import { listBulletins, publishBulletin, withdrawBulletin } from './bulletins-api';
 
 export function BulletinsPage() {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [bulletins, setBulletins] = useState<BulletinView[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -38,8 +41,8 @@ export function BulletinsPage() {
   }, [token]);
 
   useEffect(() => {
-    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not load the bulletins'));
-  }, [reload]);
+    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : t('bulletins.list.loadFailed')));
+  }, [reload, t]);
 
   if (!token) return null;
 
@@ -48,11 +51,12 @@ export function BulletinsPage() {
     setNotice(null);
     publishBulletin(token, bulletin.id).then(
       (published) => {
-        const n = published.matchCounts.total;
-        setNotice(`Published ${published.reference}: matched ${n} component${n === 1 ? '' : 's'}.`);
+        setNotice(
+          t('bulletins.list.published', { reference: published.reference, count: published.matchCounts.total }),
+        );
         void reload();
       },
-      (err: unknown) => setError(err instanceof Error ? err.message : 'Could not publish'),
+      (err: unknown) => setError(err instanceof Error ? err.message : t('bulletins.list.publishFailed')),
     );
   };
 
@@ -61,10 +65,10 @@ export function BulletinsPage() {
     setNotice(null);
     withdrawBulletin(token, bulletin.id).then(
       () => {
-        setNotice(`Withdrew ${bulletin.reference}. The groundings it opened were cleared.`);
+        setNotice(t('bulletins.list.withdrew', { reference: bulletin.reference }));
         void reload();
       },
-      (err: unknown) => setError(err instanceof Error ? err.message : 'Could not withdraw'),
+      (err: unknown) => setError(err instanceof Error ? err.message : t('bulletins.list.withdrawFailed')),
     );
   };
 
@@ -73,27 +77,24 @@ export function BulletinsPage() {
       <Stack spacing={3}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h4" component="h1">
-            Service bulletins
+            {t('bulletins.list.title')}
           </Typography>
           <Button variant="contained" onClick={() => setDialog({})}>
-            New bulletin
+            {t('bulletins.list.newBulletin')}
           </Button>
         </Stack>
-        <Typography color="text.secondary">
-          Enter a manufacturer&apos;s bulletin once. When you publish it, Bendike finds every component it applies to
-          and every rigger sees the matches on their customers&apos; gear.
-        </Typography>
+        <Typography color="text.secondary">{t('bulletins.list.intro')}</Typography>
         {error && <Alert severity="error">{error}</Alert>}
         {notice && <Alert severity="success">{notice}</Alert>}
         <TableContainer component={Paper} variant="outlined">
-          <Table size="small" aria-label="Service bulletins">
+          <Table size="small" aria-label={t('bulletins.list.table')}>
             <TableHead>
               <TableRow>
-                <TableCell>Reference</TableCell>
-                <TableCell>Bulletin</TableCell>
-                <TableCell>Severity</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Matches</TableCell>
+                <TableCell>{t('bulletins.list.reference')}</TableCell>
+                <TableCell>{t('bulletins.list.bulletin')}</TableCell>
+                <TableCell>{t('bulletins.list.severity')}</TableCell>
+                <TableCell>{t('bulletins.list.status')}</TableCell>
+                <TableCell>{t('bulletins.list.matches')}</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
@@ -106,23 +107,25 @@ export function BulletinsPage() {
                       {b.title}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      {b.manufacturer} · issued {b.issuedOn}
+                      {t('bulletins.list.issued', { manufacturer: b.manufacturer, date: b.issuedOn })}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Chip size="small" color={SEVERITY_COLORS[b.severity]} label={SEVERITY_LABELS[b.severity]} />
+                    <Chip size="small" color={SEVERITY_COLORS[b.severity]} label={t(SEVERITY_LABEL_KEYS[b.severity])} />
                   </TableCell>
                   <TableCell>
-                    <Chip size="small" variant="outlined" label={STATUS_LABELS[b.status]} />
+                    <Chip size="small" variant="outlined" label={t(STATUS_LABEL_KEYS[b.status])} />
                   </TableCell>
                   <TableCell>
-                    {b.status === 'draft' ? '—' : `${b.matchCounts.open} open of ${b.matchCounts.total}`}
+                    {b.status === 'draft'
+                      ? '—'
+                      : t('bulletins.list.openOf', { open: b.matchCounts.open, total: b.matchCounts.total })}
                   </TableCell>
                   <TableCell align="right">
                     <Stack direction="row" spacing={1} justifyContent="flex-end">
                       {b.status !== 'withdrawn' && (
                         <Button size="small" onClick={() => setDialog({ bulletin: b })}>
-                          Edit
+                          {t('bulletins.list.edit')}
                         </Button>
                       )}
                       {b.status === 'draft' && (
@@ -131,12 +134,12 @@ export function BulletinsPage() {
                           variant="contained"
                           onClick={() => (b.severity === 'grounding' ? setConfirming(b) : publish(b))}
                         >
-                          Publish
+                          {t('bulletins.list.publish')}
                         </Button>
                       )}
                       {b.status === 'published' && (
                         <Button size="small" color="inherit" onClick={() => withdraw(b)}>
-                          Withdraw
+                          {t('bulletins.list.withdraw')}
                         </Button>
                       )}
                     </Stack>
@@ -157,15 +160,12 @@ export function BulletinsPage() {
       )}
       {confirming && (
         <Dialog open onClose={() => setConfirming(null)}>
-          <DialogTitle>Publish {confirming.reference}?</DialogTitle>
+          <DialogTitle>{t('bulletins.list.confirmTitle', { reference: confirming.reference })}</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              This is a grounding bulletin. Every rig with a matching component will be grounded until its rigger
-              resolves the match.
-            </DialogContentText>
+            <DialogContentText>{t('bulletins.list.confirmBody')}</DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setConfirming(null)}>Cancel</Button>
+            <Button onClick={() => setConfirming(null)}>{t('bulletins.actions.cancel')}</Button>
             <Button
               variant="contained"
               color="error"
@@ -174,7 +174,7 @@ export function BulletinsPage() {
                 setConfirming(null);
               }}
             >
-              Publish and ground
+              {t('bulletins.list.publishAndGround')}
             </Button>
           </DialogActions>
         </Dialog>

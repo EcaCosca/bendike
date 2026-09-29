@@ -183,12 +183,11 @@ sequenceDiagram
 
 ### Open Questions
 
-- [ ] Should the app bar language change also store `bendike.locale`, so the public pages follow the account after
-      logout? Default yes: the two stay in step.
-- [ ] The checklist items of the packing sheet are bilingual (es/en) in the shared package by design of the paper
-      form; a Portuguese column is a separate decision with Eca's rigging authority wording.
-- [ ] Whether admin screens deserve the same care as user screens or may keep terse English labels. Default: same
-      care; Eca reads them in Spanish.
+- [x] The app bar language change also stores `bendike.locale`, so the public pages follow the account after logout
+      (built 2026-09-29).
+- [x] The checklist items of the packing sheet stay bilingual (es/en) in the shared package; the printed sheet body is
+      untouched by design (decided 2026-09-29). A Portuguese column remains a separate decision.
+- [x] Admin screens got the same care as user screens (2026-09-29).
 
 ---
 
@@ -203,13 +202,13 @@ sequenceDiagram
 
 **Verification**:
 
-- [ ] `locales.spec.ts` fails when a key is removed from one language and passes when all three match
-- [ ] Rendering an `/app` route with a user whose locale is `pt` switches `i18n.language` to `pt`
-- [ ] The selector on `/login` stores the locale and re-renders without navigating
+- [x] `locales.spec.ts` fails when a key is removed from one language and passes when all three match
+- [x] Rendering an `/app` route with a user whose locale is `pt` switches `i18n.language` to `pt`
+- [x] The selector on `/login` stores the locale and re-renders without navigating
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -222,12 +221,12 @@ policy (including the inventory rows), app bar with language selector, dashboard
 
 **Verification**:
 
-- [ ] Existing specs pass unchanged in English; new assertions render `/login` and the cookie bar in Spanish
-- [ ] `npm run test:unit -w @bendike/web` passes
+- [x] Existing specs pass unchanged in English; new assertions render `/login` and the cookie bar in Spanish
+- [x] `npm run test:unit -w @bendike/web` passes
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -240,13 +239,13 @@ entry, due-date and status label maps.
 
 **Verification**:
 
-- [ ] No string literal rendered to the user remains in those folders (reviewed with a grep for JSX text and
+- [x] No string literal rendered to the user remains in those folders (reviewed with a grep for JSX text and
       `label=`/`placeholder=`/`helperText=`/`aria-label=` literals)
-- [ ] The gear specs pass; one new assertion renders the gear page in Portuguese
+- [x] The gear specs pass; one new assertion renders the gear page in Portuguese
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -258,12 +257,12 @@ entry, due-date and status label maps.
 
 **Verification**:
 
-- [ ] Same grep review; the packing job page keeps the bilingual checklist untouched
-- [ ] Those specs pass
+- [x] Same grep review; the packing job page keeps the bilingual checklist untouched
+- [x] Those specs pass
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -275,11 +274,11 @@ entry, due-date and status label maps.
 
 **Verification**:
 
-- [ ] Same grep review; admin specs pass
+- [x] Same grep review; admin specs pass
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 
@@ -291,12 +290,12 @@ entry, due-date and status label maps.
 
 **Verification**:
 
-- [ ] `npm run validate` passes
-- [ ] README's "Who is behind it" and role table mention that the whole site and app are in the three languages
+- [x] `npm run validate` passes
+- [x] README's "Who is behind it" and role table mention that the whole site and app are in the three languages
 
 **Done when**:
 
-- [ ] All verification steps pass
+- [x] All verification steps pass
 
 ---
 

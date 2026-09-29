@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type {
   Brand,
   CreateLearnItemRequestBody,
@@ -25,14 +26,16 @@ import type {
 } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { listModels } from '../gear/gear-api';
 import { listBrands, listProducts } from '../shop/catalog-api';
 import { createLearnItem, listAllLearnCollections, listAllLearnItems, updateLearnItem } from './learn-admin-api';
 import { LearnCollectionsPanel } from './LearnCollectionsPanel';
-import { TOPIC_LABELS } from './learn-labels';
+import { TOPIC_LABEL_KEYS } from './learn-labels';
 import { LearnItemCreateDialog, LearnItemEditDialog, LearnLinksDialog } from './LearnItemDialogs';
 
 export function LearnAdminPage() {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [items, setItems] = useState<LearnItemAdminDetail[]>([]);
   const [collections, setCollections] = useState<LearnCollectionSummary[]>([]);
@@ -48,7 +51,7 @@ export function LearnAdminPage() {
     if (!token) return;
     listAllLearnItems(token)
       .then(setItems)
-      .catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not load the items'));
+      .catch((err: unknown) => setError(err instanceof Error ? err.message : t('admin.learn.loadFailed')));
     listAllLearnCollections(token)
       .then(setCollections)
       .catch(() => setCollections([]));
@@ -61,7 +64,7 @@ export function LearnAdminPage() {
     listModels(token, true)
       .then(setModels)
       .catch(() => setModels([]));
-  }, [token]);
+  }, [token, t]);
 
   function replaceItem(updated: LearnItemAdminDetail) {
     setItems((current) => current.map((item) => (item.id === updated.id ? updated : item)));
@@ -81,7 +84,7 @@ export function LearnAdminPage() {
     try {
       replaceItem(await updateLearnItem(token, item.id, { active: !item.active }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not change the item');
+      setError(err instanceof Error ? err.message : t('admin.learn.changeFailed'));
     }
   }
 
@@ -101,24 +104,24 @@ export function LearnAdminPage() {
         <Stack spacing={3}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="h4" component="h1">
-              Learn
+              {t('admin.learn.title')}
             </Typography>
             <Button variant="contained" onClick={() => setCreating(true)}>
-              Add item
+              {t('admin.learn.addItem')}
             </Button>
           </Stack>
           {error && <Alert severity="error">{error}</Alert>}
           <TableContainer component={Paper} variant="outlined">
-            <Table size="small" aria-label="Learn items">
+            <Table size="small" aria-label={t('admin.learn.table')}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Format</TableCell>
-                  <TableCell>Topics</TableCell>
-                  <TableCell>Source</TableCell>
-                  <TableCell>Player</TableCell>
-                  <TableCell>Links</TableCell>
-                  <TableCell>Active</TableCell>
+                  <TableCell>{t('admin.common.title')}</TableCell>
+                  <TableCell>{t('admin.learn.col.format')}</TableCell>
+                  <TableCell>{t('admin.learn.col.topics')}</TableCell>
+                  <TableCell>{t('admin.learn.col.source')}</TableCell>
+                  <TableCell>{t('admin.learn.col.player')}</TableCell>
+                  <TableCell>{t('admin.learn.col.links')}</TableCell>
+                  <TableCell>{t('admin.common.active')}</TableCell>
                   <TableCell />
                 </TableRow>
               </TableHead>
@@ -130,11 +133,15 @@ export function LearnAdminPage() {
                         {item.title.en}
                       </Link>
                       {item.buyUrl && (
-                        <Chip size="small" label={item.affiliate ? 'affiliate' : 'buy link'} sx={{ ml: 1 }} />
+                        <Chip
+                          size="small"
+                          label={item.affiliate ? t('admin.learn.chip.affiliate') : t('admin.learn.chip.buyLink')}
+                          sx={{ ml: 1 }}
+                        />
                       )}
                     </TableCell>
-                    <TableCell>{item.format}</TableCell>
-                    <TableCell>{item.topics.map((topic) => TOPIC_LABELS[topic]).join(', ')}</TableCell>
+                    <TableCell>{t(`learn.format.${item.format}`)}</TableCell>
+                    <TableCell>{item.topics.map((topic) => t(TOPIC_LABEL_KEYS[topic])).join(', ')}</TableCell>
                     <TableCell>{item.sourceName}</TableCell>
                     <TableCell>{item.embed ? item.embed.provider : ''}</TableCell>
                     <TableCell>{item.links.length}</TableCell>
@@ -142,15 +149,23 @@ export function LearnAdminPage() {
                       <Switch
                         checked={item.active}
                         onChange={() => void toggleActive(item)}
-                        slotProps={{ input: { 'aria-label': `Active: ${item.title.en}` } }}
+                        slotProps={{ input: { 'aria-label': t('admin.common.activeAria', { name: item.title.en }) } }}
                       />
                     </TableCell>
                     <TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
-                      <Button size="small" onClick={() => setLinkingId(item.id)} aria-label={`Links ${item.title.en}`}>
-                        Links
+                      <Button
+                        size="small"
+                        onClick={() => setLinkingId(item.id)}
+                        aria-label={t('admin.learn.linksAria', { name: item.title.en })}
+                      >
+                        {t('admin.learn.links')}
                       </Button>
-                      <Button size="small" onClick={() => setEditingId(item.id)} aria-label={`Edit ${item.title.en}`}>
-                        Edit
+                      <Button
+                        size="small"
+                        onClick={() => setEditingId(item.id)}
+                        aria-label={t('admin.common.editAria', { name: item.title.en })}
+                      >
+                        {t('admin.common.edit')}
                       </Button>
                     </TableCell>
                   </TableRow>

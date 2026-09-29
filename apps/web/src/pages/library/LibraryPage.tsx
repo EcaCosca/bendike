@@ -18,6 +18,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   LIBRARY_DOCUMENT_KINDS,
   LIBRARY_PAGE_SIZE,
@@ -28,14 +29,17 @@ import {
 } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { AddDocumentDialog } from './AddDocumentDialog';
 import { ArchiveDocumentDialog } from './ArchiveDocumentDialog';
 import { downloadDocument, listDocuments } from './library-api';
-import { KIND_LABELS, formatBytes } from './library-labels';
+import { KIND_LABEL_KEYS, formatBytes } from './library-labels';
 
 const SEARCH_DELAY_MS = 300;
+const HEADERS = ['title', 'kind', 'manufacturer', 'model', 'revision', 'language', 'size', 'added', 'by'] as const;
 
 export function LibraryPage() {
+  const { t } = useTranslation();
   const { token, user } = useAuth();
   const isAdmin = user?.role === Role.Admin;
   const [search, setSearch] = useState('');
@@ -69,15 +73,15 @@ export function LibraryPage() {
   }, [token, kind, query, includeArchived, page]);
 
   useEffect(() => {
-    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not load the Library'));
-  }, [reload]);
+    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : t('library.list.loadFailed')));
+  }, [reload, t]);
 
   async function download(document: LibraryDocumentView) {
     if (!token) return;
     try {
       await downloadDocument(token, document);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not download the document');
+      setError(err instanceof Error ? err.message : t('library.list.downloadFailed'));
     }
   }
 
@@ -90,18 +94,18 @@ export function LibraryPage() {
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ flexWrap: 'wrap', rowGap: 1 }}>
           <Box>
             <Typography variant="h4" component="h1">
-              Library
+              {t('library.list.title')}
             </Typography>
-            <Typography color="text.secondary">Manuals and bulletins kept by Bendike, for riggers.</Typography>
+            <Typography color="text.secondary">{t('library.list.intro')}</Typography>
           </Box>
           <Button variant="contained" onClick={() => setAdding(true)}>
-            Add document
+            {t('library.list.addDocument')}
           </Button>
         </Stack>
         {error && <Alert severity="error">{error}</Alert>}
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ sm: 'center' }}>
           <TextField
-            label="Search"
+            label={t('library.list.search')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             size="small"
@@ -109,7 +113,7 @@ export function LibraryPage() {
           />
           <TextField
             select
-            label="Kind"
+            label={t('library.list.kind')}
             value={kind}
             onChange={(e) => {
               setKind(e.target.value as LibraryDocumentKind | '');
@@ -118,10 +122,10 @@ export function LibraryPage() {
             size="small"
             sx={{ minWidth: 180 }}
           >
-            <MenuItem value="">Any kind</MenuItem>
+            <MenuItem value="">{t('library.list.anyKind')}</MenuItem>
             {LIBRARY_DOCUMENT_KINDS.map((k) => (
               <MenuItem key={k} value={k}>
-                {KIND_LABELS[k]}
+                {t(KIND_LABEL_KEYS[k])}
               </MenuItem>
             ))}
           </TextField>
@@ -136,31 +140,28 @@ export function LibraryPage() {
                   }}
                 />
               }
-              label="Show archived"
+              label={t('library.list.showArchived')}
             />
           )}
         </Stack>
 
         {data && data.documents.length === 0 && (
           <Typography color="text.secondary">
-            {query || kind
-              ? 'No documents match these filters.'
-              : 'The Library is empty. Add the first manual with "Add document".'}
+            {query || kind ? t('library.list.noMatch') : t('library.list.empty')}
           </Typography>
         )}
 
         {data && data.documents.length > 0 && (
           <TableContainer sx={{ border: 1, borderColor: 'divider', borderRadius: 1 }}>
-            <Table size="small" aria-label="Library documents">
+            <Table size="small" aria-label={t('library.list.table')}>
               <TableHead>
                 <TableRow>
-                  {['Title', 'Kind', 'Manufacturer', 'Model', 'Revision', 'Language', 'Size', 'Added', 'By', ''].map(
-                    (header, index) => (
-                      <TableCell key={`${header}-${index}`} sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}>
-                        {header}
-                      </TableCell>
-                    ),
-                  )}
+                  {HEADERS.map((header) => (
+                    <TableCell key={header} sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}>
+                      {t(`library.list.header.${header}`)}
+                    </TableCell>
+                  ))}
+                  <TableCell sx={{ fontWeight: 700, whiteSpace: 'nowrap' }} />
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -172,11 +173,11 @@ export function LibraryPage() {
                       </Typography>
                       {doc.archivedAt && (
                         <Typography variant="caption" color="text.secondary">
-                          Archived: {doc.archiveReason}
+                          {t('library.list.archived', { reason: doc.archiveReason ?? '' })}
                         </Typography>
                       )}
                     </TableCell>
-                    <TableCell>{KIND_LABELS[doc.kind]}</TableCell>
+                    <TableCell>{t(KIND_LABEL_KEYS[doc.kind])}</TableCell>
                     <TableCell>{doc.manufacturer}</TableCell>
                     <TableCell>{doc.modelName ?? '—'}</TableCell>
                     <TableCell>{doc.revision ?? '—'}</TableCell>
@@ -187,16 +188,16 @@ export function LibraryPage() {
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       <Stack direction="row" spacing={1} alignItems="center">
                         <Button size="small" onClick={() => void download(doc)}>
-                          Download
+                          {t('library.list.download')}
                         </Button>
                         {doc.sourceUrl && (
                           <Link href={doc.sourceUrl} target="_blank" rel="noopener noreferrer" variant="body2">
-                            Source
+                            {t('library.list.source')}
                           </Link>
                         )}
                         {isAdmin && !doc.archivedAt && (
                           <Button size="small" color="error" onClick={() => setArchiving(doc)}>
-                            Archive
+                            {t('library.list.archive')}
                           </Button>
                         )}
                       </Stack>
@@ -216,7 +217,7 @@ export function LibraryPage() {
             sx={{ flexWrap: 'wrap', rowGap: 1 }}
           >
             <Typography variant="body2" color="text.secondary">
-              {data.total} {data.total === 1 ? 'document' : 'documents'}
+              {t('library.list.count', { count: data.total })}
             </Typography>
             {pages > 1 && <Pagination count={pages} page={page} onChange={(_, next) => setPage(next)} />}
           </Stack>

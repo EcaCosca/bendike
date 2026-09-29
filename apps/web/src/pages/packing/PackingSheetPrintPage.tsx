@@ -1,5 +1,6 @@
 import { Alert, Box, Button, Link, Stack, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, Navigate, useLocation, useParams } from 'react-router-dom';
 import {
   PACKING_CHECKLIST,
@@ -12,6 +13,7 @@ import {
 } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { getSheet, notifyOwner } from './packing-api';
 import type { SheetNotice } from './packing-draft';
 import { VoidSheetDialog } from './VoidSheetDialog';
@@ -209,6 +211,7 @@ function SheetForm({ sheet }: { sheet: PackingSheetView }) {
 }
 
 export function PackingSheetPrintPage() {
+  const { t } = useTranslation();
   const { rigId = '', sheetId = '' } = useParams();
   const { token, user } = useAuth();
   const location = useLocation();
@@ -224,9 +227,9 @@ export function PackingSheetPrintPage() {
     if (!token) return;
     getSheet(token, sheetId).then(
       (job) => setSheet(job.sheet),
-      (err: unknown) => setError(err instanceof Error ? err.message : 'Could not load the packing sheet'),
+      (err: unknown) => setError(err instanceof Error ? err.message : t('packing.print.loadFailed')),
     );
-  }, [token, sheetId]);
+  }, [token, sheetId, t]);
 
   useEffect(load, [load]);
 
@@ -243,7 +246,7 @@ export function PackingSheetPrintPage() {
         setSending(false);
       },
       (err: unknown) => {
-        setNotice({ kind: 'error', message: err instanceof Error ? err.message : 'Could not send the email' });
+        setNotice({ kind: 'error', message: err instanceof Error ? err.message : t('packing.print.sendFailed') });
         setSending(false);
       },
     );
@@ -261,46 +264,49 @@ export function PackingSheetPrintPage() {
           sx={{ flexWrap: 'wrap', rowGap: 1, '@media print': { display: 'none' } }}
         >
           <Link component={RouterLink} to={`/app/gear/${rigId}`} underline="hover" sx={{ flexGrow: 1 }}>
-            Back to the rig
+            {t('packing.print.backToRig')}
           </Link>
           {canEmail && (
             <Button variant="outlined" onClick={send} disabled={sending || sheet.ownerEmail.trim() === ''}>
-              {sheet.ownerNotifiedAt ? 'Email owner again' : 'Email owner'}
+              {sheet.ownerNotifiedAt ? t('packing.print.emailOwnerAgain') : t('packing.print.emailOwner')}
             </Button>
           )}
           {canVoid && (
             <Button color="error" variant="outlined" onClick={() => setVoiding(true)}>
-              Void sheet
+              {t('packing.print.voidSheet')}
             </Button>
           )}
           {sheet && (
             <Button variant="contained" onClick={() => window.print()}>
-              Print
+              {t('packing.print.print')}
             </Button>
           )}
         </Stack>
         {error && <Alert severity="error">{error}</Alert>}
         {notice?.kind === 'sent' && (
-          <Alert
-            severity="success"
-            sx={{ '@media print': { display: 'none' } }}
-          >{`The owner was emailed at ${notice.to}.`}</Alert>
+          <Alert severity="success" sx={{ '@media print': { display: 'none' } }}>
+            {t('packing.print.emailed', { to: notice.to })}
+          </Alert>
         )}
         {notice?.kind === 'error' && (
           <Alert severity="warning" sx={{ '@media print': { display: 'none' } }}>
             {notice.whileSigning
-              ? `The sheet is signed, but the owner could not be emailed. ${withPeriod(notice.message)} You can try again with Email owner.`
-              : `Could not email the owner. ${withPeriod(notice.message)}`}
+              ? t('packing.print.emailFailedAfterSigning', { message: withPeriod(notice.message) })
+              : t('packing.print.emailFailed', { message: withPeriod(notice.message) })}
           </Alert>
         )}
         {canEmail && sheet.ownerEmail.trim() === '' && (
           <Typography variant="body2" color="text.secondary" sx={{ '@media print': { display: 'none' } }}>
-            Add the owner email before the sheet is signed to email them.
+            {t('packing.print.addOwnerEmail')}
           </Typography>
         )}
         {sheet?.ownerNotifiedAt && sheet.ownerNotifiedTo && (
           <Typography variant="body2" color="text.secondary" sx={{ '@media print': { display: 'none' } }}>
-            {`Emailed to ${sheet.ownerNotifiedTo} on ${sheet.ownerNotifiedAt.slice(0, 10)} ${sheet.ownerNotifiedAt.slice(11, 16)} UTC`}
+            {t('packing.print.emailedOn', {
+              to: sheet.ownerNotifiedTo,
+              date: sheet.ownerNotifiedAt.slice(0, 10),
+              time: sheet.ownerNotifiedAt.slice(11, 16),
+            })}
           </Typography>
         )}
         {sheet && <SheetForm sheet={sheet} />}

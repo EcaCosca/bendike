@@ -12,7 +12,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { describeProblem, sheetProblems, signingBlockers, todayIn, type PackingElements } from '@bendike/shared';
+import '../../i18n/i18n';
 import type { Draft } from './packing-draft';
 
 const MAX_LISTED_TICKS = 5;
@@ -36,6 +38,7 @@ export function SignDialog({
   onSign,
   onClose,
 }: SignDialogProps) {
+  const { t } = useTranslation();
   const [licence, setLicence] = useState(initialLicence);
   const [notifyOwner, setNotifyOwner] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -65,23 +68,23 @@ export function SignDialog({
     try {
       await onSign(licence.trim(), ownerEmail.trim() !== '' && notifyOwner);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not sign the sheet');
+      setError(err instanceof Error ? err.message : t('packing.sign.failed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="sm" component="form" onSubmit={(e) => void submit(e)}>
-      <DialogTitle>Sign packing sheet</DialogTitle>
+      <DialogTitle>{t('packing.sign.title')}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
           {problems.length === 0 ? (
-            <Typography>Everything is ticked and answered.</Typography>
+            <Typography>{t('packing.sign.allDone')}</Typography>
           ) : (
             <Alert severity="warning">
               <Typography variant="body2" sx={{ fontWeight: 700 }}>
-                These are not complete. Explain them in the notes before you sign:
+                {t('packing.sign.incomplete')}
               </Typography>
               <ul style={{ margin: '4px 0 0', paddingLeft: 20 }}>
                 {others.map((problem, index) => (
@@ -93,7 +96,7 @@ export function SignDialog({
                 {ticks.length > MAX_LISTED_TICKS && (
                   <li>
                     <details>
-                      <summary>{ticks.length} checklist items are not ticked</summary>
+                      <summary>{t('packing.sign.unticked', { count: ticks.length })}</summary>
                       <ul style={{ paddingLeft: 20 }}>
                         {ticks.map((problem) => (
                           <li key={describeProblem(problem)}>{describeProblem(problem)}</li>
@@ -106,23 +109,23 @@ export function SignDialog({
             </Alert>
           )}
           <TextField
-            label="Notes"
+            label={t('packing.sign.notes')}
             value={draft.notes}
             onChange={(e) => onNotesChange(e.target.value)}
             multiline
             minRows={2}
-            helperText="For example: No MARD on this unit. Completed service bulletin 123xx. Changed the AAD."
+            helperText={t('packing.sign.notesHint')}
           />
           <TextField
-            label="Licence number"
+            label={t('packing.sign.licence')}
             value={licence}
             onChange={(e) => setLicence(e.target.value)}
-            helperText="Your rigger licence, printed on the sheet next to your name"
+            helperText={t('packing.sign.licenceHint')}
           />
           {ownerEmail.trim() !== '' && (
             <FormControlLabel
               control={<Checkbox checked={notifyOwner} onChange={(e) => setNotifyOwner(e.target.checked)} />}
-              label={`Email the owner that the repack is done (${ownerEmail.trim()})`}
+              label={t('packing.sign.emailOwner', { email: ownerEmail.trim() })}
             />
           )}
           {blockers.length > 0 && (
@@ -137,9 +140,9 @@ export function SignDialog({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('packing.actions.cancel')}</Button>
         <Button type="submit" variant="contained" disabled={saving || blockers.length > 0}>
-          Sign
+          {t('packing.sign.sign')}
         </Button>
       </DialogActions>
     </Dialog>

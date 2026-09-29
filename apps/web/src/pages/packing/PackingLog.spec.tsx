@@ -1,6 +1,7 @@
 import { Role, type PackingSheetSummary } from '@bendike/shared';
 import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import i18n from '../../i18n/i18n';
 import * as api from './packing-api';
 import { PackingLog } from './PackingLog';
 
@@ -94,5 +95,19 @@ describe('PackingLog', () => {
     renderLog(Role.Rigger);
 
     expect(await screen.findByText('Boom')).toBeInTheDocument();
+  });
+
+  test('renders in Spanish when the language is Spanish', async () => {
+    mocked.listSheets.mockResolvedValue([summary({ missingCount: 3 })]);
+    await i18n.changeLanguage('es');
+    try {
+      renderLog(Role.Rigger);
+
+      expect(await screen.findByRole('heading', { name: 'Bitácora de plegados de reserva' })).toBeInTheDocument();
+      expect(screen.getByText('3 sin completar')).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: 'Abrir planilla 2' })).toBeInTheDocument();
+    } finally {
+      await i18n.changeLanguage('en');
+    }
   });
 });

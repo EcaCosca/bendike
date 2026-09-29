@@ -16,10 +16,12 @@ import {
 import GridViewIcon from '@mui/icons-material/GridView';
 import ViewAgendaOutlinedIcon from '@mui/icons-material/ViewAgendaOutlined';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 import { Role, type GearOverview, type RigCovers, type RigView } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { getCovers } from '../rigphotos/rig-photos-api';
 import { RigCover } from '../rigphotos/RigCover';
 import { inspectionLine } from './entry-kinds';
@@ -27,22 +29,23 @@ import { getOverview } from './gear-api';
 import { filterRigs, filterSpares, sortRigs, type RigSort, type StatusFilter } from './gear-filters';
 import { readGearView, saveGearView, type GearView } from './gear-view';
 import { GearGrid } from './GearGrid';
-import { STATUS_META } from './gear-status';
+import { STATUS_LABEL_KEYS } from './gear-status';
 import { GearItemDialog } from './GearItemDialog';
-import { KIND_LABELS, identityLine } from './item-details';
+import { KIND_LABEL_KEYS, identityLine } from './item-details';
 import { RigDialog } from './RigDialog';
 import { DueLine, GroundedBadge, StatusBadge } from './StatusBadge';
 import { mostUrgentDue } from './gear-status';
 import { GEAR_KINDS, type GearKind } from '@bendike/shared';
 
-const SUMMARY: { key: StatusFilter; label: string }[] = [
-  { key: 'overdue', label: STATUS_META.overdue.label },
-  { key: 'due_soon', label: STATUS_META.due_soon.label },
-  { key: 'no_data', label: STATUS_META.no_data.label },
-  { key: 'grounded', label: 'Grounded' },
+const SUMMARY: { key: StatusFilter; labelKey: string }[] = [
+  { key: 'overdue', labelKey: STATUS_LABEL_KEYS.overdue },
+  { key: 'due_soon', labelKey: STATUS_LABEL_KEYS.due_soon },
+  { key: 'no_data', labelKey: STATUS_LABEL_KEYS.no_data },
+  { key: 'grounded', labelKey: 'gear.page.grounded' },
 ];
 
 function RigCard({ rig, cover }: { rig: RigView; cover: string | undefined }) {
+  const { t } = useTranslation();
   const grounded = rig.readiness.state === 'grounded';
   return (
     <Card variant="outlined" data-testid="rig-card">
@@ -60,23 +63,25 @@ function RigCard({ rig, cover }: { rig: RigView; cover: string | undefined }) {
           </Stack>
           {rig.readiness.reasons.some((r) => r.type === 'pending_verification') && (
             <Typography variant="body2" color="text.secondary">
-              Work awaiting verification by a rigger
+              {t('gear.page.awaitingVerification')}
             </Typography>
           )}
           {rig.readiness.reasons.map((r) =>
             r.type === 'grounding' ? (
               <Typography key={r.grounding.id} variant="body2" color="text.secondary">
-                {r.grounding.source === 'bulletin' ? r.grounding.reason : `Grounded by a rigger: ${r.grounding.reason}`}
+                {r.grounding.source === 'bulletin'
+                  ? r.grounding.reason
+                  : t('gear.page.groundedByRigger', { reason: r.grounding.reason })}
               </Typography>
             ) : null,
           )}
           {rig.readiness.reasons.some((r) => r.type === 'inspection_grounded') && (
             <Typography variant="body2" color="text.secondary">
-              Grounded at an inspection
+              {t('gear.page.groundedAtInspection')}
             </Typography>
           )}
           <Typography variant="body2" color="text.secondary">
-            {inspectionLine(rig.lastInspection)}
+            {inspectionLine(rig.lastInspection, t)}
           </Typography>
           {GEAR_KINDS.map((kind) => {
             const item = rig.slots[kind];
@@ -84,7 +89,8 @@ function RigCard({ rig, cover }: { rig: RigView; cover: string | undefined }) {
             return (
               <Box key={kind}>
                 <Typography variant="body2">
-                  <strong>{KIND_LABELS[kind]}</strong>: {item ? identityLine(item) : <em>Empty</em>}
+                  <strong>{t(KIND_LABEL_KEYS[kind])}</strong>:{' '}
+                  {item ? identityLine(item, t) : <em>{t('gear.common.empty')}</em>}
                 </Typography>
                 {due && <DueLine due={due} />}
               </Box>
@@ -108,6 +114,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export function GearPage() {
+  const { t } = useTranslation();
   const { token, user } = useAuth();
   const [searchParams] = useSearchParams();
   const otherOwner = searchParams.get('ownerId') ?? undefined;
@@ -141,14 +148,14 @@ export function GearPage() {
   }, [token, otherOwner]);
 
   useEffect(() => {
-    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not load your gear'));
-  }, [reload]);
+    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : t('gear.page.loadFailed')));
+  }, [reload, t]);
 
   const filters = useMemo(
     () => ({ ...(status ? { status } : {}), ...(kind ? { kind } : {}), search }),
     [status, kind, search],
   );
-  const title = viewingOther || user?.role === Role.Dropzone ? 'Fleet' : 'My gear';
+  const title = viewingOther || user?.role === Role.Dropzone ? t('gear.page.fleet') : t('gear.page.myGear');
   const activeRigs = useMemo(
     () => sortRigs(filterRigs(overview?.rigs.filter((r) => r.active) ?? [], filters), sort),
     [overview, filters, sort],
@@ -171,10 +178,10 @@ export function GearPage() {
           {canAdd && (
             <Stack direction="row" spacing={1}>
               <Button variant="outlined" onClick={() => setDialog('component')}>
-                Add component
+                {t('gear.page.addComponent')}
               </Button>
               <Button variant="contained" onClick={() => setDialog('rig')}>
-                Add rig
+                {t('gear.page.addRig')}
               </Button>
             </Stack>
           )}
@@ -183,12 +190,12 @@ export function GearPage() {
         {overview && (
           <>
             <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', rowGap: 1 }}>
-              {SUMMARY.map(({ key, label }) => {
+              {SUMMARY.map(({ key, labelKey }) => {
                 const count = key === 'grounded' ? overview.summary.grounded : overview.summary[key];
                 return (
                   <Chip
                     key={key}
-                    label={`${label} ${count}`}
+                    label={`${t(labelKey)} ${count}`}
                     onClick={() => setStatus(status === key ? '' : key)}
                     color={status === key ? 'primary' : 'default'}
                     variant={status === key ? 'filled' : 'outlined'}
@@ -198,7 +205,7 @@ export function GearPage() {
             </Stack>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <TextField
-                label="Search"
+                label={t('gear.page.search')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 sx={{ flexGrow: 1 }}
@@ -206,68 +213,66 @@ export function GearPage() {
               />
               <TextField
                 select
-                label="Status"
+                label={t('gear.common.status')}
                 value={status}
                 onChange={(e) => setStatus(e.target.value as StatusFilter | '')}
                 size="small"
                 sx={{ minWidth: 150 }}
               >
-                <MenuItem value="">Any status</MenuItem>
-                <MenuItem value="overdue">Overdue</MenuItem>
-                <MenuItem value="due_soon">Due soon</MenuItem>
-                <MenuItem value="no_data">No data</MenuItem>
-                <MenuItem value="ok">OK</MenuItem>
-                <MenuItem value="grounded">Grounded</MenuItem>
+                <MenuItem value="">{t('gear.page.anyStatus')}</MenuItem>
+                <MenuItem value="overdue">{t(STATUS_LABEL_KEYS.overdue)}</MenuItem>
+                <MenuItem value="due_soon">{t(STATUS_LABEL_KEYS.due_soon)}</MenuItem>
+                <MenuItem value="no_data">{t(STATUS_LABEL_KEYS.no_data)}</MenuItem>
+                <MenuItem value="ok">{t(STATUS_LABEL_KEYS.ok)}</MenuItem>
+                <MenuItem value="grounded">{t('gear.page.grounded')}</MenuItem>
               </TextField>
               <TextField
                 select
-                label="Component"
+                label={t('gear.common.component')}
                 value={kind}
                 onChange={(e) => setKind(e.target.value as GearKind | '')}
                 size="small"
                 sx={{ minWidth: 150 }}
               >
-                <MenuItem value="">Any component</MenuItem>
+                <MenuItem value="">{t('gear.page.anyComponent')}</MenuItem>
                 {GEAR_KINDS.map((k) => (
                   <MenuItem key={k} value={k}>
-                    {KIND_LABELS[k]}
+                    {t(KIND_LABEL_KEYS[k])}
                   </MenuItem>
                 ))}
               </TextField>
               <TextField
                 select
-                label="Sort by"
+                label={t('gear.page.sortBy')}
                 value={sort}
                 onChange={(e) => setSort(e.target.value as RigSort)}
                 size="small"
                 sx={{ minWidth: 150 }}
               >
-                <MenuItem value="urgent">Most urgent first</MenuItem>
-                <MenuItem value="name">Name</MenuItem>
+                <MenuItem value="urgent">{t('gear.page.mostUrgent')}</MenuItem>
+                <MenuItem value="name">{t('gear.page.name')}</MenuItem>
               </TextField>
               <ToggleButtonGroup
                 exclusive
                 size="small"
                 value={view}
                 onChange={(_, next: GearView | null) => chooseView(next)}
-                aria-label="View"
+                aria-label={t('gear.page.view')}
                 sx={{ alignSelf: { xs: 'flex-start', sm: 'center' } }}
               >
                 <ToggleButton value="grid">
                   <GridViewIcon fontSize="small" sx={{ mr: 0.5 }} />
-                  Grid
+                  {t('gear.page.grid')}
                 </ToggleButton>
                 <ToggleButton value="cards">
                   <ViewAgendaOutlinedIcon fontSize="small" sx={{ mr: 0.5 }} />
-                  Cards
+                  {t('gear.page.cards')}
                 </ToggleButton>
               </ToggleButtonGroup>
             </Stack>
 
             {overview.rigs.length === 0 && overview.spares.length === 0 && (
-              <Typography color="text.secondary">
-                You have no rigs yet. Add a rig, then add its container, main, reserve and AAD.
-              </Typography>
+              <Typography color="text.secondary">{t('gear.page.empty')}</Typography>
             )}
 
             {view === 'grid' && (overview.rigs.length > 0 || overview.spares.length > 0) && (
@@ -275,7 +280,7 @@ export function GearPage() {
             )}
 
             {view === 'cards' && activeRigs.length > 0 && (
-              <Section title="Rigs">
+              <Section title={t('gear.page.rigs')}>
                 <Box
                   sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' } }}
                 >
@@ -287,21 +292,21 @@ export function GearPage() {
             )}
 
             {view === 'cards' && spares.length > 0 && (
-              <Section title="Spare gear">
+              <Section title={t('gear.page.spareGear')}>
                 <Stack spacing={1}>
                   {spares.map((item) => (
                     <Card key={item.id} variant="outlined">
                       <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
                         <Stack direction="row" spacing={1} alignItems="center">
                           <Typography variant="body1" sx={{ flexGrow: 1 }}>
-                            <strong>{KIND_LABELS[item.kind]}</strong>:{' '}
+                            <strong>{t(KIND_LABEL_KEYS[item.kind])}</strong>:{' '}
                             <Link
                               component={RouterLink}
                               to={`/app/gear/items/${item.id}`}
                               color="inherit"
                               underline="hover"
                             >
-                              {identityLine(item)}
+                              {identityLine(item, t)}
                             </Link>
                           </Typography>
                           {item.dues.length > 0 && <StatusBadge status={item.status} />}
@@ -314,7 +319,7 @@ export function GearPage() {
             )}
 
             {view === 'cards' && inactiveRigs.length > 0 && (
-              <Section title="Inactive">
+              <Section title={t('gear.page.inactive')}>
                 <Box
                   sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' } }}
                 >

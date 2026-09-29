@@ -3,6 +3,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import * as useAuthModule from '../../auth/use-auth';
+import i18n from '../../i18n/i18n';
 import * as api from './bulletins-api';
 import { BulletinsPage } from './BulletinsPage';
 
@@ -189,5 +190,19 @@ describe('BulletinsPage', () => {
     await user.click(dialog.getByRole('button', { name: 'Save draft' }));
 
     expect(await dialog.findByText('Boom')).toBeInTheDocument();
+  });
+
+  test('renders in Spanish when the language is Spanish', async () => {
+    await i18n.changeLanguage('es');
+    try {
+      renderPage();
+
+      expect(await screen.findByRole('heading', { name: 'Boletines de servicio' })).toBeInTheDocument();
+      const live = (await screen.findByText('SB-LIVE')).closest('tr') as HTMLElement;
+      expect(within(live).getByText('Inhabilita')).toBeInTheDocument();
+      expect(within(live).getByText('2 abiertas de 3')).toBeInTheDocument();
+    } finally {
+      await i18n.changeLanguage('en');
+    }
   });
 });

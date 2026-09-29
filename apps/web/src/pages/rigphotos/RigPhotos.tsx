@@ -1,6 +1,8 @@
 import { Box, Button, ButtonBase, Paper, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RIG_PHOTO_MAX_PER_RIG, type MaintenanceEntryView, type RigPhotoView } from '@bendike/shared';
+import '../../i18n/i18n';
 import { AddPhotoDialog } from './AddPhotoDialog';
 import { AuthedImage } from './AuthedImage';
 import { PhotoViewer } from './PhotoViewer';
@@ -17,45 +19,46 @@ interface RigPhotosProps {
 }
 
 export function RigPhotos({ token, rigId, photos, entries, itemLabels, canRemove, onChanged }: RigPhotosProps) {
+  const { t } = useTranslation();
   const [adding, setAdding] = useState(false);
   const [viewing, setViewing] = useState<RigPhotoView | null>(null);
   const full = photos.length >= RIG_PHOTO_MAX_PER_RIG;
   const workOf = (photo: RigPhotoView) => {
     const entry = entries.find((e) => e.id === photo.entryId);
-    return entry ? workLabel(entry, itemLabels) : null;
+    return entry ? workLabel(entry, itemLabels, t) : null;
   };
 
   return (
-    <Paper variant="outlined" component="section" aria-label="Photos" sx={{ p: 2 }}>
+    <Paper variant="outlined" component="section" aria-label={t('gear.photos.title')} sx={{ p: 2 }}>
       <Stack spacing={2}>
         <Stack direction="row" spacing={2} alignItems="center" sx={{ flexWrap: 'wrap', rowGap: 1 }}>
           <Typography variant="h5" component="h2" sx={{ flexGrow: 1 }}>
-            Photos
+            {t('gear.photos.title')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`${photos.length} of ${RIG_PHOTO_MAX_PER_RIG} photos`}
+            {t('gear.photos.count', { n: photos.length, max: RIG_PHOTO_MAX_PER_RIG })}
           </Typography>
           <Button variant="outlined" onClick={() => setAdding(true)} disabled={full}>
-            Add photo
+            {t('gear.photos.add')}
           </Button>
         </Stack>
         {full && (
           <Typography variant="body2" color="text.secondary">
-            {`A rig holds ${RIG_PHOTO_MAX_PER_RIG} photos. Remove one to add another.`}
+            {t('gear.photos.full', { max: RIG_PHOTO_MAX_PER_RIG })}
           </Typography>
         )}
         {photos.length === 0 ? (
-          <Typography color="text.secondary">No photos yet. Add one to see this rig at a glance.</Typography>
+          <Typography color="text.secondary">{t('gear.photos.empty')}</Typography>
         ) : (
           <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' } }}>
             {photos.map((photo) => (
               <Box key={photo.id}>
                 <ButtonBase
-                  aria-label={`Open photo: ${photo.caption || photo.fileName}`}
+                  aria-label={t('gear.photos.openPhoto', { name: photo.caption || photo.fileName })}
                   onClick={() => setViewing(photo)}
                   sx={{ display: 'block', width: '100%', aspectRatio: '4 / 3', borderRadius: 1, overflow: 'hidden' }}
                 >
-                  <AuthedImage photoId={photo.id} alt={photo.caption || 'Rig photo'} />
+                  <AuthedImage photoId={photo.id} alt={photo.caption || t('gear.photos.rigPhoto')} />
                 </ButtonBase>
                 {photo.caption && (
                   <Typography variant="body2" sx={{ mt: 0.5, fontWeight: 600 }}>

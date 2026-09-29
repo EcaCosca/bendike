@@ -1,5 +1,6 @@
 import type { DueItem } from '@bendike/shared';
-import { describeDays, mostUrgentDue, STATUS_META } from './gear-status';
+import i18n from '../../i18n/i18n';
+import { describeDays, mostUrgentDue, STATUS_LABEL_KEYS, STATUS_META } from './gear-status';
 
 function due(kind: DueItem['kind'], dueOn: string | null, daysLeft: number | null, status: DueItem['status']): DueItem {
   return { kind, dueOn, daysLeft, status };
@@ -7,10 +8,14 @@ function due(kind: DueItem['kind'], dueOn: string | null, daysLeft: number | nul
 
 describe('STATUS_META', () => {
   test('gives every status a colour, a word and an icon name so colour is never the only signal', () => {
-    expect(STATUS_META.overdue).toMatchObject({ color: 'error', label: 'Overdue' });
-    expect(STATUS_META.due_soon).toMatchObject({ color: 'warning', label: 'Due soon' });
-    expect(STATUS_META.ok).toMatchObject({ color: 'success', label: 'OK' });
-    expect(STATUS_META.no_data).toMatchObject({ color: 'default', label: 'No data' });
+    expect(STATUS_META.overdue).toMatchObject({ color: 'error' });
+    expect(STATUS_META.due_soon).toMatchObject({ color: 'warning' });
+    expect(STATUS_META.ok).toMatchObject({ color: 'success' });
+    expect(STATUS_META.no_data).toMatchObject({ color: 'default' });
+    expect(i18n.t(STATUS_LABEL_KEYS.overdue)).toBe('Overdue');
+    expect(i18n.t(STATUS_LABEL_KEYS.due_soon)).toBe('Due soon');
+    expect(i18n.t(STATUS_LABEL_KEYS.ok)).toBe('OK');
+    expect(i18n.t(STATUS_LABEL_KEYS.no_data)).toBe('No data');
     for (const meta of Object.values(STATUS_META)) {
       expect(meta.icon).toBeTruthy();
     }

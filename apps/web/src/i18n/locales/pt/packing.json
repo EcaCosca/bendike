@@ -1,3 +1,110 @@
 {
-  "packing": {}
+  "packing": {
+    "actions": {
+      "cancel": "Cancelar"
+    },
+    "yesNo": {
+      "yes": "Sim",
+      "no": "Não"
+    },
+    "checklist": {
+      "title": "Checklist",
+      "mardConnected": "MARD conectado"
+    },
+    "components": {
+      "title": "Boletins e manual",
+      "bulletinsPage": "Página de boletins de serviço",
+      "manufacturerPageNote": "Esta é a página do fabricante, salva em outro de seus modelos.",
+      "noModel": "Este componente não está vinculado a um modelo do catálogo, então não dá para salvar uma página de boletins. Peça a um admin para adicionar o modelo.",
+      "linkLabel": "Link da página de boletins",
+      "linkHint": "Cole a página de boletins de serviço do fabricante uma vez só. Ela fica salva para a próxima",
+      "linkMustBeHttps": "O link precisa começar com https://",
+      "linkSaveFailed": "Não foi possível salvar o link",
+      "saveLink": "Salvar link",
+      "downloadFailed": "Não foi possível baixar o documento",
+      "serial": "Série {{serial}}",
+      "made": "Fabricado {{date}}",
+      "noSerialOrDate": "Sem número de série nem data registrados",
+      "downloadDoc": "Baixar {{title}}",
+      "download": "Baixar",
+      "none": "Não há neste equipamento",
+      "bulletinsChecked": "Boletins de serviço verificados",
+      "manualFollowed": "Manual seguido",
+      "noneChosen": "Nenhum escolhido",
+      "chosenDocument": "Documento escolhido",
+      "noManual": "Ainda não há manual na Biblioteca para esses modelos.",
+      "openLibrary": "Abra a Biblioteca",
+      "toAddOne": "para adicionar um."
+    },
+    "job": {
+      "loadFailed": "Não foi possível carregar a planilha de dobragem",
+      "unknownError": "Erro desconhecido",
+      "refreshFailed": "Não foi possível atualizar os componentes",
+      "backToRig": "Voltar para o equipamento",
+      "title": "Dobragem: {{rig}}",
+      "saving": "Salvando…",
+      "saved": "Salvo",
+      "saveFailed": "Não foi possível salvar: {{error}}",
+      "ownerAndDate": "Proprietário e data",
+      "date": "Data",
+      "ownerName": "Nome do proprietário",
+      "ownerAddress": "Endereço do proprietário",
+      "ownerPhone": "Telefone do proprietário",
+      "ownerEmail": "Email do proprietário",
+      "notesSection": "Notas",
+      "notes": "Notas desta dobragem",
+      "notesHint": "Por exemplo: Sem MARD nesta unidade. Boletim de serviço 123xx cumprido. AAD trocado.",
+      "reviewAndSign": "Revisar e assinar"
+    },
+    "log": {
+      "loadFailed": "Não foi possível carregar a caderneta de dobragens",
+      "title": "Caderneta de dobragens da reserva",
+      "empty": "Ainda não há planilhas de dobragem assinadas. Inicie uma dobragem para criar uma.",
+      "sheet": "Planilha",
+      "date": "Data",
+      "rigger": "Rigger",
+      "checklist": "Checklist",
+      "notComplete_one": "{{count}} pendente",
+      "notComplete_other": "{{count}} pendentes",
+      "complete": "Completa",
+      "void": "Anulada",
+      "openSheet": "Abrir planilha {{sheetNo}}",
+      "open": "Abrir"
+    },
+    "sign": {
+      "failed": "Não foi possível assinar a planilha",
+      "title": "Assinar planilha de dobragem",
+      "allDone": "Tudo está marcado e respondido.",
+      "incomplete": "Isto não está completo. Explique nas notas antes de assinar:",
+      "unticked_one": "{{count}} item do checklist não marcado",
+      "unticked_other": "{{count}} itens do checklist não marcados",
+      "notes": "Notas",
+      "notesHint": "Por exemplo: Sem MARD nesta unidade. Boletim de serviço 123xx cumprido. AAD trocado.",
+      "licence": "Número da licença",
+      "licenceHint": "Sua licença de rigger, impressa na planilha ao lado do seu nome",
+      "emailOwner": "Avisar o proprietário por email que a dobragem está pronta ({{email}})",
+      "sign": "Assinar"
+    },
+    "void": {
+      "failed": "Não foi possível anular a planilha",
+      "title": "Anular planilha {{sheetNo}}",
+      "body": "A planilha e seu registro de dobragem ficam na caderneta, marcados como anulados. Assine uma planilha nova para registrar a dobragem de novo.",
+      "reason": "Motivo",
+      "void": "Anular"
+    },
+    "print": {
+      "loadFailed": "Não foi possível carregar a planilha de dobragem",
+      "sendFailed": "Não foi possível enviar o email",
+      "backToRig": "Voltar para o equipamento",
+      "emailOwner": "Enviar email ao proprietário",
+      "emailOwnerAgain": "Enviar email ao proprietário de novo",
+      "voidSheet": "Anular planilha",
+      "print": "Imprimir",
+      "emailed": "O email foi enviado ao proprietário em {{to}}.",
+      "emailFailedAfterSigning": "A planilha foi assinada, mas não foi possível enviar o email ao proprietário. {{message}} Você pode tentar de novo com Enviar email ao proprietário.",
+      "emailFailed": "Não foi possível enviar o email ao proprietário. {{message}}",
+      "addOwnerEmail": "Adicione o email do proprietário antes de assinar a planilha para poder avisá-lo.",
+      "emailedOn": "Email enviado para {{to}} em {{date}} {{time}} UTC"
+    }
+  }
 }

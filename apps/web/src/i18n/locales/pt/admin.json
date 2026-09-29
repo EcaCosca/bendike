@@ -1,3 +1,187 @@
 {
-  "admin": {}
+  "admin": {
+    "common": {
+      "cancel": "Cancelar",
+      "close": "Fechar",
+      "save": "Salvar",
+      "edit": "Editar",
+      "editTitle": "Editar: {{name}}",
+      "editAria": "Editar {{name}}",
+      "active": "Ativo",
+      "activeAria": "Ativo: {{name}}",
+      "name": "Nome",
+      "title": "Título",
+      "summary": "Resumo",
+      "description": "Descrição",
+      "brand": "Marca",
+      "category": "Categoria",
+      "price": "Preço",
+      "priceAmount": "Valor",
+      "currency": "Moeda",
+      "position": "Posição",
+      "priceAndDetails": "Preço e detalhes",
+      "saveDetails": "Salvar detalhes",
+      "detailsSaved": "Detalhes salvos.",
+      "copy": "Textos",
+      "copyLanguage": "Idioma dos textos",
+      "saveCopy": "Salvar textos",
+      "copySaved": "Textos salvos.",
+      "saveFailed": "Não foi possível salvar",
+      "somethingWrong": "Algo deu errado",
+      "writeInEnglish": "Escreva em inglês. O espanhol e o português são traduzidos automaticamente e você pode corrigir depois."
+    },
+    "usedGear": {
+      "title": "Equipamento usado",
+      "add": "Adicionar item usado",
+      "table": "Itens usados",
+      "col": {
+        "item": "Item",
+        "status": "Status",
+        "sold": "Vendido"
+      },
+      "status": {
+        "sold": "Vendido",
+        "listed": "Publicado",
+        "hidden": "Oculto"
+      },
+      "soldAria": "Vendido: {{name}}",
+      "loadFailed": "Não foi possível carregar os itens usados",
+      "changeFailed": "Não foi possível alterar o item",
+      "create": {
+        "intro": "Escreva em inglês. O espanhol e o português são traduzidos automaticamente e você pode corrigir depois. Coloque na descrição o que os compradores perguntam (saltos, data de fabricação, estado).",
+        "newBrand": "Adicionar uma marca nova…",
+        "newBrandName": "Nome da marca nova",
+        "choosePhotos": "Escolher fotos",
+        "photos": "Fotos",
+        "submit": "Criar item",
+        "amountInvalid": "O valor precisa ser um número, por exemplo 450000 ou 450.000,50.",
+        "priceIncomplete": "Digite um preço e escolha uma moeda.",
+        "chooseBrand": "Escolha uma marca.",
+        "chooseCategory": "Escolha uma categoria.",
+        "createFailed": "Não foi possível criar o item"
+      },
+      "edit": {
+        "listed": "Publicado na loja",
+        "photos": "Fotos",
+        "photo": "Foto {{n}}",
+        "removePhoto": "Remover foto {{n}}",
+        "addPhotos": "Adicionar fotos",
+        "photosAdded": "Fotos adicionadas.",
+        "photoRemoved": "Foto removida."
+      }
+    },
+    "services": {
+      "title": "Serviços",
+      "add": "Adicionar serviço",
+      "table": "Serviços",
+      "varies": "Variável",
+      "noPrice": "Sem preço (variável)",
+      "slug": "Slug (usado na URL)",
+      "turnaroundOptional": "Nota de prazo (opcional)",
+      "turnaroundNote": "Nota de prazo",
+      "submit": "Criar serviço",
+      "loadFailed": "Não foi possível carregar os serviços",
+      "changeFailed": "Não foi possível alterar o serviço",
+      "createFailed": "Não foi possível criar o serviço",
+      "category": {
+        "repack": "Dobragem",
+        "aad_service": "Serviço de AAD",
+        "repair": "Reparo",
+        "reline": "Troca de linhas",
+        "other": "Outro"
+      },
+      "price": {
+        "incomplete": "Digite o valor e a moeda, ou deixe os dois vazios.",
+        "invalid": "O valor precisa ser um número, por exemplo 55000 ou 55.000,50."
+      }
+    },
+    "learn": {
+      "title": "Aprender",
+      "addItem": "Adicionar material",
+      "table": "Material de Aprender",
+      "col": {
+        "format": "Formato",
+        "topics": "Temas",
+        "source": "Fonte",
+        "player": "Player",
+        "links": "Vínculos"
+      },
+      "chip": {
+        "affiliate": "afiliado",
+        "buyLink": "link de compra"
+      },
+      "links": "Vínculos",
+      "linksAria": "Vínculos de {{name}}",
+      "loadFailed": "Não foi possível carregar o material",
+      "changeFailed": "Não foi possível alterar o material",
+      "embed": {
+        "noPlayer": "Nenhum player reconhecido para este link; ele vai abrir na fonte.",
+        "recognised": "{{kind}} do {{provider}} reconhecido: {{id}}",
+        "kind": {
+          "video": "vídeo",
+          "show": "programa",
+          "episode": "episódio"
+        }
+      },
+      "fields": {
+        "link": "Link (https)",
+        "format": "Formato",
+        "level": "Nível",
+        "contentLanguage": "Idioma do conteúdo",
+        "topics": "Temas",
+        "sourceName": "Nome da fonte",
+        "author": "Autor (opcional)",
+        "duration": "Duração em minutos (opcional)",
+        "publishedOn": "Publicado em (opcional)",
+        "buyUrl": "Link de compra (opcional, https)",
+        "buyUrlHelp": "Aqui vai um link do Amazon Associados. Marque a caixa abaixo para mostrar o aviso.",
+        "affiliate": "O link de compra é de afiliado"
+      },
+      "validate": {
+        "httpsLink": "O link precisa começar com https://.",
+        "pickTopic": "Escolha pelo menos um tema.",
+        "sourceName": "Digite o nome da fonte.",
+        "buyHttps": "O link de compra precisa começar com https://.",
+        "duration": "A duração precisa ser um número inteiro de minutos.",
+        "titleOrSlug": "Digite um título ou um slug."
+      },
+      "create": {
+        "intro": "Cole o link primeiro. Os players do YouTube, Spotify e Vimeo são reconhecidos a partir dele. Escreva o título e o resumo em inglês, o espanhol e o português são traduzidos automaticamente e você pode corrigir depois.",
+        "slug": "Slug (opcional, vem do título se ficar vazio)",
+        "addFailed": "Não foi possível adicionar o material"
+      },
+      "edit": {
+        "titleAndSummary": "Título e resumo",
+        "titleIn": "Título ({{locale}})",
+        "summaryIn": "Resumo ({{locale}})",
+        "saveCopy": "Salvar textos em {{locale}}",
+        "copySaved": "Textos em {{locale}} salvos.",
+        "saveCopyFailed": "Não foi possível salvar os textos"
+      },
+      "linksDialog": {
+        "title": "Vínculos: {{name}}",
+        "intro": "Os produtos vinculados mostram este material em \"Aprenda antes de comprar\". Os vínculos com marcas cobrem todos os produtos da marca. Os vínculos com modelos de equipamento mostram o material nos equipamentos desse modelo, em \"Aprenda sobre o seu equipamento\".",
+        "products": "Produtos",
+        "brands": "Marcas",
+        "gearModels": "Modelos de equipamento",
+        "save": "Salvar vínculos",
+        "saveFailed": "Não foi possível salvar os vínculos"
+      },
+      "collections": {
+        "title": "Coleções",
+        "add": "Adicionar coleção",
+        "table": "Coleções",
+        "topic": "Tema",
+        "startHere": "Comece por aqui",
+        "items": "Materiais",
+        "yes": "Sim",
+        "editTitle": "Editar coleção: {{name}}",
+        "intro": "Introdução",
+        "startHereLabel": "Mostrar primeiro neste tema (comece por aqui), uma por tema",
+        "itemsInOrder": "Materiais, em ordem",
+        "saveFailed": "Não foi possível salvar a coleção",
+        "changeFailed": "Não foi possível alterar a coleção"
+      }
+    }
+  }
 }

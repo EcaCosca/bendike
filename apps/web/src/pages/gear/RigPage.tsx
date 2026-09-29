@@ -16,6 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import {
   GEAR_KINDS,
@@ -29,6 +30,7 @@ import {
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
 import { detectLocaleFromEnvironment } from '../../i18n/detect-locale';
+import '../../i18n/i18n';
 import { listLearnForRig } from '../learn/learn-api';
 import { LearnSection } from '../learn/LearnSection';
 import { ClearGroundingDialog } from '../bulletins/ClearGroundingDialog';
@@ -46,13 +48,14 @@ import { canRemovePhoto } from '../rigphotos/rig-photo-access';
 import { listPhotos } from '../rigphotos/rig-photos-api';
 import { RigCover } from '../rigphotos/RigCover';
 import { RigPhotos } from '../rigphotos/RigPhotos';
-import { KIND_LABELS } from './item-details';
+import { KIND_LABEL_KEYS } from './item-details';
 import { RigDialog } from './RigDialog';
 import { GroundedBadge, StatusBadge } from './StatusBadge';
 import { useComponentActions } from './use-component-actions';
 import { VoidDialog } from './VoidDialog';
 
 export function RigPage() {
+  const { t } = useTranslation();
   const { rigId = '' } = useParams();
   const { token, user } = useAuth();
   const navigate = useNavigate();
@@ -94,8 +97,8 @@ export function RigPage() {
   }, [token, rigId]);
 
   const onChanged = useCallback(() => {
-    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not refresh the rig'));
-  }, [reload]);
+    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : t('gear.rig.refreshFailed')));
+  }, [reload, t]);
 
   const { actions, dialogs } = useComponentActions({
     token: token ?? '',
@@ -109,22 +112,22 @@ export function RigPage() {
   const itemLabels = useMemo(() => {
     const labels: Record<string, string> = {};
     for (const item of Object.values(rig?.slots ?? {})) {
-      if (item) labels[item.id] = `${KIND_LABELS[item.kind]} ${item.manufacturer} ${item.model}`;
+      if (item) labels[item.id] = `${t(KIND_LABEL_KEYS[item.kind])} ${item.manufacturer} ${item.model}`;
     }
     return labels;
-  }, [rig]);
+  }, [rig, t]);
 
   if (!token || !user) return null;
 
   const verify = (entryId: string) => {
     verifyEntry(token, entryId).then(onChanged, (err: unknown) =>
-      setError(err instanceof Error ? err.message : 'Could not verify the entry'),
+      setError(err instanceof Error ? err.message : t('gear.rig.verifyFailed')),
     );
   };
   const startRepack = () => {
     startSheet(token, rigId).then(
       (job) => void navigate(`/app/gear/${rigId}/packing/${job.sheet.id}`),
-      (err: unknown) => setError(err instanceof Error ? err.message : 'Could not start the repack'),
+      (err: unknown) => setError(err instanceof Error ? err.message : t('gear.rig.startRepackFailed')),
     );
   };
   const canEdit = user.role === Role.Admin || rig?.ownerId === user.id;
@@ -134,9 +137,9 @@ export function RigPage() {
     <AppShell>
       <Stack spacing={3}>
         <Link component={RouterLink} to="/app/gear" underline="hover">
-          Back to gear
+          {t('gear.rig.backToGear')}
         </Link>
-        {unavailable && <Alert severity="warning">This rig is not available.</Alert>}
+        {unavailable && <Alert severity="warning">{t('gear.rig.unavailable')}</Alert>}
         {error && <Alert severity="error">{error}</Alert>}
         {rig && (
           <>
@@ -150,12 +153,12 @@ export function RigPage() {
                 <StatusBadge status={rig.status} size="medium" />
               ) : (
                 <Alert severity="info" icon={false} sx={{ py: 0 }}>
-                  Inactive
+                  {t('gear.common.inactive')}
                 </Alert>
               )}
               {canGround && rig.active && rig.slots.reserve && (
                 <Button variant="contained" onClick={startRepack}>
-                  Start repack
+                  {t('gear.rig.startRepack')}
                 </Button>
               )}
               {canGround && rig.active && (
@@ -164,16 +167,16 @@ export function RigPage() {
                   color="error"
                   onClick={() => setGrounding({ type: 'ground', target: { rigId: rig.id }, label: rig.name })}
                 >
-                  Ground rig
+                  {t('gear.rig.groundRig')}
                 </Button>
               )}
               {canEdit && (
                 <Button variant="outlined" onClick={() => setEditingRig(true)}>
-                  Edit rig
+                  {t('gear.rig.editRig')}
                 </Button>
               )}
               <Button variant="outlined" component={RouterLink} to={`/app/gear/${rig.id}/label`}>
-                QR label
+                {t('gear.rig.qrLabel')}
               </Button>
             </Stack>
             {rig.notes && <Typography color="text.secondary">{rig.notes}</Typography>}
@@ -189,20 +192,21 @@ export function RigPage() {
               {GEAR_KINDS.map((kind) => {
                 const item = rig.slots[kind];
                 if (!item) {
-                  const label = kind === 'aad' ? 'AAD' : kind;
+                  const kindName = t(KIND_LABEL_KEYS[kind]);
+                  const label = kind === 'aad' ? kindName : kindName.toLowerCase();
                   return canEdit ? (
                     <Button
                       key={kind}
                       variant="outlined"
                       sx={{ minHeight: 96, borderStyle: 'dashed' }}
-                      aria-label={`Add ${label}`}
+                      aria-label={t('gear.rig.addKind', { kind: label })}
                       onClick={() => actions.addComponent(kind, rig.id)}
                     >
-                      Add {label}
+                      {t('gear.rig.addKind', { kind: label })}
                     </Button>
                   ) : (
                     <Typography key={kind} color="text.secondary">
-                      No {label}
+                      {t('gear.rig.noKind', { kind: label })}
                     </Typography>
                   );
                 }
@@ -230,9 +234,9 @@ export function RigPage() {
               })}
             </Box>
             {learnSections.length > 0 && (
-              <Stack spacing={2} component="section" aria-label="Learn about your gear">
+              <Stack spacing={2} component="section" aria-label={t('gear.rig.learnAboutYourGear')}>
                 <Typography variant="h5" component="h2">
-                  Learn about your gear
+                  {t('gear.rig.learnAboutYourGear')}
                 </Typography>
                 {learnSections.map((section) => (
                   <LearnSection
@@ -248,15 +252,15 @@ export function RigPage() {
             {rig.groundingHistory.length > 0 && (
               <>
                 <Typography variant="h5" component="h2">
-                  Grounding history
+                  {t('gear.rig.groundingHistory')}
                 </Typography>
                 <TableContainer component={Paper} variant="outlined">
-                  <Table size="small" aria-label="Grounding history">
+                  <Table size="small" aria-label={t('gear.rig.groundingHistory')}>
                     <TableHead>
                       <TableRow>
-                        <TableCell>Grounded</TableCell>
-                        <TableCell>Reason</TableCell>
-                        <TableCell>Cleared</TableCell>
+                        <TableCell>{t('gear.rig.grounded')}</TableCell>
+                        <TableCell>{t('gear.rig.reason')}</TableCell>
+                        <TableCell>{t('gear.rig.cleared')}</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -272,7 +276,7 @@ export function RigPage() {
                             {g.closedAt ? (
                               <>
                                 <Typography variant="body2">
-                                  Cleared by {g.closedByName} on {g.closedAt.slice(0, 10)}
+                                  {t('gear.rig.clearedBy', { name: g.closedByName, date: g.closedAt.slice(0, 10) })}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                   {g.closeNote}
@@ -280,7 +284,7 @@ export function RigPage() {
                               </>
                             ) : (
                               <Typography variant="body2" color="error">
-                                Still grounded
+                                {t('gear.rig.stillGrounded')}
                               </Typography>
                             )}
                           </TableCell>
@@ -300,7 +304,7 @@ export function RigPage() {
               canRemove={(photo) => canRemovePhoto(photo, user, rig.ownerId)}
               onChanged={() => {
                 reloadPhotos().catch((err: unknown) =>
-                  setError(err instanceof Error ? err.message : 'Could not refresh the photos'),
+                  setError(err instanceof Error ? err.message : t('gear.rig.refreshPhotosFailed')),
                 );
               }}
             />
@@ -312,17 +316,17 @@ export function RigPage() {
               sx={{ flexWrap: 'wrap', rowGap: 1 }}
             >
               <Typography variant="h5" component="h2">
-                History
+                {t('gear.common.history')}
               </Typography>
               <ToggleButtonGroup
                 exclusive
                 size="small"
                 value={historyView}
                 onChange={(_, next: 'timeline' | 'table' | null) => next && setHistoryView(next)}
-                aria-label="History view"
+                aria-label={t('gear.rig.historyView')}
               >
-                <ToggleButton value="timeline">Timeline</ToggleButton>
-                <ToggleButton value="table">Table</ToggleButton>
+                <ToggleButton value="timeline">{t('gear.rig.timeline')}</ToggleButton>
+                <ToggleButton value="table">{t('gear.rig.table')}</ToggleButton>
               </ToggleButtonGroup>
             </Stack>
             {historyView === 'timeline' ? (

@@ -15,16 +15,19 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Brand, Category, UsedItemAdminDetail } from '@bendike/shared';
 import { formatMoney } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { listBrands, listCategories } from '../shop/catalog-api';
 import { UsedItemCreateDialog } from './UsedItemCreateDialog';
 import { UsedItemEditDialog } from './UsedItemEditDialog';
 import { listUsedItems, updateUsedItem } from './used-gear-admin-api';
 
 export function UsedGearAdminPage() {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [items, setItems] = useState<UsedItemAdminDetail[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -41,14 +44,14 @@ export function UsedGearAdminPage() {
   }, [token]);
 
   useEffect(() => {
-    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not load used items'));
+    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : t('admin.usedGear.loadFailed')));
     listBrands()
       .then(setBrands)
       .catch(() => undefined);
     listCategories()
       .then(setCategories)
       .catch(() => undefined);
-  }, [reload]);
+  }, [reload, t]);
 
   function replaceItem(updated: UsedItemAdminDetail) {
     setItems((current) => current.map((item) => (item.id === updated.id ? updated : item)));
@@ -62,7 +65,7 @@ export function UsedGearAdminPage() {
     try {
       replaceItem(await updateUsedItem(token, item.id, { sold: !item.sold }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not change the item');
+      setError(err instanceof Error ? err.message : t('admin.usedGear.changeFailed'));
     }
   }
 
@@ -73,22 +76,22 @@ export function UsedGearAdminPage() {
       <Stack spacing={3}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h4" component="h1">
-            Used gear
+            {t('admin.usedGear.title')}
           </Typography>
           <Button variant="contained" onClick={() => setCreating(true)}>
-            Add used item
+            {t('admin.usedGear.add')}
           </Button>
         </Stack>
         {error && <Alert severity="error">{error}</Alert>}
         <TableContainer component={Paper} variant="outlined">
-          <Table size="small" aria-label="Used items">
+          <Table size="small" aria-label={t('admin.usedGear.table')}>
             <TableHead>
               <TableRow>
                 <TableCell />
-                <TableCell>Item</TableCell>
-                <TableCell>Price</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Sold</TableCell>
+                <TableCell>{t('admin.usedGear.col.item')}</TableCell>
+                <TableCell>{t('admin.common.price')}</TableCell>
+                <TableCell>{t('admin.usedGear.col.status')}</TableCell>
+                <TableCell>{t('admin.usedGear.col.sold')}</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
@@ -118,23 +121,27 @@ export function UsedGearAdminPage() {
                   </TableCell>
                   <TableCell>
                     {item.sold ? (
-                      <Chip size="small" color="error" label="Sold" />
+                      <Chip size="small" color="error" label={t('admin.usedGear.status.sold')} />
                     ) : item.active ? (
-                      <Chip size="small" color="success" label="Listed" />
+                      <Chip size="small" color="success" label={t('admin.usedGear.status.listed')} />
                     ) : (
-                      <Chip size="small" label="Hidden" />
+                      <Chip size="small" label={t('admin.usedGear.status.hidden')} />
                     )}
                   </TableCell>
                   <TableCell>
                     <Switch
                       checked={item.sold}
                       onChange={() => void toggleSold(item)}
-                      slotProps={{ input: { 'aria-label': `Sold: ${item.name.en}` } }}
+                      slotProps={{ input: { 'aria-label': t('admin.usedGear.soldAria', { name: item.name.en }) } }}
                     />
                   </TableCell>
                   <TableCell align="right">
-                    <Button size="small" onClick={() => setEditingId(item.id)} aria-label={`Edit ${item.name.en}`}>
-                      Edit
+                    <Button
+                      size="small"
+                      onClick={() => setEditingId(item.id)}
+                      aria-label={t('admin.common.editAria', { name: item.name.en })}
+                    >
+                      {t('admin.common.edit')}
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -155,7 +162,7 @@ export function UsedGearAdminPage() {
             }
             setItems((current) => [created, ...current]);
             reload().catch((err: unknown) =>
-              setError(err instanceof Error ? err.message : 'Could not load used items'),
+              setError(err instanceof Error ? err.message : t('admin.usedGear.loadFailed')),
             );
           }}
         />

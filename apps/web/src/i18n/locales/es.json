@@ -111,7 +111,10 @@
       "gear_care": "Cuidado del equipo",
       "freefall": "Caída libre",
       "safety_culture": "Cultura de seguridad",
-      "instruments": "Instrumentos"
+      "instruments": "Instrumentos",
+      "packing": "Plegado y rigging",
+      "reviews": "Reseñas",
+      "wingsuit_base": "Wingsuit BASE"
     },
     "format": {
       "video": "Video",
@@ -187,6 +190,7 @@
     "tagline": "Taller de plegado y software, Argentina.",
     "blurb": "Bendike es el software de taller de plegado que construí para mantener a paracaidistas, riggers y dropzones al día con los replegados de reserva, el servicio de AAD y los boletines de servicio de los fabricantes. La seguridad primero, siempre.",
     "motto": "Movidos por la misma pasión.",
-    "openApp": "Abrir la app"
+    "openApp": "Abrir la app",
+    "navigation": "Sitio"
   }
 }

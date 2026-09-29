@@ -1,7 +1,9 @@
 import { Alert, AlertTitle, Button, Link, List, ListItem, Stack, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import type { GroundingView, InspectionSummary, PendingVerification, ReadinessReason } from '@bendike/shared';
-import { ENTRY_KIND_LABELS } from './entry-kinds';
+import type { GroundingView, ReadinessReason } from '@bendike/shared';
+import '../../i18n/i18n';
+import { ENTRY_KIND_LABEL_KEYS } from './entry-kinds';
 
 interface GroundedBannerProps {
   reasons: readonly ReadinessReason[];
@@ -11,16 +13,8 @@ interface GroundedBannerProps {
   onClear?: (grounding: GroundingView) => void;
 }
 
-function describePending(entry: PendingVerification): string {
-  const contact = entry.performedByContact ? ` (${entry.performedByContact})` : '';
-  return `${ENTRY_KIND_LABELS[entry.kind]} on ${entry.performedOn}, packed by ${entry.performedByName}${contact}`;
-}
-
-function describeInspection(inspection: InspectionSummary): string {
-  return `Inspection on ${inspection.performedOn} by ${inspection.performedByName}: ${inspection.description}`;
-}
-
 export function GroundedBanner({ reasons, canVerify, onVerify, canClear = false, onClear }: GroundedBannerProps) {
+  const { t } = useTranslation();
   const pending = reasons.flatMap((reason) => (reason.type === 'pending_verification' ? reason.entries : []));
   const inspections = reasons.flatMap((reason) => (reason.type === 'inspection_grounded' ? [reason.inspection] : []));
   const groundings = reasons.flatMap((reason) => (reason.type === 'grounding' ? [reason.grounding] : []));
@@ -30,12 +24,12 @@ export function GroundedBanner({ reasons, canVerify, onVerify, canClear = false,
   const kinds = [pending.length > 0, inspections.length > 0, groundings.length > 0].filter(Boolean).length;
   const title =
     kinds > 1
-      ? 'GROUNDED'
+      ? t('gear.banner.grounded')
       : pending.length > 0
-        ? 'GROUNDED: work awaiting verification'
+        ? t('gear.banner.pendingTitle')
         : inspections.length > 0
-          ? 'GROUNDED: failed inspection'
-          : 'GROUNDED';
+          ? t('gear.banner.inspectionTitle')
+          : t('gear.banner.grounded');
   return (
     <Alert
       severity="error"
@@ -43,23 +37,9 @@ export function GroundedBanner({ reasons, canVerify, onVerify, canClear = false,
       sx={{ bgcolor: '#1B1B1F', color: '#fff', '& .MuiAlert-message': { width: '100%' } }}
     >
       <AlertTitle sx={{ fontWeight: 700 }}>{title}</AlertTitle>
-      {pending.length > 0 && (
-        <Typography variant="body2">
-          Someone outside Bendike did work on this rig. A rigger must verify it before the rig is released. This is a
-          record for the dropzone and the owner, not a lock: the rigger clears it.
-        </Typography>
-      )}
-      {inspections.length > 0 && (
-        <Typography variant="body2">
-          A rigger grounded this rig at an inspection. It stays grounded until a rigger records a passed inspection.
-        </Typography>
-      )}
-      {groundings.length > 0 && (
-        <Typography variant="body2">
-          A rigger grounded this rig or one of its components. This is advisory: Bendike records and shows it, and the
-          rigger clears it.
-        </Typography>
-      )}
+      {pending.length > 0 && <Typography variant="body2">{t('gear.banner.pendingBody')}</Typography>}
+      {inspections.length > 0 && <Typography variant="body2">{t('gear.banner.inspectionBody')}</Typography>}
+      {groundings.length > 0 && <Typography variant="body2">{t('gear.banner.groundingBody')}</Typography>}
       <List dense disablePadding sx={{ mt: 1 }}>
         {groundings.map((grounding) => (
           <ListItem key={grounding.id} disableGutters>
@@ -69,12 +49,12 @@ export function GroundedBanner({ reasons, canVerify, onVerify, canClear = false,
               </Typography>
               {canClear && grounding.source === 'manual' && (
                 <Button size="small" variant="contained" color="secondary" onClick={() => onClear?.(grounding)}>
-                  Clear
+                  {t('gear.common.clear')}
                 </Button>
               )}
               {canClear && grounding.source === 'bulletin' && (
                 <Link component={RouterLink} to="/app/work/bulletins" color="inherit" variant="body2">
-                  Resolve it in Service bulletins
+                  {t('gear.banner.resolveInBulletins')}
                 </Link>
               )}
             </Stack>
@@ -82,18 +62,29 @@ export function GroundedBanner({ reasons, canVerify, onVerify, canClear = false,
         ))}
         {inspections.map((inspection) => (
           <ListItem key={inspection.entryId} disableGutters>
-            <Typography variant="body2">{describeInspection(inspection)}</Typography>
+            <Typography variant="body2">
+              {t('gear.banner.inspection', {
+                date: inspection.performedOn,
+                name: inspection.performedByName,
+                description: inspection.description,
+              })}
+            </Typography>
           </ListItem>
         ))}
         {pending.map((entry) => (
           <ListItem key={entry.entryId} disableGutters>
             <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
               <Typography variant="body2" sx={{ flexGrow: 1 }}>
-                {describePending(entry)}
+                {t('gear.banner.pending', {
+                  kind: t(ENTRY_KIND_LABEL_KEYS[entry.kind]),
+                  date: entry.performedOn,
+                  name: entry.performedByName,
+                })}
+                {entry.performedByContact ? ` (${entry.performedByContact})` : ''}
               </Typography>
               {canVerify && (
                 <Button size="small" variant="contained" color="secondary" onClick={() => onVerify(entry.entryId)}>
-                  Verify
+                  {t('gear.common.verify')}
                 </Button>
               )}
             </Stack>

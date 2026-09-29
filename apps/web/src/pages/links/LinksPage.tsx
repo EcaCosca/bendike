@@ -1,8 +1,10 @@
 import { Alert, Box, Button, Card, CardContent, Stack, TextField, Typography } from '@mui/material';
 import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Role, type RiggerLinkView, type RiggerSummary } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { confirmLink, createLink, declineLink, endLink, listLinks, searchRiggers } from './links-api';
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
@@ -40,6 +42,7 @@ function LinkCard({ link, actions }: { link: RiggerLinkView; actions: ReactNode 
 }
 
 export function LinksPage() {
+  const { t } = useTranslation();
   const { token, user } = useAuth();
   const [links, setLinks] = useState<RiggerLinkView[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -52,8 +55,8 @@ export function LinksPage() {
   }, [token]);
 
   useEffect(() => {
-    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : 'Could not load your links'));
-  }, [reload]);
+    reload().catch((err: unknown) => setError(err instanceof Error ? err.message : t('work.links.loadFailed')));
+  }, [reload, t]);
 
   if (!token || !user) return null;
   const isRigger = user.role === Role.Rigger;
@@ -62,7 +65,7 @@ export function LinksPage() {
     setError(null);
     work().then(
       () => reload().catch(() => undefined),
-      (err: unknown) => setError(err instanceof Error ? err.message : 'Something went wrong'),
+      (err: unknown) => setError(err instanceof Error ? err.message : t('work.links.failed')),
     );
   };
 
@@ -84,7 +87,7 @@ export function LinksPage() {
     event.preventDefault();
     setError(null);
     searchRiggers(token, search.trim()).then(setFound, (err: unknown) =>
-      setError(err instanceof Error ? err.message : 'Could not search'),
+      setError(err instanceof Error ? err.message : t('work.links.searchFailed')),
     );
   };
 
@@ -92,17 +95,15 @@ export function LinksPage() {
     <AppShell>
       <Stack spacing={3}>
         <Typography variant="h4" component="h1">
-          {isRigger ? 'Customers and dropzones' : 'My riggers'}
+          {isRigger ? t('work.links.titleRigger') : t('work.links.titleOwner')}
         </Typography>
         <Typography color="text.secondary">
-          {isRigger
-            ? 'A dropzone or customer appears here once you both agree. You then see their gear and can log work on it.'
-            : 'A rigger can see your gear, log work on it and reach you on WhatsApp once you both agree.'}
+          {isRigger ? t('work.links.introRigger') : t('work.links.introOwner')}
         </Typography>
         {error && <Alert severity="error">{error}</Alert>}
 
         {incoming.length > 0 && (
-          <Section title="Waiting for your answer">
+          <Section title={t('work.links.waitingForYou')}>
             {incoming.map((l) => (
               <LinkCard
                 key={l.id}
@@ -112,17 +113,17 @@ export function LinksPage() {
                     <Button
                       variant="contained"
                       size="small"
-                      aria-label={`Confirm ${l.counterpart.displayName}`}
+                      aria-label={t('work.links.confirmNamed', { name: l.counterpart.displayName })}
                       onClick={() => run(() => confirmLink(token, l.id))}
                     >
-                      Confirm
+                      {t('work.links.confirm')}
                     </Button>
                     <Button
                       size="small"
-                      aria-label={`Decline ${l.counterpart.displayName}`}
+                      aria-label={t('work.links.declineNamed', { name: l.counterpart.displayName })}
                       onClick={() => run(() => declineLink(token, l.id))}
                     >
-                      Decline
+                      {t('work.links.decline')}
                     </Button>
                   </>
                 }
@@ -131,10 +132,10 @@ export function LinksPage() {
           </Section>
         )}
 
-        <Section title={isRigger ? 'You look after' : 'Looking after your gear'}>
+        <Section title={isRigger ? t('work.links.youLookAfter') : t('work.links.lookingAfterYourGear')}>
           {active.length === 0 && (
             <Typography color="text.secondary">
-              {isRigger ? 'No customers or dropzones yet.' : 'No rigger yet.'}
+              {isRigger ? t('work.links.noCustomers') : t('work.links.noRigger')}
             </Typography>
           )}
           {active.map((l) => (
@@ -145,10 +146,10 @@ export function LinksPage() {
                 <Button
                   color="inherit"
                   size="small"
-                  aria-label={`End link with ${l.counterpart.displayName}`}
+                  aria-label={t('work.links.endLinkNamed', { name: l.counterpart.displayName })}
                   onClick={() => run(() => endLink(token, l.id))}
                 >
-                  End link
+                  {t('work.links.endLink')}
                 </Button>
               }
             />
@@ -156,7 +157,7 @@ export function LinksPage() {
         </Section>
 
         {outgoing.length > 0 && (
-          <Section title="Waiting for the other side">
+          <Section title={t('work.links.waitingForOther')}>
             {outgoing.map((l) => (
               <LinkCard
                 key={l.id}
@@ -165,10 +166,10 @@ export function LinksPage() {
                   <Button
                     color="inherit"
                     size="small"
-                    aria-label={`Cancel request to ${l.counterpart.displayName}`}
+                    aria-label={t('work.links.cancelNamed', { name: l.counterpart.displayName })}
                     onClick={() => run(() => endLink(token, l.id))}
                   >
-                    Cancel
+                    {t('work.links.cancel')}
                   </Button>
                 }
               />
@@ -179,50 +180,50 @@ export function LinksPage() {
         {isRigger ? (
           <Stack component="form" spacing={1} onSubmit={addOwner}>
             <Typography variant="h6" component="h2">
-              Add a customer or dropzone
+              {t('work.links.addTitle')}
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
               <TextField
-                label="Email or WhatsApp phone"
+                label={t('work.links.contact')}
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
                 size="small"
                 sx={{ flexGrow: 1 }}
-                helperText="They need a Bendike account. Phones with the country code, like +54 9 341 555 0000"
+                helperText={t('work.links.contactHint')}
               />
               <Button type="submit" variant="contained" sx={{ alignSelf: { sm: 'flex-start' } }}>
-                Add
+                {t('work.links.add')}
               </Button>
             </Stack>
           </Stack>
         ) : (
           <Stack component="form" spacing={1} onSubmit={runSearch}>
             <Typography variant="h6" component="h2">
-              Find a rigger
+              {t('work.links.findTitle')}
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
               <TextField
-                label="Find a rigger by name"
+                label={t('work.links.findByName')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 size="small"
                 sx={{ flexGrow: 1 }}
               />
               <Button type="submit" variant="outlined">
-                Search
+                {t('work.links.search')}
               </Button>
             </Stack>
-            {found?.length === 0 && <Typography color="text.secondary">No riggers found.</Typography>}
+            {found?.length === 0 && <Typography color="text.secondary">{t('work.links.noRiggersFound')}</Typography>}
             {found?.map((rigger) => (
               <Stack key={rigger.id} direction="row" spacing={2} alignItems="center">
                 <Typography sx={{ flexGrow: 1 }}>{rigger.displayName}</Typography>
                 <Button
                   size="small"
                   variant="contained"
-                  aria-label={`Ask ${rigger.displayName}`}
+                  aria-label={t('work.links.askNamed', { name: rigger.displayName })}
                   onClick={() => run(() => createLink(token, { riggerId: rigger.id }))}
                 >
-                  Ask
+                  {t('work.links.ask')}
                 </Button>
               </Stack>
             ))}

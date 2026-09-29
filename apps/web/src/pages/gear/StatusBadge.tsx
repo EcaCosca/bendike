@@ -4,8 +4,10 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { Chip, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import type { DueItem, DueStatus } from '@bendike/shared';
-import { STATUS_META, dueText, type StatusIcon } from './gear-status';
+import '../../i18n/i18n';
+import { STATUS_LABEL_KEYS, STATUS_META, dueText, type StatusIcon } from './gear-status';
 
 const ICONS: Record<StatusIcon, typeof ErrorOutlineIcon> = {
   overdue: ErrorOutlineIcon,
@@ -15,6 +17,7 @@ const ICONS: Record<StatusIcon, typeof ErrorOutlineIcon> = {
 };
 
 export function StatusBadge({ status, size = 'small' }: { status: DueStatus; size?: 'small' | 'medium' }) {
+  const { t } = useTranslation();
   const meta = STATUS_META[status];
   const Icon = ICONS[meta.icon];
   return (
@@ -23,7 +26,7 @@ export function StatusBadge({ status, size = 'small' }: { status: DueStatus; siz
       color={meta.color}
       variant={status === 'no_data' ? 'outlined' : 'filled'}
       icon={<Icon />}
-      label={meta.label}
+      label={t(STATUS_LABEL_KEYS[status])}
       data-status={status}
       sx={
         status === 'due_soon'
@@ -35,21 +38,22 @@ export function StatusBadge({ status, size = 'small' }: { status: DueStatus; siz
 }
 
 export function GroundedBadge({ size = 'small' }: { size?: 'small' | 'medium' }) {
+  const { t } = useTranslation();
   return (
     <Chip
       size={size}
       icon={<BlockIcon />}
-      label="GROUNDED"
+      label={t('gear.common.grounded')}
       sx={{ bgcolor: '#1B1B1F', color: '#fff', fontWeight: 700, '& .MuiChip-icon': { color: '#fff' } }}
     />
   );
 }
 
 export function DueLine({ due }: { due: DueItem }) {
-  const text = dueText(due);
+  const { t } = useTranslation();
   return (
     <Typography variant="body2" color={due.status === 'overdue' ? 'error' : 'text.secondary'}>
-      {text}
+      {dueText(due, t)}
     </Typography>
   );
 }

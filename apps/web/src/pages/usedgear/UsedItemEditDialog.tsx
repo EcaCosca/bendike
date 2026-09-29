@@ -18,8 +18,10 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, type ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Brand, Category, Locale, PriceCurrency, UsedItemAdminDetail } from '@bendike/shared';
 import { LOCALES, PRICE_CURRENCIES, pickLocalized } from '@bendike/shared';
+import '../../i18n/i18n';
 import { parsePriceInput } from '../services/price-input';
 import {
   deleteProductImage,
@@ -30,10 +32,10 @@ import {
 } from './used-gear-admin-api';
 
 const IMAGE_TYPES = 'image/jpeg,image/png,image/webp';
-const COPY_FIELDS: { field: UsedItemCopyField; label: string; multiline: boolean }[] = [
-  { field: 'name', label: 'Name', multiline: false },
-  { field: 'summary', label: 'Summary', multiline: true },
-  { field: 'descriptionMd', label: 'Description', multiline: true },
+const COPY_FIELDS: { field: UsedItemCopyField; labelKey: string; multiline: boolean }[] = [
+  { field: 'name', labelKey: 'admin.common.name', multiline: false },
+  { field: 'summary', labelKey: 'admin.common.summary', multiline: true },
+  { field: 'descriptionMd', labelKey: 'admin.common.description', multiline: true },
 ];
 
 type CopyValues = Record<Locale, Record<UsedItemCopyField, string>>;
@@ -60,6 +62,7 @@ interface UsedItemEditDialogProps {
 }
 
 export function UsedItemEditDialog({ item, token, brands, categories, onClose, onChanged }: UsedItemEditDialogProps) {
+  const { t } = useTranslation();
   const [amount, setAmount] = useState(item.priceAmount === null ? '' : String(item.priceAmount));
   const [currency, setCurrency] = useState<PriceCurrency | ''>(item.priceCurrency ?? '');
   const [brandId, setBrandId] = useState(item.brand.id);
@@ -75,14 +78,14 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
       await onChanged();
       setMessage({ severity: 'success', text: success });
     } catch (err) {
-      setMessage({ severity: 'error', text: err instanceof Error ? err.message : 'Something went wrong' });
+      setMessage({ severity: 'error', text: err instanceof Error ? err.message : t('admin.common.somethingWrong') });
     }
   }
 
   async function saveDetails() {
     const price = parsePriceInput(amount, currency);
     if (price === 'incomplete' || price === 'invalid' || price.priceAmount === null || price.priceCurrency === null) {
-      setMessage({ severity: 'error', text: 'Enter a price and choose a currency.' });
+      setMessage({ severity: 'error', text: t('admin.usedGear.create.priceIncomplete') });
       return;
     }
     await run(async () => {
@@ -93,7 +96,7 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
         categoryId,
         active: listed,
       });
-    }, 'Details saved.');
+    }, t('admin.common.detailsSaved'));
   }
 
   async function saveCopy() {
@@ -107,7 +110,7 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
           }
         }
       }
-    }, 'Copy saved.');
+    }, t('admin.common.copySaved'));
   }
 
   async function addPhotos(event: ChangeEvent<HTMLInputElement>) {
@@ -117,29 +120,29 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
     }
     await run(async () => {
       await uploadProductImages(token, item.id, files);
-    }, 'Photos added.');
+    }, t('admin.usedGear.edit.photosAdded'));
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Edit: {item.name.en}</DialogTitle>
+      <DialogTitle>{t('admin.common.editTitle', { name: item.name.en })}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {message && <Alert severity={message.severity}>{message.text}</Alert>}
 
           <Typography variant="subtitle1" component="h3">
-            Price and details
+            {t('admin.common.priceAndDetails')}
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
-              label="Price amount"
+              label={t('admin.common.priceAmount')}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               sx={{ flex: 1 }}
             />
             <TextField
               select
-              label="Currency"
+              label={t('admin.common.currency')}
               value={currency}
               onChange={(e) => setCurrency(e.target.value as PriceCurrency)}
               sx={{ flex: 1 }}
@@ -154,7 +157,7 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               select
-              label="Brand"
+              label={t('admin.common.brand')}
               value={brandId}
               onChange={(e) => setBrandId(e.target.value)}
               sx={{ flex: 1 }}
@@ -167,7 +170,7 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
             </TextField>
             <TextField
               select
-              label="Category"
+              label={t('admin.common.category')}
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
               sx={{ flex: 1 }}
@@ -181,16 +184,16 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
           </Stack>
           <FormControlLabel
             control={<Switch checked={listed} onChange={(e) => setListed(e.target.checked)} />}
-            label="Listed in the shop"
+            label={t('admin.usedGear.edit.listed')}
           />
           <Button variant="outlined" onClick={() => void saveDetails()} sx={{ alignSelf: 'flex-start' }}>
-            Save details
+            {t('admin.common.saveDetails')}
           </Button>
 
           <Divider />
 
           <Typography variant="subtitle1" component="h3">
-            Photos
+            {t('admin.usedGear.edit.photos')}
           </Typography>
           <Stack direction="row" spacing={1.5} sx={{ flexWrap: 'wrap', rowGap: 1.5 }}>
             {item.images.map((image, index) => (
@@ -198,13 +201,15 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
                 <Box
                   component="img"
                   src={image.url}
-                  alt={`Photo ${index + 1}`}
+                  alt={t('admin.usedGear.edit.photo', { n: index + 1 })}
                   sx={{ height: 88, width: 88, objectFit: 'cover', borderRadius: 1, display: 'block' }}
                 />
                 <IconButton
                   size="small"
-                  aria-label={`Remove photo ${index + 1}`}
-                  onClick={() => void run(() => deleteProductImage(token, image.id), 'Photo removed.')}
+                  aria-label={t('admin.usedGear.edit.removePhoto', { n: index + 1 })}
+                  onClick={() =>
+                    void run(() => deleteProductImage(token, image.id), t('admin.usedGear.edit.photoRemoved'))
+                  }
                   sx={{ position: 'absolute', top: 2, right: 2, bgcolor: 'background.paper' }}
                 >
                   ✕
@@ -213,13 +218,13 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
             ))}
           </Stack>
           <Button component="label" variant="outlined" sx={{ alignSelf: 'flex-start' }}>
-            Add photos
+            {t('admin.usedGear.edit.addPhotos')}
             <input
               type="file"
               hidden
               multiple
               accept={IMAGE_TYPES}
-              aria-label="Add photos"
+              aria-label={t('admin.usedGear.edit.addPhotos')}
               onChange={(event) => void addPhotos(event)}
             />
           </Button>
@@ -227,18 +232,22 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
           <Divider />
 
           <Typography variant="subtitle1" component="h3">
-            Copy
+            {t('admin.common.copy')}
           </Typography>
-          <Tabs value={locale} onChange={(_event, value: Locale) => setLocale(value)} aria-label="Language">
+          <Tabs
+            value={locale}
+            onChange={(_event, value: Locale) => setLocale(value)}
+            aria-label={t('admin.common.copyLanguage')}
+          >
             {LOCALES.map((option) => (
               <Tab key={option} value={option} label={option.toUpperCase()} />
             ))}
           </Tabs>
           <Stack spacing={2}>
-            {COPY_FIELDS.map(({ field, label, multiline }) => (
+            {COPY_FIELDS.map(({ field, labelKey, multiline }) => (
               <TextField
                 key={`${locale}-${field}`}
-                label={label}
+                label={t(labelKey)}
                 value={copy[locale][field]}
                 multiline={multiline}
                 minRows={field === 'descriptionMd' ? 6 : undefined}
@@ -249,12 +258,12 @@ export function UsedItemEditDialog({ item, token, brands, categories, onClose, o
             ))}
           </Stack>
           <Button variant="outlined" onClick={() => void saveCopy()} sx={{ alignSelf: 'flex-start' }}>
-            Save copy
+            {t('admin.common.saveCopy')}
           </Button>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Close</Button>
+        <Button onClick={onClose}>{t('admin.common.close')}</Button>
       </DialogActions>
     </Dialog>
   );

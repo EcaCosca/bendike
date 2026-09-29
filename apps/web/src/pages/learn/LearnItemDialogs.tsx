@@ -17,6 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, type FormEvent, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import type {
   Brand,
   ContentLanguage,
@@ -44,15 +45,9 @@ import {
   slugify,
   youtubeThumbnail,
 } from '@bendike/shared';
+import '../../i18n/i18n';
 import { replaceLearnLinks, updateLearnCopy, updateLearnItem } from './learn-admin-api';
-import { PROVIDER_NAMES, TOPIC_LABELS } from './learn-labels';
-
-const LANGUAGE_LABELS: Record<ContentLanguage, string> = {
-  en: 'English',
-  es: 'Spanish',
-  pt: 'Portuguese',
-  other: 'Other',
-};
+import { PROVIDER_NAMES, TOPIC_LABEL_KEYS } from './learn-labels';
 
 function toOptionalNumber(value: string): number | null {
   const trimmed = value.trim();
@@ -94,11 +89,12 @@ function detailsOf(item?: LearnItemAdminDetail): DetailsState {
 }
 
 function EmbedPreview({ url }: { url: string }) {
+  const { t } = useTranslation();
   const embed = parseEmbed(url);
   if (!embed) {
     return url.trim() ? (
       <Typography variant="caption" color="text.secondary">
-        No player recognised for this link; it will open at the source.
+        {t('admin.learn.embed.noPlayer')}
       </Typography>
     ) : null;
   }
@@ -108,7 +104,11 @@ function EmbedPreview({ url }: { url: string }) {
         <img src={youtubeThumbnail(embed.id)} alt="" width={96} height={54} style={{ objectFit: 'cover' }} />
       )}
       <Typography variant="caption" color="text.secondary">
-        {PROVIDER_NAMES[embed.provider]} {embed.kind} recognised: {embed.id}
+        {t('admin.learn.embed.recognised', {
+          provider: PROVIDER_NAMES[embed.provider],
+          kind: t(`admin.learn.embed.kind.${embed.kind}`),
+          id: embed.id,
+        })}
       </Typography>
     </Stack>
   );
@@ -123,82 +123,88 @@ function DetailsFields({
   onChange: (next: DetailsState) => void;
   children?: ReactNode;
 }) {
+  const { t } = useTranslation();
   const set = <K extends keyof DetailsState>(key: K, next: DetailsState[K]) => onChange({ ...value, [key]: next });
   return (
     <>
-      <TextField label="Link (https)" value={value.url} onChange={(e) => set('url', e.target.value)} required />
+      <TextField
+        label={t('admin.learn.fields.link')}
+        value={value.url}
+        onChange={(e) => set('url', e.target.value)}
+        required
+      />
       <EmbedPreview url={value.url} />
       {children}
       <Stack direction="row" spacing={2}>
         <TextField
           select
-          label="Format"
+          label={t('admin.learn.fields.format')}
           value={value.format}
           onChange={(e) => set('format', e.target.value as LearnFormat)}
           sx={{ flex: 1 }}
         >
           {LEARN_FORMATS.map((format) => (
             <MenuItem key={format} value={format}>
-              {format}
+              {t(`learn.format.${format}`)}
             </MenuItem>
           ))}
         </TextField>
         <TextField
           select
-          label="Level"
+          label={t('admin.learn.fields.level')}
           value={value.level}
           onChange={(e) => set('level', e.target.value as LearnLevel)}
           sx={{ flex: 1 }}
         >
           {LEARN_LEVELS.map((level) => (
             <MenuItem key={level} value={level}>
-              {level}
+              {t(`learn.level.${level}`)}
             </MenuItem>
           ))}
         </TextField>
         <TextField
           select
-          label="Content language"
+          label={t('admin.learn.fields.contentLanguage')}
           value={value.contentLanguage}
           onChange={(e) => set('contentLanguage', e.target.value as ContentLanguage)}
           sx={{ flex: 1 }}
         >
           {CONTENT_LANGUAGES.map((lang) => (
             <MenuItem key={lang} value={lang}>
-              {LANGUAGE_LABELS[lang]}
+              {t(`learn.lang.${lang}`)}
             </MenuItem>
           ))}
         </TextField>
       </Stack>
       <TextField
         select
-        label="Topics"
+        label={t('admin.learn.fields.topics')}
         value={value.topics}
         onChange={(e) => set('topics', e.target.value as unknown as LearnTopic[])}
         slotProps={{
           select: {
             multiple: true,
-            renderValue: (selected) => (selected as LearnTopic[]).map((topic) => TOPIC_LABELS[topic]).join(', '),
+            renderValue: (selected) => (selected as LearnTopic[]).map((topic) => t(TOPIC_LABEL_KEYS[topic])).join(', '),
           },
         }}
       >
         {LEARN_TOPICS.map((topic) => (
           <MenuItem key={topic} value={topic}>
             <Checkbox size="small" checked={value.topics.includes(topic)} />
-            <ListItemText primary={TOPIC_LABELS[topic]} />
+            <ListItemText primary={t(TOPIC_LABEL_KEYS[topic])} />
           </MenuItem>
         ))}
       </TextField>
       <Stack direction="row" spacing={2}>
         <TextField
-          label="Source name"
+          label={t('admin.learn.fields.sourceName')}
           value={value.sourceName}
           onChange={(e) => set('sourceName', e.target.value)}
           required
           sx={{ flex: 1 }}
         />
         <TextField
-          label="Author (optional)"
+          label={t('admin.learn.fields.author')}
           value={value.author}
           onChange={(e) => set('author', e.target.value)}
           sx={{ flex: 1 }}
@@ -206,13 +212,13 @@ function DetailsFields({
       </Stack>
       <Stack direction="row" spacing={2}>
         <TextField
-          label="Duration in minutes (optional)"
+          label={t('admin.learn.fields.duration')}
           value={value.durationMinutes}
           onChange={(e) => set('durationMinutes', e.target.value)}
           sx={{ flex: 1 }}
         />
         <TextField
-          label="Published on (optional)"
+          label={t('admin.learn.fields.publishedOn')}
           type="date"
           value={value.publishedAt}
           onChange={(e) => set('publishedAt', e.target.value)}
@@ -220,33 +226,33 @@ function DetailsFields({
           sx={{ flex: 1 }}
         />
         <TextField
-          label="Position"
+          label={t('admin.common.position')}
           value={value.position}
           onChange={(e) => set('position', e.target.value)}
           sx={{ width: 110 }}
         />
       </Stack>
       <TextField
-        label="Buy link (optional, https)"
+        label={t('admin.learn.fields.buyUrl')}
         value={value.buyUrl}
         onChange={(e) => set('buyUrl', e.target.value)}
-        helperText="An Amazon Associates link goes here. Tick the box below so the disclosure is shown."
+        helperText={t('admin.learn.fields.buyUrlHelp')}
       />
       <FormControlLabel
         control={<Checkbox checked={value.affiliate} onChange={(e) => set('affiliate', e.target.checked)} />}
-        label="The buy link is an affiliate link"
+        label={t('admin.learn.fields.affiliate')}
       />
     </>
   );
 }
 
 function validateDetails(value: DetailsState): string | null {
-  if (!isHttpsUrl(value.url)) return 'The link must start with https://.';
-  if (value.topics.length === 0) return 'Pick at least one topic.';
-  if (!value.sourceName.trim()) return 'Enter the source name.';
-  if (value.buyUrl.trim() && !isHttpsUrl(value.buyUrl)) return 'The buy link must start with https://.';
+  if (!isHttpsUrl(value.url)) return 'admin.learn.validate.httpsLink';
+  if (value.topics.length === 0) return 'admin.learn.validate.pickTopic';
+  if (!value.sourceName.trim()) return 'admin.learn.validate.sourceName';
+  if (value.buyUrl.trim() && !isHttpsUrl(value.buyUrl)) return 'admin.learn.validate.buyHttps';
   if (value.durationMinutes.trim() && toOptionalNumber(value.durationMinutes) === null) {
-    return 'Duration must be a whole number of minutes.';
+    return 'admin.learn.validate.duration';
   }
   return null;
 }
@@ -274,6 +280,7 @@ interface LearnItemCreateDialogProps {
 }
 
 export function LearnItemCreateDialog({ onClose, onCreate }: LearnItemCreateDialogProps) {
+  const { t } = useTranslation();
   const [details, setDetails] = useState<DetailsState>(detailsOf());
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
@@ -285,12 +292,12 @@ export function LearnItemCreateDialog({ onClose, onCreate }: LearnItemCreateDial
     event.preventDefault();
     const problem = validateDetails(details);
     if (problem) {
-      setError(problem);
+      setError(t(problem));
       return;
     }
     const finalSlug = slug.trim() || slugify(title);
     if (!finalSlug) {
-      setError('Enter a title or a slug.');
+      setError(t('admin.learn.validate.titleOrSlug'));
       return;
     }
     setError(null);
@@ -316,25 +323,27 @@ export function LearnItemCreateDialog({ onClose, onCreate }: LearnItemCreateDial
       });
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not add the item');
+      setError(err instanceof Error ? err.message : t('admin.learn.create.addFailed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="md" component="form" onSubmit={(event) => void submit(event)}>
-      <DialogTitle>Add item</DialogTitle>
+      <DialogTitle>{t('admin.learn.addItem')}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
-          <Alert severity="info">
-            Paste the link first. YouTube, Spotify and Vimeo players are recognised from it. Write the title and summary
-            in English; Spanish and Portuguese are translated automatically and can be edited afterwards.
-          </Alert>
+          <Alert severity="info">{t('admin.learn.create.intro')}</Alert>
           <DetailsFields value={details} onChange={setDetails}>
-            <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
             <TextField
-              label="Summary"
+              label={t('admin.common.title')}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+            <TextField
+              label={t('admin.common.summary')}
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
               multiline
@@ -342,7 +351,7 @@ export function LearnItemCreateDialog({ onClose, onCreate }: LearnItemCreateDial
               required
             />
             <TextField
-              label="Slug (optional, from the title if empty)"
+              label={t('admin.learn.create.slug')}
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
               helperText={slug.trim() ? '' : slugify(title) || ' '}
@@ -351,9 +360,9 @@ export function LearnItemCreateDialog({ onClose, onCreate }: LearnItemCreateDial
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('admin.common.cancel')}</Button>
         <Button type="submit" variant="contained" disabled={saving}>
-          Add item
+          {t('admin.learn.addItem')}
         </Button>
       </DialogActions>
     </Dialog>
@@ -378,25 +387,27 @@ function initialCopy(item: LearnItemAdminDetail): CopyValues {
 }
 
 export function LearnItemEditDialog({ item, token, onClose, onSaved }: LearnItemEditDialogProps) {
+  const { t } = useTranslation();
   const [details, setDetails] = useState<DetailsState>(detailsOf(item));
   const [locale, setLocale] = useState<Locale>('en');
   const [copy, setCopy] = useState<CopyValues>(() => initialCopy(item));
   const [saved, setSaved] = useState<LearnItemAdminDetail>(item);
   const [message, setMessage] = useState<{ severity: 'success' | 'error'; text: string } | null>(null);
+  const localeCode = locale.toUpperCase();
 
   async function saveDetails() {
     const problem = validateDetails(details);
     if (problem) {
-      setMessage({ severity: 'error', text: problem });
+      setMessage({ severity: 'error', text: t(problem) });
       return;
     }
     try {
       const updated = await updateLearnItem(token, item.id, detailsBody(details));
       setSaved(updated);
       onSaved(updated);
-      setMessage({ severity: 'success', text: 'Details saved.' });
+      setMessage({ severity: 'success', text: t('admin.common.detailsSaved') });
     } catch (err) {
-      setMessage({ severity: 'error', text: err instanceof Error ? err.message : 'Could not save' });
+      setMessage({ severity: 'error', text: err instanceof Error ? err.message : t('admin.common.saveFailed') });
     }
   }
 
@@ -411,48 +422,55 @@ export function LearnItemEditDialog({ item, token, onClose, onSaved }: LearnItem
       }
       setSaved(latest);
       onSaved(latest);
-      setMessage({ severity: 'success', text: `${locale.toUpperCase()} copy saved.` });
+      setMessage({ severity: 'success', text: t('admin.learn.edit.copySaved', { locale: localeCode }) });
     } catch (err) {
-      setMessage({ severity: 'error', text: err instanceof Error ? err.message : 'Could not save the copy' });
+      setMessage({
+        severity: 'error',
+        text: err instanceof Error ? err.message : t('admin.learn.edit.saveCopyFailed'),
+      });
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Edit: {item.title.en}</DialogTitle>
+      <DialogTitle>{t('admin.common.editTitle', { name: item.title.en })}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {message && <Alert severity={message.severity}>{message.text}</Alert>}
           <DetailsFields value={details} onChange={setDetails} />
           <Button variant="contained" onClick={() => void saveDetails()} sx={{ alignSelf: 'flex-start' }}>
-            Save details
+            {t('admin.common.saveDetails')}
           </Button>
           <Divider />
-          <Typography variant="subtitle1">Title and summary</Typography>
-          <Tabs value={locale} onChange={(_event, next: Locale) => setLocale(next)} aria-label="Copy language">
+          <Typography variant="subtitle1">{t('admin.learn.edit.titleAndSummary')}</Typography>
+          <Tabs
+            value={locale}
+            onChange={(_event, next: Locale) => setLocale(next)}
+            aria-label={t('admin.common.copyLanguage')}
+          >
             {LOCALES.map((option) => (
               <Tab key={option} value={option} label={option.toUpperCase()} />
             ))}
           </Tabs>
           <TextField
-            label={`Title (${locale.toUpperCase()})`}
+            label={t('admin.learn.edit.titleIn', { locale: localeCode })}
             value={copy[locale].title}
             onChange={(e) => setCopy({ ...copy, [locale]: { ...copy[locale], title: e.target.value } })}
           />
           <TextField
-            label={`Summary (${locale.toUpperCase()})`}
+            label={t('admin.learn.edit.summaryIn', { locale: localeCode })}
             value={copy[locale].summary}
             onChange={(e) => setCopy({ ...copy, [locale]: { ...copy[locale], summary: e.target.value } })}
             multiline
             minRows={2}
           />
           <Button variant="outlined" onClick={() => void saveCopy()} sx={{ alignSelf: 'flex-start' }}>
-            Save {locale.toUpperCase()} copy
+            {t('admin.learn.edit.saveCopy', { locale: localeCode })}
           </Button>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Close</Button>
+        <Button onClick={onClose}>{t('admin.common.close')}</Button>
       </DialogActions>
     </Dialog>
   );
@@ -473,6 +491,7 @@ function idsOf(links: LearnLink[], kind: LearnLink['kind']): string[] {
 }
 
 export function LearnLinksDialog({ item, token, products, brands, models, onClose, onSaved }: LearnLinksDialogProps) {
+  const { t } = useTranslation();
   const [productIds, setProductIds] = useState<string[]>(() => idsOf(item.links, 'product'));
   const [brandIds, setBrandIds] = useState<string[]>(() => idsOf(item.links, 'brand'));
   const [modelIds, setModelIds] = useState<string[]>(() => idsOf(item.links, 'gear_model'));
@@ -493,7 +512,7 @@ export function LearnLinksDialog({ item, token, products, brands, models, onClos
       onSaved(updated);
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the links');
+      setError(err instanceof Error ? err.message : t('admin.learn.linksDialog.saveFailed'));
       setSaving(false);
     }
   }
@@ -504,17 +523,16 @@ export function LearnLinksDialog({ item, token, products, brands, models, onClos
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Links: {item.title.en}</DialogTitle>
+      <DialogTitle>{t('admin.learn.linksDialog.title', { name: item.title.en })}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
           <Typography variant="body2" color="text.secondary">
-            Linked products show this item under &quot;Learn before you buy&quot;. Brand links cover every product of
-            the brand. Gear model links show it on rigs with that model under &quot;Learn about your gear&quot;.
+            {t('admin.learn.linksDialog.intro')}
           </Typography>
           <TextField
             select
-            label="Products"
+            label={t('admin.learn.linksDialog.products')}
             value={productIds}
             onChange={(e) => setProductIds(e.target.value as unknown as string[])}
             slotProps={multi((selected) =>
@@ -530,7 +548,7 @@ export function LearnLinksDialog({ item, token, products, brands, models, onClos
           </TextField>
           <TextField
             select
-            label="Brands"
+            label={t('admin.learn.linksDialog.brands')}
             value={brandIds}
             onChange={(e) => setBrandIds(e.target.value as unknown as string[])}
             slotProps={multi((selected) =>
@@ -546,7 +564,7 @@ export function LearnLinksDialog({ item, token, products, brands, models, onClos
           </TextField>
           <TextField
             select
-            label="Gear models"
+            label={t('admin.learn.linksDialog.gearModels')}
             value={modelIds}
             onChange={(e) => setModelIds(e.target.value as unknown as string[])}
             slotProps={multi((selected) =>
@@ -568,9 +586,9 @@ export function LearnLinksDialog({ item, token, products, brands, models, onClos
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('admin.common.cancel')}</Button>
         <Button variant="contained" onClick={() => void save()} disabled={saving}>
-          Save links
+          {t('admin.learn.linksDialog.save')}
         </Button>
       </DialogActions>
     </Dialog>

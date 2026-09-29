@@ -12,7 +12,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { MaintenanceEntryView } from '@bendike/shared';
+import '../../i18n/i18n';
 import { resizeImage } from './resize-image';
 import { uploadPhoto } from './rig-photos-api';
 import { workLabel } from './work-labels';
@@ -29,6 +31,7 @@ interface AddPhotoDialogProps {
 const MAX_LISTED_WORK = 30;
 
 export function AddPhotoDialog({ token, rigId, entries, itemLabels, onClose, onSaved }: AddPhotoDialogProps) {
+  const { t } = useTranslation();
   const [file, setFile] = useState<File | null>(null);
   const [caption, setCaption] = useState('');
   const [entryId, setEntryId] = useState('');
@@ -39,7 +42,7 @@ export function AddPhotoDialog({ token, rigId, entries, itemLabels, onClose, onS
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!file) {
-      setError('Choose a photo');
+      setError(t('gear.photos.chooseRequired'));
       return;
     }
     setSaving(true);
@@ -50,47 +53,47 @@ export function AddPhotoDialog({ token, rigId, entries, itemLabels, onClose, onS
       onSaved();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not add the photo');
+      setError(err instanceof Error ? err.message : t('gear.photos.addFailed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="xs" component="form" onSubmit={(e) => void submit(e)}>
-      <DialogTitle>Add a photo</DialogTitle>
+      <DialogTitle>{t('gear.photos.addTitle')}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
           <Box>
             <Button component="label" variant="outlined">
-              Choose photo
+              {t('gear.photos.choosePhoto')}
               <input hidden type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
             </Button>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              {file ? file.name : 'JPEG, PNG or WebP; large photos are shrunk for you'}
+              {file ? file.name : t('gear.photos.fileHint')}
             </Typography>
           </Box>
-          <TextField label="Caption" value={caption} onChange={(e) => setCaption(e.target.value)} />
+          <TextField label={t('gear.photos.caption')} value={caption} onChange={(e) => setCaption(e.target.value)} />
           <TextField
             select
-            label="Related work"
+            label={t('gear.photos.relatedWork')}
             value={entryId}
             onChange={(e) => setEntryId(e.target.value)}
             slotProps={{ inputLabel: { shrink: true }, select: { displayEmpty: true } }}
           >
-            <MenuItem value="">Not linked to any work</MenuItem>
+            <MenuItem value="">{t('gear.photos.notLinked')}</MenuItem>
             {work.map((entry) => (
               <MenuItem key={entry.id} value={entry.id}>
-                {workLabel(entry, itemLabels)}
+                {workLabel(entry, itemLabels, t)}
               </MenuItem>
             ))}
           </TextField>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('gear.common.cancel')}</Button>
         <Button type="submit" variant="contained" disabled={saving}>
-          Upload
+          {t('gear.photos.upload')}
         </Button>
       </DialogActions>
     </Dialog>

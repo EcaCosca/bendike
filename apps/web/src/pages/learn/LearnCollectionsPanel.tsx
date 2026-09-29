@@ -22,10 +22,12 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { LearnCollectionSummary, LearnItemAdminDetail, LearnTopic } from '@bendike/shared';
 import { LEARN_TOPICS, slugify } from '@bendike/shared';
+import '../../i18n/i18n';
 import { createLearnCollection, updateLearnCollection } from './learn-admin-api';
-import { TOPIC_LABELS } from './learn-labels';
+import { TOPIC_LABEL_KEYS } from './learn-labels';
 
 interface CollectionDialogProps {
   token: string;
@@ -36,6 +38,7 @@ interface CollectionDialogProps {
 }
 
 function CollectionDialog({ token, items, collection, onClose, onSaved }: CollectionDialogProps) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState(collection?.title.en ?? '');
   const [intro, setIntro] = useState(collection?.intro.en ?? '');
   const [topic, setTopic] = useState<LearnTopic>(collection?.topic ?? 'aad');
@@ -62,22 +65,31 @@ function CollectionDialog({ token, items, collection, onClose, onSaved }: Collec
       onSaved(saved);
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the collection');
+      setError(err instanceof Error ? err.message : t('admin.learn.collections.saveFailed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="sm" component="form" onSubmit={(event) => void submit(event)}>
-      <DialogTitle>{collection ? `Edit collection: ${collection.title.en}` : 'Add collection'}</DialogTitle>
+      <DialogTitle>
+        {collection
+          ? t('admin.learn.collections.editTitle', { name: collection.title.en })
+          : t('admin.learn.collections.add')}
+      </DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
           {!collection && (
             <>
-              <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
               <TextField
-                label="Intro"
+                label={t('admin.common.title')}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
+              <TextField
+                label={t('admin.learn.collections.intro')}
                 value={intro}
                 onChange={(e) => setIntro(e.target.value)}
                 multiline
@@ -86,20 +98,25 @@ function CollectionDialog({ token, items, collection, onClose, onSaved }: Collec
               />
             </>
           )}
-          <TextField select label="Topic" value={topic} onChange={(e) => setTopic(e.target.value as LearnTopic)}>
+          <TextField
+            select
+            label={t('admin.learn.collections.topic')}
+            value={topic}
+            onChange={(e) => setTopic(e.target.value as LearnTopic)}
+          >
             {LEARN_TOPICS.map((option) => (
               <MenuItem key={option} value={option}>
-                {TOPIC_LABELS[option]}
+                {t(TOPIC_LABEL_KEYS[option])}
               </MenuItem>
             ))}
           </TextField>
           <FormControlLabel
             control={<Checkbox checked={startHere} onChange={(e) => setStartHere(e.target.checked)} />}
-            label="Show first for this topic (start here); one per topic"
+            label={t('admin.learn.collections.startHereLabel')}
           />
           <TextField
             select
-            label="Items, in order"
+            label={t('admin.learn.collections.itemsInOrder')}
             value={itemIds}
             onChange={(e) => setItemIds(e.target.value as unknown as string[])}
             slotProps={{
@@ -120,9 +137,9 @@ function CollectionDialog({ token, items, collection, onClose, onSaved }: Collec
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('admin.common.cancel')}</Button>
         <Button type="submit" variant="contained" disabled={saving}>
-          {collection ? 'Save' : 'Add collection'}
+          {collection ? t('admin.common.save') : t('admin.learn.collections.add')}
         </Button>
       </DialogActions>
     </Dialog>
@@ -138,6 +155,7 @@ interface LearnCollectionsPanelProps {
 }
 
 export function LearnCollectionsPanel({ token, items, collections, onChanged, onError }: LearnCollectionsPanelProps) {
+  const { t } = useTranslation();
   const [creating, setCreating] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const editing = collections.find((collection) => collection.id === editingId);
@@ -146,7 +164,7 @@ export function LearnCollectionsPanel({ token, items, collections, onChanged, on
     try {
       onChanged(await updateLearnCollection(token, collection.id, { active: !collection.active }));
     } catch (err) {
-      onError(err instanceof Error ? err.message : 'Could not change the collection');
+      onError(err instanceof Error ? err.message : t('admin.learn.collections.changeFailed'));
     }
   }
 
@@ -154,21 +172,21 @@ export function LearnCollectionsPanel({ token, items, collections, onChanged, on
     <Stack spacing={2} component="section" aria-labelledby="learn-collections-title">
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography id="learn-collections-title" variant="h5" component="h2">
-          Collections
+          {t('admin.learn.collections.title')}
         </Typography>
         <Button variant="outlined" onClick={() => setCreating(true)}>
-          Add collection
+          {t('admin.learn.collections.add')}
         </Button>
       </Stack>
       <TableContainer component={Paper} variant="outlined">
-        <Table size="small" aria-label="Collections">
+        <Table size="small" aria-label={t('admin.learn.collections.table')}>
           <TableHead>
             <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Topic</TableCell>
-              <TableCell>Start here</TableCell>
-              <TableCell>Items</TableCell>
-              <TableCell>Active</TableCell>
+              <TableCell>{t('admin.common.title')}</TableCell>
+              <TableCell>{t('admin.learn.collections.topic')}</TableCell>
+              <TableCell>{t('admin.learn.collections.startHere')}</TableCell>
+              <TableCell>{t('admin.learn.collections.items')}</TableCell>
+              <TableCell>{t('admin.common.active')}</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
@@ -176,23 +194,25 @@ export function LearnCollectionsPanel({ token, items, collections, onChanged, on
             {collections.map((collection) => (
               <TableRow key={collection.id}>
                 <TableCell>{collection.title.en}</TableCell>
-                <TableCell>{TOPIC_LABELS[collection.topic]}</TableCell>
-                <TableCell>{collection.startHere ? 'Yes' : ''}</TableCell>
+                <TableCell>{t(TOPIC_LABEL_KEYS[collection.topic])}</TableCell>
+                <TableCell>{collection.startHere ? t('admin.learn.collections.yes') : ''}</TableCell>
                 <TableCell>{collection.itemIds.length}</TableCell>
                 <TableCell>
                   <Switch
                     checked={collection.active}
                     onChange={() => void toggleActive(collection)}
-                    slotProps={{ input: { 'aria-label': `Active: ${collection.title.en}` } }}
+                    slotProps={{
+                      input: { 'aria-label': t('admin.common.activeAria', { name: collection.title.en }) },
+                    }}
                   />
                 </TableCell>
                 <TableCell align="right">
                   <Button
                     size="small"
                     onClick={() => setEditingId(collection.id)}
-                    aria-label={`Edit ${collection.title.en}`}
+                    aria-label={t('admin.common.editAria', { name: collection.title.en })}
                   >
-                    Edit
+                    {t('admin.common.edit')}
                   </Button>
                 </TableCell>
               </TableRow>

@@ -1,43 +1,49 @@
 import type { AadDetails, ContainerDetails, GearItemView, MainDetails, ReserveDetails } from '@bendike/shared';
+import type { TFunction } from 'i18next';
+import i18n from '../../i18n/i18n';
 
-export const KIND_LABELS = { container: 'Container', main: 'Main', reserve: 'Reserve', aad: 'AAD' } as const;
-
-export function detailLine(item: GearItemView): string {
+export function detailLine(item: GearItemView, t: TFunction = i18n.t): string {
   const parts: (string | null)[] = [];
   switch (item.kind) {
     case 'container': {
       const d = item.details as ContainerDetails;
-      parts.push(d.harnessSize && `Harness ${d.harnessSize}`, d.tso && `TSO ${d.tso}`);
+      parts.push(
+        d.harnessSize ? t('gear.details.harness', { size: d.harnessSize }) : null,
+        d.tso ? t('gear.details.tso', { tso: d.tso }) : null,
+      );
       break;
     }
     case 'main': {
       const d = item.details as MainDetails;
-      parts.push(d.sizeSqft ? `${d.sizeSqft} sq ft` : null, d.lineType);
+      parts.push(d.sizeSqft ? t('gear.details.sqft', { size: d.sizeSqft }) : null, d.lineType);
       break;
     }
     case 'reserve': {
       const d = item.details as ReserveDetails;
       parts.push(
-        d.sizeSqft ? `${d.sizeSqft} sq ft` : null,
-        d.repackCycleDays ? `repack every ${d.repackCycleDays} days` : null,
-        d.deployments ? `${d.deployments} deployments` : null,
+        d.sizeSqft ? t('gear.details.sqft', { size: d.sizeSqft }) : null,
+        d.repackCycleDays ? t('gear.details.repackEvery', { count: d.repackCycleDays }) : null,
+        d.deployments ? t('gear.details.deployments', { count: d.deployments }) : null,
       );
       break;
     }
     case 'aad': {
       const d = item.details as AadDetails;
-      parts.push(d.mode && `Mode ${d.mode}`, d.batteryInstalledOn && `Battery installed ${d.batteryInstalledOn}`);
+      parts.push(
+        d.mode ? t('gear.details.mode', { mode: d.mode }) : null,
+        d.batteryInstalledOn ? t('gear.details.batteryInstalled', { date: d.batteryInstalledOn }) : null,
+      );
       break;
     }
   }
   return parts.filter(Boolean).join(' · ');
 }
 
-export function identityLine(item: GearItemView): string {
+export function identityLine(item: GearItemView, t: TFunction = i18n.t): string {
   return [
     `${item.manufacturer} ${item.model}`,
     item.serial && `#${item.serial}`,
-    item.manufacturedOn && `made ${item.manufacturedOn}`,
+    item.manufacturedOn && t('gear.details.made', { date: item.manufacturedOn }),
   ]
     .filter(Boolean)
     .join(' · ');

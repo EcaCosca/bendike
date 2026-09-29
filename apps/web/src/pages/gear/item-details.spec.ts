@@ -22,7 +22,7 @@ describe('detailLine', () => {
       '190 sq ft · Vectran',
     );
     expect(detailLine(gearItem('reserve', { details: { sizeSqft: 143, repackCycleDays: 90, deployments: 1 } }))).toBe(
-      '143 sq ft · repack every 90 days · 1 deployments',
+      '143 sq ft · repack every 90 days · 1 deployment',
     );
     expect(
       detailLine(

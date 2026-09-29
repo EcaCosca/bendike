@@ -7,30 +7,14 @@ import {
   type MaintenanceEntryView,
   type MaintenanceKind,
 } from '@bendike/shared';
-
-export const ENTRY_KIND_LABELS: Record<MaintenanceKind, string> = {
-  repack: 'Repack',
-  reline: 'Reline',
-  kill_line: 'Kill line change',
-  inspection: 'Inspection',
-  repair: 'Repair',
-  battery: 'Battery',
-  aad_service: 'AAD service',
-  assembly: 'Assembly',
-  other: 'Other',
-};
+import type { TFunction } from 'i18next';
+import i18n from '../../i18n/i18n';
 
 const KINDS_BY_COMPONENT: Record<GearKind, MaintenanceKind[]> = {
   reserve: ['repack', 'repair', 'inspection', 'other'],
   aad: ['aad_service', 'battery', 'repair', 'inspection', 'other'],
   main: ['reline', 'kill_line', 'repair', 'inspection', 'other'],
   container: ['repair', 'inspection', 'other'],
-};
-
-export const INSPECTION_RESULT_LABELS: Record<InspectionResult, string> = {
-  passed: 'Passed',
-  needs_work: 'Needs work',
-  grounded: 'Grounded',
 };
 
 export function canSignOff(role: Role): boolean {
@@ -65,12 +49,6 @@ export function outsideRiggersFrom(entries: readonly MaintenanceEntryView[]): Ou
   return [...seen.values()];
 }
 
-export function inspectionLine(inspection: InspectionSummary | null): string {
-  return inspection
-    ? `Inspected ${inspection.performedOn}: ${INSPECTION_RESULT_LABELS[inspection.result]} by ${inspection.performedByName}`
-    : 'Never inspected';
-}
-
 export const ENTRY_KIND_LABEL_KEYS: Record<MaintenanceKind, string> = {
   repack: 'gear.entryKind.repack',
   reline: 'gear.entryKind.reline',
@@ -88,3 +66,13 @@ export const INSPECTION_RESULT_LABEL_KEYS: Record<InspectionResult, string> = {
   needs_work: 'gear.inspectionResult.needs_work',
   grounded: 'gear.inspectionResult.grounded',
 };
+
+export function inspectionLine(inspection: InspectionSummary | null, t: TFunction = i18n.t): string {
+  return inspection
+    ? t('gear.inspection.line', {
+        date: inspection.performedOn,
+        result: t(INSPECTION_RESULT_LABEL_KEYS[inspection.result]),
+        name: inspection.performedByName,
+      })
+    : t('gear.inspection.never');
+}

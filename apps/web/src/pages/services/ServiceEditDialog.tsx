@@ -14,9 +14,11 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Locale, PriceCurrency, ServiceAdminDetail, ServiceCategory, ServiceCopyField } from '@bendike/shared';
 import { LOCALES, PRICE_CURRENCIES, SERVICE_CATEGORIES } from '@bendike/shared';
-import { parsePriceInput, PRICE_MESSAGES } from './price-input';
+import '../../i18n/i18n';
+import { parsePriceInput, PRICE_MESSAGE_KEYS } from './price-input';
 import { updateService, updateServiceCopy } from './services-admin-api';
 
 interface ServiceEditDialogProps {
@@ -26,11 +28,11 @@ interface ServiceEditDialogProps {
   onSaved: (updated: ServiceAdminDetail) => void;
 }
 
-const COPY_FIELDS: { field: ServiceCopyField; label: string; multiline: boolean }[] = [
-  { field: 'name', label: 'Name', multiline: false },
-  { field: 'summary', label: 'Summary', multiline: true },
-  { field: 'descriptionMd', label: 'Description', multiline: true },
-  { field: 'turnaroundNote', label: 'Turnaround note', multiline: false },
+const COPY_FIELDS: { field: ServiceCopyField; labelKey: string; multiline: boolean }[] = [
+  { field: 'name', labelKey: 'admin.common.name', multiline: false },
+  { field: 'summary', labelKey: 'admin.common.summary', multiline: true },
+  { field: 'descriptionMd', labelKey: 'admin.common.description', multiline: true },
+  { field: 'turnaroundNote', labelKey: 'admin.services.turnaroundNote', multiline: false },
 ];
 
 type CopyValues = Record<Locale, Record<ServiceCopyField, string>>;
@@ -49,6 +51,7 @@ function initialCopy(service: ServiceAdminDetail): CopyValues {
 }
 
 export function ServiceEditDialog({ service, token, onClose, onSaved }: ServiceEditDialogProps) {
+  const { t } = useTranslation();
   const [amount, setAmount] = useState(service.priceAmount === null ? '' : String(service.priceAmount));
   const [currency, setCurrency] = useState<PriceCurrency | ''>(service.priceCurrency ?? '');
   const [category, setCategory] = useState<ServiceCategory>(service.category);
@@ -61,7 +64,7 @@ export function ServiceEditDialog({ service, token, onClose, onSaved }: ServiceE
   async function saveDetails() {
     const price = parsePriceInput(amount, currency);
     if (price === 'incomplete' || price === 'invalid') {
-      setMessage({ severity: 'error', text: PRICE_MESSAGES[price] });
+      setMessage({ severity: 'error', text: t(PRICE_MESSAGE_KEYS[price]) });
       return;
     }
     try {
@@ -72,9 +75,9 @@ export function ServiceEditDialog({ service, token, onClose, onSaved }: ServiceE
       });
       setSaved(updated);
       onSaved(updated);
-      setMessage({ severity: 'success', text: 'Details saved.' });
+      setMessage({ severity: 'success', text: t('admin.common.detailsSaved') });
     } catch (err) {
-      setMessage({ severity: 'error', text: err instanceof Error ? err.message : 'Could not save' });
+      setMessage({ severity: 'error', text: err instanceof Error ? err.message : t('admin.common.saveFailed') });
     }
   }
 
@@ -93,37 +96,37 @@ export function ServiceEditDialog({ service, token, onClose, onSaved }: ServiceE
       setSaved(latest);
       setCopy(initialCopy(latest));
       onSaved(latest);
-      setMessage({ severity: 'success', text: 'Copy saved.' });
+      setMessage({ severity: 'success', text: t('admin.common.copySaved') });
     } catch (err) {
-      setMessage({ severity: 'error', text: err instanceof Error ? err.message : 'Could not save' });
+      setMessage({ severity: 'error', text: err instanceof Error ? err.message : t('admin.common.saveFailed') });
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>Edit: {service.name.en}</DialogTitle>
+      <DialogTitle>{t('admin.common.editTitle', { name: service.name.en })}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {message && <Alert severity={message.severity}>{message.text}</Alert>}
 
           <Typography variant="subtitle1" component="h3">
-            Price and details
+            {t('admin.common.priceAndDetails')}
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
-              label="Price amount"
+              label={t('admin.common.priceAmount')}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               sx={{ flex: 1 }}
             />
             <TextField
               select
-              label="Currency"
+              label={t('admin.common.currency')}
               value={currency}
               onChange={(e) => setCurrency(e.target.value as PriceCurrency | '')}
               sx={{ flex: 1 }}
             >
-              <MenuItem value="">No price (varies)</MenuItem>
+              <MenuItem value="">{t('admin.services.noPrice')}</MenuItem>
               {PRICE_CURRENCIES.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
@@ -132,43 +135,47 @@ export function ServiceEditDialog({ service, token, onClose, onSaved }: ServiceE
             </TextField>
             <TextField
               select
-              label="Category"
+              label={t('admin.common.category')}
               value={category}
               onChange={(e) => setCategory(e.target.value as ServiceCategory)}
               sx={{ flex: 1 }}
             >
               {SERVICE_CATEGORIES.map((option) => (
                 <MenuItem key={option} value={option}>
-                  {option}
+                  {t(`admin.services.category.${option}`)}
                 </MenuItem>
               ))}
             </TextField>
             <TextField
-              label="Position"
+              label={t('admin.common.position')}
               value={position}
               onChange={(e) => setPosition(e.target.value)}
               sx={{ width: 110 }}
             />
           </Stack>
           <Button variant="outlined" onClick={() => void saveDetails()} sx={{ alignSelf: 'flex-start' }}>
-            Save details
+            {t('admin.common.saveDetails')}
           </Button>
 
           <Divider />
 
           <Typography variant="subtitle1" component="h3">
-            Copy
+            {t('admin.common.copy')}
           </Typography>
-          <Tabs value={locale} onChange={(_event, value: Locale) => setLocale(value)} aria-label="Language">
+          <Tabs
+            value={locale}
+            onChange={(_event, value: Locale) => setLocale(value)}
+            aria-label={t('admin.common.copyLanguage')}
+          >
             {LOCALES.map((option) => (
               <Tab key={option} value={option} label={option.toUpperCase()} />
             ))}
           </Tabs>
           <Stack spacing={2}>
-            {COPY_FIELDS.map(({ field, label, multiline }) => (
+            {COPY_FIELDS.map(({ field, labelKey, multiline }) => (
               <TextField
                 key={`${locale}-${field}`}
-                label={label}
+                label={t(labelKey)}
                 value={copy[locale][field]}
                 multiline={multiline}
                 minRows={field === 'descriptionMd' ? 6 : undefined}
@@ -179,12 +186,12 @@ export function ServiceEditDialog({ service, token, onClose, onSaved }: ServiceE
             ))}
           </Stack>
           <Button variant="outlined" onClick={() => void saveCopy()} sx={{ alignSelf: 'flex-start' }}>
-            Save copy
+            {t('admin.common.saveCopy')}
           </Button>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Close</Button>
+        <Button onClick={onClose}>{t('admin.common.close')}</Button>
       </DialogActions>
     </Dialog>
   );

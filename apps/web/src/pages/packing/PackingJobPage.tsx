@@ -1,9 +1,11 @@
 import { Alert, Box, Button, Link, Paper, Stack, TextField, Typography } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { sanitizeCheckedIds, type PackingComponents, type PackingJobView } from '@bendike/shared';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { ChecklistSection } from './ChecklistSection';
 import { ComponentsSection } from './ComponentsSection';
 import { getSheet, notifyOwner, saveDraft, signSheet } from './packing-api';
@@ -16,6 +18,7 @@ const AUTOSAVE_DELAY_MS = 400;
 type SaveState = 'idle' | 'saving' | 'saved' | { error: string };
 
 export function PackingJobPage() {
+  const { t } = useTranslation();
   const { rigId = '', sheetId = '' } = useParams();
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -36,8 +39,9 @@ export function PackingJobPage() {
         setDraft(toDraft(loaded.sheet));
         setComponents(loaded.components);
       },
-      (err: unknown) => setError(err instanceof Error ? err.message : 'Could not load the packing sheet'),
+      (err: unknown) => setError(err instanceof Error ? err.message : t('packing.job.loadFailed')),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, sheetId]);
 
   const change = useCallback((patch: Partial<Draft>) => {
@@ -52,7 +56,7 @@ export function PackingJobPage() {
       setSaveState('saving');
       saveDraft(token, sheetId, toBody(draft)).then(
         () => setSaveState('saved'),
-        (err: unknown) => setSaveState({ error: err instanceof Error ? err.message : 'Unknown error' }),
+        (err: unknown) => setSaveState({ error: err instanceof Error ? err.message : t('packing.job.unknownError') }),
       );
     }, AUTOSAVE_DELAY_MS);
     return () => clearTimeout(timer);
@@ -63,9 +67,9 @@ export function PackingJobPage() {
     if (!token) return;
     getSheet(token, sheetId).then(
       (fresh) => setComponents(fresh.components),
-      (err: unknown) => setError(err instanceof Error ? err.message : 'Could not refresh the components'),
+      (err: unknown) => setError(err instanceof Error ? err.message : t('packing.job.refreshFailed')),
     );
-  }, [token, sheetId]);
+  }, [token, sheetId, t]);
 
   if (!token) return null;
   if (job?.sheet.status === 'signed') {
@@ -84,7 +88,7 @@ export function PackingJobPage() {
         (err: unknown): SheetNotice => ({
           kind: 'error',
           whileSigning: true,
-          message: err instanceof Error ? err.message : 'Unknown error',
+          message: err instanceof Error ? err.message : t('packing.job.unknownError'),
         }),
       );
     }
@@ -95,50 +99,50 @@ export function PackingJobPage() {
     <AppShell wide>
       <Stack spacing={3}>
         <Link component={RouterLink} to={`/app/gear/${rigId}`} underline="hover">
-          Back to the rig
+          {t('packing.job.backToRig')}
         </Link>
         {error && <Alert severity="error">{error}</Alert>}
         {job && draft && components && (
           <>
             <Stack direction="row" spacing={2} alignItems="center" sx={{ flexWrap: 'wrap', rowGap: 1 }}>
               <Typography variant="h4" component="h1" sx={{ flexGrow: 1 }}>
-                {`Repack: ${job.sheet.rigName}`}
+                {t('packing.job.title', { rig: job.sheet.rigName })}
               </Typography>
               <Typography variant="body2" color="text.secondary" role="status">
-                {saveState === 'saving' && 'Saving…'}
-                {saveState === 'saved' && 'Saved'}
-                {typeof saveState === 'object' && `Could not save: ${saveState.error}`}
+                {saveState === 'saving' && t('packing.job.saving')}
+                {saveState === 'saved' && t('packing.job.saved')}
+                {typeof saveState === 'object' && t('packing.job.saveFailed', { error: saveState.error })}
               </Typography>
             </Stack>
 
-            <Paper variant="outlined" component="section" aria-label="Owner and date" sx={{ p: 2 }}>
+            <Paper variant="outlined" component="section" aria-label={t('packing.job.ownerAndDate')} sx={{ p: 2 }}>
               <Box
                 sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' } }}
               >
                 <TextField
-                  label="Date"
+                  label={t('packing.job.date')}
                   type="date"
                   value={draft.performedOn}
                   onChange={(e) => change({ performedOn: e.target.value })}
                   slotProps={{ inputLabel: { shrink: true } }}
                 />
                 <TextField
-                  label="Owner name"
+                  label={t('packing.job.ownerName')}
                   value={draft.ownerName}
                   onChange={(e) => change({ ownerName: e.target.value })}
                 />
                 <TextField
-                  label="Owner address"
+                  label={t('packing.job.ownerAddress')}
                   value={draft.ownerAddress}
                   onChange={(e) => change({ ownerAddress: e.target.value })}
                 />
                 <TextField
-                  label="Owner phone"
+                  label={t('packing.job.ownerPhone')}
                   value={draft.ownerPhone}
                   onChange={(e) => change({ ownerPhone: e.target.value })}
                 />
                 <TextField
-                  label="Owner email"
+                  label={t('packing.job.ownerEmail')}
                   value={draft.ownerEmail}
                   onChange={(e) => change({ ownerEmail: e.target.value })}
                 />
@@ -170,21 +174,21 @@ export function PackingJobPage() {
               onMardChange={(value) => change({ mardConnected: value })}
             />
 
-            <Paper variant="outlined" component="section" aria-label="Notes" sx={{ p: 2 }}>
+            <Paper variant="outlined" component="section" aria-label={t('packing.job.notesSection')} sx={{ p: 2 }}>
               <TextField
                 fullWidth
                 multiline
                 minRows={3}
-                label="Notes on this pack job"
+                label={t('packing.job.notes')}
                 value={draft.notes}
                 onChange={(e) => change({ notes: e.target.value })}
-                helperText="For example: No MARD on this unit. Completed service bulletin 123xx. Changed the AAD."
+                helperText={t('packing.job.notesHint')}
               />
             </Paper>
 
             <Stack direction="row" justifyContent="flex-end">
               <Button variant="contained" size="large" onClick={() => setSigning(true)}>
-                Review and sign
+                {t('packing.job.reviewAndSign')}
               </Button>
             </Stack>
           </>

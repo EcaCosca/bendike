@@ -2,7 +2,9 @@ import ImageNotSupportedOutlinedIcon from '@mui/icons-material/ImageNotSupported
 import { Box, Skeleton } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../auth/use-auth';
+import '../../i18n/i18n';
 import { fetchPhotoBlob } from './rig-photos-api';
 
 const urls = new Map<string, Promise<string>>();
@@ -26,6 +28,7 @@ interface AuthedImageProps {
 
 export function AuthedImage({ photoId, alt, fit = 'cover', sx }: AuthedImageProps) {
   const { token } = useAuth();
+  const { t } = useTranslation();
   const [src, setSrc] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -59,7 +62,7 @@ export function AuthedImage({ photoId, alt, fit = 'cover', sx }: AuthedImageProp
         }}
       >
         <ImageNotSupportedOutlinedIcon fontSize="small" />
-        <span>Photo unavailable</span>
+        <span>{t('gear.photos.unavailable')}</span>
       </Box>
     );
   }

@@ -11,7 +11,9 @@ import {
   TextField,
 } from '@mui/material';
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { RigView } from '@bendike/shared';
+import '../../i18n/i18n';
 import { createRig, updateRig } from './gear-api';
 
 interface RigDialogProps {
@@ -23,6 +25,7 @@ interface RigDialogProps {
 }
 
 export function RigDialog({ token, rig, ownerId, onClose, onSaved }: RigDialogProps) {
+  const { t } = useTranslation();
   const [name, setName] = useState(rig?.name ?? '');
   const [notes, setNotes] = useState(rig?.notes ?? '');
   const [active, setActive] = useState(rig?.active ?? true);
@@ -32,7 +35,7 @@ export function RigDialog({ token, rig, ownerId, onClose, onSaved }: RigDialogPr
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!name.trim()) {
-      setError('Give the rig a name.');
+      setError(t('gear.rigDialog.nameRequired'));
       return;
     }
     setSaving(true);
@@ -43,31 +46,37 @@ export function RigDialog({ token, rig, ownerId, onClose, onSaved }: RigDialogPr
       onSaved(saved);
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the rig');
+      setError(err instanceof Error ? err.message : t('gear.rigDialog.saveFailed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="xs" component="form" onSubmit={(event) => void submit(event)}>
-      <DialogTitle>{rig ? 'Edit rig' : 'Add rig'}</DialogTitle>
+      <DialogTitle>{rig ? t('gear.rigDialog.editTitle') : t('gear.rigDialog.addTitle')}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
-          <TextField label="Name" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
-          <TextField label="Notes" value={notes} onChange={(e) => setNotes(e.target.value)} multiline minRows={2} />
+          <TextField label={t('gear.common.name')} value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+          <TextField
+            label={t('gear.common.notes')}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            multiline
+            minRows={2}
+          />
           {rig && (
             <FormControlLabel
               control={<Switch checked={active} onChange={(e) => setActive(e.target.checked)} />}
-              label="In service (turn off to mark the rig inactive)"
+              label={t('gear.rigDialog.inService')}
             />
           )}
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('gear.common.cancel')}</Button>
         <Button type="submit" variant="contained" disabled={saving}>
-          Save
+          {t('gear.common.save')}
         </Button>
       </DialogActions>
     </Dialog>

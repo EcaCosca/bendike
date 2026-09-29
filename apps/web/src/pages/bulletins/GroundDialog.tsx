@@ -10,6 +10,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
+import '../../i18n/i18n';
 import { openGrounding } from './bulletins-api';
 
 interface GroundDialogProps {
@@ -21,6 +23,7 @@ interface GroundDialogProps {
 }
 
 export function GroundDialog({ token, target, label, onClose, onSaved }: GroundDialogProps) {
+  const { t } = useTranslation();
   const [reason, setReason] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -28,7 +31,7 @@ export function GroundDialog({ token, target, label, onClose, onSaved }: GroundD
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!reason.trim()) {
-      setError('Say why it is grounded.');
+      setError(t('bulletins.ground.sayWhy'));
       return;
     }
     setSaving(true);
@@ -37,23 +40,20 @@ export function GroundDialog({ token, target, label, onClose, onSaved }: GroundD
       onSaved();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not ground it');
+      setError(err instanceof Error ? err.message : t('bulletins.ground.failed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="xs" component="form" onSubmit={(event) => void submit(event)}>
-      <DialogTitle>Ground {label}</DialogTitle>
+      <DialogTitle>{t('bulletins.ground.title', { label })}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
-          <Typography variant="body2">
-            The dropzone and the owner will see it as grounded, with your name and this reason, until you clear it. It
-            is a record, not a lock.
-          </Typography>
+          <Typography variant="body2">{t('bulletins.ground.body')}</Typography>
           <TextField
-            label="Reason"
+            label={t('bulletins.ground.reason')}
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             multiline
@@ -63,9 +63,9 @@ export function GroundDialog({ token, target, label, onClose, onSaved }: GroundD
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('bulletins.actions.cancel')}</Button>
         <Button type="submit" variant="contained" color="error" disabled={saving}>
-          Ground
+          {t('bulletins.ground.ground')}
         </Button>
       </DialogActions>
     </Dialog>

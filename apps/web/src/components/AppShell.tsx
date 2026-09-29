@@ -31,9 +31,9 @@ export function AppShell({ children, wide = false }: { children: ReactNode; wide
     void i18n.changeLanguage(value);
     setSavingLanguage(true);
     try {
-      updateUser(await updateContact(token, { locale: value }));
+      updateUser?.(await updateContact(token, { locale: value }));
     } catch {
-      updateUser({ ...user, locale: value });
+      updateUser?.({ ...user, locale: value });
     } finally {
       setSavingLanguage(false);
     }

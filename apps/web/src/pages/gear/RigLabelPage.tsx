@@ -1,12 +1,15 @@
 import { Alert, Box, Button, Stack, Typography } from '@mui/material';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../auth/use-auth';
 import { AppShell } from '../../components/AppShell';
+import '../../i18n/i18n';
 import { getRig } from './gear-api';
 
 export function RigLabelPage() {
+  const { t } = useTranslation();
   const { rigId = '' } = useParams();
   const { token } = useAuth();
   const [name, setName] = useState<string | null>(null);
@@ -37,7 +40,7 @@ export function RigLabelPage() {
   return (
     <AppShell>
       <Stack spacing={3} alignItems="center">
-        {unavailable && <Alert severity="warning">This rig is not available.</Alert>}
+        {unavailable && <Alert severity="warning">{t('gear.label.unavailable')}</Alert>}
         {name && qr && (
           <>
             <Box
@@ -53,13 +56,13 @@ export function RigLabelPage() {
               <Typography variant="h4" component="h1" sx={{ mb: 1 }}>
                 {name}
               </Typography>
-              <Box component="img" src={qr} alt={`QR code for ${name}`} sx={{ width: 240, height: 240 }} />
+              <Box component="img" src={qr} alt={t('gear.label.qrAlt', { name })} sx={{ width: 240, height: 240 }} />
               <Typography variant="body2" color="text.secondary">
-                Scan to open this rig on Bendike
+                {t('gear.label.scan')}
               </Typography>
             </Box>
             <Button variant="contained" onClick={() => window.print()} sx={{ '@media print': { display: 'none' } }}>
-              Print label
+              {t('gear.label.print')}
             </Button>
           </>
         )}

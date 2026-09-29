@@ -1,3 +1,110 @@
 {
-  "packing": {}
+  "packing": {
+    "actions": {
+      "cancel": "Cancel"
+    },
+    "yesNo": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "checklist": {
+      "title": "Checklist",
+      "mardConnected": "MARD connected"
+    },
+    "components": {
+      "title": "Bulletins and manual",
+      "bulletinsPage": "Service bulletins page",
+      "manufacturerPageNote": "This is the manufacturer's page, saved on another of its models.",
+      "noModel": "This component is not linked to a catalogue model, so no bulletins page can be saved. Ask an admin to add the model.",
+      "linkLabel": "Bulletins page link",
+      "linkHint": "Paste the manufacturer's service bulletins page once; it is kept for next time",
+      "linkMustBeHttps": "The link must start with https://",
+      "linkSaveFailed": "Could not save the link",
+      "saveLink": "Save link",
+      "downloadFailed": "Could not download the document",
+      "serial": "Serial {{serial}}",
+      "made": "Made {{date}}",
+      "noSerialOrDate": "No serial or date recorded",
+      "downloadDoc": "Download {{title}}",
+      "download": "Download",
+      "none": "None on this rig",
+      "bulletinsChecked": "Service bulletins checked",
+      "manualFollowed": "Manual followed",
+      "noneChosen": "None chosen",
+      "chosenDocument": "Chosen document",
+      "noManual": "No manual in the Library yet for these models.",
+      "openLibrary": "Open the Library",
+      "toAddOne": "to add one."
+    },
+    "job": {
+      "loadFailed": "Could not load the packing sheet",
+      "unknownError": "Unknown error",
+      "refreshFailed": "Could not refresh the components",
+      "backToRig": "Back to the rig",
+      "title": "Repack: {{rig}}",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "saveFailed": "Could not save: {{error}}",
+      "ownerAndDate": "Owner and date",
+      "date": "Date",
+      "ownerName": "Owner name",
+      "ownerAddress": "Owner address",
+      "ownerPhone": "Owner phone",
+      "ownerEmail": "Owner email",
+      "notesSection": "Notes",
+      "notes": "Notes on this pack job",
+      "notesHint": "For example: No MARD on this unit. Completed service bulletin 123xx. Changed the AAD.",
+      "reviewAndSign": "Review and sign"
+    },
+    "log": {
+      "loadFailed": "Could not load the packing log",
+      "title": "Reserve packing log",
+      "empty": "No signed packing sheets yet. Start a repack to create one.",
+      "sheet": "Sheet",
+      "date": "Date",
+      "rigger": "Rigger",
+      "checklist": "Checklist",
+      "notComplete_one": "{{count}} not complete",
+      "notComplete_other": "{{count}} not complete",
+      "complete": "Complete",
+      "void": "Void",
+      "openSheet": "Open sheet {{sheetNo}}",
+      "open": "Open"
+    },
+    "sign": {
+      "failed": "Could not sign the sheet",
+      "title": "Sign packing sheet",
+      "allDone": "Everything is ticked and answered.",
+      "incomplete": "These are not complete. Explain them in the notes before you sign:",
+      "unticked_one": "{{count}} checklist item is not ticked",
+      "unticked_other": "{{count}} checklist items are not ticked",
+      "notes": "Notes",
+      "notesHint": "For example: No MARD on this unit. Completed service bulletin 123xx. Changed the AAD.",
+      "licence": "Licence number",
+      "licenceHint": "Your rigger licence, printed on the sheet next to your name",
+      "emailOwner": "Email the owner that the repack is done ({{email}})",
+      "sign": "Sign"
+    },
+    "void": {
+      "failed": "Could not void the sheet",
+      "title": "Void sheet {{sheetNo}}",
+      "body": "The sheet and its repack entry stay in the log, marked void. Sign a new sheet to record the repack again.",
+      "reason": "Reason",
+      "void": "Void"
+    },
+    "print": {
+      "loadFailed": "Could not load the packing sheet",
+      "sendFailed": "Could not send the email",
+      "backToRig": "Back to the rig",
+      "emailOwner": "Email owner",
+      "emailOwnerAgain": "Email owner again",
+      "voidSheet": "Void sheet",
+      "print": "Print",
+      "emailed": "The owner was emailed at {{to}}.",
+      "emailFailedAfterSigning": "The sheet is signed, but the owner could not be emailed. {{message}} You can try again with Email owner.",
+      "emailFailed": "Could not email the owner. {{message}}",
+      "addOwnerEmail": "Add the owner email before the sheet is signed to email them.",
+      "emailedOn": "Emailed to {{to}} on {{date}} {{time}} UTC"
+    }
+  }
 }

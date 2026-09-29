@@ -111,7 +111,10 @@
       "gear_care": "Cuidados com o equipamento",
       "freefall": "Queda livre",
       "safety_culture": "Cultura de segurança",
-      "instruments": "Instrumentos"
+      "instruments": "Instrumentos",
+      "packing": "Dobragem e rigging",
+      "reviews": "Análises",
+      "wingsuit_base": "Wingsuit BASE"
     },
     "format": {
       "video": "Vídeo",
@@ -187,6 +190,7 @@
     "tagline": "Oficina de dobragem e software, Argentina.",
     "blurb": "O Bendike é o software de oficina de dobragem que construí para manter paraquedistas, riggers e dropzones em dia com as redobras de reserva, o serviço de AAD e os boletins de serviço dos fabricantes. Segurança em primeiro lugar, sempre.",
     "motto": "Movidos pela mesma paixão.",
-    "openApp": "Abrir o app"
+    "openApp": "Abrir o app",
+    "navigation": "Site"
   }
 }

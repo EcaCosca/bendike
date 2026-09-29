@@ -13,6 +13,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useMemo, useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   INSPECTION_RESULTS,
   type CreateMaintenanceEntryRequestBody,
@@ -22,9 +23,10 @@ import {
   type MaintenanceKind,
   type Role,
 } from '@bendike/shared';
+import '../../i18n/i18n';
 import {
-  ENTRY_KIND_LABELS,
-  INSPECTION_RESULT_LABELS,
+  ENTRY_KIND_LABEL_KEYS,
+  INSPECTION_RESULT_LABEL_KEYS,
   canSignOff,
   entryKindsFor,
   isSafetyKind,
@@ -43,6 +45,7 @@ interface EntryDialogProps {
 }
 
 export function EntryDialog({ token, item, role, today, previousEntries, onClose, onSaved }: EntryDialogProps) {
+  const { t } = useTranslation();
   const signsOff = canSignOff(role);
   const kinds = entryKindsFor(item.kind, role);
   const [kind, setKind] = useState<MaintenanceKind>(kinds[0] ?? 'other');
@@ -73,15 +76,15 @@ export function EntryDialog({ token, item, role, today, previousEntries, onClose
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!description.trim()) {
-      setError('Describe the work.');
+      setError(t('gear.entry.describeWork'));
       return;
     }
     if (kind === 'inspection' && !result) {
-      setError('Choose the result of the inspection.');
+      setError(t('gear.entry.chooseResult'));
       return;
     }
     if (showOutside && !riggerName.trim()) {
-      setError('Say who packed it: their name is required.');
+      setError(t('gear.entry.riggerRequired'));
       return;
     }
     const body: CreateMaintenanceEntryRequestBody = { kind, performedOn, description: description.trim() };
@@ -102,33 +105,31 @@ export function EntryDialog({ token, item, role, today, previousEntries, onClose
       onSaved(await addEntry(token, item.id, body));
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the entry');
+      setError(err instanceof Error ? err.message : t('gear.entry.saveFailed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="sm" component="form" onSubmit={(event) => void submit(event)}>
-      <DialogTitle>
-        Log work: {item.manufacturer} {item.model}
-      </DialogTitle>
+      <DialogTitle>{t('gear.entry.title', { item: `${item.manufacturer} ${item.model}` })}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
           <TextField
             select
-            label="Kind of work"
+            label={t('gear.entry.kindOfWork')}
             value={kind}
             onChange={(e) => setKind(e.target.value as MaintenanceKind)}
           >
             {kinds.map((k) => (
               <MenuItem key={k} value={k}>
-                {ENTRY_KIND_LABELS[k]}
+                {t(ENTRY_KIND_LABEL_KEYS[k])}
               </MenuItem>
             ))}
           </TextField>
           <TextField
-            label="Date"
+            label={t('gear.common.date')}
             type="date"
             value={performedOn}
             onChange={(e) => setPerformedOn(e.target.value)}
@@ -136,7 +137,7 @@ export function EntryDialog({ token, item, role, today, previousEntries, onClose
             slotProps={{ inputLabel: { shrink: true }, htmlInput: { max: today } }}
           />
           <TextField
-            label="Description"
+            label={t('gear.common.description')}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             multiline
@@ -146,61 +147,60 @@ export function EntryDialog({ token, item, role, today, previousEntries, onClose
           {kind === 'inspection' && (
             <TextField
               select
-              label="Result"
+              label={t('gear.entry.result')}
               value={result}
               onChange={(e) => setResult(e.target.value as InspectionResult)}
             >
               {INSPECTION_RESULTS.map((r) => (
                 <MenuItem key={r} value={r}>
-                  {INSPECTION_RESULT_LABELS[r]}
+                  {t(INSPECTION_RESULT_LABEL_KEYS[r])}
                 </MenuItem>
               ))}
             </TextField>
           )}
           {kind === 'aad_service' && (
             <TextField
-              label="Next service due"
+              label={t('gear.entry.nextServiceDue')}
               type="date"
               value={nextService}
               onChange={(e) => setNextService(e.target.value)}
               slotProps={{ inputLabel: { shrink: true } }}
-              helperText="Leave empty when the manufacturer has no further service date"
+              helperText={t('gear.entry.nextServiceHint')}
             />
           )}
           {!signsOff && !outsideRequired && (
             <FormControlLabel
               control={<Switch checked={someoneElse} onChange={(e) => setSomeoneElse(e.target.checked)} />}
-              label="Someone outside Bendike did this work"
+              label={t('gear.entry.someoneElse')}
             />
           )}
           {showOutside && (
             <>
-              <Alert severity="warning">
-                Work by a rigger outside Bendike is recorded as unverified: the rig shows as GROUNDED until a Bendike
-                rigger verifies it.
-              </Alert>
+              <Alert severity="warning">{t('gear.entry.outsideWarning')}</Alert>
               <Autocomplete
                 freeSolo
                 options={known.map((r) => r.name)}
                 inputValue={riggerName}
                 onInputChange={(_, value) => chooseRigger(value)}
-                renderInput={(params) => <TextField {...params} label="Name of the rigger" helperText="Required" />}
+                renderInput={(params) => (
+                  <TextField {...params} label={t('gear.entry.riggerName')} helperText={t('gear.entry.required')} />
+                )}
               />
               <TextField
-                label="Phone or email"
+                label={t('gear.entry.contact')}
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
-                helperText="So the record says how to reach them later"
+                helperText={t('gear.entry.contactHint')}
               />
-              <TextField label="Licence number" value={licence} onChange={(e) => setLicence(e.target.value)} />
+              <TextField label={t('gear.entry.licence')} value={licence} onChange={(e) => setLicence(e.target.value)} />
             </>
           )}
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('gear.common.cancel')}</Button>
         <Button type="submit" variant="contained" disabled={saving}>
-          Save entry
+          {t('gear.entry.save')}
         </Button>
       </DialogActions>
     </Dialog>

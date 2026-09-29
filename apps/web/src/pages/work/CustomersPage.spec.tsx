@@ -1,7 +1,8 @@
 import { Role, type CustomerSummary } from '@bendike/shared';
-import { render, screen, within } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import * as useAuthModule from '../../auth/use-auth';
+import i18n from '../../i18n/i18n';
 import * as api from './work-api';
 import { CustomersPage } from './CustomersPage';
 
@@ -95,5 +96,15 @@ describe('CustomersPage', () => {
 
     expect(await screen.findByText(/no customers or dropzones yet/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Add a customer' })).toHaveAttribute('href', '/app/riggers');
+  });
+
+  test('renders the heading in Spanish once the language changes', async () => {
+    await i18n.changeLanguage('es');
+    try {
+      renderPage();
+      expect(await screen.findByRole('heading', { name: 'Clientes y dropzones' })).toBeInTheDocument();
+    } finally {
+      await act(() => i18n.changeLanguage('en'));
+    }
   });
 });

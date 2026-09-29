@@ -7,6 +7,7 @@ import { gearItem, pending, rigView } from './fixtures';
 import * as photoApi from '../rigphotos/rig-photos-api';
 import * as api from './gear-api';
 import { ACCEPT_ALL, clearConsent, writeConsent } from '../../consent/consent-storage';
+import i18n from '../../i18n/i18n';
 import { GEAR_VIEW_KEY } from './gear-view';
 import { GearPage } from './GearPage';
 
@@ -113,6 +114,17 @@ describe('GearPage', () => {
   test('a user sees the page titled my gear', async () => {
     renderPage(Role.User);
     expect(await screen.findByRole('heading', { name: 'My gear' })).toBeInTheDocument();
+  });
+
+  test('renders in Portuguese when the interface language is pt', async () => {
+    await i18n.changeLanguage('pt');
+    try {
+      renderPage(Role.User);
+      expect(await screen.findByRole('heading', { name: 'Meu equipamento' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Adicionar equipamento' })).toBeInTheDocument();
+    } finally {
+      await i18n.changeLanguage('en');
+    }
   });
 
   test('lists rigs with a coloured badge that also says the status in words', async () => {

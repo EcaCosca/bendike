@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   GEAR_KINDS,
@@ -24,12 +25,13 @@ import {
   type RigCovers,
   type RigView,
 } from '@bendike/shared';
+import '../../i18n/i18n';
 import { RigCover } from '../rigphotos/RigCover';
 import { inspectionLine } from './entry-kinds';
 import type { GearFilters, RigSort } from './gear-filters';
 import { equipmentRows, rigNextDue, rigRows, type EquipmentRow } from './gear-grid';
 import { dueText, mostUrgentDue } from './gear-status';
-import { KIND_LABELS } from './item-details';
+import { KIND_LABEL_KEYS } from './item-details';
 import { GroundedBadge, StatusBadge } from './StatusBadge';
 
 type Mode = 'equipment' | 'rigs';
@@ -47,7 +49,8 @@ function Dash() {
 }
 
 function InactiveChip() {
-  return <Chip size="small" variant="outlined" label="Inactive" />;
+  const { t } = useTranslation();
+  return <Chip size="small" variant="outlined" label={t('gear.common.inactive')} />;
 }
 
 function RigLink({ rig }: { rig: RigView }) {
@@ -59,6 +62,7 @@ function RigLink({ rig }: { rig: RigView }) {
 }
 
 function EquipmentLine({ row }: { row: EquipmentRow }) {
+  const { t } = useTranslation();
   const { item, rig } = row;
   const due = mostUrgentDue(item.dues);
   return (
@@ -68,11 +72,11 @@ function EquipmentLine({ row }: { row: EquipmentRow }) {
           <RigLink rig={rig} />
         ) : (
           <Typography component="span" color="text.secondary">
-            Spare
+            {t('gear.grid.spare')}
           </Typography>
         )}
       </TableCell>
-      <TableCell>{KIND_LABELS[item.kind]}</TableCell>
+      <TableCell>{t(KIND_LABEL_KEYS[item.kind])}</TableCell>
       <TableCell>{item.manufacturer}</TableCell>
       <TableCell>
         <Link component={RouterLink} to={`/app/gear/items/${item.id}`} color="inherit" underline="hover">
@@ -99,7 +103,7 @@ function EquipmentLine({ row }: { row: EquipmentRow }) {
             variant="body2"
             color={due.status === 'overdue' && rig?.active !== false ? 'error' : 'text.primary'}
           >
-            {dueText(due)}
+            {dueText(due, t)}
           </Typography>
         ) : (
           <Dash />
@@ -111,10 +115,11 @@ function EquipmentLine({ row }: { row: EquipmentRow }) {
 }
 
 function SlotCell({ item }: { item: GearItemView | null }) {
+  const { t } = useTranslation();
   if (!item) {
     return (
       <TableCell>
-        <em>Empty</em>
+        <em>{t('gear.common.empty')}</em>
       </TableCell>
     );
   }
@@ -128,6 +133,7 @@ function SlotCell({ item }: { item: GearItemView | null }) {
 }
 
 function RigLine({ rig, cover }: { rig: RigView; cover: string | undefined }) {
+  const { t } = useTranslation();
   const next = rigNextDue(rig);
   return (
     <TableRow hover>
@@ -149,30 +155,37 @@ function RigLine({ rig, cover }: { rig: RigView; cover: string | undefined }) {
       <TableCell sx={{ minWidth: 220 }}>
         {next ? (
           <Typography variant="body2" color={next.due.status === 'overdue' && rig.active ? 'error' : 'text.primary'}>
-            {`${KIND_LABELS[next.kind]}: ${dueText(next.due)}`}
+            {t('gear.grid.nextDueOf', { kind: t(KIND_LABEL_KEYS[next.kind]), due: dueText(next.due, t) })}
           </Typography>
         ) : (
           <Dash />
         )}
       </TableCell>
-      <TableCell sx={{ minWidth: 200 }}>{inspectionLine(rig.lastInspection)}</TableCell>
+      <TableCell sx={{ minWidth: 200 }}>{inspectionLine(rig.lastInspection, t)}</TableCell>
       <TableCell sx={NOTES_CELL}>{rig.notes || <Dash />}</TableCell>
     </TableRow>
   );
 }
 
-const EQUIPMENT_HEADERS = [
-  'Rig',
-  'Component',
-  'Manufacturer',
-  'Model',
-  'Serial',
-  'Manufactured',
-  'Status',
-  'Next due',
-  'Notes',
+const EQUIPMENT_HEADER_KEYS = [
+  'gear.common.rig',
+  'gear.common.component',
+  'gear.common.manufacturer',
+  'gear.common.model',
+  'gear.common.serial',
+  'gear.grid.manufactured',
+  'gear.common.status',
+  'gear.grid.nextDue',
+  'gear.common.notes',
 ];
-const RIG_HEADERS = ['Rig', 'Status', ...GEAR_KINDS.map((k) => KIND_LABELS[k]), 'Next due', 'Last inspection', 'Notes'];
+const RIG_HEADER_KEYS = [
+  'gear.common.rig',
+  'gear.common.status',
+  ...GEAR_KINDS.map((k) => KIND_LABEL_KEYS[k]),
+  'gear.grid.nextDue',
+  'gear.grid.lastInspection',
+  'gear.common.notes',
+];
 
 export function GearGrid({
   overview,
@@ -185,6 +198,7 @@ export function GearGrid({
   sort: RigSort;
   covers?: RigCovers;
 }) {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<Mode>('equipment');
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
@@ -199,7 +213,7 @@ export function GearGrid({
   const currentPage = Math.min(page, Math.max(0, Math.ceil(total / pageSize) - 1));
   const equipmentPage = paginate(equipment, currentPage + 1, pageSize).page;
   const rigPage = paginate(rigs, currentPage + 1, pageSize).page;
-  const headers = mode === 'equipment' ? EQUIPMENT_HEADERS : RIG_HEADERS;
+  const headers = (mode === 'equipment' ? EQUIPMENT_HEADER_KEYS : RIG_HEADER_KEYS).map((key) => t(key));
 
   return (
     <Stack spacing={1.5}>
@@ -208,15 +222,19 @@ export function GearGrid({
         size="small"
         value={mode}
         onChange={(_, next: Mode | null) => next && setMode(next)}
-        aria-label="Grid contents"
+        aria-label={t('gear.grid.contents')}
         sx={{ alignSelf: 'flex-start' }}
       >
-        <ToggleButton value="equipment">Equipment</ToggleButton>
-        <ToggleButton value="rigs">Rigs</ToggleButton>
+        <ToggleButton value="equipment">{t('gear.grid.equipment')}</ToggleButton>
+        <ToggleButton value="rigs">{t('gear.grid.rigs')}</ToggleButton>
       </ToggleButtonGroup>
       <Box sx={{ border: 1, borderColor: 'divider', borderRadius: 1 }}>
         <TableContainer>
-          <Table size="small" stickyHeader aria-label={mode === 'equipment' ? 'Equipment' : 'Rigs'}>
+          <Table
+            size="small"
+            stickyHeader
+            aria-label={mode === 'equipment' ? t('gear.grid.equipment') : t('gear.grid.rigs')}
+          >
             <TableHead>
               <TableRow>
                 {headers.map((header) => (
@@ -231,7 +249,7 @@ export function GearGrid({
                 <TableRow>
                   <TableCell colSpan={headers.length}>
                     <Typography color="text.secondary">
-                      {mode === 'equipment' ? 'No equipment matches these filters' : 'No rigs match these filters'}
+                      {mode === 'equipment' ? t('gear.grid.noEquipment') : t('gear.grid.noRigs')}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -249,6 +267,8 @@ export function GearGrid({
           page={currentPage}
           rowsPerPage={pageSize}
           rowsPerPageOptions={PAGE_SIZES}
+          labelRowsPerPage={t('gear.grid.rowsPerPage')}
+          labelDisplayedRows={({ from, to, count }) => t('gear.grid.displayedRows', { from, to, total: count })}
           sx={{
             '.MuiTablePagination-toolbar': { flexWrap: 'wrap', justifyContent: 'flex-end', px: 1 },
             '.MuiTablePagination-spacer': { display: 'none' },

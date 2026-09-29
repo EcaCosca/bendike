@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   BULLETIN_SEVERITIES,
   type BulletinSeverity,
@@ -20,8 +21,9 @@ import {
   type BulletinView,
   type CreateBulletinRequestBody,
 } from '@bendike/shared';
+import '../../i18n/i18n';
 import { createBulletin, updateBulletin } from './bulletins-api';
-import { SEVERITY_LABELS } from './bulletin-labels';
+import { SEVERITY_LABEL_KEYS } from './bulletin-labels';
 
 interface TargetRow {
   model: string;
@@ -61,6 +63,7 @@ interface BulletinDialogProps {
 }
 
 export function BulletinDialog({ token, bulletin, onClose, onSaved }: BulletinDialogProps) {
+  const { t } = useTranslation();
   const [manufacturer, setManufacturer] = useState(bulletin?.manufacturer ?? '');
   const [reference, setReference] = useState(bulletin?.reference ?? '');
   const [title, setTitle] = useState(bulletin?.title ?? '');
@@ -81,7 +84,7 @@ export function BulletinDialog({ token, bulletin, onClose, onSaved }: BulletinDi
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (![manufacturer, reference, title, summary, requiredAction, issuedOn].every((v) => v.trim())) {
-      setError('Fill in the manufacturer, reference, title, summary, required action and issue date.');
+      setError(t('bulletins.dialog.fillRequired'));
       return;
     }
     const body: CreateBulletinRequestBody = {
@@ -105,36 +108,43 @@ export function BulletinDialog({ token, bulletin, onClose, onSaved }: BulletinDi
       onSaved();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the bulletin');
+      setError(err instanceof Error ? err.message : t('bulletins.dialog.saveFailed'));
       setSaving(false);
     }
   }
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="md" component="form" onSubmit={(event) => void submit(event)}>
-      <DialogTitle>{bulletin ? `Edit ${bulletin.reference}` : 'New bulletin'}</DialogTitle>
+      <DialogTitle>
+        {bulletin ? t('bulletins.dialog.editTitle', { reference: bulletin.reference }) : t('bulletins.dialog.newTitle')}
+      </DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           {error && <Alert severity="error">{error}</Alert>}
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
-              label="Manufacturer"
+              label={t('bulletins.dialog.manufacturer')}
               value={manufacturer}
               onChange={(e) => setManufacturer(e.target.value)}
               fullWidth
             />
-            <TextField label="Reference" value={reference} onChange={(e) => setReference(e.target.value)} fullWidth />
+            <TextField
+              label={t('bulletins.dialog.reference')}
+              value={reference}
+              onChange={(e) => setReference(e.target.value)}
+              fullWidth
+            />
           </Stack>
-          <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <TextField label={t('bulletins.dialog.title')} value={title} onChange={(e) => setTitle(e.target.value)} />
           <TextField
-            label="Summary"
+            label={t('bulletins.dialog.summary')}
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
             multiline
             minRows={2}
           />
           <TextField
-            label="Required action"
+            label={t('bulletins.dialog.requiredAction')}
             value={requiredAction}
             onChange={(e) => setRequiredAction(e.target.value)}
             multiline
@@ -142,7 +152,7 @@ export function BulletinDialog({ token, bulletin, onClose, onSaved }: BulletinDi
           />
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
-              label="Issued on"
+              label={t('bulletins.dialog.issuedOn')}
               type="date"
               value={issuedOn}
               onChange={(e) => setIssuedOn(e.target.value)}
@@ -151,58 +161,53 @@ export function BulletinDialog({ token, bulletin, onClose, onSaved }: BulletinDi
             />
             <TextField
               select
-              label="Severity"
+              label={t('bulletins.dialog.severity')}
               value={severity}
               onChange={(e) => setSeverity(e.target.value as BulletinSeverity)}
               fullWidth
             >
               {BULLETIN_SEVERITIES.map((s) => (
                 <MenuItem key={s} value={s}>
-                  {SEVERITY_LABELS[s]}
+                  {t(SEVERITY_LABEL_KEYS[s])}
                 </MenuItem>
               ))}
             </TextField>
             <TextField
-              label="Source link (optional)"
+              label={t('bulletins.dialog.sourceUrl')}
               value={sourceUrl}
               onChange={(e) => setSourceUrl(e.target.value)}
               fullWidth
             />
           </Stack>
-          {severity === 'grounding' && (
-            <Alert severity="warning">
-              Publishing a grounding bulletin grounds every matched rig until its rigger resolves the match.
-            </Alert>
-          )}
+          {severity === 'grounding' && <Alert severity="warning">{t('bulletins.dialog.groundingWarning')}</Alert>}
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-            What it applies to
+            {t('bulletins.dialog.targetsTitle')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Each target narrows the manufacturer by model, serial range and date of manufacture. Serials that are not
-            plain numbers are flagged for a rigger to review. Leave a target empty to cover the whole manufacturer.
+            {t('bulletins.dialog.targetsHelp')}
           </Typography>
           {rows.map((row, index) => (
             <Stack key={index} direction={{ xs: 'column', md: 'row' }} spacing={1} alignItems="flex-start">
               <TextField
-                label="Model"
+                label={t('bulletins.dialog.model')}
                 value={row.model}
                 onChange={(e) => setRow(index, { model: e.target.value })}
                 size="small"
               />
               <TextField
-                label="Serial from"
+                label={t('bulletins.dialog.serialFrom')}
                 value={row.serialFrom}
                 onChange={(e) => setRow(index, { serialFrom: e.target.value })}
                 size="small"
               />
               <TextField
-                label="Serial to"
+                label={t('bulletins.dialog.serialTo')}
                 value={row.serialTo}
                 onChange={(e) => setRow(index, { serialTo: e.target.value })}
                 size="small"
               />
               <TextField
-                label="Made from"
+                label={t('bulletins.dialog.madeFrom')}
                 type="date"
                 value={row.manufacturedFrom}
                 onChange={(e) => setRow(index, { manufacturedFrom: e.target.value })}
@@ -210,7 +215,7 @@ export function BulletinDialog({ token, bulletin, onClose, onSaved }: BulletinDi
                 slotProps={{ inputLabel: { shrink: true } }}
               />
               <TextField
-                label="Made to"
+                label={t('bulletins.dialog.madeTo')}
                 type="date"
                 value={row.manufacturedTo}
                 onChange={(e) => setRow(index, { manufacturedTo: e.target.value })}
@@ -219,7 +224,7 @@ export function BulletinDialog({ token, bulletin, onClose, onSaved }: BulletinDi
               />
               {rows.length > 1 && (
                 <IconButton
-                  aria-label="Remove target"
+                  aria-label={t('bulletins.dialog.removeTarget')}
                   onClick={() => setRows((current) => current.filter((_, i) => i !== index))}
                 >
                   <DeleteOutlineIcon />
@@ -232,14 +237,14 @@ export function BulletinDialog({ token, bulletin, onClose, onSaved }: BulletinDi
             onClick={() => setRows((current) => [...current, { ...EMPTY_ROW }])}
             sx={{ alignSelf: 'flex-start' }}
           >
-            Add another target
+            {t('bulletins.dialog.addTarget')}
           </Button>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('bulletins.actions.cancel')}</Button>
         <Button type="submit" variant="contained" disabled={saving}>
-          {bulletin ? 'Save changes' : 'Save draft'}
+          {bulletin ? t('bulletins.dialog.saveChanges') : t('bulletins.dialog.saveDraft')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -2,9 +2,11 @@ import { Box, Button, Card, CardContent, Chip, IconButton, Link, Stack, Typograp
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import type { ComponentPartView, GearItemView } from '@bendike/shared';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { detailLine, identityLine, KIND_LABELS } from './item-details';
-import { SEVERITY_COLORS, SEVERITY_LABELS } from '../bulletins/bulletin-labels';
+import '../../i18n/i18n';
+import { detailLine, identityLine, KIND_LABEL_KEYS } from './item-details';
+import { SEVERITY_COLORS, SEVERITY_LABEL_KEYS } from '../bulletins/bulletin-labels';
 import { DueLine, StatusBadge } from './StatusBadge';
 
 interface GearItemCardProps {
@@ -32,9 +34,10 @@ export function GearItemCard({
   onEditPart,
   onDeletePart,
 }: GearItemCardProps) {
-  const label = KIND_LABELS[item.kind];
-  const lower = item.kind === 'aad' ? 'AAD' : item.kind;
-  const details = detailLine(item);
+  const { t } = useTranslation();
+  const label = t(KIND_LABEL_KEYS[item.kind]);
+  const lower = item.kind === 'aad' ? label : label.toLowerCase();
+  const details = detailLine(item, t);
   return (
     <Card variant="outlined" data-testid={`slot-${item.kind}`}>
       <CardContent>
@@ -48,10 +51,10 @@ export function GearItemCard({
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
             {linkToItem ? (
               <Link component={RouterLink} to={`/app/gear/items/${item.id}`} color="inherit" underline="hover">
-                {identityLine(item)}
+                {identityLine(item, t)}
               </Link>
             ) : (
-              identityLine(item)
+              identityLine(item, t)
             )}
           </Typography>
           {details && (
@@ -68,12 +71,16 @@ export function GearItemCard({
               alignItems="center"
               sx={{ flexWrap: 'wrap', rowGap: 0.5 }}
             >
-              <Chip size="small" color={SEVERITY_COLORS[notice.severity]} label={SEVERITY_LABELS[notice.severity]} />
+              <Chip
+                size="small"
+                color={SEVERITY_COLORS[notice.severity]}
+                label={t(SEVERITY_LABEL_KEYS[notice.severity])}
+              />
               <Typography variant="body2">
                 {notice.reference}: {notice.title}
               </Typography>
               {notice.confidence === 'needs_review' && (
-                <Chip size="small" variant="outlined" color="warning" label="Needs review" />
+                <Chip size="small" variant="outlined" color="warning" label={t('gear.card.needsReview')} />
               )}
             </Stack>
           ))}
@@ -81,7 +88,7 @@ export function GearItemCard({
             <DueLine key={due.kind} due={due} />
           ))}
           {item.parts.length > 0 && (
-            <Box component="ul" sx={{ m: 0, pl: 2 }} aria-label={`Parts of ${lower}`}>
+            <Box component="ul" sx={{ m: 0, pl: 2 }} aria-label={t('gear.card.partsOf', { kind: lower })}>
               {item.parts.map((part) => (
                 <li key={part.id}>
                   <Stack direction="row" alignItems="center" spacing={0.5}>
@@ -93,14 +100,14 @@ export function GearItemCard({
                       <>
                         <IconButton
                           size="small"
-                          aria-label={`Edit ${part.description}`}
+                          aria-label={t('gear.card.editPart', { part: part.description })}
                           onClick={() => onEditPart(part)}
                         >
                           <EditOutlinedIcon fontSize="inherit" />
                         </IconButton>
                         <IconButton
                           size="small"
-                          aria-label={`Remove ${part.description}`}
+                          aria-label={t('gear.card.removePart', { part: part.description })}
                           onClick={() => onDeletePart(part)}
                         >
                           <DeleteOutlineIcon fontSize="inherit" />
@@ -113,21 +120,31 @@ export function GearItemCard({
             </Box>
           )}
           <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', rowGap: 1 }}>
-            <Button size="small" variant="outlined" aria-label={`Log work on ${lower}`} onClick={onLogWork}>
-              Log work
+            <Button
+              size="small"
+              variant="outlined"
+              aria-label={t('gear.card.logWorkOn', { kind: lower })}
+              onClick={onLogWork}
+            >
+              {t('gear.card.logWork')}
             </Button>
             {canGround && (
-              <Button size="small" color="error" aria-label={`Ground ${lower}`} onClick={onGround}>
-                Ground
+              <Button
+                size="small"
+                color="error"
+                aria-label={t('gear.card.groundKind', { kind: lower })}
+                onClick={onGround}
+              >
+                {t('gear.card.ground')}
               </Button>
             )}
             {canEdit && (
               <>
-                <Button size="small" aria-label={`Edit ${lower}`} onClick={onEdit}>
-                  Edit
+                <Button size="small" aria-label={t('gear.card.editKind', { kind: lower })} onClick={onEdit}>
+                  {t('gear.common.edit')}
                 </Button>
-                <Button size="small" aria-label={`Add part to ${lower}`} onClick={onAddPart}>
-                  Add part
+                <Button size="small" aria-label={t('gear.card.addPartTo', { kind: lower })} onClick={onAddPart}>
+                  {t('gear.card.addPart')}
                 </Button>
               </>
             )}
