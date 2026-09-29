@@ -1,0 +1,72 @@
+{
+  "app": {
+    "shell": {
+      "gear": "Gear",
+      "work": "Work",
+      "library": "Library",
+      "customers": "Customers",
+      "riggers": "Riggers",
+      "logout": "Log out",
+      "login": "Log in",
+      "signup": "Sign up",
+      "language": "App language"
+    },
+    "role": {
+      "user": "user",
+      "rigger": "rigger",
+      "dropzone": "dropzone",
+      "admin": "admin"
+    },
+    "dashboard": {
+      "greeting": "Hi, {{name}}",
+      "signedInAs": {
+        "user": "You are signed in as a user.",
+        "rigger": "You are signed in as a rigger.",
+        "dropzone": "You are signed in as a dropzone.",
+        "admin": "You are signed in as an admin."
+      },
+      "fleet": "Fleet",
+      "myGear": "My gear",
+      "workQueue": "Work queue",
+      "customersAndDropzones": "Customers and dropzones",
+      "myRiggers": "My riggers",
+      "yourDetails": "Your details",
+      "manageAccounts": "Manage accounts",
+      "manageServices": "Manage services",
+      "manageUsedGear": "Manage used gear",
+      "gearModels": "Gear models",
+      "serviceBulletins": "Service bulletins",
+      "learnMaterial": "Learn material"
+    },
+    "profile": {
+      "title": "Your details",
+      "intro": "Your rigger and your dropzone use your WhatsApp phone to reach you, in the language you choose here.",
+      "signedInAs": "Signed in as",
+      "displayName": "Display name",
+      "phone": "WhatsApp phone",
+      "phoneHint": "With the country code",
+      "language": "Language",
+      "save": "Save",
+      "saved": "Saved",
+      "nameRequired": "Enter your name.",
+      "phoneInvalid": "Enter the phone with the country code, for example +54 9 341 555 0000.",
+      "saveFailed": "Could not save your details"
+    },
+    "accounts": {
+      "title": "Accounts",
+      "table": "Accounts",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "roleFor": "Role for {{email}}",
+      "signIn": "Sign-in",
+      "joined": "Joined",
+      "method": {
+        "password": "Password",
+        "google": "Google"
+      },
+      "loadFailed": "Could not load accounts",
+      "changeFailed": "Could not change role"
+    }
+  }
+}

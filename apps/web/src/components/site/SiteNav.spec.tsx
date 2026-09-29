@@ -67,13 +67,14 @@ describe('SiteNav shop entry', () => {
     expect(screen.getAllByRole('combobox')[1]).toHaveTextContent('AR$');
   });
 
-  test('links Shop to the detected locale and hides both switchers outside locale pages', () => {
+  test('links Shop to the detected locale and keeps the language switcher, but not the currency, outside locale pages', () => {
     window.localStorage.setItem('bendike.locale', 'es');
     renderNavAt('/');
 
     expect(screen.getByRole('link', { name: 'Shop' })).toHaveAttribute('href', '/es/shop');
     expect(screen.getByRole('link', { name: 'Services' })).toHaveAttribute('href', '/es/services');
     expect(screen.getByRole('link', { name: 'Learn' })).toHaveAttribute('href', '/es/learn');
-    expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+    expect(screen.getAllByRole('combobox')).toHaveLength(1);
+    expect(screen.getByRole('combobox')).toHaveTextContent('ES');
   });
 });

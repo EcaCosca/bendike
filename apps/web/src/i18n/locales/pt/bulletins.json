@@ -1,0 +1,14 @@
+{
+  "bulletins": {
+    "severity": {
+      "advisory": "Informativo",
+      "mandatory": "Obrigatório",
+      "grounding": "Interdita"
+    },
+    "status": {
+      "draft": "Rascunho",
+      "published": "Publicado",
+      "withdrawn": "Retirado"
+    }
+  }
+}

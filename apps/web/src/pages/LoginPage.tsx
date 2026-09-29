@@ -1,11 +1,16 @@
 import { Alert, Button, Stack, TextField, Typography } from '@mui/material';
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { GoogleSignInSection } from '../auth/GoogleSignInSection';
 import { useAuth } from '../auth/use-auth';
 import { AppShell } from '../components/AppShell';
+import '../i18n/i18n';
+import { usePublicLanguage } from '../i18n/use-public-language';
 
 export function LoginPage() {
+  const { t } = useTranslation();
+  usePublicLanguage();
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,7 +29,7 @@ export function LoginPage() {
       await login({ email, password });
       void navigate(from, { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      setError(err instanceof Error ? err.message : t('auth.login.failed'));
     } finally {
       setSubmitting(false);
     }
@@ -34,11 +39,11 @@ export function LoginPage() {
     <AppShell>
       <Stack component="form" spacing={3} maxWidth={420} mx="auto" onSubmit={(event) => void handleSubmit(event)}>
         <Typography variant="h4" component="h1">
-          Log in
+          {t('auth.login.title')}
         </Typography>
         {error && <Alert severity="error">{error}</Alert>}
         <TextField
-          label="Email"
+          label={t('auth.login.email')}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -46,18 +51,18 @@ export function LoginPage() {
           autoFocus
         />
         <TextField
-          label="Password"
+          label={t('auth.login.password')}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
         <Button type="submit" variant="contained" size="large" disabled={submitting}>
-          Log in
+          {t('auth.login.submit')}
         </Button>
         <GoogleSignInSection onSignedIn={() => void navigate(from, { replace: true })} onError={setError} />
         <Typography variant="body2">
-          New here? <RouterLink to="/register">Create an account</RouterLink>
+          {t('auth.login.newHere')} <RouterLink to="/register">{t('auth.login.createAccount')}</RouterLink>
         </Typography>
       </Stack>
     </AppShell>

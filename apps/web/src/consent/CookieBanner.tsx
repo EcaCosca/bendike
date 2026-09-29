@@ -1,15 +1,18 @@
 import { Box, Button, Container, Link, Paper, Stack, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
+import '../i18n/i18n';
 import { useConsent } from './use-consent';
 
 export function CookieBanner() {
+  const { t } = useTranslation();
   const { choice, acceptAll, rejectAll, openSettings } = useConsent();
   if (choice !== null) return null;
 
   return (
     <Paper
       component="section"
-      aria-label="Cookie consent"
+      aria-label={t('consent.banner.region')}
       elevation={8}
       square
       sx={{
@@ -28,26 +31,25 @@ export function CookieBanner() {
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems={{ md: 'center' }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="body2" sx={{ fontWeight: 700 }}>
-              Your privacy on Bendike
+              {t('consent.banner.title')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              We store a few things on your device. The necessary ones keep you signed in and remember your language.
-              With your permission we also remember your view choices and can load Google sign-in. Read our{' '}
+              {t('consent.banner.body')}{' '}
               <Link component={RouterLink} to="/cookies">
-                cookie policy
+                {t('consent.banner.policyLink')}
               </Link>
               .
             </Typography>
           </Box>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ flexShrink: 0 }}>
             <Button variant="text" onClick={openSettings}>
-              Manage
+              {t('consent.banner.manage')}
             </Button>
             <Button variant="contained" onClick={rejectAll}>
-              Reject non-essential
+              {t('consent.banner.reject')}
             </Button>
             <Button variant="contained" onClick={acceptAll}>
-              Accept all
+              {t('consent.banner.accept')}
             </Button>
           </Stack>
         </Stack>

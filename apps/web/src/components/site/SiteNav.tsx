@@ -111,11 +111,11 @@ export function SiteNav() {
           </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Stack direction="row" spacing={1.5} alignItems="center">
-            {activeLocale && <LocaleSwitcher />}
+            <LocaleSwitcher />
             {activeLocale && <CurrencySwitcher />}
             {user ? (
               <Button variant="contained" component={RouterLink} to="/app">
-                Open app
+                {t('site.openApp')}
               </Button>
             ) : (
               <>

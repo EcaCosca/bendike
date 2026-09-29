@@ -1,0 +1,9 @@
+{
+  "library": {
+    "kind": {
+      "manual": "Manual",
+      "service_bulletin": "Boletim de serviço",
+      "other": "Outro"
+    }
+  }
+}

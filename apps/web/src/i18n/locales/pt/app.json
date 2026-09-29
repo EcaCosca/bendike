@@ -1,0 +1,72 @@
+{
+  "app": {
+    "shell": {
+      "gear": "Equipamento",
+      "work": "Trabalho",
+      "library": "Biblioteca",
+      "customers": "Clientes",
+      "riggers": "Riggers",
+      "logout": "Sair",
+      "login": "Entrar",
+      "signup": "Cadastrar",
+      "language": "Idioma do app"
+    },
+    "role": {
+      "user": "usuário",
+      "rigger": "rigger",
+      "dropzone": "dropzone",
+      "admin": "admin"
+    },
+    "dashboard": {
+      "greeting": "Olá, {{name}}",
+      "signedInAs": {
+        "user": "Você entrou como usuário.",
+        "rigger": "Você entrou como rigger.",
+        "dropzone": "Você entrou como dropzone.",
+        "admin": "Você entrou como administrador."
+      },
+      "fleet": "Frota",
+      "myGear": "Meu equipamento",
+      "workQueue": "Fila de trabalho",
+      "customersAndDropzones": "Clientes e dropzones",
+      "myRiggers": "Meus riggers",
+      "yourDetails": "Seus dados",
+      "manageAccounts": "Gerenciar contas",
+      "manageServices": "Gerenciar serviços",
+      "manageUsedGear": "Gerenciar equipamento usado",
+      "gearModels": "Modelos de equipamento",
+      "serviceBulletins": "Boletins de serviço",
+      "learnMaterial": "Material de Aprender"
+    },
+    "profile": {
+      "title": "Seus dados",
+      "intro": "O seu rigger e o seu dropzone usam o seu telefone do WhatsApp para falar com você, no idioma que você escolher aqui.",
+      "signedInAs": "Conectado como",
+      "displayName": "Nome de exibição",
+      "phone": "Telefone do WhatsApp",
+      "phoneHint": "Com o código do país",
+      "language": "Idioma",
+      "save": "Salvar",
+      "saved": "Salvo",
+      "nameRequired": "Digite o seu nome.",
+      "phoneInvalid": "Digite o telefone com o código do país, por exemplo +54 9 341 555 0000.",
+      "saveFailed": "Não foi possível salvar os seus dados"
+    },
+    "accounts": {
+      "title": "Contas",
+      "table": "Contas",
+      "name": "Nome",
+      "email": "E-mail",
+      "role": "Papel",
+      "roleFor": "Papel de {{email}}",
+      "signIn": "Login",
+      "joined": "Cadastro",
+      "method": {
+        "password": "Senha",
+        "google": "Google"
+      },
+      "loadFailed": "Não foi possível carregar as contas",
+      "changeFailed": "Não foi possível mudar o papel"
+    }
+  }
+}

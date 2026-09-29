@@ -13,10 +13,24 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { SitePage } from '../components/site/SitePage';
 import { CONTACT_EMAIL } from '../components/site/site-content';
-import { POLICY_UPDATED, STORAGE_INVENTORY } from './storage-inventory';
+import { usePublicLanguage } from '../i18n/use-public-language';
+import { POLICY_UPDATED, STORAGE_INVENTORY, type StorageCategory, type StorageItem } from './storage-inventory';
 import { useConsent } from './use-consent';
+
+const TYPE_KEYS: Record<StorageItem['type'], string> = {
+  Cookie: 'consent.type.cookie',
+  'Local storage': 'consent.type.browserStorage',
+  'Third-party script': 'consent.type.thirdPartyScript',
+};
+
+const CATEGORY_KEYS: Record<StorageCategory, string> = {
+  Necessary: 'consent.category.necessary.title',
+  Preferences: 'consent.category.preferences.title',
+  'Third-party services': 'consent.category.thirdParty.title',
+};
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -30,6 +44,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export function CookiePolicyPage() {
+  const { t } = useTranslation();
+  usePublicLanguage();
   const { openSettings } = useConsent();
 
   return (
@@ -38,33 +54,26 @@ export function CookiePolicyPage() {
         <Stack spacing={4}>
           <Box>
             <Typography variant="h3" component="h1">
-              Cookie policy
+              {t('consent.policy.title')}
             </Typography>
             <Typography color="text.secondary" sx={{ mt: 1 }}>
-              {`Last updated: ${POLICY_UPDATED}`}
+              {t('consent.policy.lastUpdated', { date: POLICY_UPDATED })}
             </Typography>
           </Box>
 
-          <Section title="What cookies and browser storage are">
-            <Typography>
-              Cookies are small text files a website asks your browser to keep. Browser storage does the same job
-              without being sent to the server with every request. Bendike uses both, and only for the reasons below. It
-              does not use advertising or analytics tools.
-            </Typography>
+          <Section title={t('consent.policy.what.title')}>
+            <Typography>{t('consent.policy.what.body')}</Typography>
           </Section>
 
-          <Section title="What Bendike stores">
-            <Typography>
-              Necessary items are always used, because the site does not work without them. Everything else waits for
-              your permission.
-            </Typography>
+          <Section title={t('consent.policy.stores.title')}>
+            <Typography>{t('consent.policy.stores.body')}</Typography>
             <TableContainer component={Paper} variant="outlined">
-              <Table size="small" aria-label="Cookies and browser storage">
+              <Table size="small" aria-label={t('consent.policy.stores.caption')}>
                 <TableHead>
                   <TableRow>
-                    {['Name', 'Type', 'Category', 'What it is for', 'How long'].map((heading) => (
+                    {(['name', 'type', 'category', 'purpose', 'duration'] as const).map((heading) => (
                       <TableCell key={heading} sx={{ fontWeight: 700 }}>
-                        {heading}
+                        {t(`consent.policy.stores.${heading}`)}
                       </TableCell>
                     ))}
                   </TableRow>
@@ -73,10 +82,10 @@ export function CookiePolicyPage() {
                   {STORAGE_INVENTORY.map((item) => (
                     <TableRow key={item.name}>
                       <TableCell sx={{ fontFamily: 'monospace', wordBreak: 'break-word' }}>{item.name}</TableCell>
-                      <TableCell>{item.type}</TableCell>
-                      <TableCell>{item.category}</TableCell>
-                      <TableCell>{item.purpose}</TableCell>
-                      <TableCell>{item.duration}</TableCell>
+                      <TableCell>{t(TYPE_KEYS[item.type])}</TableCell>
+                      <TableCell>{t(CATEGORY_KEYS[item.category])}</TableCell>
+                      <TableCell>{t(`consent.policy.inventory.${item.id}.purpose`)}</TableCell>
+                      <TableCell>{t(`consent.policy.inventory.${item.id}.duration`)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -84,39 +93,26 @@ export function CookiePolicyPage() {
             </TableContainer>
           </Section>
 
-          <Section title="Third parties">
-            <Typography>
-              When you allow third-party services and open the login or sign-up page, your browser loads Google Identity
-              Services from Google so you can continue with your Google account. Google may set its own cookies and sees
-              that your browser loaded the script. Bendike receives only the sign-in result from Google. If you do not
-              allow it, the script is never loaded and you can still sign in with your email and password.
-            </Typography>
+          <Section title={t('consent.policy.thirdParties.title')}>
+            <Typography>{t('consent.policy.thirdParties.body')}</Typography>
           </Section>
 
-          <Section title="Changing your choice">
-            <Typography>
-              You can change your choice at any time. Withdrawing permission for preferences deletes the remembered gear
-              view and licence number straight away.
-            </Typography>
+          <Section title={t('consent.policy.changing.title')}>
+            <Typography>{t('consent.policy.changing.body')}</Typography>
             <Box>
               <Button variant="contained" onClick={openSettings}>
-                Open cookie settings
+                {t('consent.policy.changing.button')}
               </Button>
             </Box>
           </Section>
 
-          <Section title="Removing what is stored">
-            <Typography>
-              You can delete cookies and site data for Bendike in your browser&apos;s settings. Signing out removes the
-              sign-in token. Cookies that Google has already set are removed the same way, in your browser, for the
-              google.com domain.
-            </Typography>
+          <Section title={t('consent.policy.removing.title')}>
+            <Typography>{t('consent.policy.removing.body')}</Typography>
           </Section>
 
-          <Section title="Contact">
+          <Section title={t('consent.policy.contact.title')}>
             <Typography>
-              Questions about this policy? Write to Eca at <Link href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</Link>
-              .
+              {t('consent.policy.contact.lead')} <Link href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</Link>.
             </Typography>
           </Section>
         </Stack>

@@ -44,3 +44,17 @@ export function mostUrgentDue(dues: readonly DueItem[]): DueItem | null {
       statusSeverity(b.status) - statusSeverity(a.status) || (a.dueOn ?? '9999').localeCompare(b.dueOn ?? '9999'),
   )[0] as DueItem;
 }
+
+export const STATUS_LABEL_KEYS: Record<DueStatus, string> = {
+  overdue: 'gear.status.overdue',
+  due_soon: 'gear.status.due_soon',
+  ok: 'gear.status.ok',
+  no_data: 'gear.status.no_data',
+};
+
+export const DUE_KIND_LABEL_KEYS: Record<DueItem['kind'], string> = {
+  repack: 'gear.dueKind.repack',
+  battery: 'gear.dueKind.battery',
+  service: 'gear.dueKind.service',
+  expiry: 'gear.dueKind.expiry',
+};

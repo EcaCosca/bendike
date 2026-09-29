@@ -1,0 +1,111 @@
+{
+  "consent": {
+    "banner": {
+      "region": "Consentimento de cookies",
+      "title": "Sua privacidade na Bendike",
+      "body": "Guardamos algumas coisas no seu dispositivo. As necessárias mantêm você conectado e lembram o seu idioma. Com a sua permissão também lembramos como você prefere ver as coisas e podemos carregar o login com Google e os players de vídeo. Leia a nossa",
+      "policyLink": "política de cookies",
+      "manage": "Gerenciar",
+      "reject": "Recusar as não essenciais",
+      "accept": "Aceitar todas"
+    },
+    "settings": {
+      "title": "Configurações de cookies",
+      "intro": "Escolha o que a Bendike pode guardar no seu dispositivo. Você pode mudar isso a qualquer momento no rodapé. Leia a",
+      "policyLink": "política de cookies",
+      "introTail": "para ver a lista completa.",
+      "cancel": "Cancelar",
+      "reject": "Recusar as não essenciais",
+      "accept": "Aceitar todas",
+      "save": "Salvar minhas escolhas"
+    },
+    "category": {
+      "necessary": {
+        "title": "Necessários",
+        "description": "Mantêm você conectado e lembram o idioma que você escolheu. O site não funciona sem eles, então ficam sempre ativos."
+      },
+      "preferences": {
+        "title": "Preferências",
+        "description": "Lembra como você vê o seu equipamento (grade ou cartões), a moeda que escolheu e, para riggers, o número de licença digitado na planilha de dobragem."
+      },
+      "thirdParty": {
+        "title": "Serviços de terceiros",
+        "description": "Carrega o login do Google e os players do YouTube, Spotify e Vimeo nas páginas de Aprender. Esses provedores podem usar os próprios cookies ao carregar."
+      }
+    },
+    "type": {
+      "cookie": "Cookie",
+      "browserStorage": "Armazenamento local",
+      "thirdPartyScript": "Script de terceiros"
+    },
+    "policy": {
+      "title": "Política de cookies",
+      "lastUpdated": "Última atualização: {{date}}",
+      "what": {
+        "title": "O que são cookies e armazenamento do navegador",
+        "body": "Cookies são pequenos arquivos de texto que um site pede ao navegador para guardar. O armazenamento do navegador faz o mesmo sem ser enviado ao servidor a cada requisição. A Bendike usa os dois, e só pelos motivos abaixo. Não usa ferramentas de publicidade nem de análise."
+      },
+      "stores": {
+        "title": "O que a Bendike guarda",
+        "body": "Os itens necessários são usados sempre, porque o site não funciona sem eles. Todo o resto espera a sua permissão.",
+        "caption": "Cookies e armazenamento do navegador",
+        "name": "Nome",
+        "type": "Tipo",
+        "category": "Categoria",
+        "purpose": "Para que serve",
+        "duration": "Por quanto tempo"
+      },
+      "thirdParties": {
+        "title": "Terceiros",
+        "body": "Quando você permite serviços de terceiros e abre a página de login ou de cadastro, o navegador carrega o Google Identity Services do Google para que você continue com a sua conta Google. Quando você aperta play numa página de Aprender, ele carrega o player do YouTube, Spotify ou Vimeo. Essas empresas podem usar os próprios cookies e veem que o seu navegador carregou o código delas. A Bendike recebe só o resultado do login do Google. Se você não permitir, nada é carregado e você ainda pode entrar com e-mail e senha."
+      },
+      "changing": {
+        "title": "Mudar a sua escolha",
+        "body": "Você pode mudar a sua escolha a qualquer momento. Retirar a permissão de preferências apaga na hora a visualização do equipamento, a moeda e o número de licença lembrados.",
+        "button": "Abrir as configurações de cookies"
+      },
+      "removing": {
+        "title": "Apagar o que está guardado",
+        "body": "Você pode apagar os cookies e os dados do site da Bendike nas configurações do navegador. Sair remove o token de login. Os cookies que o Google ou um provedor de vídeo já tenham definido são removidos do mesmo jeito, no navegador, para o domínio deles."
+      },
+      "contact": {
+        "title": "Contato",
+        "lead": "Dúvidas sobre esta política? Escreva para o Eca em"
+      },
+      "inventory": {
+        "consentCookie": {
+          "purpose": "Lembra a escolha que você fez na barra de cookies e quando a fez.",
+          "duration": "12 meses"
+        },
+        "token": {
+          "purpose": "Mantém você conectado à sua conta Bendike.",
+          "duration": "Até você sair"
+        },
+        "locale": {
+          "purpose": "Lembra o idioma que você escolheu.",
+          "duration": "Até você limpar os dados do navegador"
+        },
+        "gearView": {
+          "purpose": "Lembra se você vê o seu equipamento como grade ou como cartões.",
+          "duration": "Até você limpar os dados do navegador ou retirar a permissão"
+        },
+        "currency": {
+          "purpose": "Lembra a moeda que você escolheu para os preços (US$, AR$ ou R$).",
+          "duration": "Até você limpar os dados do navegador ou retirar a permissão"
+        },
+        "riggerLicence": {
+          "purpose": "Para riggers: preenche o número de licença digitado na sua última planilha de dobragem.",
+          "duration": "Até você limpar os dados do navegador ou retirar a permissão"
+        },
+        "google": {
+          "purpose": "Só quando você permite e abre a página de login ou de cadastro: deixa você continuar com o Google. O Google pode usar os próprios cookies.",
+          "duration": "Definido pelo Google; veja a política de privacidade do Google"
+        },
+        "players": {
+          "purpose": "Só quando você permite e aperta play numa página de Aprender: mostra o player de vídeo ou podcast dentro da Bendike. O provedor pode usar os próprios cookies.",
+          "duration": "Definido pelo provedor; veja a política de privacidade dele"
+        }
+      }
+    }
+  }
+}

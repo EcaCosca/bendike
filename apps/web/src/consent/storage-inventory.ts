@@ -1,6 +1,7 @@
 export type StorageCategory = 'Necessary' | 'Preferences' | 'Third-party services';
 
 export interface StorageItem {
+  id: string;
   name: string;
   type: 'Cookie' | 'Local storage' | 'Third-party script';
   category: StorageCategory;
@@ -12,6 +13,7 @@ export const POLICY_UPDATED = '2026-09-20';
 
 export const STORAGE_INVENTORY: readonly StorageItem[] = [
   {
+    id: 'consentCookie',
     name: 'bendike_consent',
     type: 'Cookie',
     category: 'Necessary',
@@ -19,6 +21,7 @@ export const STORAGE_INVENTORY: readonly StorageItem[] = [
     duration: '12 months',
   },
   {
+    id: 'token',
     name: 'bendike.token',
     type: 'Local storage',
     category: 'Necessary',
@@ -26,6 +29,7 @@ export const STORAGE_INVENTORY: readonly StorageItem[] = [
     duration: 'Until you log out',
   },
   {
+    id: 'locale',
     name: 'bendike.locale',
     type: 'Local storage',
     category: 'Necessary',
@@ -33,6 +37,7 @@ export const STORAGE_INVENTORY: readonly StorageItem[] = [
     duration: 'Until you clear your browser data',
   },
   {
+    id: 'gearView',
     name: 'bendike.gear.view',
     type: 'Local storage',
     category: 'Preferences',
@@ -40,6 +45,7 @@ export const STORAGE_INVENTORY: readonly StorageItem[] = [
     duration: 'Until you clear your browser data or withdraw permission',
   },
   {
+    id: 'currency',
     name: 'bendike.currency',
     type: 'Local storage',
     category: 'Preferences',
@@ -47,6 +53,7 @@ export const STORAGE_INVENTORY: readonly StorageItem[] = [
     duration: 'Until you clear your browser data or withdraw permission',
   },
   {
+    id: 'riggerLicence',
     name: 'bendike.riggerLicence',
     type: 'Local storage',
     category: 'Preferences',
@@ -54,6 +61,7 @@ export const STORAGE_INVENTORY: readonly StorageItem[] = [
     duration: 'Until you clear your browser data or withdraw permission',
   },
   {
+    id: 'google',
     name: 'Google Identity Services (accounts.google.com)',
     type: 'Third-party script',
     category: 'Third-party services',
@@ -62,6 +70,7 @@ export const STORAGE_INVENTORY: readonly StorageItem[] = [
     duration: "Set by Google; see Google's privacy policy",
   },
   {
+    id: 'players',
     name: 'YouTube, Spotify and Vimeo players (youtube-nocookie.com, open.spotify.com, player.vimeo.com)',
     type: 'Third-party script',
     category: 'Third-party services',

@@ -42,3 +42,10 @@ export function identityLine(item: GearItemView): string {
     .filter(Boolean)
     .join(' · ');
 }
+
+export const KIND_LABEL_KEYS = {
+  container: 'gear.kind.container',
+  main: 'gear.kind.main',
+  reserve: 'gear.kind.reserve',
+  aad: 'gear.kind.aad',
+} as const;

@@ -70,3 +70,21 @@ export function inspectionLine(inspection: InspectionSummary | null): string {
     ? `Inspected ${inspection.performedOn}: ${INSPECTION_RESULT_LABELS[inspection.result]} by ${inspection.performedByName}`
     : 'Never inspected';
 }
+
+export const ENTRY_KIND_LABEL_KEYS: Record<MaintenanceKind, string> = {
+  repack: 'gear.entryKind.repack',
+  reline: 'gear.entryKind.reline',
+  kill_line: 'gear.entryKind.kill_line',
+  inspection: 'gear.entryKind.inspection',
+  repair: 'gear.entryKind.repair',
+  battery: 'gear.entryKind.battery',
+  aad_service: 'gear.entryKind.aad_service',
+  assembly: 'gear.entryKind.assembly',
+  other: 'gear.entryKind.other',
+};
+
+export const INSPECTION_RESULT_LABEL_KEYS: Record<InspectionResult, string> = {
+  passed: 'gear.inspectionResult.passed',
+  needs_work: 'gear.inspectionResult.needs_work',
+  grounded: 'gear.inspectionResult.grounded',
+};

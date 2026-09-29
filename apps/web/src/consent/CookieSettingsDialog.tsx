@@ -11,7 +11,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
+import '../i18n/i18n';
 import { ACCEPT_ALL, REJECT_ALL, type ConsentSelection } from './consent-storage';
 import { useConsent } from './use-consent';
 
@@ -45,51 +47,52 @@ function CategoryRow({ title, description, checked, disabled = false, onChange }
 }
 
 function Settings({ initial, onClose }: { initial: ConsentSelection; onClose: () => void }) {
+  const { t } = useTranslation();
   const { save } = useConsent();
   const [selection, setSelection] = useState<ConsentSelection>(initial);
 
   return (
     <Dialog open onClose={onClose} fullWidth maxWidth="sm" aria-labelledby="cookie-settings-title">
-      <DialogTitle id="cookie-settings-title">Cookie settings</DialogTitle>
+      <DialogTitle id="cookie-settings-title">{t('consent.settings.title')}</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           <Typography variant="body2">
-            Choose what Bendike may store on your device. You can change this at any time from the footer. Read the{' '}
+            {t('consent.settings.intro')}{' '}
             <Link component={RouterLink} to="/cookies" onClick={onClose}>
-              cookie policy
+              {t('consent.settings.policyLink')}
             </Link>{' '}
-            for the full list.
+            {t('consent.settings.introTail')}
           </Typography>
           <CategoryRow
-            title="Necessary"
-            description="Keeps you signed in and remembers the language you chose. The site does not work without these, so they are always on."
+            title={t('consent.category.necessary.title')}
+            description={t('consent.category.necessary.description')}
             checked
             disabled
           />
           <CategoryRow
-            title="Preferences"
-            description="Remembers your gear view (grid or cards) and, for riggers, the licence number you type on a packing sheet."
+            title={t('consent.category.preferences.title')}
+            description={t('consent.category.preferences.description')}
             checked={selection.preferences}
             onChange={(preferences) => setSelection({ ...selection, preferences })}
           />
           <CategoryRow
-            title="Third-party services"
-            description="Loads Google's sign-in so you can continue with Google. Google may set its own cookies when it loads."
+            title={t('consent.category.thirdParty.title')}
+            description={t('consent.category.thirdParty.description')}
             checked={selection.thirdParty}
             onChange={(thirdParty) => setSelection({ ...selection, thirdParty })}
           />
         </Stack>
       </DialogContent>
       <DialogActions sx={{ flexWrap: 'wrap', gap: 1, px: 3, pb: 2 }}>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('consent.settings.cancel')}</Button>
         <Button variant="outlined" onClick={() => save(REJECT_ALL)}>
-          Reject non-essential
+          {t('consent.settings.reject')}
         </Button>
         <Button variant="outlined" onClick={() => save(ACCEPT_ALL)}>
-          Accept all
+          {t('consent.settings.accept')}
         </Button>
         <Button variant="contained" onClick={() => save(selection)}>
-          Save my choices
+          {t('consent.settings.save')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,0 +1,38 @@
+{
+  "gear": {
+    "kind": {
+      "container": "Container",
+      "main": "Principal",
+      "reserve": "Reserva",
+      "aad": "AAD"
+    },
+    "entryKind": {
+      "repack": "Dobragem",
+      "reline": "Troca de linhas",
+      "kill_line": "Troca de kill line",
+      "inspection": "Inspeção",
+      "repair": "Reparo",
+      "battery": "Bateria",
+      "aad_service": "Serviço do AAD",
+      "assembly": "Montagem",
+      "other": "Outro"
+    },
+    "inspectionResult": {
+      "passed": "Aprovado",
+      "needs_work": "Precisa de trabalho",
+      "grounded": "Interditado"
+    },
+    "status": {
+      "overdue": "Vencido",
+      "due_soon": "Vence em breve",
+      "ok": "OK",
+      "no_data": "Sem dados"
+    },
+    "dueKind": {
+      "repack": "Dobragem",
+      "battery": "Bateria",
+      "service": "Serviço",
+      "expiry": "Vencimento"
+    }
+  }
+}

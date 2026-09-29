@@ -1,0 +1,72 @@
+{
+  "app": {
+    "shell": {
+      "gear": "Equipo",
+      "work": "Trabajo",
+      "library": "Biblioteca",
+      "customers": "Clientes",
+      "riggers": "Riggers",
+      "logout": "Cerrar sesión",
+      "login": "Iniciar sesión",
+      "signup": "Registrarme",
+      "language": "Idioma de la app"
+    },
+    "role": {
+      "user": "usuario",
+      "rigger": "rigger",
+      "dropzone": "dropzone",
+      "admin": "admin"
+    },
+    "dashboard": {
+      "greeting": "Hola, {{name}}",
+      "signedInAs": {
+        "user": "Iniciaste sesión como usuario.",
+        "rigger": "Iniciaste sesión como rigger.",
+        "dropzone": "Iniciaste sesión como dropzone.",
+        "admin": "Iniciaste sesión como administrador."
+      },
+      "fleet": "Flota",
+      "myGear": "Mi equipo",
+      "workQueue": "Cola de trabajo",
+      "customersAndDropzones": "Clientes y dropzones",
+      "myRiggers": "Mis riggers",
+      "yourDetails": "Tus datos",
+      "manageAccounts": "Administrar cuentas",
+      "manageServices": "Administrar servicios",
+      "manageUsedGear": "Administrar equipo usado",
+      "gearModels": "Modelos de equipo",
+      "serviceBulletins": "Boletines de servicio",
+      "learnMaterial": "Material de Aprender"
+    },
+    "profile": {
+      "title": "Tus datos",
+      "intro": "Tu rigger y tu dropzone usan tu teléfono de WhatsApp para contactarte, en el idioma que elijas acá.",
+      "signedInAs": "Sesión iniciada como",
+      "displayName": "Nombre para mostrar",
+      "phone": "Teléfono de WhatsApp",
+      "phoneHint": "Con el código de país",
+      "language": "Idioma",
+      "save": "Guardar",
+      "saved": "Guardado",
+      "nameRequired": "Ingresá tu nombre.",
+      "phoneInvalid": "Ingresá el teléfono con el código de país, por ejemplo +54 9 341 555 0000.",
+      "saveFailed": "No se pudieron guardar tus datos"
+    },
+    "accounts": {
+      "title": "Cuentas",
+      "table": "Cuentas",
+      "name": "Nombre",
+      "email": "Email",
+      "role": "Rol",
+      "roleFor": "Rol de {{email}}",
+      "signIn": "Inicio de sesión",
+      "joined": "Alta",
+      "method": {
+        "password": "Contraseña",
+        "google": "Google"
+      },
+      "loadFailed": "No se pudieron cargar las cuentas",
+      "changeFailed": "No se pudo cambiar el rol"
+    }
+  }
+}

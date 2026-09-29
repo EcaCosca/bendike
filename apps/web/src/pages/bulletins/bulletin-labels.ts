@@ -17,3 +17,15 @@ export const STATUS_LABELS: Record<BulletinStatus, string> = {
   published: 'Published',
   withdrawn: 'Withdrawn',
 };
+
+export const SEVERITY_LABEL_KEYS: Record<BulletinSeverity, string> = {
+  advisory: 'bulletins.severity.advisory',
+  mandatory: 'bulletins.severity.mandatory',
+  grounding: 'bulletins.severity.grounding',
+};
+
+export const STATUS_LABEL_KEYS: Record<BulletinStatus, string> = {
+  draft: 'bulletins.status.draft',
+  published: 'bulletins.status.published',
+  withdrawn: 'bulletins.status.withdrawn',
+};

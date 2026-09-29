@@ -1,0 +1,14 @@
+{
+  "bulletins": {
+    "severity": {
+      "advisory": "Advisory",
+      "mandatory": "Mandatory",
+      "grounding": "Grounding"
+    },
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "withdrawn": "Withdrawn"
+    }
+  }
+}

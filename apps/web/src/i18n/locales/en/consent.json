@@ -1,0 +1,111 @@
+{
+  "consent": {
+    "banner": {
+      "region": "Cookie consent",
+      "title": "Your privacy on Bendike",
+      "body": "We store a few things on your device. The necessary ones keep you signed in and remember your language. With your permission we also remember your view choices and can load Google sign-in and video players. Read our",
+      "policyLink": "cookie policy",
+      "manage": "Manage",
+      "reject": "Reject non-essential",
+      "accept": "Accept all"
+    },
+    "settings": {
+      "title": "Cookie settings",
+      "intro": "Choose what Bendike may store on your device. You can change this at any time from the footer. Read the",
+      "policyLink": "cookie policy",
+      "introTail": "for the full list.",
+      "cancel": "Cancel",
+      "reject": "Reject non-essential",
+      "accept": "Accept all",
+      "save": "Save my choices"
+    },
+    "category": {
+      "necessary": {
+        "title": "Necessary",
+        "description": "Keeps you signed in and remembers the language you chose. The site does not work without these, so they are always on."
+      },
+      "preferences": {
+        "title": "Preferences",
+        "description": "Remembers your gear view (grid or cards), the currency you chose and, for riggers, the licence number you type on a packing sheet."
+      },
+      "thirdParty": {
+        "title": "Third-party services",
+        "description": "Loads Google's sign-in and the YouTube, Spotify and Vimeo players on Learn pages. Those providers may set their own cookies when they load."
+      }
+    },
+    "type": {
+      "cookie": "Cookie",
+      "browserStorage": "Local storage",
+      "thirdPartyScript": "Third-party script"
+    },
+    "policy": {
+      "title": "Cookie policy",
+      "lastUpdated": "Last updated: {{date}}",
+      "what": {
+        "title": "What cookies and browser storage are",
+        "body": "Cookies are small text files a website asks your browser to keep. Browser storage does the same job without being sent to the server with every request. Bendike uses both, and only for the reasons below. It does not use advertising or analytics tools."
+      },
+      "stores": {
+        "title": "What Bendike stores",
+        "body": "Necessary items are always used, because the site does not work without them. Everything else waits for your permission.",
+        "caption": "Cookies and browser storage",
+        "name": "Name",
+        "type": "Type",
+        "category": "Category",
+        "purpose": "What it is for",
+        "duration": "How long"
+      },
+      "thirdParties": {
+        "title": "Third parties",
+        "body": "When you allow third-party services and open the login or sign-up page, your browser loads Google Identity Services from Google so you can continue with your Google account. When you press play on a Learn page, it loads the YouTube, Spotify or Vimeo player. Those companies may set their own cookies and see that your browser loaded their code. Bendike receives only the sign-in result from Google. If you do not allow it, nothing is loaded and you can still sign in with your email and password."
+      },
+      "changing": {
+        "title": "Changing your choice",
+        "body": "You can change your choice at any time. Withdrawing permission for preferences deletes the remembered gear view, currency and licence number straight away.",
+        "button": "Open cookie settings"
+      },
+      "removing": {
+        "title": "Removing what is stored",
+        "body": "You can delete cookies and site data for Bendike in your browser's settings. Signing out removes the sign-in token. Cookies that Google or a video provider has already set are removed the same way, in your browser, for their domain."
+      },
+      "contact": {
+        "title": "Contact",
+        "lead": "Questions about this policy? Write to Eca at"
+      },
+      "inventory": {
+        "consentCookie": {
+          "purpose": "Remembers the choice you made in the cookie bar, and when you made it.",
+          "duration": "12 months"
+        },
+        "token": {
+          "purpose": "Keeps you signed in to your Bendike account.",
+          "duration": "Until you log out"
+        },
+        "locale": {
+          "purpose": "Remembers the language you chose.",
+          "duration": "Until you clear your browser data"
+        },
+        "gearView": {
+          "purpose": "Remembers whether you look at your gear as a grid or as cards.",
+          "duration": "Until you clear your browser data or withdraw permission"
+        },
+        "currency": {
+          "purpose": "Remembers the currency you chose for prices (US$, AR$ or R$).",
+          "duration": "Until you clear your browser data or withdraw permission"
+        },
+        "riggerLicence": {
+          "purpose": "For riggers: fills in the licence number you typed on your last packing sheet.",
+          "duration": "Until you clear your browser data or withdraw permission"
+        },
+        "google": {
+          "purpose": "Only when you allow it and open the login or sign-up page: lets you continue with Google. Google may set its own cookies.",
+          "duration": "Set by Google; see Google's privacy policy"
+        },
+        "players": {
+          "purpose": "Only when you allow it and press play on a Learn page: shows the video or podcast player inside Bendike. The provider may set its own cookies.",
+          "duration": "Set by the provider; see its privacy policy"
+        }
+      }
+    }
+  }
+}

@@ -1,13 +1,18 @@
 import { Alert, Button, Stack, TextField, Typography } from '@mui/material';
 import { useState, type FormEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { GoogleSignInSection } from '../auth/GoogleSignInSection';
 import { useAuth } from '../auth/use-auth';
 import { AppShell } from '../components/AppShell';
+import '../i18n/i18n';
+import { usePublicLanguage } from '../i18n/use-public-language';
 
 const PASSWORD_MIN_LENGTH = 8;
 
 export function RegisterPage() {
+  const { t } = useTranslation();
+  usePublicLanguage();
   const { register } = useAuth();
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState('');
@@ -24,7 +29,7 @@ export function RegisterPage() {
       await register({ displayName, email, password });
       void navigate('/app', { replace: true });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed');
+      setError(err instanceof Error ? err.message : t('auth.register.failed'));
     } finally {
       setSubmitting(false);
     }
@@ -34,35 +39,41 @@ export function RegisterPage() {
     <AppShell>
       <Stack component="form" spacing={3} maxWidth={420} mx="auto" onSubmit={(event) => void handleSubmit(event)}>
         <Typography variant="h4" component="h1">
-          Create an account
+          {t('auth.register.title')}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Every new account starts as a user. An admin can make you a rigger later.
+          {t('auth.register.intro')}
         </Typography>
         {error && <Alert severity="error">{error}</Alert>}
         <TextField
-          label="Display name"
+          label={t('auth.register.displayName')}
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
           required
           autoFocus
         />
-        <TextField label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <TextField
-          label="Password"
+          label={t('auth.register.email')}
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <TextField
+          label={t('auth.register.password')}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
           slotProps={{ htmlInput: { minLength: PASSWORD_MIN_LENGTH } }}
-          helperText={`At least ${PASSWORD_MIN_LENGTH} characters`}
+          helperText={t('auth.register.passwordHint', { min: PASSWORD_MIN_LENGTH })}
         />
         <Button type="submit" variant="contained" size="large" disabled={submitting}>
-          Sign up
+          {t('auth.register.submit')}
         </Button>
         <GoogleSignInSection onSignedIn={() => void navigate('/app', { replace: true })} onError={setError} />
         <Typography variant="body2">
-          Already have an account? <RouterLink to="/login">Log in</RouterLink>
+          {t('auth.register.haveAccount')} <RouterLink to="/login">{t('auth.register.login')}</RouterLink>
         </Typography>
       </Stack>
     </AppShell>
